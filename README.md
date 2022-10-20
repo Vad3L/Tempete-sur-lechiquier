@@ -1,2 +1,2 @@
-# Temp-te-sur-l-chiquier
+# tempête sur l'échiquier
 Adaptation du jeu tempête sur l'échiquier
