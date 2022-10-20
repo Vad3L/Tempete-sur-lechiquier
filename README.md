@@ -8,9 +8,14 @@ C'est une variante du jeu d'échecs. Les joueurs jouent aux échecs, mais ont au
 
 Voici l'adaptation en jeu vidéo.
 
+## bibliothèque requise
+Gamedev Framework ([gf](https://gamedevframework.github.io/v0.20.0/build_and_install.html))
+
 ## Construction
 
 Vous devez télécharger le projet et aller à la racine de celui-ci puis taper :
-- cmake CMakeLists.txt
-- make
-- ./tsl
+
+
+    cmake CMakeLists.txt
+    make
+    ./tsl
