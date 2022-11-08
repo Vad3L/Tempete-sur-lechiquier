@@ -17,6 +17,7 @@ struct Game {
 	}
 };
 
+// gère les inptus
 void inputs (Game& g, gf::Event& event) {
 	if (event.type == gf::EventType::Closed) {
 		g.window->close();
