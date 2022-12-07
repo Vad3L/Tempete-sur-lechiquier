@@ -28,7 +28,7 @@ jobs:
       run : |
         git clone https://github.com/GamedevFramework/gf.git
         cd gf
-        git submodules update --init
+        git submodule update --init
         mkdir build
         cd build
         cmake ..
