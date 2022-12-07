@@ -1,7 +1,6 @@
 #include <gf/Event.h>
 #include <gf/RenderWindow.h>
 #include <gf/Window.h>
-#include <gf/Rect.h>
 #include <gf/Shapes.h>
 #include <gf/Color.h>
 #include <gf/TcpSocket.h>
