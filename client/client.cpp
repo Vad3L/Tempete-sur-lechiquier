@@ -80,6 +80,8 @@ int main() {
 	gf::RenderWindow renderer(window);
 	Game g(window);
 
+	// premier paquet pour initialiser le carré
+	g.recv_packet();
 	while (window.isOpen()) {
 		gf::Event event;
 		while (window.pollEvent(event)) {

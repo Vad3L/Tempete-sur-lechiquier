@@ -43,7 +43,7 @@ int main (int argc, char* argv[]) {
 			}
 
 			status = req.choix;
-			std::cout << "status est " << req.choix << std::endl;
+			std::cout << "le nouveau status est " << req.choix << std::endl;
 		}
 	}
 
