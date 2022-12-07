@@ -17,29 +17,28 @@ endif ()
 # set(GAME_DATADIR "${CMAKE_INSTALL_PREFIX}/share/games/${GAME}" CACHE PATH "Game Data Dir")
 # configure_file(${CMAKE_CURRENT_SOURCE_DIR}/code/config.h.in ${CMAKE_CURRENT_BINARY_DIR}/config.h @ONLY)
 
-add_executable(${GAME}
-	main.cpp
+add_executable(client
+	client/client.cpp
 )
 
-target_include_directories(${GAME}
-  PRIVATE
-    ${CMAKE_CURRENT_SOURCE_DIR}/code
-    ${CMAKE_CURRENT_BINARY_DIR}
+add_executable(server
+	server/server.cpp
 )
 
-target_link_libraries(${GAME}
-  PRIVATE
-    gf::graphics
+target_link_libraries(client
+	PRIVATE
+		gf::graphics
+		gf::net
+)
+
+target_link_libraries(server
+	PRIVATE
+		gf::net
 )
 
 install(
-  TARGETS ${GAME}
+  TARGETS server client
   RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}"
-)
-
-install(
-  DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/data/${GAME}"
-  DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/games"
 )
 
 # tools

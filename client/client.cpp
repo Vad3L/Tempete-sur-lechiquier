@@ -8,8 +8,6 @@
 #include <gf/View.h>
 #include <gf/Rect.h>
 
-#include "include/util.hpp"
-
 struct Game {
 	gf::Window* window;
 	Game(gf::Window& w) {
