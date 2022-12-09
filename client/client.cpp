@@ -42,7 +42,7 @@ struct Game {
 				r.setPosition({ 50.f, 50.f });
 				break;
 			case 2:
-				r.setPosition({ 100.f, 100.f });
+				r.setPosition({ 100.f, 50.f });
 		}
 		return 0;
 	}
