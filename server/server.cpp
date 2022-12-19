@@ -23,14 +23,6 @@ int main (int argc, char* argv[]) {
 		gf::Packet ordre;
 		gf::Packet paquet;
 		while (true) {
-			Paquet p;
-			p.choix = status;
-			ordre.is(p);
-			if (gf::SocketStatus::Data != client.sendPacket(ordre)) {
-				std::cerr << "Erreur lors de l'envoi du paquet" << std::endl;
-				return -1;
-			}
-
 			if (gf::SocketStatus::Data != client.recvPacket(paquet)) {
 				std::cerr << "Erreur reception paquet" << std::endl;
 				return -2;		
@@ -44,6 +36,14 @@ int main (int argc, char* argv[]) {
 
 			status = req.choix;
 			std::cout << "le nouveau status est " << req.choix << std::endl;
+
+			Paquet p;
+			p.choix = status;
+			ordre.is(p);
+			if (gf::SocketStatus::Data != client.sendPacket(ordre)) {
+				std::cerr << "Erreur lors de l'envoi du paquet" << std::endl;
+				return -1;
+			}
 		}
 	}
 
