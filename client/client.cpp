@@ -15,14 +15,13 @@ struct Game {
 	gf::RectangleShape r;
 	gf::TcpSocket s;
 	bool connected = false;
-	Game(gf::Window& w) {
+	Game(gf::Window& w, int port) {
 		window = &w;
 		r.setSize({ 100.f, 100.f });
 		r.setPosition({ 50.f, 50.f });
 		r.setColor(gf::Color::Red);
-		std::string port = "4545";
 		std::string host = "127.0.0.1";
-		s = gf::TcpSocket(host, port);
+		s = gf::TcpSocket(host, std::to_string(port));
 		if (!s) {
 			std::cerr << "Erreur de connexion au serveur" << std::endl;
 		} else {
@@ -75,10 +74,15 @@ void inputs (Game& g, gf::Event& event) {
 	}
 }
  
-int main() {
+int main(int argc, char* argv[]) {
+	if (argc != 2){
+		std::cout << "Usage : ./client [port]" << std::endl;
+	}
+
+	int port = atoi(argv[1]);
 	gf::Window window("Example", { 640, 480 });
 	gf::RenderWindow renderer(window);
-	Game g(window);
+	Game g(window,port);
 
 	// premier paquet pour initialiser le carré
 	g.recv_packet();
