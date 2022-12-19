@@ -78,7 +78,7 @@ void inputs (Game& g, gf::Event event) {
 }
  
 int main (int argc, char* argv[]) {
-	if (argc < 2) {
+	if (argc != 3) {
 		std::cout << "Usage: ./client [ip] [port]" << std::endl;
 		return 0;
 	}
