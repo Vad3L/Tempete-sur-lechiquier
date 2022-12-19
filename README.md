@@ -1,5 +1,7 @@
-compilation :
-	`mkdir build`\
-	`cd build`\
-	`cmake ..`\
-	`make`
+# compilation
+```
+mkdir build
+cd build
+cmake ..
+make
+```
