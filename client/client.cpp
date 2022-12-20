@@ -12,17 +12,17 @@
 #include <thread>
 #include <mutex>
 
+#include "../model/Piece.hpp"
+
 struct Game {
 	gf::Window* window;
-	gf::RectangleShape r;
+	Piece *r = new Piece("../data/Piece/White/Bishop.png");
 	std::mutex lock;
 	gf::TcpSocket s;
 	bool connected = false;
 	Game(gf::Window& w, std::string host, std::string port) {
 		window = &w;
-		r.setSize({ 100.f, 100.f });
-		r.setPosition({ 50.f, 50.f });
-		r.setColor(gf::Color::Red);
+		r->sprite.setPosition({ 50.f, 50.f });
 		s = gf::TcpSocket(host, port);
 		if (!s) {
 			std::cerr << "Erreur de connexion au serveur" << std::endl;
@@ -41,10 +41,10 @@ struct Game {
 		auto req = paquet.as<Paquet>();
 		switch (req.choix) {
 			case 1:
-				r.setPosition({ 50.f, 50.f });
+				r->sprite.setPosition({ 50.f, 50.f });
 				break;
 			case 2:
-				r.setPosition({ 100.f, 50.f });
+				r->sprite.setPosition({ 100.f, 50.f });
 		}
 		return 0;
 	}
@@ -95,7 +95,7 @@ int main (int argc, char* argv[]) {
 		}
 
 		renderer.clear();
-		renderer.draw(g.r);
+		renderer.draw(g.r->sprite);
 		renderer.display();
 	}
 

@@ -19,6 +19,7 @@ endif ()
 
 add_executable(client
 	client/client.cpp
+	model/Piece.cpp
 )
 
 add_executable(server
