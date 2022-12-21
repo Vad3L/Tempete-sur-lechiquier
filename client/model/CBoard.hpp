@@ -13,7 +13,6 @@
 #include <string>
 
 #include "../../model/Plateau.hpp"
-#include "CCase.hpp"
 #include "CPiece.hpp"
 
 struct cmpByVector2i {
