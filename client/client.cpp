@@ -1,104 +1,100 @@
+#include <iostream>
+#include<string>
+#include <cassert>
+
+#include <gf/Packet.h>
+#include <gf/Sleep.h>
 #include <gf/Event.h>
 #include <gf/RenderWindow.h>
 #include <gf/Window.h>
 #include <gf/Shapes.h>
-#include <gf/Color.h>
-#include <gf/TcpSocket.h>
-#include <gf/Packet.h>
+#include <gf/ViewContainer.h>
+#include <gf/Views.h>
+#include <gf/Grid.h>
+#include <gf/Coordinates.h>
 
-#include "../protocole/protocole.h"
+#include "ClientNetwork.hpp"
+#include "clientTools.hpp"
+#include "model/CBoard.hpp"
 
-#include <iostream>
-#include <thread>
-#include <mutex>
+int main(int argc, char* argv[]) {
+    bool myTurn;
 
-struct Game {
-	gf::Window* window;
-	gf::RectangleShape r;
-	std::mutex lock;
-	gf::TcpSocket s;
-	bool connected = false;
-	Game(gf::Window& w, std::string host, std::string port) {
-		window = &w;
-		r.setSize({ 100.f, 100.f });
-		r.setPosition({ 50.f, 50.f });
-		r.setColor(gf::Color::Red);
-		s = gf::TcpSocket(host, port);
-		if (!s) {
-			std::cerr << "Erreur de connexion au serveur" << std::endl;
-		} else {
-			connected = true;
-		}
-	}
+    if (argc != 4) {
+        std::cerr << "Usage: " << argv[0] << " [ip] [port] [numJoueur]" << std::endl;
+        return -1;
+    }
 
-	int recv_packet () {
-		std::lock_guard<std::mutex> guard(lock);
-		gf::Packet paquet;
-		if (gf::SocketStatus::Data != s.recvPacket(paquet)) {
-			std::cerr << "Erreur lors de la réception du paquet" << std::endl;
-			return -1;
-		}
-		auto req = paquet.as<Paquet>();
-		switch (req.choix) {
-			case 1:
-				r.setPosition({ 50.f, 50.f });
-				break;
-			case 2:
-				r.setPosition({ 100.f, 50.f });
-		}
-		return 0;
-	}
-};
+    ClientNetwork network;
+    network.connect(argv[1], std::to_string(atoi(argv[2])));
+    gf::sleep(gf::milliseconds(500));
+    assert(network.isConnected());
 
-// gère les inptus
-void inputs (Game& g, gf::Event event) {
-	if (event.type == gf::EventType::Closed || !g.connected) {
-		g.window->close();
-	} else if (event.type == gf::EventType::KeyPressed || event.type == gf::EventType::KeyRepeated) {
-		if (event.key.keycode == gf::Keycode::D) {
-			gf::Packet paquet;
-			Paquet p;
-			p.choix = 1;
-			paquet.is(p);
-			g.s.sendPacket(paquet);
-			g.recv_packet();
-		}
-		if (event.key.keycode == gf::Keycode::S) {
-			gf::Packet paquet;
-			Paquet p;
-			p.choix = 2;
-			paquet.is(p);
-			g.s.sendPacket(paquet);
-			g.recv_packet();
-		}
-		if (event.key.keycode == gf::Keycode::Q) {
-			g.window->close();
-		}
-	}
+    int err;
+    TPartieReq req;
+    req.idReq = PARTIE;
+    req.nomJoueur = argv[3];
+    //req.coulPion = 1;
+
+    network.send(req);
+    gf::Packet packet;
+    network.queue.wait(packet);
+    assert(packet.getType() == PartieRep::type);
+
+    auto repPartie = packet.as<PartieRep>();
+
+    //int couleur = initColor(repPartie.validCoulPion, req.coulPion);
+    int couleur = repPartie.coulPion;
+
+    if (couleur == 1) {
+        myTurn = true;
+    }
+    else {
+        myTurn = false;
+    }
+
+    std::cout << "Vous jouez la couleur : " << couleur << std::endl;
+
+    /************** D�but de partie ********************/
+    Plateau plateau;
+    std::string title = "Tempete sur l'echiquier - ";
+    title += argv[3];
+    CBoard board(gf::Vector2i(gf::Zero), title, couleur);
+    gf::Event event;
+    gf::Clock clock;
+    
+    gf::ActionContainer actions;
+
+    gf::Action closeWindowAction("Close window");
+    closeWindowAction.addCloseControl();
+    actions.addAction(closeWindowAction);
+
+    gf::Action clickAction("select");
+    clickAction.addMouseButtonControl(gf::MouseButton::Left);
+    clickAction.setInstantaneous();
+    actions.addAction(clickAction);
+
+    
+    while (board.window.isOpen())
+    {
+        gf::Time time = clock.restart();
+        //board.Update(time);
+
+        actions.reset();
+        while (board.window.pollEvent(event)) {
+            actions.processEvent(event);
+            board.views.processEvent(event);
+        }
+
+        if (closeWindowAction.isActive()) {
+            board.window.close();
+            break;
+        }
+
+
+        board.print();
+
+     
+    }
+    return 0;
 }
- 
-int main (int argc, char* argv[]) {
-	if (argc != 3) {
-		std::cout << "Usage: ./client [ip] [port]" << std::endl;
-		return 0;
-	}
-
-	gf::Window window("Example", { 640, 480 });
-	gf::RenderWindow renderer(window);
-	Game g(window, std::string(argv[1]), std::string(argv[2]));
-	// premier paquet pour initialiser le carré
-	gf::Event event;
-	while (window.isOpen()) {
-		while (window.pollEvent(event)) {
-			std::thread t(inputs, std::ref(g), event);
-			t.detach();
-		}
-
-		renderer.clear();
-		renderer.draw(g.r);
-		renderer.display();
-	}
-
-	return 0;
-}
-
