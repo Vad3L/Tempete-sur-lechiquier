@@ -20,7 +20,8 @@ endif ()
 add_executable(client
 	client/client.cpp
 	"client/clientTools.cpp"
-	"client/ClientNetwork.cpp" "client/model/CBoard.cpp" "model/Plateau.cpp" "client/model/CPiece.cpp")
+	"client/ClientNetwork.cpp" "client/model/CBoard.cpp" "model/Plateau.cpp" "client/model/CPiece.cpp"
+)
 
 add_executable(server
 	server/server.cpp
