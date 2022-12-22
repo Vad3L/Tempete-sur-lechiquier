@@ -3,8 +3,8 @@
 
 #include <string>
 
-#include "./Color.hpp"
-#include "./PieceEnum.hpp"
+#include "Color.hpp"
+#include "PieceEnum.hpp"
 
 class Piece {
 

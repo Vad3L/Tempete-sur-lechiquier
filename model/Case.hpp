@@ -1,15 +1,15 @@
 #ifndef CASE_H
 #define CASE_H
 
+#include <memory>
 #include <gf/Vector.h>
 
 class Case {
-	private:
+	public:
 		std::unique_ptr<Piece> piece;
 		bool trap;
 		bool hole;
 		gf::Vector2i position;
-	public:
 		Case (gf::Vector2i position);
 };
 
