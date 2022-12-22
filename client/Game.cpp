@@ -33,7 +33,7 @@ void Game::run() {
 	}
 
 	std::cout << "Vous jouez la couleur : " << couleur << std::endl;
-//	vue = Vue(gf::Vector2u(1000, 1000), couleur);
+	vue.set_side(couleur);
 
 	// boucle de jeu
 

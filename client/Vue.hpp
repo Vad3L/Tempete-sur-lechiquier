@@ -19,8 +19,8 @@ private:
 	int sizeCircle;
 	float sizeSquare;
 	int myColor;
-public:
 
+public:
 	gf::Vector2u ScreenSize;
 	gf::Window window;
 	gf::RenderWindow renderer;
@@ -30,6 +30,7 @@ public:
 	gf::ViewContainer views;
 
 	Vue(gf::Vector2u SSize, int mycolor);
+	void set_side (int color);
 	void print(Plateau p);
 };
 

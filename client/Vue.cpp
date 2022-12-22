@@ -16,10 +16,6 @@ Vue::Vue(gf::Vector2u SSize, int mycolor) : window("tempete sur le chec", SSize)
     views.addView(mainView);
     views.addView(screenView);
     views.setInitialFramebufferSize(ScreenSize);
-
-    if (myColor == -1) {
-        mainView.setRotation(gf::Pi);
-    }   
 }
 
 void Vue::print(Plateau p) {
@@ -46,18 +42,26 @@ void Vue::print(Plateau p) {
             else {
                 shape.setColor(saddlebrown);
             }
-        }
-        else {
+        } else {
             if (x % 2 == 0) {
                 shape.setColor(saddlebrown);
             }
             else {
-                shape.setColor(saddlebrown);
+                shape.setColor(peru);
             }
         }
-        renderer.draw(shape);
+	if (x == 0 && y == 0) { shape.setColor(gf::Color::Red); }
+       renderer.draw(shape);
     }
 
     renderer.setView(screenView);
     
 }
+
+void Vue::set_side (int color) {
+    myColor = color;
+    if (myColor == -1) {
+        mainView.setRotation(gf::Pi);
+    } 
+}
+
