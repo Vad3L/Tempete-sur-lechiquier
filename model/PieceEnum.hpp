@@ -1,3 +1,7 @@
+#ifndef PIECEENUM_H
+#define PIECEENUM_H
+
+
 enum class PieceEnum{
     PAWN,
     ROOK,
@@ -8,3 +12,5 @@ enum class PieceEnum{
     CAMEL,
     PRINCE
 };
+
+#endif // PIECEENUM_H
