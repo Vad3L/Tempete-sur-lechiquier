@@ -16,8 +16,10 @@ Vue::Vue(gf::Vector2u SSize, int mycolor) : window("tempete sur le chec", SSize)
     views.addView(mainView);
     views.addView(screenView);
     views.setInitialFramebufferSize(ScreenSize);
-}
 
+    loadSprite(PAWN, "../data/Piece/White/Pawn.png", 1);
+    loadSprite(PAWN, "../data/Piece/Black/Pawn.png", -1);
+}
 void Vue::print(Plateau p) {
     
     renderer.setView(mainView);
@@ -50,9 +52,29 @@ void Vue::print(Plateau p) {
                 shape.setColor(peru);
             }
         }
-	if (x == 0 && y == 0) { shape.setColor(gf::Color::Red); }
-       renderer.draw(shape);
-    }
+        renderer.draw(shape);
+ 
+	if (c.piece.getType() == PAWN) {
+		if (c.piece.getColor() == WHITE) {
+			gf::Sprite spriteWithMipmap;
+			spriteWithMipmap.setTexture(whiteTextures[PAWN]);
+  			spriteWithMipmap.setPosition(gf::Vector2f(beginBoard.height + ((float)x * sizeSquare), beginBoard.col + ((float)y * sizeSquare)));
+  			spriteWithMipmap.setScale({ 0.8f, 0.8f });
+  			spriteWithMipmap.setAnchor(gf::Anchor::Center);
+
+			
+			renderer.draw(spriteWithMipmap);
+		} else {
+			gf::Sprite spriteWithMipmap;
+			spriteWithMipmap.setTexture(blackTextures[PAWN]);
+  			spriteWithMipmap.setPosition(gf::Vector2f(beginBoard.height + ((float)x * sizeSquare), beginBoard.col + ((float)y * sizeSquare)));
+  			spriteWithMipmap.setScale({ 0.8f, 0.8f });
+  			spriteWithMipmap.setAnchor(gf::Anchor::Center);
+
+			renderer.draw(spriteWithMipmap);
+		}
+	}
+   }
 
     renderer.setView(screenView);
     
@@ -63,5 +85,15 @@ void Vue::set_side (int color) {
     if (myColor == -1) {
         mainView.setRotation(gf::Pi);
     } 
+}
+
+void Vue::loadSprite (PieceEnum p, const char* path, int color) {
+	gf::Texture textureWithMipmap(path);
+
+	if (color == -1) {
+		blackTextures.insert({ p, textureWithMipmap });
+	} else {
+		whiteTextures.insert({ p, textureWithMipmap });
+	}
 }
 

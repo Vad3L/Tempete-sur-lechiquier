@@ -6,10 +6,11 @@
 
 #include "Piece.hpp"
 #include "Case.hpp"
+#include "Pawn.hpp"
 
 class Plateau {
 	public:
-		std::vector<Piece*> bin;
+		std::vector<Piece> bin;
 		std::vector<Case> state;
 		Plateau();
 };

@@ -2,7 +2,8 @@
 #define PIECEENUM_H
 
 
-enum class PieceEnum{
+enum PieceEnum {
+    NONE,
     PAWN,
     ROOK,
     BISHOP,

@@ -9,7 +9,7 @@
 
 class Pawn : public Piece {
     public:
-        Pawn(Color c, PieceEnum t);
+        Pawn(Color c);
 
 };
 #endif // PAWN_H

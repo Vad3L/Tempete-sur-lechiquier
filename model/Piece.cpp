@@ -1,9 +1,9 @@
 #include "Piece.hpp"
 
 
-Piece::Piece(Color c, PieceEnum t){
+Piece::Piece(Color c){
     color = c;
-    type = t;
+    type = NONE;
 }
 
 
@@ -13,4 +13,5 @@ Color Piece::getColor(){
 
 PieceEnum Piece::getType(){
     return type;
-}        
+} 
+

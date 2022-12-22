@@ -8,7 +8,7 @@
 
 class Case {
 	public:
-		Piece* piece;
+		Piece piece;
 		bool trap;
 		bool hole;
 		gf::Vector2i position;

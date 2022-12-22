@@ -6,5 +6,7 @@ Plateau::Plateau() {
 			state.push_back(Case(gf::Vector2i(j, i)));
 		}
 	}
+
+	state[0].piece = Pawn(WHITE);
 }
 

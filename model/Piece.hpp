@@ -1,20 +1,19 @@
 #ifndef PIECE_H
 #define PIECE_H
 
+#include <memory>
 #include <string>
 
 #include "Color.hpp"
 #include "PieceEnum.hpp"
 
 class Piece {
-
-
     public:
 
         /**
         * Build  Piece
         */
-        explicit Piece(Color c, PieceEnum t);
+        Piece(Color c);
 
         /**
         * Guetteur on the color
@@ -26,12 +25,9 @@ class Piece {
         */
         PieceEnum getType();        
         
-    private:
+    protected:
         Color color;
         PieceEnum type;
-
-
-
-
 };
+
 #endif // PIECE_H

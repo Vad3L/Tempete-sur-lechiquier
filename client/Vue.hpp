@@ -8,6 +8,8 @@
 #include <gf/ViewContainer.h>
 #include <gf/Color.h>
 #include <gf/Shapes.h>
+#include <gf/Texture.h>
+#include <gf/Sprite.h>
 
 #include <string>
 
@@ -21,6 +23,8 @@ private:
 	int myColor;
 
 public:
+	std::map<PieceEnum, gf::Texture> whiteTextures;
+	std::map<PieceEnum, gf::Texture> blackTextures;
 	gf::Vector2u ScreenSize;
 	gf::Window window;
 	gf::RenderWindow renderer;
@@ -30,6 +34,7 @@ public:
 	gf::ViewContainer views;
 
 	Vue(gf::Vector2u SSize, int mycolor);
+	void loadSprite (PieceEnum p, const char* path, int color);
 	void set_side (int color);
 	void print(Plateau p);
 };
