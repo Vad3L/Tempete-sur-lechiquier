@@ -1,7 +1,7 @@
 #ifndef CASE_H
 #define CASE_H
 
-#include <gf/Vector.hpp>
+#include <gf/Vector.h>
 
 class Case {
 	private:
