@@ -13,7 +13,7 @@ class Game {
 
 		Network network;
 		Plateau plateau;
-		//View board;
+		Vue vue;
 		
 	public:
 		Game(char* argv[]);
