@@ -1,6 +1,8 @@
 #ifndef GAME_H
 #define GAME_H
 
+#include <gf/Event.h>
+
 #include "Network.hpp"
 
 #include "../model/Plateau.hpp"

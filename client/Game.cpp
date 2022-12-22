@@ -38,8 +38,14 @@ void Game::run() {
 	// boucle de jeu
 
 	while (vue.window.isOpen()) {
-
-		vue.renderer.clear();
+		gf::Event event;
+ 
+    		while (vue.window.pollEvent(event)) {
+			if (event.type == gf::EventType::KeyPressed || event.type == gf::EventType::KeyRepeated) {
+				if (event.key.keycode == gf::Keycode::Q) { vue.window.close(); }
+			}   
+ 		}
+		vue.renderer.clear(gf::Color::White);
 		vue.print(plateau);
 		vue.renderer.display();
 	}

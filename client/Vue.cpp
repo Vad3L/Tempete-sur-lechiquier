@@ -1,6 +1,8 @@
 #include "Vue.hpp"
 
-Vue::Vue(gf::Vector2u SSize, int mycolor) : window("tempete sur le chec", SSize), renderer(window), myColor(mycolor) {
+Vue::Vue(gf::Vector2u SSize, int mycolor) : window("tempete sur le chec", SSize),
+						renderer(window),
+						myColor(mycolor) {
     ScreenSize = gf::Vector2u(1000, 1000);
     sizeSquare = 50.0f;
     beginBoard = gf::Vector2f(300.0f, 300.0f);
@@ -17,8 +19,7 @@ Vue::Vue(gf::Vector2u SSize, int mycolor) : window("tempete sur le chec", SSize)
     views.addView(screenView);
     views.setInitialFramebufferSize(ScreenSize);
 
-    loadSprite(PAWN, "../data/Piece/White/Pawn.png", 1);
-    loadSprite(PAWN, "../data/Piece/Black/Pawn.png", -1);
+    sheet = gf::Texture("../data/Piece/ChessSheet.png");
 }
 void Vue::print(Plateau p) {
     
@@ -55,24 +56,17 @@ void Vue::print(Plateau p) {
         renderer.draw(shape);
  
 	if (c.piece.getType() == PAWN) {
+		gf::Sprite pawn;
+		gf::RectangleShape shape({ 40, 40 });
+		shape.setColor(gf::Color::Red);
 		if (c.piece.getColor() == WHITE) {
-			gf::Sprite spriteWithMipmap;
-			spriteWithMipmap.setTexture(whiteTextures[PAWN]);
-  			spriteWithMipmap.setPosition(gf::Vector2f(beginBoard.height + ((float)x * sizeSquare), beginBoard.col + ((float)y * sizeSquare)));
-  			spriteWithMipmap.setScale({ 0.8f, 0.8f });
-  			spriteWithMipmap.setAnchor(gf::Anchor::Center);
-
-			
-			renderer.draw(spriteWithMipmap);
+			pawn.setTexture(sheet, gf::RectF::fromPositionSize({ (1.f / 6.f) * 5, 0.f }, { (1.f / 6.f), 0.5f }));
 		} else {
-			gf::Sprite spriteWithMipmap;
-			spriteWithMipmap.setTexture(blackTextures[PAWN]);
-  			spriteWithMipmap.setPosition(gf::Vector2f(beginBoard.height + ((float)x * sizeSquare), beginBoard.col + ((float)y * sizeSquare)));
-  			spriteWithMipmap.setScale({ 0.8f, 0.8f });
-  			spriteWithMipmap.setAnchor(gf::Anchor::Center);
-
-			renderer.draw(spriteWithMipmap);
+			pawn.setTexture(sheet, gf::RectF::fromPositionSize({ (1.f / 6.f) * 5 , 0.5f }, { (1.f / 6.f), 0.5f }));
 		}
+		pawn.setPosition(gf::Vector2f(beginBoard.height + ((float)x * sizeSquare) - (sizeSquare / 2), beginBoard.col + ((float)y * sizeSquare) - (sizeSquare / 2)));
+		pawn.setScale(0.15625);
+		renderer.draw(pawn);
 	}
    }
 
@@ -83,17 +77,7 @@ void Vue::print(Plateau p) {
 void Vue::set_side (int color) {
     myColor = color;
     if (myColor == -1) {
-        mainView.setRotation(gf::Pi);
+    //    mainView.setRotation(gf::Pi);
     } 
-}
-
-void Vue::loadSprite (PieceEnum p, const char* path, int color) {
-	gf::Texture textureWithMipmap(path);
-
-	if (color == -1) {
-		blackTextures.insert({ p, textureWithMipmap });
-	} else {
-		whiteTextures.insert({ p, textureWithMipmap });
-	}
 }
 

@@ -1,5 +1,6 @@
 #ifndef VUE_H
 #define VUE_H
+#include <iostream>
 
 #include <gf/Window.h>
 #include <gf/RenderWindow.h>
@@ -23,8 +24,7 @@ private:
 	int myColor;
 
 public:
-	std::map<PieceEnum, gf::Texture> whiteTextures;
-	std::map<PieceEnum, gf::Texture> blackTextures;
+	gf::Texture sheet;
 	gf::Vector2u ScreenSize;
 	gf::Window window;
 	gf::RenderWindow renderer;
@@ -34,7 +34,6 @@ public:
 	gf::ViewContainer views;
 
 	Vue(gf::Vector2u SSize, int mycolor);
-	void loadSprite (PieceEnum p, const char* path, int color);
 	void set_side (int color);
 	void print(Plateau p);
 };
