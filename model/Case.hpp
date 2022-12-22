@@ -4,6 +4,8 @@
 #include <memory>
 #include <gf/Vector.h>
 
+#include "Piece.hpp"
+
 class Case {
 	public:
 		std::unique_ptr<Piece> piece;

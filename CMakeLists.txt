@@ -21,11 +21,15 @@ add_executable(client
 	client/client.cpp
 	model/Piece.cpp
 	model/Pawn.cpp
-  "client/Game.cpp" "client/Network.cpp" "model/Plateau.cpp"     "client/Vue.cpp")
+  	client/Game.cpp
+	client/Network.cpp
+	model/Plateau.cpp
+	client/Vue.cpp
+	model/Case.cpp)
 
 add_executable(server
 	server/server.cpp
-	 "model/Plateau.cpp"   )
+	)
 
 target_link_libraries(client
 	PRIVATE
