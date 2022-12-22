@@ -6,7 +6,7 @@
 #include "../protocole/protocole.h"
 #include <iostream>
 
-Game::Game(char* argv[]) {
+Game::Game(char* argv[]) : vue(gf::Vector2u(1000, 1000), 0) {
 	
 	network.connect(argv[1], std::to_string(atoi(argv[2])));
 	gf::sleep(gf::milliseconds(500));
@@ -33,12 +33,12 @@ void Game::run() {
 	}
 
 	std::cout << "Vous jouez la couleur : " << couleur << std::endl;
-	vue = Vue(gf::Vector2u(1000, 1000), couleur);
+//	vue = Vue(gf::Vector2u(1000, 1000), couleur);
 
 	// boucle de jeu
 
 	while (vue.window.isOpen()) {
-		
+
 		vue.renderer.clear();
 		vue.print(plateau);
 		vue.renderer.display();

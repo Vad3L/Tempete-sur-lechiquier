@@ -1,8 +1,6 @@
 #include "Vue.hpp"
 
-Vue::Vue(gf::Vector2u SSize, int mycolor) : window("Temepete sur l'echiquier", SSize),
-renderer(window), 
-myColor(mycolor) {
+Vue::Vue(gf::Vector2u SSize, int mycolor) : window("tempete sur le chec", SSize), renderer(window), myColor(mycolor) {
     ScreenSize = gf::Vector2u(1000, 1000);
     sizeSquare = 50.0f;
     beginBoard = gf::Vector2f(300.0f, 300.0f);

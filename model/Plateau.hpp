@@ -9,7 +9,7 @@
 
 class Plateau {
 	public:
-		std::vector<std::unique_ptr<Piece>> bin;
+		std::vector<Piece*> bin;
 		std::vector<Case> state;
 		Plateau();
 };
