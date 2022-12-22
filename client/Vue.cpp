@@ -54,16 +54,33 @@ void Vue::print(Plateau p) {
             }
         }
         renderer.draw(shape);
- 
-	if (c.piece.getType() == PAWN) {
+
+	if (c.piece.getType() != NONE) {
 		gf::Sprite pawn;
-		gf::RectangleShape shape({ 40, 40 });
-		shape.setColor(gf::Color::Red);
-		if (c.piece.getColor() == WHITE) {
-			pawn.setTexture(sheet, gf::RectF::fromPositionSize({ (1.f / 6.f) * 5, 0.f }, { (1.f / 6.f), 0.5f }));
-		} else {
-			pawn.setTexture(sheet, gf::RectF::fromPositionSize({ (1.f / 6.f) * 5 , 0.5f }, { (1.f / 6.f), 0.5f }));
+		float i = 0;
+		float j = (c.piece.getColor() == WHITE) ? 0 : 0.5f;
+		switch (c.piece.getType()) {
+			case PAWN:
+				i = 5;
+				break;
+			case KNIGHT:
+				i = 3;
+				break;
+			case BISHOP:
+				i = 2;
+				break;
+			case ROOK:
+				i = 4;
+				break;
+			case QUEEN:
+				i = 1;
+				break;
+			case KING:
+				i = 0;
+				break;
 		}
+
+		pawn.setTexture(sheet, gf::RectF::fromPositionSize({ (1.f / 6.f) * i, j }, { (1.f / 6.f), 0.5f }));
 		pawn.setPosition(gf::Vector2f(beginBoard.height + ((float)x * sizeSquare) - (sizeSquare / 2), beginBoard.col + ((float)y * sizeSquare) - (sizeSquare / 2)));
 		pawn.setScale(0.15625);
 		renderer.draw(pawn);
@@ -77,7 +94,7 @@ void Vue::print(Plateau p) {
 void Vue::set_side (int color) {
     myColor = color;
     if (myColor == -1) {
-    //    mainView.setRotation(gf::Pi);
+	mainView.setRotation(gf::Pi);
     } 
 }
 
