@@ -1,4 +1,4 @@
-#ifndef PAWB_H
+#ifndef PAWN_H
 #define PAWN_H
 
 #include <string>
