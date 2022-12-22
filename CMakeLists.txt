@@ -19,13 +19,11 @@ endif ()
 
 add_executable(client
 	client/client.cpp
-	"client/clientTools.cpp"
-	"client/ClientNetwork.cpp" "client/model/CBoard.cpp" "model/Plateau.cpp" "client/model/CPiece.cpp"
-)
+  "client/Game.cpp" "client/Network.cpp" "model/Plateau.cpp"     "client/Vue.cpp")
 
 add_executable(server
 	server/server.cpp
-	"server/serverTools.cpp" "model/Plateau.cpp")
+	 "model/Plateau.cpp"   )
 
 target_link_libraries(client
 	PRIVATE

@@ -1,5 +1,3 @@
-#include "ClientNetwork.hpp"
-
 #include <cstring>
 #include <stdexcept>
 #include <thread>
@@ -7,33 +5,27 @@
 #include <gf/Log.h>
 #include <gf/SerializationOps.h>
 
+#include "Network.hpp"
 
-ClientNetwork::ClientNetwork()
-    : m_connecting(false)
-{
+Network::Network() {
 
 }
 
-
-bool ClientNetwork::isConnecting() {
-    return m_connecting;
-}
-
-bool ClientNetwork::isConnected() {
+bool Network::isConnected() {
     std::lock_guard<std::mutex> guard(m_mutex);
     return static_cast<bool>(m_socket);
 }
 
-void ClientNetwork::connect(const std::string& hostname, const std::string& port) {
+void Network::connect(const std::string& hostname, const std::string& port) {
     m_connecting = true;
 
-    std::thread thread(&ClientNetwork::run, this, hostname, port);
+    std::thread thread(&Network::run, this, hostname, port);
     thread.detach();
 
 }
 
 
-void ClientNetwork::run(std::string hostname, std::string port) {
+void Network::run(std::string hostname, std::string port) {
     gf::TcpSocket socket(hostname, port);
 
     if (!socket) {
