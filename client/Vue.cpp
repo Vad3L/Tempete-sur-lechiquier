@@ -25,8 +25,8 @@ void Vue::print(Plateau p) {
     
     renderer.setView(mainView);
 
-    gf::Color4f peru = gf::Color::fromRgba32(205, 133, 63);
-    gf::Color4f saddlebrown = gf::Color::fromRgba32(139, 69, 19);
+    gf::Color4f white = gf::Color::fromRgba32(240,217,181,255);
+    gf::Color4f black = gf::Color::fromRgba32(181,136,99,255);
 
     gf::RectangleShape shape({ sizeSquare, sizeSquare });
     shape.setAnchor(gf::Anchor::Center);
@@ -40,17 +40,17 @@ void Vue::print(Plateau p) {
         shape.setPosition(gf::Vector2f(beginBoard.height + ((float)x * sizeSquare), beginBoard.col + ((float)y * sizeSquare)));
         if (y % 2 == 0) {
             if (x % 2 == 0) {
-                shape.setColor(peru);
+                shape.setColor(white);
             }
             else {
-                shape.setColor(saddlebrown);
+                shape.setColor(black);
             }
         } else {
             if (x % 2 == 0) {
-                shape.setColor(saddlebrown);
+                shape.setColor(black);
             }
             else {
-                shape.setColor(peru);
+                shape.setColor(white);
             }
         }
         renderer.draw(shape);
@@ -81,8 +81,9 @@ void Vue::print(Plateau p) {
 		}
         
         sprite.setTexture(sheet, gf::RectF::fromPositionSize({ (1.f / 6.f) * i, j }, { (1.f / 6.f), 0.5f }));
-        sprite.setPosition(gf::Vector2f(beginBoard.height + ((float)x * sizeSquare) - (sizeSquare / 2), beginBoard.col + ((float)y * sizeSquare) - (sizeSquare / 2)));
+        sprite.setPosition(gf::Vector2f(beginBoard.height + ((float)x * sizeSquare) , beginBoard.col + ((float)y * sizeSquare)));
         sprite.setScale(0.15625);
+        sprite.setAnchor(gf::Anchor::Center);
 		
         if (myColor == -1) {
             sprite.setRotation(gf::Pi);
