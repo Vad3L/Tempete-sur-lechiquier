@@ -56,7 +56,7 @@ void Vue::print(Plateau p) {
         renderer.draw(shape);
 
 	if (c.piece.getType() != NONE) {
-		gf::Sprite pawn;
+		gf::Sprite sprite;
 		float i = 0;
 		float j = (c.piece.getColor() == WHITE) ? 0 : 0.5f;
 		switch (c.piece.getType()) {
@@ -69,7 +69,7 @@ void Vue::print(Plateau p) {
 			case BISHOP:
 				i = 2;
 				break;
-			case ROOK:
+			case ROOK:  
 				i = 4;
 				break;
 			case QUEEN:
@@ -79,11 +79,16 @@ void Vue::print(Plateau p) {
 				i = 0;
 				break;
 		}
+        
+        sprite.setTexture(sheet, gf::RectF::fromPositionSize({ (1.f / 6.f) * i, j }, { (1.f / 6.f), 0.5f }));
+        sprite.setPosition(gf::Vector2f(beginBoard.height + ((float)x * sizeSquare) - (sizeSquare / 2), beginBoard.col + ((float)y * sizeSquare) - (sizeSquare / 2)));
+        sprite.setScale(0.15625);
+		
+        if (myColor == -1) {
+            sprite.setRotation(gf::Pi);
+        }
 
-		pawn.setTexture(sheet, gf::RectF::fromPositionSize({ (1.f / 6.f) * i, j }, { (1.f / 6.f), 0.5f }));
-		pawn.setPosition(gf::Vector2f(beginBoard.height + ((float)x * sizeSquare) - (sizeSquare / 2), beginBoard.col + ((float)y * sizeSquare) - (sizeSquare / 2)));
-		pawn.setScale(0.15625);
-		renderer.draw(pawn);
+        renderer.draw(sprite);
 	}
    }
 
@@ -94,7 +99,7 @@ void Vue::print(Plateau p) {
 void Vue::set_side (int color) {
     myColor = color;
     if (myColor == -1) {
-	mainView.setRotation(gf::Pi);
+	    mainView.setRotation(gf::Pi);
     } 
 }
 
