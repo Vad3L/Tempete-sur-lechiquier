@@ -24,7 +24,8 @@ private:
 	int myColor;
 
 public:
-	gf::Texture sheet;
+	gf::Texture sheetPiece;
+	gf::Texture sheetNumberLetter;
 	gf::Vector2u ScreenSize;
 	gf::Window window;
 	gf::RenderWindow renderer;

@@ -3,6 +3,10 @@
 Vue::Vue(gf::Vector2u SSize, int mycolor) : window("tempete sur l'échiquier", SSize),
 						renderer(window),
 						myColor(mycolor) {
+
+   
+
+
     ScreenSize = gf::Vector2u(1000, 1000);
     sizeSquare = 50.0f;
     beginBoard = gf::Vector2f(300.0f, 300.0f);
@@ -19,7 +23,8 @@ Vue::Vue(gf::Vector2u SSize, int mycolor) : window("tempete sur l'échiquier", S
     views.addView(screenView);
     views.setInitialFramebufferSize(ScreenSize);
 
-    sheet = gf::Texture("../data/Piece/ChessSheet.png");
+    sheetPiece = gf::Texture("../data/Piece/ChessSheet.png");
+    sheetNumberLetter = gf::Texture("../data/NumberLetterSheet.png");
 }
 void Vue::print(Plateau p) {
     
@@ -31,28 +36,62 @@ void Vue::print(Plateau p) {
     gf::RectangleShape shape({ sizeSquare, sizeSquare });
     shape.setAnchor(gf::Anchor::Center);
     
+    //print border of board 
     for(int i = 0 ; i < 10;++i){
+        
+
         shape.setPosition(gf::Vector2f(beginBoard.height - sizeSquare,(beginBoard.col - sizeSquare)+(i*sizeSquare)));
         shape.setColor(gf::Color::fromRgba32(85,60,40));
         renderer.draw(shape);
+        if(i != 0 && i != 9){
+            gf::Sprite sprite;
+            sprite.setTexture(sheetNumberLetter, gf::RectF::fromPositionSize({ (1.f / 8.f) * (i-1), 0.f }, { (1.f / 8.f), 0.5f }));
+            sprite.setPosition(gf::Vector2f(beginBoard.height - sizeSquare,(beginBoard.col - sizeSquare)+(i*sizeSquare)));
+            sprite.setScale((1.f / 16.f));
+            sprite.setAnchor(gf::Anchor::Center);
+            renderer.draw(sprite);
+        }
+
     }
-    
     for(int i = 0 ; i < 10;++i){
         shape.setPosition(gf::Vector2f(beginBoard.height + (sizeSquare *8),(beginBoard.col - sizeSquare)+(i*sizeSquare)));
         shape.setColor(gf::Color::fromRgba32(85,60,40));
         renderer.draw(shape);
+        if(i != 0 && i != 9){
+            gf::Sprite sprite;
+            sprite.setTexture(sheetNumberLetter, gf::RectF::fromPositionSize({ (1.f / 8.f) * (i-1), 0.f }, { (1.f / 8.f), 0.5f }));
+            sprite.setPosition(gf::Vector2f(beginBoard.height + (sizeSquare *8),(beginBoard.col - sizeSquare)+(i*sizeSquare)));
+            sprite.setScale((1.f / 16.f));
+            sprite.setAnchor(gf::Anchor::Center);
+            sprite.setRotation(gf::Pi);
+            renderer.draw(sprite);
+        }
     }
-
     for(int i = 0 ; i < 8;++i){
         shape.setPosition(gf::Vector2f(beginBoard.height + (i*sizeSquare),(beginBoard.col - sizeSquare)));
         shape.setColor(gf::Color::fromRgba32(85,60,40));
         renderer.draw(shape);
-    }
 
+        gf::Sprite sprite;
+        sprite.setTexture(sheetNumberLetter, gf::RectF::fromPositionSize({ (1.f / 8.f) * i, 0.5f }, { (1.f / 8.f), 0.5f }));
+        sprite.setPosition(gf::Vector2f(beginBoard.height + (i*sizeSquare),(beginBoard.col - sizeSquare)));
+        sprite.setScale((1.f / 16.f));
+        sprite.setAnchor(gf::Anchor::Center);
+        sprite.setRotation(gf::Pi);
+        renderer.draw(sprite);
+        
+    }
     for(int i = 0 ; i < 8;++i){
         shape.setPosition(gf::Vector2f(beginBoard.height + (i*sizeSquare),(beginBoard.col)+(8*sizeSquare)));
         shape.setColor(gf::Color::fromRgba32(85,60,40));
         renderer.draw(shape);
+        
+        gf::Sprite sprite;
+        sprite.setTexture(sheetNumberLetter, gf::RectF::fromPositionSize({ (1.f / 8.f) * i, 0.5f }, { (1.f / 8.f), 0.5f }));
+        sprite.setPosition(gf::Vector2f(beginBoard.height + (i*sizeSquare),(beginBoard.col)+(8*sizeSquare)));
+        sprite.setScale((1.f / 16.f));
+        sprite.setAnchor(gf::Anchor::Center);
+        renderer.draw(sprite);
     }
 
     //affichage plateau 
@@ -103,7 +142,7 @@ void Vue::print(Plateau p) {
 				break;
 		}
         
-        sprite.setTexture(sheet, gf::RectF::fromPositionSize({ (1.f / 6.f) * i, j }, { (1.f / 6.f), 0.5f }));
+        sprite.setTexture(sheetPiece, gf::RectF::fromPositionSize({ (1.f / 6.f) * i, j }, { (1.f / 6.f), 0.5f }));
         sprite.setPosition(gf::Vector2f(beginBoard.height + ((float)x * sizeSquare) , beginBoard.col + ((float)y * sizeSquare)));
         //sprite.setColor(gf::Color::Black);
         sprite.setScale((1.f / 6.f));
