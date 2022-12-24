@@ -36,7 +36,7 @@ void Vue::print(Plateau p) {
     gf::RectangleShape shape({ sizeSquare, sizeSquare });
     shape.setAnchor(gf::Anchor::Center);
     
-    //print border of board 
+    //print border of board with letter and number
     for(int i = 0 ; i < 10;++i){
         
 
@@ -45,7 +45,7 @@ void Vue::print(Plateau p) {
         renderer.draw(shape);
         if(i != 0 && i != 9){
             gf::Sprite sprite;
-            sprite.setTexture(sheetNumberLetter, gf::RectF::fromPositionSize({ (1.f / 8.f) * (i-1), 0.f }, { (1.f / 8.f), 0.5f }));
+            sprite.setTexture(sheetNumberLetter, gf::RectF::fromPositionSize({ (1.f / 8.f) * (8-i), 0.f }, { (1.f / 8.f), 0.5f }));
             sprite.setPosition(gf::Vector2f(beginBoard.height - sizeSquare,(beginBoard.col - sizeSquare)+(i*sizeSquare)));
             sprite.setScale((1.f / 16.f));
             sprite.setAnchor(gf::Anchor::Center);
@@ -59,7 +59,7 @@ void Vue::print(Plateau p) {
         renderer.draw(shape);
         if(i != 0 && i != 9){
             gf::Sprite sprite;
-            sprite.setTexture(sheetNumberLetter, gf::RectF::fromPositionSize({ (1.f / 8.f) * (i-1), 0.f }, { (1.f / 8.f), 0.5f }));
+            sprite.setTexture(sheetNumberLetter, gf::RectF::fromPositionSize({ (1.f / 8.f) * (8-i), 0.f }, { (1.f / 8.f), 0.5f }));
             sprite.setPosition(gf::Vector2f(beginBoard.height + (sizeSquare *8),(beginBoard.col - sizeSquare)+(i*sizeSquare)));
             sprite.setScale((1.f / 16.f));
             sprite.setAnchor(gf::Anchor::Center);
