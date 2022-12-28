@@ -3,6 +3,7 @@
 
 #include <gf/Vector.h>
 
+#include <cstdlib>
 #include <vector>
 
 #include "echec.hpp"
@@ -29,6 +30,8 @@ class Piece  {
 
 	std::vector<gf::Vector2i> getMovePawn (gf::Vector2i pos);
 	std::vector<gf::Vector2i> getMoveKnight (gf::Vector2i pos);
+	std::vector<gf::Vector2i> getMoveBishop (gf::Vector2i pos);
+	std::vector<gf::Vector2i> getMoveQueen (gf::Vector2i pos);
     protected:
         ChessColor color;
         ChessPiece type;
