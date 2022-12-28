@@ -1,33 +1,33 @@
 #ifndef PIECE_H
 #define PIECE_H
 
-#include <memory>
-#include <string>
+#include <gf/Vector.h>
 
-#include "Color.hpp"
-#include "PieceEnum.hpp"
+#include <vector>
 
-class Piece {
+#include "echec.hpp"
+
+class Piece  {
     public:
-
+        
         /**
         * Build  Piece
         */
-        Piece(Color c);
+        Piece(ChessColor c);
 
         /**
         * Guetteur on the color
         */
-        Color getColor();
+        ChessColor getColor();
 
         /**
         * Guetteur on the Type of the piece
         */
-        PieceEnum getType();        
+        ChessPiece getType();        
         
     protected:
-        Color color;
-        PieceEnum type;
+        ChessColor color;
+        ChessPiece type;
 };
 
 #endif // PIECE_H

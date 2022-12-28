@@ -22,11 +22,11 @@ int main (int argc, char* argv[]) {
         
         PartieRep rep1;
         rep1.err = OK;
-        rep1.coulPion = 1;
+        rep1.coulPion = ChessColor::WHITE;
 
         packetC1.is(rep1);
         if (gf::SocketStatus::Data != client1.sendPacket(packetC1)) {
-            std::cerr << "erreur lors de l'envoie du packet du client 1";
+            std::cerr << "erreur lors de l'envoie du packet au client 1";
         }
 
         gf::TcpSocket client2 = listener.accept();
@@ -36,11 +36,11 @@ int main (int argc, char* argv[]) {
 
             PartieRep rep2;
             rep2.err = OK;
-            rep2.coulPion = -1;
+            rep2.coulPion = ChessColor::BLACK;
 
             packetC2.is(rep2);
             if (gf::SocketStatus::Data != client2.sendPacket(packetC2)) {
-                std::cerr << "erreur lors de la réception du packet du client 2";
+                std::cerr << "erreur lors de l'envoie du packet au client 2";
             }
         }
 

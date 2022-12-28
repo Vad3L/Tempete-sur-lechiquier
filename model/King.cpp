@@ -1,7 +1,7 @@
 #include "King.hpp"
 
-King::King(Color c) : Piece(c) {
+King::King(ChessColor c) : Piece(c) {
 	color = c;
-	type = KING;
+	type = ChessPiece::KING;
 }
 

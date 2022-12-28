@@ -1,7 +1,7 @@
 #include "Queen.hpp"
 
-Queen::Queen(Color c) : Piece(c) {
+Queen::Queen(ChessColor c) : Piece(c) {
 	color = c;
-	type = QUEEN;
+	type = ChessPiece::QUEEN;
 }
 

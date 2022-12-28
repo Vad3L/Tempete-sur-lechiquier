@@ -4,14 +4,13 @@
 #include <gf/Event.h>
 
 #include "Network.hpp"
-
 #include "../model/Plateau.hpp"
 #include "Vue.hpp"
 
 class Game {
 	private:
 		bool myTurn;
-		int couleur;
+		ChessColor myColor;
 
 		Network network;
 		Plateau plateau;

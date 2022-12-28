@@ -1,7 +1,8 @@
 #include "Bishop.hpp"
 
-Bishop::Bishop(Color c) : Piece(c) {
+Bishop::Bishop(ChessColor c) : Piece(c) {
 	color = c;
-	type = BISHOP;
+	type = ChessPiece::BISHOP;
 }
+
 

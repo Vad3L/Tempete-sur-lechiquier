@@ -4,6 +4,8 @@
 #include <gf/Id.h>
 #include <gf/SerializationOps.h>
 
+#include "../model/echec.hpp"
+
 using namespace gf::literals;
 
 
@@ -16,7 +18,7 @@ typedef enum {
 struct PartieRep {
     static constexpr gf::Id type = "PartieRep"_id;
     TCodeRep err;                   /* Code de retour */
-    int coulPion;
+    ChessColor coulPion;
 };
 
 template<typename Archive>

@@ -4,11 +4,11 @@
 
 int main(int argc, char* argv[]) {
     
-    if (argc != 4) {
-        std::cerr << "Usage: " << argv[0] << " [ip] [port] [numJoueur]" << std::endl;
+    if (argc != 3) {
+        std::cerr << "Usage: " << argv[0] << " [ip] [port]" << std::endl;
         return EXIT_FAILURE;
     }
-
+    
     Game game(argv);
     game.run();
     

@@ -1,17 +1,15 @@
 #include "Piece.hpp"
 
-
-Piece::Piece(Color c){
+Piece::Piece(ChessColor c){
     color = c;
-    type = NONE;
+    type = ChessPiece::NONE;
 }
 
 
-Color Piece::getColor(){
+ChessColor Piece::getColor(){
     return color;
 }
 
-PieceEnum Piece::getType(){
+ChessPiece Piece::getType(){
     return type;
 } 
-

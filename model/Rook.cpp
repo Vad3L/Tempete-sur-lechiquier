@@ -1,7 +1,7 @@
 #include "Rook.hpp"
 
-Rook::Rook(Color c) : Piece(c) {
+Rook::Rook(ChessColor c) : Piece(c) {
 	color = c;
-	type = ROOK;
+	type = ChessPiece::ROOK;
 }
 

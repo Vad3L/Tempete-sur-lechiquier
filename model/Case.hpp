@@ -1,7 +1,6 @@
 #ifndef CASE_H
 #define CASE_H
 
-#include <memory>
 #include <gf/Vector.h>
 
 #include "Piece.hpp"

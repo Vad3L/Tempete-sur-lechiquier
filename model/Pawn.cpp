@@ -1,7 +1,7 @@
 #include "Pawn.hpp"
 
-Pawn::Pawn (Color c) : Piece(c) {
+Pawn::Pawn (ChessColor c) : Piece(c) {
 	color = c;
-        type = PAWN;
+        type = ChessPiece::PAWN;
 }
 

@@ -25,7 +25,12 @@ add_executable(client
 	client/Network.cpp
 	model/Plateau.cpp
 	client/Vue.cpp
-	model/Case.cpp "model/Bishop.cpp" "model/Rook.cpp" "model/Queen.cpp" "model/King.cpp" "model/Knight.cpp")
+	model/Case.cpp 
+	model/Bishop.cpp
+	model/Rook.cpp
+	model/Queen.cpp
+	model/King.cpp
+	model/Knight.cpp)
 
 add_executable(server
 	server/server.cpp
