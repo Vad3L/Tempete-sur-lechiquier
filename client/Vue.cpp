@@ -54,11 +54,6 @@ void Vue::draw(Plateau p) {
         text.setString(std::to_string(9-i));
         text.setPosition(gf::Vector2f(beginBoard.col - sizeSquare/2  + translation,(beginBoard.height - sizeSquare/2)+(i*sizeSquare)));
         
-        if (myColor == ChessColor::BLACK) {
-            text.setRotation(gf::Pi);
-        }
-        
-        text.setAnchor(gf::Anchor::Center);
         renderer.draw(text);
     }
 
