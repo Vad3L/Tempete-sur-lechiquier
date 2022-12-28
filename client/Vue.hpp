@@ -11,7 +11,8 @@
 #include <gf/Shapes.h>
 #include <gf/Texture.h>
 #include <gf/Sprite.h>
-
+#include <gf/Font.h>
+#include <gf/Text.h>
 
 #include "../model/Plateau.hpp"
 
@@ -23,7 +24,8 @@ class Vue {
 		gf::Vector2f boardSize;
 	public:
 		gf::Texture sheetPiece;
-		gf::Texture sheetNumberLetter;
+		gf::Font font;
+
 		gf::Vector2u ScreenSize;
 		gf::Window window;
 		gf::RenderWindow renderer;
