@@ -73,8 +73,8 @@ std::vector<gf::Vector2i> Piece::getMoveKnight (gf::Vector2i pos) {
 
 std::vector<gf::Vector2i> Piece::getMoveBishop (gf::Vector2i pos) {
 	std::vector<gf::Vector2i> newpos;
-	for (int i = -4; i <= 4; i++) {
-		for (int j = -4; j <= 4; j++) {
+	for (int i = -8; i <= 8; i++) {
+		for (int j = -8; j <= 8; j++) {
 			if (abs(i) == abs(j) && i != 0 ) {
 				if (i + pos.x >= 0 && i + pos.x < 8 && j + pos.y >= 0 && j + pos.y < 8) {
 					newpos.push_back(gf::Vector2i(i + pos.x, j + pos.y));
