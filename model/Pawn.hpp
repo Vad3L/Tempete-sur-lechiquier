@@ -6,6 +6,5 @@
 class Pawn : public Piece {
     public:
         Pawn(ChessColor c);
-
 };
 #endif // PAWN_H

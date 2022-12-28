@@ -24,7 +24,11 @@ class Piece  {
         * Guetteur on the Type of the piece
         */
         ChessPiece getType();        
-        
+
+	std::vector<gf::Vector2i> getMoves (gf::Vector2i pos);
+
+	std::vector<gf::Vector2i> getMovePawn (gf::Vector2i pos);
+	std::vector<gf::Vector2i> getMoveKnight (gf::Vector2i pos);
     protected:
         ChessColor color;
         ChessPiece type;

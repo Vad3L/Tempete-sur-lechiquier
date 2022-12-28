@@ -114,17 +114,17 @@ void Vue::draw(Plateau p) {
 		float i = (float)c.piece.getType();
 		float j = (c.piece.getColor() == ChessColor::WHITE) ? 0 : 0.5f;
 		
-        sprite.setTexture(sheetPiece, gf::RectF::fromPositionSize({ (1.f / 6.f) * i, j }, { (1.f / 6.f), 0.5f }));
-        sprite.setPosition(gf::Vector2f(beginBoard.col+sizeSquare/2 + ((float)x * sizeSquare) , beginBoard.height+sizeSquare/2 + ((float)y * sizeSquare)));
+        	sprite.setTexture(sheetPiece, gf::RectF::fromPositionSize({ (1.f / 6.f) * i, j }, { (1.f / 6.f), 0.5f }));
+        	sprite.setPosition(gf::Vector2f(beginBoard.col+sizeSquare/2 + ((float)x * sizeSquare) , beginBoard.height+sizeSquare/2 + ((float)y * sizeSquare)));
         
-        sprite.setScale((1.f / 6.f));
-        sprite.setAnchor(gf::Anchor::Center);
+        	sprite.setScale((1.f / 6.f));
+        	sprite.setAnchor(gf::Anchor::Center);
 		
-        if (myColor == ChessColor::BLACK) {
-            sprite.setRotation(gf::Pi);
-        }
+        	if (myColor == ChessColor::BLACK) {
+        		sprite.setRotation(gf::Pi);
+        	}
         
-       renderer.draw(sprite);
+		renderer.draw(sprite);
 	}
    } 
 

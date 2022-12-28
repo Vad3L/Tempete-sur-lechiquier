@@ -38,15 +38,15 @@ void Game::run() {
 
 	gf::ActionContainer actions;
 
-    gf::Action closeWindowAction("Close window");
-    closeWindowAction.addCloseControl();
+	gf::Action closeWindowAction("Close window");
+	closeWindowAction.addCloseControl();
 	closeWindowAction.addKeycodeKeyControl(gf::Keycode::Q);
-    actions.addAction(closeWindowAction);
+	actions.addAction(closeWindowAction);
 
-    gf::Action clickAction("Click");
-    clickAction.addMouseButtonControl(gf::MouseButton::Left);
-    clickAction.setInstantaneous();
-    actions.addAction(clickAction);
+	gf::Action clickAction("Click");
+	clickAction.addMouseButtonControl(gf::MouseButton::Left);
+	clickAction.setInstantaneous();
+	actions.addAction(clickAction);
 
 	gf::Action fullscreenAction("Fullscreen");
   	fullscreenAction.addKeycodeKeyControl(gf::Keycode::F);

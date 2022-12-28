@@ -66,10 +66,8 @@ bool Plateau::setMovement(ChessColor color, gf::Vector2i v) {
 	if(caseSelected.y ==-1 && caseSelected.x == -1) {
 		if(state[v.y *8 + v.x].piece.getColor() == color && state[v.y *8 + v.x].piece.getType() != ChessPiece::NONE) {
 			caseSelected = v;
-			//TODO calculer mouvement possible
-			moveAvailable.push_back(gf::Vector2i(caseSelected.x-1, caseSelected.y-1));
-			moveAvailable.push_back(gf::Vector2i(caseSelected.x+1, caseSelected.y-1));
-			//moveAvailable = state[v.y *8 + v.x].piece.getMovement(caseSelected, this);
+			moveAvailable = state[v.y * 8 + v.x].piece.getMoves(caseSelected);
+			std::cout << moveAvailable.size() << std::endl;
 			return true;
 		}
 	}else {
@@ -88,18 +86,16 @@ bool Plateau::setMovement(ChessColor color, gf::Vector2i v) {
 
 				caseSelected = gf::Vector2i(-1,-1);
 				moveAvailable.clear();
-				this->prettyPrint();
+				prettyPrint();
 				return false;
 			}
 		}
 		
-		if(state[v.y *8 + v.x].piece.getColor() == color && state[v.y *8 + v.x].piece.getType() != ChessPiece::NONE) { // selectionne case si la piece nous appartient
+		if(state[v.y * 8 + v.x].piece.getColor() == color && state[v.y *8 + v.x].piece.getType() != ChessPiece::NONE) { // selectionne case si la piece nous appartient
 			caseSelected = v;
 			moveAvailable.clear();
-			//TODO calculer mouvement possible
-			moveAvailable.push_back(gf::Vector2i(caseSelected.x-1, caseSelected.y-1));
-			moveAvailable.push_back(gf::Vector2i(caseSelected.x+1, caseSelected.y-1));
-			//moveAvailable = state[v.y *8 + v.x].piece.getMovement(caseSelected, this);
+			moveAvailable = state[v.y * 8 + v.x].piece.getMoves(caseSelected);
+			std::cout << moveAvailable.size() << std::endl;
 		}
 	}
 	return true;
