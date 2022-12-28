@@ -1,8 +1,8 @@
 #include "Piece.hpp"
 
-Piece::Piece(ChessColor c){
+Piece::Piece(ChessColor c, ChessPiece t){
     color = c;
-    type = ChessPiece::NONE;
+    type = t;
 }
 
 

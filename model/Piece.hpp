@@ -13,7 +13,7 @@ class Piece  {
         /**
         * Build  Piece
         */
-        Piece(ChessColor c);
+        Piece(ChessColor c, ChessPiece t);
 
         /**
         * Guetteur on the color

@@ -7,33 +7,33 @@ Plateau::Plateau() : caseSelected(-1, -1), moveAvailable(){
 			state.push_back(Case(gf::Vector2i(j, i)));
 			if (i == 1 || i == 6) {
 				ChessColor c = (i == 1) ? ChessColor::BLACK : ChessColor::WHITE;
-				state[i * 8 + j].piece = Pawn(c);
+				state[i * 8 + j].piece = Piece(c, ChessPiece::PAWN);
 			} else if (i == 0 || i == 7) {
 				ChessColor c = (i == 0) ? ChessColor::BLACK : ChessColor::WHITE;
 				switch (j) {
 					case 0:
 					case 7:
-						state[i * 8 + j].piece = Rook(c);
+						state[i * 8 + j].piece = Piece(c, ChessPiece::ROOK);
 						break;
 					case 1:
 					case 6:
-						state[i * 8 + j].piece = Knight(c);
+						state[i * 8 + j].piece = Piece(c, ChessPiece::KNIGHT);
 						break;
 					case 2:
 					case 5:
-						state[i * 8 + j].piece = Bishop(c);
+						state[i * 8 + j].piece = Piece(c, ChessPiece::BISHOP);
 						break;
 					case 3:
-						state[i * 8 + j].piece = Queen(c);
+						state[i * 8 + j].piece = Piece(c, ChessPiece::QUEEN);
 						break;
 					case 4:
-						state[i * 8 + j].piece = King(c);
+						state[i * 8 + j].piece = Piece(c, ChessPiece::KING);
 						break;
 				}
 			}
 		}
 	}
-	this->prettyPrint();
+	prettyPrint();
 }
 
 void Plateau::prettyPrint() {

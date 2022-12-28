@@ -20,17 +20,11 @@ endif ()
 add_executable(client
 	client/client.cpp
 	model/Piece.cpp
-	model/Pawn.cpp
   	client/Game.cpp
 	client/Network.cpp
 	model/Plateau.cpp
 	client/Vue.cpp
-	model/Case.cpp 
-	model/Bishop.cpp
-	model/Rook.cpp
-	model/Queen.cpp
-	model/King.cpp
-	model/Knight.cpp)
+	model/Case.cpp)
 
 add_executable(server
 	server/server.cpp
