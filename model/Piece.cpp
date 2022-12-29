@@ -138,7 +138,7 @@ std::vector<gf::Vector2i> Piece::getMoveCamel (gf::Vector2i pos) {
 			}
 		}
 	} 
-	return 
+	return newpos;
 }
 
 std::vector<gf::Vector2i> Piece::getCasesPass (gf::Vector2i caseStart, gf::Vector2i caseEnd) {
