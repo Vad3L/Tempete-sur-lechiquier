@@ -83,6 +83,7 @@ bool Plateau::setMovement(ChessColor color, gf::Vector2i v) {
 			if(coord.y == v.y && coord.x == v.x) {
 				// move piece
 				movePieces(coordCaseSelected, v);
+				state[v.y * 8 + v.x].piece.isMoved = true;
 
 				coordCaseSelected = gf::Vector2i(-1,-1);
 				moveAvailable.clear();
@@ -217,58 +218,67 @@ std::vector<gf::Vector2i> Plateau::addMoveBigSmallCastling(gf::Vector2i coordCas
 	Piece rookD = state[coordCaseStart.y * 8 + coordCaseStart.x+3].piece;
 	Piece rookG = state[coordCaseStart.y * 8 + coordCaseStart.x-4].piece;
 	
+	if(p.isMoved) {
+		std::cout << "le roi a bouge" << std::endl;
+		return mAvailable;
+	}
+
 	// small castling
 	if(p.getType() == ChessPiece::KING && rookD.getType() == ChessPiece::ROOK && rookD.getColor() == p.getColor()) {
-		
-		bool pieceExist = false;
+		if(!rookD.isMoved) {
+			
+			bool piecesExist = false;
 
-		for(int i = 1 ; i <= 2 ; i++) {
-			pieceExist |= (state[coordCaseStart.y * 8 + coordCaseStart.x+i].piece.getType() != ChessPiece::NONE);
+			for(int i = 1 ; i <= 2 ; i++) {
+				piecesExist |= (state[coordCaseStart.y * 8 + coordCaseStart.x+i].piece.getType() != ChessPiece::NONE);
+			}
+			
+			if(!piecesExist) {
+				v.push_back(gf::Vector2i(coordCaseStart.x+1, coordCaseStart.y));
+				v.push_back(gf::Vector2i(coordCaseStart.x+2, coordCaseStart.y));
+				v.push_back(coordCaseStart);
+
+				bool inEchec = false;
+				for(auto coords = v.begin() ; coords != v.end() ; coords ++ ) {
+					inEchec |= caseIsInEchec(*coords, p.getColor());
+				}
+
+				if(!inEchec) {
+					std::cout << "petit roque possible" << std::endl;
+					mAvailable.push_back(gf::Vector2i(coordCaseStart.x+2, coordCaseStart.y));
+				}
+			}
 		}
-		
-		if(!pieceExist) {
-			v.push_back(gf::Vector2i(coordCaseStart.x+1, coordCaseStart.y));
-			v.push_back(gf::Vector2i(coordCaseStart.x+2, coordCaseStart.y));
-			v.push_back(coordCaseStart);
-
-			bool inEchec = false;
-			for(auto coords = v.begin() ; coords != v.end() ; coords ++ ) {
-				inEchec |= caseIsInEchec(*coords, p.getColor());
-			}
-
-			if(!inEchec) {
-				std::cout << "petit roque possible" << std::endl;
-				mAvailable.push_back(gf::Vector2i(coordCaseStart.x+2, coordCaseStart.y));
-			}
-		}	
 	}
 
 	v.clear();
 
 	// big castling
 	if(p.getType() == ChessPiece::KING && rookG.getType() == ChessPiece::ROOK && rookG.getColor() == p.getColor()) {
+		if(!rookG.isMoved) {
 		
-		bool pieceExist = false;
+			bool piecesExist = false;
 
-		for(int i = 1 ; i <= 3 ; i++) {
-			pieceExist |= (state[coordCaseStart.y * 8 + coordCaseStart.x-i].piece.getType() != ChessPiece::NONE);
-		}
-		
-		if(!pieceExist) {
-
-			v.push_back(gf::Vector2i(coordCaseStart.x-1, coordCaseStart.y));
-			v.push_back(gf::Vector2i(coordCaseStart.x-2, coordCaseStart.y));			
-			v.push_back(coordCaseStart);
-
-			bool inEchec = false;
-			for(auto coords = v.begin() ; coords != v.end() ; coords ++ ) {
-				inEchec |= caseIsInEchec(*coords, p.getColor());
+			for(int i = 1 ; i <= 3 ; i++) {
+				piecesExist |= (state[coordCaseStart.y * 8 + coordCaseStart.x-i].piece.getType() != ChessPiece::NONE);
 			}
+			
+			if(!piecesExist) {
+
+				v.push_back(gf::Vector2i(coordCaseStart.x-1, coordCaseStart.y));
+				v.push_back(gf::Vector2i(coordCaseStart.x-2, coordCaseStart.y));			
+				v.push_back(coordCaseStart);
+
+				bool inEchec = false;
+				for(auto coords = v.begin() ; coords != v.end() ; coords ++ ) {
+					inEchec |= caseIsInEchec(*coords, p.getColor());
+				}
 
 
-			if(!inEchec) {
-				std::cout << "grand roque possible" << std::endl;
-				mAvailable.push_back(gf::Vector2i(coordCaseStart.x-2, coordCaseStart.y));
+				if(!inEchec) {
+					std::cout << "grand roque possible" << std::endl;
+					mAvailable.push_back(gf::Vector2i(coordCaseStart.x-2, coordCaseStart.y));
+				}
 			}
 		}
 	}
