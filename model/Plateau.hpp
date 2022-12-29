@@ -31,7 +31,7 @@ class Plateau {
 		void deMovePieces(gf::Vector2i coord1, gf::Vector2i coord2, bool inBin);
 		
 		bool isInEchec(ChessColor color);
-		bool caseIsInEchec(gf::Vector2i coord);
+		bool caseIsInEchec(gf::Vector2i coord, ChessColor color);
 };
 
 #endif // PLATEAU_H

@@ -5,6 +5,7 @@
 Piece::Piece(ChessColor c, ChessPiece t){
     color = c;
     type = t;
+	isMoved = false;
 }
 
 

@@ -10,7 +10,7 @@
 
 class Piece  {
     public:
-        
+        bool isMoved;
         /**
         * Build  Piece
         */
