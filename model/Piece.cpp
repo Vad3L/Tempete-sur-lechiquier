@@ -126,6 +126,21 @@ std::vector<gf::Vector2i> Piece::getMoveKing (gf::Vector2i pos) {
 	return newpos;
 }
 
+std::vector<gf::Vector2i> Piece::getMoveCamel (gf::Vector2i pos) {
+	std::vector<gf::Vector2i> newpos;
+	std::vector<int> vec = { -3, -3, 3, 3 };
+	for (int i : vec) {
+		for (int j : vec) {
+			if (abs(i) != abs(j)) {
+				if (i + pos.x >= 0 && i + pos.x < 8 && j + pos.y >= 0 && j + pos.y < 8) {
+					newpos.push_back(gf::Vector2i(i + pos.x, j + pos.y));
+				}
+			}
+		}
+	} 
+	return 
+}
+
 std::vector<gf::Vector2i> Piece::getCasesPass (gf::Vector2i caseStart, gf::Vector2i caseEnd) {
 	std::vector<gf::Vector2i> newpos;
 
@@ -221,6 +236,12 @@ std::vector<gf::Vector2i> Piece::getCasesPassRook (gf::Vector2i caseStart, gf::V
 }
 
 std::vector<gf::Vector2i> Piece::getCasesPassKing (gf::Vector2i caseStart, gf::Vector2i caseEnd) {
+    std::vector<gf::Vector2i> newpos;
+    newpos.push_back(caseEnd);
+    return newpos;
+}
+
+std::vector<gf::Vector2i> Piece::getCasesPassCamel (gf::Vector2i caseStart, gf::Vector2i caseEnd) {
     std::vector<gf::Vector2i> newpos;
     newpos.push_back(caseEnd);
     return newpos;
