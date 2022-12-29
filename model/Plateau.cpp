@@ -3,31 +3,31 @@
 
 Plateau::Plateau() : coordCaseSelected(-1, -1), moveAvailable() {
 	for (int i = 0; i < 8; i++) {
-		for (int j = 0; j < 8; j++) {
-			state.push_back(Case(gf::Vector2i(j, i)));
+		for (int coordPass = 0; coordPass < 8; coordPass++) {
+			state.push_back(Case(gf::Vector2i(coordPass, i)));
 			if (i == 1 || i == 6) {
 				ChessColor c = (i == 1) ? ChessColor::BLACK : ChessColor::WHITE;
-				state[i * 8 + j].piece = Piece(c, ChessPiece::PAWN);
+				state[i * 8 + coordPass].piece = Piece(c, ChessPiece::PAWN);
 			} else if (i == 0 || i == 7) {
 				ChessColor c = (i == 0) ? ChessColor::BLACK : ChessColor::WHITE;
-				switch (j) {
+				switch (coordPass) {
 					case 0:
 					case 7:
-						state[i * 8 + j].piece = Piece(c, ChessPiece::ROOK);
+						state[i * 8 + coordPass].piece = Piece(c, ChessPiece::ROOK);
 						break;
 					case 1:
 					case 6:
-						state[i * 8 + j].piece = Piece(c, ChessPiece::KNIGHT);
+						state[i * 8 + coordPass].piece = Piece(c, ChessPiece::KNIGHT);
 						break;
 					case 2:
 					case 5:
-						state[i * 8 + j].piece = Piece(c, ChessPiece::BISHOP);
+						state[i * 8 + coordPass].piece = Piece(c, ChessPiece::BISHOP);
 						break;
 					case 3:
-						state[i * 8 + j].piece = Piece(c, ChessPiece::QUEEN);
+						state[i * 8 + coordPass].piece = Piece(c, ChessPiece::QUEEN);
 						break;
 					case 4:
-						state[i * 8 + j].piece = Piece(c, ChessPiece::KING);
+						state[i * 8 + coordPass].piece = Piece(c, ChessPiece::KING);
 						break;
 				}
 			}
@@ -64,11 +64,11 @@ bool Plateau::setMovement(ChessColor color, gf::Vector2i v) {
 	}
 
 	if(coordCaseSelected.y ==-1 && coordCaseSelected.x == -1) {
-		if(state[v.y *8 + v.x].piece.getColor() == color && state[v.y *8 + v.x].piece.getType() != ChessPiece::NONE) {
+		if( state[v.y *8 + v.x].piece.getType() != ChessPiece::NONE) {//state[v.y *8 + v.x].piece.getColor() == color &&
 			coordCaseSelected = v;
 			moveAvailable = state[v.y * 8 + v.x].piece.getMoves(coordCaseSelected);
-			eraseCaseNonAutorized(v);
-			std::cout << moveAvailable.size() << std::endl;
+			eraseCaseNoAuthorized(v);
+			//std::cout << moveAvailable.size() << std::endl;
 			return true;
 		}
 	}else {
@@ -92,36 +92,57 @@ bool Plateau::setMovement(ChessColor color, gf::Vector2i v) {
 			}
 		}
 		
-		if(state[v.y * 8 + v.x].piece.getColor() == color && state[v.y *8 + v.x].piece.getType() != ChessPiece::NONE) { // selectionne case si la piece nous appartient
+		if(state[v.y *8 + v.x].piece.getType() != ChessPiece::NONE) { // selectionne case si la piece nous appartient state[v.y * 8 + v.x].piece.getColor() == color && 
 			coordCaseSelected = v;
 			moveAvailable.clear();
 			moveAvailable = state[v.y * 8 + v.x].piece.getMoves(coordCaseSelected);
-			eraseCaseNonAutorized(v);
-			std::cout << moveAvailable.size() << std::endl;
+			eraseCaseNoAuthorized(v);
+			//std::cout << moveAvailable.size() << std::endl;
 		}
 	}
 	return true;
 }
 
 
-void Plateau::eraseCaseNonAutorized(gf::Vector2i coordStart) {
-	std::vector<gf::Vector2i> copy;
+void Plateau::eraseCaseNoAuthorized(gf::Vector2i coordStart) {
+	std::vector<gf::Vector2i> v;
 	for(auto coordCase : moveAvailable) {
 		std::vector<gf::Vector2i> casesPass = state[coordStart.y * 8 + coordStart.x].piece.getCasesPass(coordStart, coordCase);
 
 		bool find = true;
-		for(auto j : casesPass) {
-			if(state[j.y * 8 + j.x].piece.getType() != ChessPiece::NONE) {
-				if(state[j.y * 8 + j.x].piece.getColor() == state[coordStart.y * 8 + coordStart.x].piece.getColor()){
+		for(auto coordPass : casesPass) {
+			if(state[coordPass.y * 8 + coordPass.x].piece.getType() != ChessPiece::NONE) {
+				// cas collsion couleur soi-même
+				if(state[coordPass.y * 8 + coordPass.x].piece.getColor() == state[coordStart.y * 8 + coordStart.x].piece.getColor()){
 					find=false;
 					break;
+				}
+
+				// cas collsion couleur adverse
+				if(state[coordPass.y * 8 + coordPass.x].piece.getColor() != state[coordStart.y * 8 + coordStart.x].piece.getColor() && !(coordCase.y == coordPass.y && coordCase.x == coordPass.x)){
+					find=false;
+					break;
+				}
+
+				// cas pion 
+				if(state[coordStart.y * 8 + coordStart.x].piece.getType() == ChessPiece::PAWN ){
+					if(state[(coordPass.y) * 8 + coordPass.x-1].piece.getType() != ChessPiece::NONE) {
+						v.push_back(gf::Vector2i(coordPass.x-1, coordPass.y));
+					}
+					if(state[(coordPass.y) * 8 + coordPass.x+1].piece.getType() != ChessPiece::NONE) {
+						v.push_back(gf::Vector2i(coordPass.x+1, coordPass.y));
+					}	
+					if(state[(coordPass.y) * 8 + coordPass.x].piece.getType() != ChessPiece::NONE) { // quelque chose devant le pion
+						find=false;
+						break;	
+					}
 				}
 			}
 		}
 
 		if(find){
-			copy.push_back(coordCase);
+			v.push_back(coordCase);
 		}
 	}
-	moveAvailable = copy;
+	moveAvailable = v;
 }

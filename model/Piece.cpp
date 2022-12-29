@@ -46,12 +46,12 @@ std::vector<gf::Vector2i> Piece::getMovePawn (gf::Vector2i pos) {
 	std::vector<gf::Vector2i> newpos;
 	int mul = (color == ChessColor::WHITE) ? -1 : 1;
 	if (pos.y + (1 * mul) < 8) {
-		newpos.push_back(gf::Vector2i(0 + pos.x, (1 * mul) + pos.y));
+		newpos.push_back(gf::Vector2i(pos.x, (1 * mul) + pos.y));
 	}
 	if (color == ChessColor::WHITE && pos.y == 6) {
-		newpos.push_back(gf::Vector2i(0 + pos.x, (2 * mul) + pos.y));
+		newpos.push_back(gf::Vector2i(pos.x, (2 * mul) + pos.y));
 	} else if (color == ChessColor::BLACK && pos.y == 1) {
-		newpos.push_back(gf::Vector2i(0 + pos.x, (2 * mul) + pos.y));
+		newpos.push_back(gf::Vector2i(pos.x, (2 * mul) + pos.y));
 	}
 	return newpos;
 
@@ -154,7 +154,13 @@ std::vector<gf::Vector2i> Piece::getCasesPass (gf::Vector2i caseStart, gf::Vecto
 }
 
 std::vector<gf::Vector2i> Piece::getCasesPassPawn (gf::Vector2i caseStart, gf::Vector2i caseEnd) {
-    return getCasesPassRook(caseStart, caseEnd);
+    std::vector<gf::Vector2i> newpos;
+    int mul = (color == ChessColor::WHITE) ? -1 : 1;
+    for(std::size_t i = 1 ; i <= abs(caseEnd.y-caseStart.y) ; i++) {
+        newpos.push_back(gf::Vector2i(caseStart.x, caseStart.y + mul));
+    }
+
+    return newpos;
 }
 
 std::vector<gf::Vector2i> Piece::getCasesPassKnight (gf::Vector2i caseStart, gf::Vector2i caseEnd) {
@@ -168,7 +174,7 @@ std::vector<gf::Vector2i> Piece::getCasesPassBishop (gf::Vector2i caseStart, gf:
     int mulx = (caseStart.x < caseEnd.x) ? 1 : -1;
     int muly = (caseStart.y < caseEnd.y) ? 1 : -1;
     
-    for(int i = 1; i <= abs(caseEnd.x-caseStart.x) ; i++) { 
+    for(std::size_t i = 1; i <= abs(caseEnd.x-caseStart.x) ; i++) { 
         newpos.push_back(gf::Vector2i(caseStart.x+i*mulx,caseStart.y+i*muly));
     }
     
