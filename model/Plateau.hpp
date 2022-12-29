@@ -20,9 +20,15 @@ class Plateau {
 		void prettyPrint();
 		bool setMovement(ChessColor color, gf::Vector2i v);
 		
-		void eraseCaseNoAuthorized();
-		bool isInEchec(ChessColor color);
+		std::vector<gf::Vector2i> filterMoveAuthorized(gf::Vector2i coordCaseStart, std::vector<gf::Vector2i> mAvailable);
+
+		std::vector<gf::Vector2i> filterMoveAuthorized_Tangled_TakePion(gf::Vector2i coordCaseStart, std::vector<gf::Vector2i> mAvailable);
+		std::vector<gf::Vector2i> filterMoveAuthorized_Check(gf::Vector2i coordCaseStart, std::vector<gf::Vector2i> mAvailable);
+
 		void movePieces(gf::Vector2i coord1, gf::Vector2i coord2);
+		void deMovePieces(gf::Vector2i coord1, gf::Vector2i coord2, bool inBin);
+
+		bool isInEchec(ChessColor color);
 };
 
 #endif // PLATEAU_H

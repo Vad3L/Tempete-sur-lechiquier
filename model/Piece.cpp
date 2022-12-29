@@ -1,5 +1,6 @@
 #include "Piece.hpp"
 #include <iostream>
+#include <cassert>
 
 Piece::Piece(ChessColor c, ChessPiece t){
     color = c;
@@ -169,7 +170,8 @@ std::vector<gf::Vector2i> Piece::getCasesPass (gf::Vector2i caseStart, gf::Vecto
 }
 
 std::vector<gf::Vector2i> Piece::getCasesPassPawn (gf::Vector2i caseStart, gf::Vector2i caseEnd) {
-    std::vector<gf::Vector2i> newpos;
+    
+	std::vector<gf::Vector2i> newpos;
     int mul = (color == ChessColor::WHITE) ? -1 : 1;
     for(std::size_t i = 1 ; i <= abs(caseEnd.y-caseStart.y) ; i++) {
         newpos.push_back(gf::Vector2i(caseStart.x, caseStart.y + mul* i));
