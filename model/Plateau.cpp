@@ -1,7 +1,7 @@
 #include "Plateau.hpp"
 #include <iostream>
 
-Plateau::Plateau() : caseSelected(-1, -1), moveAvailable(){
+Plateau::Plateau() : coordCaseSelected(-1, -1), moveAvailable() {
 	for (int i = 0; i < 8; i++) {
 		for (int j = 0; j < 8; j++) {
 			state.push_back(Case(gf::Vector2i(j, i)));
@@ -63,16 +63,17 @@ bool Plateau::setMovement(ChessColor color, gf::Vector2i v) {
 		return true;
 	}
 
-	if(caseSelected.y ==-1 && caseSelected.x == -1) {
+	if(coordCaseSelected.y ==-1 && coordCaseSelected.x == -1) {
 		if(state[v.y *8 + v.x].piece.getColor() == color && state[v.y *8 + v.x].piece.getType() != ChessPiece::NONE) {
-			caseSelected = v;
-			moveAvailable = state[v.y * 8 + v.x].piece.getMoves(caseSelected);
+			coordCaseSelected = v;
+			moveAvailable = state[v.y * 8 + v.x].piece.getMoves(coordCaseSelected);
+			eraseCaseNonAutorized(v);
 			std::cout << moveAvailable.size() << std::endl;
 			return true;
 		}
 	}else {
-		if(v.x == caseSelected.x && v.y == caseSelected.y) { // deselectionner case
-			caseSelected = gf::Vector2i(-1,-1);
+		if(v.x == coordCaseSelected.x && v.y == coordCaseSelected.y) { // deselectionner case
+			coordCaseSelected = gf::Vector2i(-1,-1);
 			moveAvailable.clear();
 			return true;
 		}
@@ -80,11 +81,11 @@ bool Plateau::setMovement(ChessColor color, gf::Vector2i v) {
 		for(auto &coord : moveAvailable) {
 			if(coord.y == v.y && coord.x == v.x) {
 				// move piece
-				Piece tmp = state[caseSelected.y * 8 + caseSelected.x].piece;
-				state[caseSelected.y * 8 + caseSelected.x].piece = state[v.y * 8 + v.x].piece;
+				Piece tmp = state[coordCaseSelected.y * 8 + coordCaseSelected.x].piece;
+				state[coordCaseSelected.y * 8 + coordCaseSelected.x].piece = state[v.y * 8 + v.x].piece;
 				state[v.y * 8 + v.x].piece = tmp;
 
-				caseSelected = gf::Vector2i(-1,-1);
+				coordCaseSelected = gf::Vector2i(-1,-1);
 				moveAvailable.clear();
 				prettyPrint();
 				return false;
@@ -92,11 +93,35 @@ bool Plateau::setMovement(ChessColor color, gf::Vector2i v) {
 		}
 		
 		if(state[v.y * 8 + v.x].piece.getColor() == color && state[v.y *8 + v.x].piece.getType() != ChessPiece::NONE) { // selectionne case si la piece nous appartient
-			caseSelected = v;
+			coordCaseSelected = v;
 			moveAvailable.clear();
-			moveAvailable = state[v.y * 8 + v.x].piece.getMoves(caseSelected);
+			moveAvailable = state[v.y * 8 + v.x].piece.getMoves(coordCaseSelected);
+			eraseCaseNonAutorized(v);
 			std::cout << moveAvailable.size() << std::endl;
 		}
 	}
 	return true;
+}
+
+
+void Plateau::eraseCaseNonAutorized(gf::Vector2i coordStart) {
+	std::vector<gf::Vector2i> copy;
+	for(auto coordCase : moveAvailable) {
+		std::vector<gf::Vector2i> casesPass = state[coordStart.y * 8 + coordStart.x].piece.getCasesPass(coordStart, coordCase);
+
+		bool find = true;
+		for(auto j : casesPass) {
+			if(state[j.y * 8 + j.x].piece.getType() != ChessPiece::NONE) {
+				if(state[j.y * 8 + j.x].piece.getColor() == state[coordStart.y * 8 + coordStart.x].piece.getColor()){
+					find=false;
+					break;
+				}
+			}
+		}
+
+		if(find){
+			copy.push_back(coordCase);
+		}
+	}
+	moveAvailable = copy;
 }

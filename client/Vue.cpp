@@ -86,7 +86,7 @@ void Vue::draw(Plateau p) {
         }
 
         // case selected
-        if(y == p.caseSelected.y && x == p.caseSelected.x) {
+        if(y == p.coordCaseSelected.y && x == p.coordCaseSelected.x) {
             shape.setColor(gf::Color::Red);
         }
 
