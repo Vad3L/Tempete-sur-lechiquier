@@ -7,6 +7,7 @@
 #include <gf/Vector.h>
 
 #include <vector>
+#include <cassert>
 
 class Plateau {
 	public:
@@ -21,6 +22,7 @@ class Plateau {
 		
 		void eraseCaseNoAuthorized();
 		bool isInEchec(ChessColor color);
+		void movePieces(gf::Vector2i coord1, gf::Vector2i coord2);
 };
 
 #endif // PLATEAU_H

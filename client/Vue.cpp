@@ -28,7 +28,7 @@ Vue::Vue(gf::Vector2u SSize, ChessColor mycolor) : window("Tempete sur l'échiqu
 
 void Vue::draw(Plateau p) {
     
-    renderer.setView(boardView);
+    renderer.setView(screenView);
 
     gf::RectangleShape tableCloth(plateauSize + 2 * sizeSquare);
     tableCloth.setAnchor(gf::Anchor::Center);
@@ -55,7 +55,29 @@ void Vue::draw(Plateau p) {
         renderer.draw(text);
         (myColor == ChessColor::WHITE) ? incr-- : incr++; 
     }
+    
+    int tabW[6] = {0, 0, 0, 0, 0, 0};
+    int tabB[6] = {0, 0, 0, 0, 0, 0};
+    for(Piece &pi : p.bin) {
+        gf::Sprite sprite;
+        float i = (float)pi.getType();
+		float j = (pi.getColor() == ChessColor::WHITE) ? 0 : 0.5f;
+		
+        sprite.setTexture(sheetPiece, gf::RectF::fromPositionSize({ (1.f / 6.f) * i, j }, { (1.f / 6.f), 0.5f }));
 
+        if(pi.getColor() == ChessColor::WHITE) {
+            sprite.setPosition(gf::Vector2f(beginPlateau.col+sizeSquare/2-tabW[(int)i] + ((float)-2 * sizeSquare) , beginPlateau.height+sizeSquare/2 + ((float)i * sizeSquare)));
+            tabW[(int)i]+=20;
+        }else {
+            sprite.setPosition(gf::Vector2f(beginPlateau.col+sizeSquare/2+tabB[(int)i] + ((float)9 * sizeSquare) , beginPlateau.height+sizeSquare/2 + ((float)i * sizeSquare)));
+            tabB[(int)i]+=20;
+        }
+        
+        sprite.setScale((1.f / 6.f));
+        sprite.setAnchor(gf::Anchor::Center);
+        renderer.draw(sprite);
+    }
+    
     renderer.setView(plateauView);
 
     gf::Color4f lightBrown = gf::Color::fromRgba32(240,217,181,255);
@@ -109,14 +131,14 @@ void Vue::draw(Plateau p) {
 		float i = (float)c.piece.getType();
 		float j = (c.piece.getColor() == ChessColor::WHITE) ? 0 : 0.5f;
 		
-        	sprite.setTexture(sheetPiece, gf::RectF::fromPositionSize({ (1.f / 6.f) * i, j }, { (1.f / 6.f), 0.5f }));
-        	sprite.setPosition(gf::Vector2f(beginPlateau.col+sizeSquare/2 + ((float)x * sizeSquare) , beginPlateau.height+sizeSquare/2 + ((float)y * sizeSquare)));
-        	sprite.setScale((1.f / 6.f));
-        	sprite.setAnchor(gf::Anchor::Center);
+        sprite.setTexture(sheetPiece, gf::RectF::fromPositionSize({ (1.f / 6.f) * i, j }, { (1.f / 6.f), 0.5f }));
+        sprite.setPosition(gf::Vector2f(beginPlateau.col+sizeSquare/2 + ((float)x * sizeSquare) , beginPlateau.height+sizeSquare/2 + ((float)y * sizeSquare)));
+        sprite.setScale((1.f / 6.f));
+        sprite.setAnchor(gf::Anchor::Center);
 		
-        	if (myColor == ChessColor::BLACK) {
-        		sprite.setRotation(gf::Pi);
-        	}
+        if (myColor == ChessColor::BLACK) {
+            sprite.setRotation(gf::Pi);
+        }
         
 		renderer.draw(sprite);
 	}

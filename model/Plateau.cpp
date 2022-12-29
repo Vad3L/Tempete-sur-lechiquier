@@ -83,9 +83,7 @@ bool Plateau::setMovement(ChessColor color, gf::Vector2i v) {
 		for(auto &coord : moveAvailable) {
 			if(coord.y == v.y && coord.x == v.x) {
 				// move piece
-				Piece tmp = state[coordCaseSelected.y * 8 + coordCaseSelected.x].piece;
-				state[coordCaseSelected.y * 8 + coordCaseSelected.x].piece = pSelect;
-				state[v.y * 8 + v.x].piece = tmp;
+				movePieces(coordCaseSelected, v);
 
 				coordCaseSelected = gf::Vector2i(-1,-1);
 				moveAvailable.clear();
@@ -116,6 +114,24 @@ void Plateau::eraseCaseNoAuthorized() {
 		bool find = true;
 		for(auto coordPass : casesPass) {
 			
+			// cas pion 
+			if(pSelected.getType() == ChessPiece::PAWN) {
+				Piece pL = state[(coordPass.y) * 8 + coordPass.x-1].piece;
+				Piece pR = state[(coordPass.y) * 8 + coordPass.x+1].piece;
+				std::cout << "PIONNNNN"<<std::endl;
+				if(pL.getType() != ChessPiece::NONE && pL.getColor() != pSelected.getColor()) {
+					v.push_back(gf::Vector2i(coordPass.x-1, coordPass.y));
+				}
+				if(pR.getType() != ChessPiece::NONE && pR.getColor() != pSelected.getColor()) {
+					v.push_back(gf::Vector2i(coordPass.x+1, coordPass.y));
+				}	
+
+				if(state[(coordPass.y) * 8 + coordPass.x].piece.getType() != ChessPiece::NONE) { // quelque chose devant le pion
+					find=false;
+					break;	
+				}
+			}
+
 			if(state[coordPass.y * 8 + coordPass.x].piece.getType() != ChessPiece::NONE) {
 			
 				// cas collsion couleur soi-même
@@ -129,24 +145,6 @@ void Plateau::eraseCaseNoAuthorized() {
 				if(!sameCouleur && !(coordCase.y == coordPass.y && coordCase.x == coordPass.x)){
 					find=false;
 					break;
-				}
-			}
-
-			// cas pion 
-			if(pSelected.getType() == ChessPiece::PAWN ){
-				Piece pL = state[(coordPass.y) * 8 + coordPass.x-1].piece;
-				Piece pR = state[(coordPass.y) * 8 + coordPass.x+1].piece;
-				
-				if(pL.getType() != ChessPiece::NONE && pL.getColor() != pSelected.getColor()) {
-					v.push_back(gf::Vector2i(coordPass.x-1, coordPass.y));
-				}
-				if(pR.getType() != ChessPiece::NONE && pR.getColor() != pSelected.getColor()) {
-					v.push_back(gf::Vector2i(coordPass.x+1, coordPass.y));
-				}	
-
-				if(state[(coordPass.y) * 8 + coordPass.x].piece.getType() != ChessPiece::NONE) { // quelque chose devant le pion
-					find=false;
-					break;	
 				}
 			}
 		}
@@ -164,4 +162,21 @@ bool Plateau::isInEchec(ChessColor color) {
 	bool isEchec = false;
 
 	return isEchec;
+}
+
+void Plateau::movePieces(gf::Vector2i coord1, gf::Vector2i coord2) {
+	assert(coord1.y >= 0);
+	assert(coord1.x < 8);
+	assert(coord2.y >= 0);
+	assert(coord2.x < 8);
+
+	Piece p1 = state[coord1.y * 8 + coord1.x].piece;
+	Piece p2 = state[coord2.y * 8 + coord2.x].piece;
+
+	if(p2.getType() != ChessPiece::NONE) {
+		bin.push_back(p2);
+		state[coord2.y * 8 + coord2.x].piece = Piece(ChessColor::WHITE, ChessPiece::NONE);
+	}
+	
+	std::swap(state[coord1.y * 8 + coord1.x].piece, state[coord2.y * 8 + coord2.x].piece);
 }

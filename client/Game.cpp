@@ -84,7 +84,7 @@ void Game::run() {
 		}
 
 		
-		vue.renderer.clear(gf::Color::Black);
+		vue.renderer.clear(gf::Color::Gray(0.5));
 		vue.draw(plateau);
 		vue.renderer.display();
 
