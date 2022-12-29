@@ -16,7 +16,7 @@ Vue::Vue(gf::Vector2u SSize, ChessColor mycolor) : window("Tempete sur l'échiqu
 
     //screenView
     plateauView = gf::LockedView(ScreenSize / 2, gf::Vector2f(sizeSquare*8));
-    boardView = gf::LockedView(ScreenSize/2, gf::Vector2f(sizeSquare*10));
+    boardView = gf::LockedView(ScreenSize/2, gf::Vector2f(sizeSquare*12, sizeSquare * 10));
 
     views.addView(plateauView);
     views.addView(boardView);
@@ -28,9 +28,9 @@ Vue::Vue(gf::Vector2u SSize, ChessColor mycolor) : window("Tempete sur l'échiqu
 
 void Vue::draw(Plateau p) {
     
-    renderer.setView(screenView);
+    renderer.setView(boardView);
 
-    gf::RectangleShape tableCloth(plateauSize + 2 * sizeSquare);
+    gf::RectangleShape tableCloth(gf::Vector2f(plateauSize.x + 4 * sizeSquare, plateauSize.y + 2 * sizeSquare));
     tableCloth.setAnchor(gf::Anchor::Center);
     tableCloth.setColor(gf::Color::fromRgba32(85,60,40));
     tableCloth.setPosition(ScreenSize/2);
@@ -56,6 +56,7 @@ void Vue::draw(Plateau p) {
         (myColor == ChessColor::WHITE) ? incr-- : incr++; 
     }
     
+
     int tabW[6] = {0, 0, 0, 0, 0, 0};
     int tabB[6] = {0, 0, 0, 0, 0, 0};
     for(Piece &pi : p.bin) {
@@ -66,11 +67,11 @@ void Vue::draw(Plateau p) {
         sprite.setTexture(sheetPiece, gf::RectF::fromPositionSize({ (1.f / 6.f) * i, j }, { (1.f / 6.f), 0.5f }));
 
         if(pi.getColor() == ChessColor::WHITE) {
-            sprite.setPosition(gf::Vector2f(beginPlateau.col+sizeSquare/2-tabW[(int)i] + ((float)-2 * sizeSquare) , beginPlateau.height+sizeSquare/2 + ((float)i * sizeSquare)));
-            tabW[(int)i]+=20;
+            sprite.setPosition(gf::Vector2f(beginPlateau.col+sizeSquare/2-(tabW[(int)i]%4)*15 + ((float)-1.5 * sizeSquare) , beginPlateau.height+sizeSquare/2 + (tabW[(int)i]/4)*15 + ((float)i * sizeSquare)));
+            tabW[(int)i]+=1;
         }else {
-            sprite.setPosition(gf::Vector2f(beginPlateau.col+sizeSquare/2+tabB[(int)i] + ((float)9 * sizeSquare) , beginPlateau.height+sizeSquare/2 + ((float)i * sizeSquare)));
-            tabB[(int)i]+=20;
+            sprite.setPosition(gf::Vector2f(beginPlateau.col+sizeSquare/2+(tabB[(int)i]%4)*15 + ((float)8 * sizeSquare) , beginPlateau.height+sizeSquare/2 + (tabB[(int)i]/4)*15 + ((float)i * sizeSquare)));
+            tabB[(int)i]+=1;
         }
         
         sprite.setScale((1.f / 6.f));

@@ -118,7 +118,7 @@ void Plateau::eraseCaseNoAuthorized() {
 			if(pSelected.getType() == ChessPiece::PAWN) {
 				Piece pL = state[(coordPass.y) * 8 + coordPass.x-1].piece;
 				Piece pR = state[(coordPass.y) * 8 + coordPass.x+1].piece;
-				std::cout << "PIONNNNN"<<std::endl;
+				
 				if(pL.getType() != ChessPiece::NONE && pL.getColor() != pSelected.getColor()) {
 					v.push_back(gf::Vector2i(coordPass.x-1, coordPass.y));
 				}

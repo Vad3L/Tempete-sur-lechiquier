@@ -157,9 +157,8 @@ std::vector<gf::Vector2i> Piece::getCasesPassPawn (gf::Vector2i caseStart, gf::V
     std::vector<gf::Vector2i> newpos;
     int mul = (color == ChessColor::WHITE) ? -1 : 1;
     for(std::size_t i = 1 ; i <= abs(caseEnd.y-caseStart.y) ; i++) {
-        newpos.push_back(gf::Vector2i(caseStart.x, caseStart.y + mul));
+        newpos.push_back(gf::Vector2i(caseStart.x, caseStart.y + mul* i));
     }
-
     return newpos;
 }
 
