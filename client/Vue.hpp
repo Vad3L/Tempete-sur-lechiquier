@@ -18,10 +18,10 @@
 
 class Vue {
 	private:
-		gf::Vector2f beginBoard;
+		gf::Vector2f beginPlateau;
 		float sizeSquare;
 		ChessColor myColor;
-		gf::Vector2f boardSize;
+		gf::Vector2f plateauSize;
 	public:
 		gf::Texture sheetPiece;
 		gf::Font font;
@@ -30,7 +30,8 @@ class Vue {
 		gf::Window window;
 		gf::RenderWindow renderer;
 
-		gf::LockedView mainView;
+		gf::LockedView plateauView;
+		gf::LockedView boardView;
 		gf::ScreenView screenView;
 		gf::ViewContainer views;
 

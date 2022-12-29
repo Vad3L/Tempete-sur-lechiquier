@@ -18,7 +18,9 @@ class Plateau {
 		Plateau();
 		void prettyPrint();
 		bool setMovement(ChessColor color, gf::Vector2i v);
-		void eraseCaseNoAuthorized(gf::Vector2i coordStart);
+		
+		void eraseCaseNoAuthorized();
+		bool isInEchec(ChessColor color);
 };
 
 #endif // PLATEAU_H
