@@ -109,7 +109,8 @@ std::vector<gf::Vector2i> Plateau::filterMoveAuthorized(gf::Vector2i coordCaseSt
 	
 	v = filterMoveAuthorized_Tangled_TakePion(coordCaseStart, mAvailable);
 	v = filterMoveAuthorized_Check(coordCaseStart, v);
-	
+	v = addMoveBigSmallCastling(coordCaseStart, v);
+
 	return v;
 }
 
@@ -177,6 +178,12 @@ std::vector<gf::Vector2i> Plateau::filterMoveAuthorized_Check(gf::Vector2i coord
 	Piece piece = state[coordCaseStart.y * 8 + coordCaseStart.x].piece;
 
 	for(auto coordCase : mAvailable) {
+		if(coordCase.y == coordCaseStart.y  && coordCase.x == coordCaseStart.x) {
+			if(!isInEchec(piece.getColor())) {
+				v.push_back(coordCase);
+			}
+			continue;
+		}
 
 		std::size_t sizeBf = bin.size();
 		movePieces(coordCaseStart, coordCase);
@@ -192,6 +199,75 @@ std::vector<gf::Vector2i> Plateau::filterMoveAuthorized_Check(gf::Vector2i coord
 	return v;
 }
 
+std::vector<gf::Vector2i> Plateau::addMoveBigSmallCastling(gf::Vector2i coordCaseStart, std::vector<gf::Vector2i> mAvailable) {
+	std::vector<gf::Vector2i> v;
+
+	Piece p = state[coordCaseStart.y * 8 + coordCaseStart.x].piece;
+
+	if(p.getType() != ChessPiece::KING) {
+		return mAvailable;
+	}
+
+	Piece rookD = state[coordCaseStart.y * 8 + coordCaseStart.x+3].piece;
+	Piece rookG = state[coordCaseStart.y * 8 + coordCaseStart.x-4].piece;
+
+	// small castling
+	if(p.getType() == ChessPiece::KING && rookD.getType() == ChessPiece::ROOK && rookD.getColor() == p.getColor()) {
+		
+		bool pieceExist = false;
+
+		for(int i = 1 ; i <= 2 ; i++) {
+			pieceExist |= (state[coordCaseStart.y * 8 + coordCaseStart.x+i].piece.getType() != ChessPiece::NONE);
+		}
+		
+		if(!pieceExist) {
+			std::vector<gf::Vector2i> v;
+			v.push_back(gf::Vector2i(coordCaseStart.x+1, coordCaseStart.y));
+			v.push_back(gf::Vector2i(coordCaseStart.x+2, coordCaseStart.y));
+			v.push_back(coordCaseStart);
+
+			bool inEchec = false;
+			for(auto coords = v.begin() ; coords != v.end() ; coords ++ ) {
+				inEchec |= caseIsInEchec(*coords);
+			}
+
+			if(v.size() == 3 && !inEchec) {
+				std::cout << "petit roque possible" << std::endl;
+				mAvailable.push_back(gf::Vector2i(coordCaseStart.x+2, coordCaseStart.y));
+			}
+		}	
+	}
+
+	v.clear();
+
+	// big castling
+	if(p.getType() == ChessPiece::KING && rookG.getType() == ChessPiece::ROOK && rookG.getColor() == p.getColor()) {
+		
+		bool pieceExist = false;
+
+		for(int i = 1 ; i <= 3 ; i++) {
+			pieceExist |= (state[coordCaseStart.y * 8 + coordCaseStart.x-i].piece.getType() != ChessPiece::NONE);
+		}
+		
+		if(!pieceExist) {
+
+			v.push_back(gf::Vector2i(coordCaseStart.x-1, coordCaseStart.y));
+			v.push_back(gf::Vector2i(coordCaseStart.x-2, coordCaseStart.y));
+			
+			v.push_back(coordCaseStart);
+
+			v = filterMoveAuthorized_Check(coordCaseStart, v); 
+
+			if(v.size() == 3) {
+				std::cout << "grand roque possible" << std::endl;
+				mAvailable.push_back(gf::Vector2i(coordCaseStart.x-2, coordCaseStart.y));
+			}
+		}
+	}
+
+	return mAvailable;
+}
+
 void Plateau::movePieces(gf::Vector2i coord1, gf::Vector2i coord2) {
 	assert(coord1.y >= 0);
 	assert(coord1.x < 8);
@@ -200,6 +276,19 @@ void Plateau::movePieces(gf::Vector2i coord1, gf::Vector2i coord2) {
 
 	Piece p1 = state[coord1.y * 8 + coord1.x].piece;
 	Piece p2 = state[coord2.y * 8 + coord2.x].piece;
+
+	if(p1.getType() == ChessPiece::KING && abs(coord1.x - coord2.x) == 2) {
+		
+		std::swap(state[coord1.y * 8 + coord1.x].piece, state[coord2.y * 8 + coord2.x].piece);
+		if(coord1.x - coord2.x < 0) {
+			std::cout << "on fait un petit roque" << std::endl;
+			std::swap(state[coord1.y * 8].piece, state[coord2.y * 8 + coord2.x-1].piece);
+		}else {
+			std::cout << "on fait un grand roque" << std::endl;
+			//std::swap(state[coord1.y * 8 + 7].piece, state[coord2.y * 8 + coord2.x+1].piece);
+		}
+		return;
+	}
 
 	if(p2.getType() != ChessPiece::NONE) {
 		bin.push_back(p2);
@@ -252,6 +341,30 @@ bool Plateau::isInEchec(ChessColor color) {
 				//std::cout << "cordPas : " << coordPass.y << "," << coordPass.x << std::endl;
 				if(coordPass.y == coordCaseKing.y  && coordPass.x == coordCaseKing.x) {
 					//std::cout << "En echec sa mere par " <<  (int)state[coordPass.y *8+ coordPass.x].piece.getType()<<std::endl;
+					return true;
+				}
+			}
+
+		}
+	}
+
+	return false;
+}
+
+bool Plateau::caseIsInEchec(gf::Vector2i coord) {
+	std::cout << "laaaaaaaaaaaaaa: " << coord.y<< " , "<<coord.x << std::endl;
+	ChessColor colAdv = (state[coord.y * 8 + coord.x].piece.getColor() == ChessColor::WHITE) ? ChessColor::BLACK : ChessColor::WHITE;
+
+	for(auto & caseP : state) {
+		if(caseP.piece.getType() != ChessPiece::NONE && caseP.piece.getColor() == colAdv) {
+			//std::cout << "cordPiecelook : " << caseP.position.y << "," << caseP.position.x << std::endl;
+			std::vector<gf::Vector2i> casesAv = caseP.piece.getMoves(caseP.position);
+			casesAv = filterMoveAuthorized_Tangled_TakePion(caseP.position, casesAv);
+			
+			for(auto coordPass : casesAv) {
+				//std::cout << "cordPas : " << coordPass.y << "," << coordPass.x << std::endl;
+				if(coordPass.y == coord.y  && coordPass.x == coord.x) {
+					std::cout << "En echec sa mere par " <<  (int)state[coordPass.y *8+ coordPass.x].piece.getType()<<std::endl;
 					return true;
 				}
 			}
