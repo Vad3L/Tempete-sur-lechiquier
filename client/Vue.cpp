@@ -123,7 +123,7 @@ void Vue::draw(Plateau p) {
 		gf::Sprite sprite;
 		float i = (float)c.piece.getType();
 		float j = (c.piece.getColor() == ChessColor::WHITE) ? 0 : 0.5f;
-		
+        
         sprite.setTexture(sheetPiece, gf::RectF::fromPositionSize({ (1.f / 7.f) * i, j }, { (1.f / 7.f), 0.5f }));
         sprite.setPosition(gf::Vector2f(beginPlateau.col + sizeSquare/2 + ((float)x * sizeSquare) , beginPlateau.height+sizeSquare/2 + ((float)y * sizeSquare)));
         sprite.setScale((1.f / 6.5f));
