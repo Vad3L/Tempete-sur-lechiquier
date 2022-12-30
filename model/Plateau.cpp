@@ -194,9 +194,9 @@ std::vector<gf::Vector2i> Plateau::filterMoveAuthorized_Check(gf::Vector2i coord
 			continue;
 		}
 
-		//std::size_t sizeBf = bin.size();
+		std::size_t sizeBf = bin.size();
 		movePieces(coordCaseStart, coordCase);
-		//std::size_t sizeAf = bin.size();
+		std::size_t sizeAf = bin.size();
 
 		if(!isInEchec(piece.getColor())) {
 			v.push_back(coordCase);

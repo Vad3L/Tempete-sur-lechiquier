@@ -47,7 +47,7 @@ class Piece  {
     std::vector<gf::Vector2i> getCasesPassRook (gf::Vector2i posStart, gf::Vector2i posEnd);
     std::vector<gf::Vector2i> getCasesPassKing (gf::Vector2i posStart, gf::Vector2i posEnd);
     std::vector<gf::Vector2i> getCasesPassCamel (gf::Vector2i posStart, gf::Vector2i posEnd);
-    std::vector<gf::Vector2i> getCasesPassPrince (gf::Vector2i posEnd, gf::Vector2i posEnd);
+    std::vector<gf::Vector2i> getCasesPassPrince (gf::Vector2i posStart, gf::Vector2i posEnd);
 
     protected:
         ChessColor color;

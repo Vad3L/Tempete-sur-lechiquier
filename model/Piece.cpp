@@ -205,7 +205,7 @@ std::vector<gf::Vector2i> Piece::getCasesPass (gf::Vector2i posStart, gf::Vector
 			newpos = getCasesPassCamel(posStart, posEnd);
 			break;
 		case ChessPiece::PRINCE:
-			newpos = getCasesPassPrince(caseStart, caseEnd);
+			newpos = getCasesPassPrince(posStart, posEnd);
 			break;
 	}
 
