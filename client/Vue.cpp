@@ -64,7 +64,7 @@ void Vue::draw(Plateau p) {
         float i = (float)pi.getType();
 		float j = (pi.getColor() == ChessColor::WHITE) ? 0 : 0.5f;
 		
-        sprite.setTexture(sheetPiece, gf::RectF::fromPositionSize({ (1.f / 6.f) * i, j }, { (1.f / 6.f), 0.5f }));
+        sprite.setTexture(sheetPiece, gf::RectF::fromPositionSize({ (1.f / 7.f) * i, j }, { (1.f / 7.f), 0.5f }));
 
         if(pi.getColor() == ChessColor::WHITE) {
             sprite.setPosition(gf::Vector2f(beginPlateau.col-(tabW[(int)i]%4)*15 + ((float)-1.25 * sizeSquare) , beginPlateau.height + (tabW[(int)i]/4)*15 + ((float)i * sizeSquare)));
@@ -124,7 +124,7 @@ void Vue::draw(Plateau p) {
 		float i = (float)c.piece.getType();
 		float j = (c.piece.getColor() == ChessColor::WHITE) ? 0 : 0.5f;
 		
-        sprite.setTexture(sheetPiece, gf::RectF::fromPositionSize({ (1.f / 6.f) * i, j }, { (1.f / 6.f), 0.5f }));
+        sprite.setTexture(sheetPiece, gf::RectF::fromPositionSize({ (1.f / 7.f) * i, j }, { (1.f / 7.f), 0.5f }));
         sprite.setPosition(gf::Vector2f(beginPlateau.col + sizeSquare/2 + ((float)x * sizeSquare) , beginPlateau.height+sizeSquare/2 + ((float)y * sizeSquare)));
         sprite.setScale((1.f / 6.5f));
         sprite.setAnchor(gf::Anchor::Center);

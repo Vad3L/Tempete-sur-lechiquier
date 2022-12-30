@@ -10,7 +10,7 @@ enum class ChessPiece {
 	QUEEN = 1,
 	KING = 0,
 	KNIGHT = 3,
-	CAMEL,
+	CAMEL = 6 ,
 	PRINCE
 };
     
