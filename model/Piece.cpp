@@ -42,6 +42,9 @@ std::vector<gf::Vector2i> Piece::getMoves (gf::Vector2i pos) {
 		case ChessPiece::CAMEL:
 			newpos = getMoveCamel(pos);
 			break;
+		case ChessPiece::PRINCE:
+			newpos = getMovePrince(pos);
+			break;
 	}
 
 	return newpos;
@@ -146,6 +149,21 @@ std::vector<gf::Vector2i> Piece::getMoveCamel (gf::Vector2i pos) {
 	return newpos;
 }
 
+std::vector<gf::Vector2i> Piece::getMovePrince (gf::Vector2i pos) {
+	std::vector<gf::Vector2i> newpos;
+    int ligne = pos.y;
+    int col = pos.x;
+
+    for (int i = -1; i <= 1; i++) {
+        for (int j = -1; j <= 1; j++) {
+            if(!(i == 0 && j == 0) && col-i >= 0 && ligne-j >=0 && col-i < 8 && ligne-j < 8) {
+                newpos.push_back(gf::Vector2i(col-i, ligne-j));
+            }
+        }
+    }
+	return newpos;
+}
+
 std::vector<gf::Vector2i> Piece::getCasesPass (gf::Vector2i caseStart, gf::Vector2i caseEnd) {
 	std::vector<gf::Vector2i> newpos;
 
@@ -170,6 +188,9 @@ std::vector<gf::Vector2i> Piece::getCasesPass (gf::Vector2i caseStart, gf::Vecto
 			break;
 		case ChessPiece::CAMEL:
 			newpos = getCasesPassCamel(caseStart, caseEnd);
+			break;
+		case ChessPiece::PRINCE:
+			newpos = getCasesPassPrince(caseStart, caseEnd);
 			break;
 	}
 
@@ -251,6 +272,12 @@ std::vector<gf::Vector2i> Piece::getCasesPassKing (gf::Vector2i caseStart, gf::V
 }
 
 std::vector<gf::Vector2i> Piece::getCasesPassCamel (gf::Vector2i caseStart, gf::Vector2i caseEnd) {
+    std::vector<gf::Vector2i> newpos;
+    newpos.push_back(caseEnd);
+    return newpos;
+}
+
+std::vector<gf::Vector2i> Piece::getCasesPassPrince (gf::Vector2i caseStart, gf::Vector2i caseEnd) {
     std::vector<gf::Vector2i> newpos;
     newpos.push_back(caseEnd);
     return newpos;

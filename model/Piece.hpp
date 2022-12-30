@@ -35,6 +35,8 @@ class Piece  {
 	std::vector<gf::Vector2i> getMoveRook (gf::Vector2i pos);
 	std::vector<gf::Vector2i> getMoveKing (gf::Vector2i pos);
     std::vector<gf::Vector2i> getMoveCamel (gf::Vector2i pos);
+    std::vector<gf::Vector2i> getMovePrince (gf::Vector2i pos);
+
 
     std::vector<gf::Vector2i> getCasesPass (gf::Vector2i caseStart, gf::Vector2i caseEnd);
 
@@ -45,6 +47,8 @@ class Piece  {
     std::vector<gf::Vector2i> getCasesPassRook (gf::Vector2i caseStart, gf::Vector2i caseEnd);
     std::vector<gf::Vector2i> getCasesPassKing (gf::Vector2i caseStart, gf::Vector2i caseEnd);
     std::vector<gf::Vector2i> getCasesPassCamel (gf::Vector2i caseStart, gf::Vector2i caseEnd);
+    std::vector<gf::Vector2i> getCasesPassPrince (gf::Vector2i caseStart, gf::Vector2i caseEnd);
+
     protected:
         ChessColor color;
         ChessPiece type;
