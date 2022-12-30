@@ -18,6 +18,10 @@ ChessPiece Piece::getType(){
 }
 
 std::vector<gf::Vector2i> Piece::getMoves (gf::Vector2i pos) {
+	assert(pos.x >= 0);
+	assert(pos.y >= 0);
+	assert(pos.x < 8);
+	assert(pos.y < 8);
 	std::vector<gf::Vector2i> newpos;
 
 	switch (type) {
@@ -47,13 +51,19 @@ std::vector<gf::Vector2i> Piece::getMoves (gf::Vector2i pos) {
 			break;
 	}
 
+	for(const auto &coord : newpos) {
+		assert(coord.x >= 0);
+		assert(coord.y >= 0);
+		assert(coord.x < 8);
+		assert(coord.y < 8);
+	}
 	return newpos;
 }
 
 std::vector<gf::Vector2i> Piece::getMovePawn (gf::Vector2i pos) {
 	std::vector<gf::Vector2i> newpos;
 	int mul = (color == ChessColor::WHITE) ? -1 : 1;
-	if (pos.y + (1 * mul) < 8) {
+	if (pos.y + (1 * mul) >=0 && pos.y + (1 * mul) < 8) {
 		newpos.push_back(gf::Vector2i(pos.x, (1 * mul) + pos.y));
 	}
 	if (color == ChessColor::WHITE && pos.y == 6) {
@@ -164,100 +174,110 @@ std::vector<gf::Vector2i> Piece::getMovePrince (gf::Vector2i pos) {
 	return newpos;
 }
 
-std::vector<gf::Vector2i> Piece::getCasesPass (gf::Vector2i caseStart, gf::Vector2i caseEnd) {
+std::vector<gf::Vector2i> Piece::getCasesPass (gf::Vector2i posStart, gf::Vector2i posEnd) {
+	assert(posStart.x >= 0);
+	assert(posStart.y >= 0);
+	assert(posStart.x < 8);
+	assert(posStart.y < 8);
+
 	std::vector<gf::Vector2i> newpos;
 
 	switch (type) {
 		case ChessPiece::PAWN:
-			newpos = getCasesPassPawn(caseStart, caseEnd);
+			newpos = getCasesPassPawn(posStart, posEnd);
 			break;
 		case ChessPiece::KNIGHT:
-			newpos = getCasesPassKnight(caseStart, caseEnd);
+			newpos = getCasesPassKnight(posStart, posEnd);
 			break;
 		case ChessPiece::BISHOP:
-			newpos = getCasesPassBishop(caseStart, caseEnd);
+			newpos = getCasesPassBishop(posStart, posEnd);
 			break;
 		case ChessPiece::QUEEN:
-			newpos = getCasesPassQueen(caseStart, caseEnd);
+			newpos = getCasesPassQueen(posStart, posEnd);
 			break;
         case ChessPiece::ROOK:
-			newpos = getCasesPassRook(caseStart, caseEnd);
+			newpos = getCasesPassRook(posStart, posEnd);
 			break;
         case ChessPiece::KING:
-			newpos = getCasesPassKing(caseStart, caseEnd);
+			newpos = getCasesPassKing(posStart, posEnd);
 			break;
 		case ChessPiece::CAMEL:
-			newpos = getCasesPassCamel(caseStart, caseEnd);
+			newpos = getCasesPassCamel(posStart, posEnd);
 			break;
 		case ChessPiece::PRINCE:
 			newpos = getCasesPassPrince(caseStart, caseEnd);
 			break;
 	}
 
+	for(const auto &coord : newpos) {
+		assert(coord.x >= 0);
+		assert(coord.y >= 0);
+		assert(coord.x < 8);
+		assert(coord.y < 8);
+	}
 	return newpos;
 }
 
-std::vector<gf::Vector2i> Piece::getCasesPassPawn (gf::Vector2i caseStart, gf::Vector2i caseEnd) {
-    
+std::vector<gf::Vector2i> Piece::getCasesPassPawn (gf::Vector2i posStart, gf::Vector2i posEnd) {
 	std::vector<gf::Vector2i> newpos;
     int mul = (color == ChessColor::WHITE) ? -1 : 1;
-    for(std::size_t i = 1 ; i <= abs(caseEnd.y-caseStart.y) ; i++) {
-        newpos.push_back(gf::Vector2i(caseStart.x, caseStart.y + mul* i));
+    for(std::size_t i = 1 ; i <= abs(posEnd.y-posStart.y) ; i++) {
+		newpos.push_back(gf::Vector2i(posStart.x, posStart.y + mul* i));
     }
     return newpos;
 }
 
-std::vector<gf::Vector2i> Piece::getCasesPassKnight (gf::Vector2i caseStart, gf::Vector2i caseEnd) {
+std::vector<gf::Vector2i> Piece::getCasesPassKnight (gf::Vector2i posStart, gf::Vector2i posEnd) {
     std::vector<gf::Vector2i> newpos;
-    newpos.push_back(caseEnd);
+    newpos.push_back(posEnd);
     return newpos;
 }
 
-std::vector<gf::Vector2i> Piece::getCasesPassBishop (gf::Vector2i caseStart, gf::Vector2i caseEnd) {
+std::vector<gf::Vector2i> Piece::getCasesPassBishop (gf::Vector2i posStart, gf::Vector2i posEnd) {
     std::vector<gf::Vector2i> newpos;
-    int mulx = (caseStart.x < caseEnd.x) ? 1 : -1;
-    int muly = (caseStart.y < caseEnd.y) ? 1 : -1;
+    int mulx = (posStart.x < posEnd.x) ? 1 : -1;
+    int muly = (posStart.y < posEnd.y) ? 1 : -1;
     
-    for(std::size_t i = 1; i <= abs(caseEnd.x-caseStart.x) ; i++) { 
-        newpos.push_back(gf::Vector2i(caseStart.x+i*mulx,caseStart.y+i*muly));
+    for(std::size_t i = 1; i <= abs(posEnd.x-posStart.x) ; i++) { 
+        newpos.push_back(gf::Vector2i(posStart.x+i*mulx,posStart.y+i*muly));
     }
     
     return newpos;
 }
 
-std::vector<gf::Vector2i> Piece::getCasesPassQueen (gf::Vector2i caseStart, gf::Vector2i caseEnd) {
+std::vector<gf::Vector2i> Piece::getCasesPassQueen (gf::Vector2i posStart, gf::Vector2i posEnd) {
     std::vector<gf::Vector2i> newpos;
-    if(caseStart.y != caseEnd.y && caseStart.x != caseEnd.x) {
-        std::vector<gf::Vector2i> bishop = getCasesPassBishop(caseStart, caseEnd);
+    if(posStart.y != posEnd.y && posStart.x != posEnd.x) {
+        std::vector<gf::Vector2i> bishop = getCasesPassBishop(posStart, posEnd);
         newpos.insert(newpos.end(), bishop.begin(), bishop.end());
     }else {
-        std::vector<gf::Vector2i> rook = getCasesPassRook(caseStart, caseEnd);
+        std::vector<gf::Vector2i> rook = getCasesPassRook(posStart, posEnd);
 	    newpos.insert(newpos.end(), rook.begin(), rook.end());
     }
 
     return newpos;
 }
 
-std::vector<gf::Vector2i> Piece::getCasesPassRook (gf::Vector2i caseStart, gf::Vector2i caseEnd) {
+std::vector<gf::Vector2i> Piece::getCasesPassRook (gf::Vector2i posStart, gf::Vector2i posEnd) {
     std::vector<gf::Vector2i> newpos;
-    if(caseStart.y == caseEnd.y) {
-        if(caseStart.x < caseEnd.x) {
-            for(int i = caseStart.x+1; i <= caseEnd.x ; i++) {
-                newpos.push_back(gf::Vector2i(i,caseStart.y));
+    if(posStart.y == posEnd.y) {
+        if(posStart.x < posEnd.x) {
+            for(int i = posStart.x+1; i <= posEnd.x ; i++) {
+                newpos.push_back(gf::Vector2i(i, posStart.y));
             }
         }else {
-            for(int i = caseEnd.x ; i < caseStart.x ; i++) {
-                newpos.push_back(gf::Vector2i(i,caseStart.y));
+            for(int i = posEnd.x ; i < posStart.x ; i++) {
+                newpos.push_back(gf::Vector2i(i, posStart.y));
             }
         }
     }else {
-        if(caseStart.y < caseEnd.y) {
-            for(int i = caseStart.y+1 ; i <= caseEnd.y ; i++) {
-                newpos.push_back(gf::Vector2i(caseStart.x,i));
+        if(posStart.y < posEnd.y) {
+            for(int i = posStart.y+1 ; i <= posEnd.y ; i++) {
+                newpos.push_back(gf::Vector2i(posStart.x, i));
             }
         }else {
-            for(int i = caseEnd.y ; i < caseStart.y ; i++) {
-                newpos.push_back(gf::Vector2i(caseStart.x, i));
+            for(int i = posEnd.y ; i < posStart.y ; i++) {
+                newpos.push_back(gf::Vector2i(posStart.x, i));
             }
         }
     }
@@ -265,20 +285,20 @@ std::vector<gf::Vector2i> Piece::getCasesPassRook (gf::Vector2i caseStart, gf::V
     return newpos;
 }
 
-std::vector<gf::Vector2i> Piece::getCasesPassKing (gf::Vector2i caseStart, gf::Vector2i caseEnd) {
+std::vector<gf::Vector2i> Piece::getCasesPassKing (gf::Vector2i posStart, gf::Vector2i posEnd) {
     std::vector<gf::Vector2i> newpos;
-    newpos.push_back(caseEnd);
+    newpos.push_back(posEnd);
     return newpos;
 }
 
-std::vector<gf::Vector2i> Piece::getCasesPassCamel (gf::Vector2i caseStart, gf::Vector2i caseEnd) {
+std::vector<gf::Vector2i> Piece::getCasesPassCamel (gf::Vector2i posStart, gf::Vector2i posEnd) {
     std::vector<gf::Vector2i> newpos;
-    newpos.push_back(caseEnd);
+    newpos.push_back(posEnd);
     return newpos;
 }
 
-std::vector<gf::Vector2i> Piece::getCasesPassPrince (gf::Vector2i caseStart, gf::Vector2i caseEnd) {
+std::vector<gf::Vector2i> Piece::getCasesPassPrince (gf::Vector2i posStart, gf::Vector2i posEnd) {
     std::vector<gf::Vector2i> newpos;
-    newpos.push_back(caseEnd);
+    newpos.push_back(posEnd);
     return newpos;
 }

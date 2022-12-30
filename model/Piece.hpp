@@ -38,16 +38,16 @@ class Piece  {
     std::vector<gf::Vector2i> getMovePrince (gf::Vector2i pos);
 
 
-    std::vector<gf::Vector2i> getCasesPass (gf::Vector2i caseStart, gf::Vector2i caseEnd);
+    std::vector<gf::Vector2i> getCasesPass (gf::Vector2i posStart, gf::Vector2i posEnd);
 
-    std::vector<gf::Vector2i> getCasesPassPawn (gf::Vector2i caseStart, gf::Vector2i caseEnd);
-    std::vector<gf::Vector2i> getCasesPassKnight (gf::Vector2i caseStart, gf::Vector2i caseEnd);
-    std::vector<gf::Vector2i> getCasesPassBishop (gf::Vector2i caseStart, gf::Vector2i caseEnd);
-    std::vector<gf::Vector2i> getCasesPassQueen (gf::Vector2i caseStart, gf::Vector2i caseEnd);
-    std::vector<gf::Vector2i> getCasesPassRook (gf::Vector2i caseStart, gf::Vector2i caseEnd);
-    std::vector<gf::Vector2i> getCasesPassKing (gf::Vector2i caseStart, gf::Vector2i caseEnd);
-    std::vector<gf::Vector2i> getCasesPassCamel (gf::Vector2i caseStart, gf::Vector2i caseEnd);
-    std::vector<gf::Vector2i> getCasesPassPrince (gf::Vector2i caseStart, gf::Vector2i caseEnd);
+    std::vector<gf::Vector2i> getCasesPassPawn (gf::Vector2i posStart, gf::Vector2i posEnd);
+    std::vector<gf::Vector2i> getCasesPassKnight (gf::Vector2i posStart, gf::Vector2i posEnd);
+    std::vector<gf::Vector2i> getCasesPassBishop (gf::Vector2i posStart, gf::Vector2i posEnd);
+    std::vector<gf::Vector2i> getCasesPassQueen (gf::Vector2i posStart, gf::Vector2i posEnd);
+    std::vector<gf::Vector2i> getCasesPassRook (gf::Vector2i posStart, gf::Vector2i posEnd);
+    std::vector<gf::Vector2i> getCasesPassKing (gf::Vector2i posStart, gf::Vector2i posEnd);
+    std::vector<gf::Vector2i> getCasesPassCamel (gf::Vector2i posStart, gf::Vector2i posEnd);
+    std::vector<gf::Vector2i> getCasesPassPrince (gf::Vector2i posEnd, gf::Vector2i posEnd);
 
     protected:
         ChessColor color;

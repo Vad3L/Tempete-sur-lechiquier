@@ -84,7 +84,7 @@ bool Plateau::setMovement(ChessColor color, gf::Vector2i v) {
 				// move piece
 				movePieces(coordCaseSelected, v);
 				state[v.y * 8 + v.x].piece.isMoved = true;
-
+				
 				coordCaseSelected = gf::Vector2i(-1,-1);
 				moveAvailable.clear();
 				prettyPrint();
@@ -132,17 +132,21 @@ std::vector<gf::Vector2i> Plateau::filterMoveAuthorized_Tangled_TakePion(gf::Vec
 			// cas pion 
 			if(piece.getType() == ChessPiece::PAWN) {
 				
-				if(coordPass.y == coordCaseStart.y + add) {
+				if(coordPass.y == coordCaseStart.y + add ) {
 					// cas eat in diagonal
-					Piece pL = state[(coordPass.y) * 8 + coordPass.x-1].piece;
-					Piece pR = state[(coordPass.y) * 8 + coordPass.x+1].piece;
-					
-					if(pL.getType() != ChessPiece::NONE && pL.getColor() != piece.getColor()) {
-						v.push_back(gf::Vector2i(coordPass.x-1, coordPass.y));
+					if(coordPass.x-1 >= 0){
+						Piece pL = state[(coordPass.y) * 8 + coordPass.x-1].piece;
+						if(pL.getType() != ChessPiece::NONE && pL.getColor() != piece.getColor()) {
+							v.push_back(gf::Vector2i(coordPass.x-1, coordPass.y));
+						}
 					}
-					if(pR.getType() != ChessPiece::NONE && pR.getColor() != piece.getColor()) {
-						v.push_back(gf::Vector2i(coordPass.x+1, coordPass.y));
-					}	
+					
+					if(coordPass.x+1 < 8){
+						Piece pR = state[(coordPass.y) * 8 + coordPass.x+1].piece;
+						if(pR.getType() != ChessPiece::NONE && pR.getColor() != piece.getColor()) {
+							v.push_back(gf::Vector2i(coordPass.x+1, coordPass.y));
+						}
+					}		
 				}
 				
 				if(state[(coordPass.y) * 8 + coordPass.x].piece.getType() != ChessPiece::NONE) { // quelque chose devant le pion
@@ -150,7 +154,7 @@ std::vector<gf::Vector2i> Plateau::filterMoveAuthorized_Tangled_TakePion(gf::Vec
 					break;	
 				}
 			}
-
+			
 			if(state[coordPass.y * 8 + coordPass.x].piece.getType() != ChessPiece::NONE) {
 			
 				// cas collision couleur soi-même
@@ -167,7 +171,7 @@ std::vector<gf::Vector2i> Plateau::filterMoveAuthorized_Tangled_TakePion(gf::Vec
 				}
 			}
 		}
-
+		
 		if(find){
 			v.push_back(coordCase);
 		}
@@ -181,7 +185,8 @@ std::vector<gf::Vector2i> Plateau::filterMoveAuthorized_Check(gf::Vector2i coord
 	
 	Piece piece = state[coordCaseStart.y * 8 + coordCaseStart.x].piece;
 
-	for(auto coordCase : mAvailable) {
+	for(const auto &coordCase : mAvailable) {
+		
 		if(coordCase.y == coordCaseStart.y  && coordCase.x == coordCaseStart.x) {
 			if(!isInEchec(piece.getColor())) {
 				v.push_back(coordCase);
@@ -189,9 +194,9 @@ std::vector<gf::Vector2i> Plateau::filterMoveAuthorized_Check(gf::Vector2i coord
 			continue;
 		}
 
-		std::size_t sizeBf = bin.size();
+		//std::size_t sizeBf = bin.size();
 		movePieces(coordCaseStart, coordCase);
-		std::size_t sizeAf = bin.size();
+		//std::size_t sizeAf = bin.size();
 
 		if(!isInEchec(piece.getColor())) {
 			v.push_back(coordCase);

@@ -70,10 +70,10 @@ void Vue::draw(Plateau p) {
         sprite.setTexture(sheetPiece, gf::RectF::fromPositionSize({ (1.f / 8.f) * i, j }, { (1.f / 8.f), 0.25f }));
 
         if(pi.getColor() == ChessColor::WHITE) {
-            sprite.setPosition(gf::Vector2f(beginPlateau.col-(tabW[(int)i]%4)*15 + ((float)-1.25 * sizeSquare) , beginPlateau.height + (tabW[(int)i]/4)*15 + ((float)i * sizeSquare)));
+            sprite.setPosition(gf::Vector2f(beginPlateau.col-(tabW[(int)i]%4)*15 + (-1.25f * sizeSquare) , beginPlateau.height + (tabW[(int)i]/4)*15 + (i * sizeSquare)));
             tabW[(int)i]+=1;
         }else {
-            sprite.setPosition(gf::Vector2f(beginPlateau.col + (tabB[(int)i]%4)*15 + ((float)8.25 * sizeSquare) , beginPlateau.height + (tabB[(int)i]/4)*15 + ((float)i * sizeSquare)));
+            sprite.setPosition(gf::Vector2f(beginPlateau.col + (tabB[(int)i]%4)*15 + (8.25f * sizeSquare) , beginPlateau.height + (tabB[(int)i]/4)*15 + (i * sizeSquare)));
             tabB[(int)i]+=1;
         }
         
@@ -98,13 +98,12 @@ void Vue::draw(Plateau p) {
         
         // if case selected
         if(y == p.coordCaseSelected.y && x == p.coordCaseSelected.x) {
-            shape.setTextureRect(gf::RectF::fromSize({0.f, 0.f}));
             
             shape.setColor(gf::Color::lighter(gf::Color::Blue, .4f));
-        }else // if king echec 
-        if(c.piece.getType() == ChessPiece::KING && p.isInEchec(c.piece.getColor()) ) { //&& c.piece.getColor() == myColor
+        }/*else // if king echec 
+        if(c.piece.getType() == ChessPiece::KING && p.isInEchec(c.piece.getColor()) ) {
             shape.setColor(gf::Color::Red);
-        }else {
+        }*/else {
             
             if (y % 2 == 0) {
                 if (x % 2 == 0) {
@@ -153,15 +152,14 @@ void Vue::draw(Plateau p) {
         }
    
         // draw move authorized
-        for(auto &coord : p.moveAvailable) {
-            if(y == coord.y && x == coord.x) {
-                gf::CircleShape c(9.f);
-                c.setColor(gf::Color::Gray(0.6f));
-                c.setAnchor(gf::Anchor::Center);
-                c.setPosition(gf::Vector2f(beginPlateau.col+sizeSquare/2 + ((float)x * sizeSquare), beginPlateau.height+sizeSquare/2 + ((float)y * sizeSquare)));
-                renderer.draw(c);
-                break;
-            }
+        auto it = std::find(p.moveAvailable.begin(), p.moveAvailable.end(), gf::Vector2i(x, y));
+        if(it != p.moveAvailable.end()) {
+        
+            gf::CircleShape c(9.f);
+            c.setColor(gf::Color::Gray(.6f));
+            c.setAnchor(gf::Anchor::Center);
+            c.setPosition(gf::Vector2f(beginPlateau.col+sizeSquare/2 + ((float)x * sizeSquare), beginPlateau.height+sizeSquare/2 + ((float)y * sizeSquare)));
+            renderer.draw(c);
         } 
    } 
    
