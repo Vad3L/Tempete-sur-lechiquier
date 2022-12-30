@@ -17,7 +17,7 @@ Plateau::Plateau() : coordCaseSelected(-1, -1), moveAvailable() {
 						break;
 					case 1:
 					case 6:
-						state[i * 8 + coordPass].piece = Piece(c, ChessPiece::KNIGHT);
+						state[i * 8 + coordPass].piece = Piece(c, ChessPiece::CAMEL);
 						break;
 					case 2:
 					case 5:

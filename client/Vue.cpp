@@ -57,8 +57,8 @@ void Vue::draw(Plateau p) {
     }
     
     // draw bin
-    int tabW[6] = {0, 0, 0, 0, 0, 0};
-    int tabB[6] = {0, 0, 0, 0, 0, 0};
+    int tabW[7] = {0, 0, 0, 0, 0, 0,0};
+    int tabB[7] = {0, 0, 0, 0, 0, 0,0};
     for(Piece &pi : p.bin) {
         gf::Sprite sprite;
         float i = (float)pi.getType();

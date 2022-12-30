@@ -33,11 +33,14 @@ std::vector<gf::Vector2i> Piece::getMoves (gf::Vector2i pos) {
 		case ChessPiece::QUEEN:
 			newpos = getMoveQueen(pos);
 			break;
- 	      	case ChessPiece::ROOK:
+ 	    case ChessPiece::ROOK:
 			newpos = getMoveRook(pos);
 			break;
- 	      	case ChessPiece::KING:
+ 	  	case ChessPiece::KING:
 			newpos = getMoveKing(pos);
+			break;
+		case ChessPiece::CAMEL:
+			newpos = getMoveCamel(pos);
 			break;
 	}
 
@@ -130,7 +133,7 @@ std::vector<gf::Vector2i> Piece::getMoveKing (gf::Vector2i pos) {
 
 std::vector<gf::Vector2i> Piece::getMoveCamel (gf::Vector2i pos) {
 	std::vector<gf::Vector2i> newpos;
-	std::vector<int> vec = { -3, -3, 3, 3 };
+	std::vector<int> vec = { -3, -2, 2, 3 };
 	for (int i : vec) {
 		for (int j : vec) {
 			if (abs(i) != abs(j)) {
@@ -164,6 +167,9 @@ std::vector<gf::Vector2i> Piece::getCasesPass (gf::Vector2i caseStart, gf::Vecto
 			break;
         case ChessPiece::KING:
 			newpos = getCasesPassKing(caseStart, caseEnd);
+			break;
+		case ChessPiece::CAMEL:
+			newpos = getCasesPassCamel(caseStart, caseEnd);
 			break;
 	}
 
