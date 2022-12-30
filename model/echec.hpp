@@ -11,13 +11,13 @@ enum class ChessPiece {
 	KING = 0,
 	KNIGHT = 3,
 	CAMEL = 6 ,
-	PRINCE
+	PRINCE = 7
 };
     
 enum class ChessColor { 
-	WHITE,
-	BLACK,
-	GRAY    
+	WHITE = 0,
+	BLACK = 1,
+	GRAY = 2   
 };
 
 #endif // ECHEC_H

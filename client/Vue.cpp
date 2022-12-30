@@ -32,8 +32,9 @@ void Vue::draw(Plateau p) {
 
     gf::RectangleShape tableCloth(gf::Vector2f(plateauSize.x + 4 * sizeSquare, plateauSize.y + 2 * sizeSquare));
     tableCloth.setAnchor(gf::Anchor::Center);
-    tableCloth.setColor(gf::Color::fromRgba32(85,60,40));
+    //tableCloth.setColor(gf::Color::fromRgba32(85,60,40));
     tableCloth.setPosition(ScreenSize/2);
+    tableCloth.setTexture(sheetPiece, gf::RectF::fromPositionSize({ (1.f / 8.f) * 2, .75f }, { (1.f / 8.f), (1.f / 8.f) }));
     renderer.draw(tableCloth);
     
     std::string letters[8] = {"A", "B", "C", "D", "E", "F", "G", "H"};
@@ -46,6 +47,7 @@ void Vue::draw(Plateau p) {
         
         text.setPosition(gf::Vector2f(beginPlateau.col-sizeSquare/2 + (i*sizeSquare), (beginPlateau.height)+(8.5*sizeSquare)));
         text.setAnchor(gf::Anchor::Center);
+        text.setColor(gf::Color::fromRgba32(238,198,108));
         renderer.draw(text);
 
         // number   
@@ -57,14 +59,15 @@ void Vue::draw(Plateau p) {
     }
     
     // draw bin
-    int tabW[7] = {0, 0, 0, 0, 0, 0,0};
-    int tabB[7] = {0, 0, 0, 0, 0, 0,0};
+    int tabW[8] = {0, 0, 0, 0, 0, 0, 0, 0};
+    int tabB[8] = {0, 0, 0, 0, 0, 0, 0, 0};
+    
     for(Piece &pi : p.bin) {
         gf::Sprite sprite;
         float i = (float)pi.getType();
-		float j = (pi.getColor() == ChessColor::WHITE) ? 0 : 0.5f;
+		float j = (int)(pi.getColor())/4.f;
 		
-        sprite.setTexture(sheetPiece, gf::RectF::fromPositionSize({ (1.f / 7.f) * i, j }, { (1.f / 7.f), 0.5f }));
+        sprite.setTexture(sheetPiece, gf::RectF::fromPositionSize({ (1.f / 8.f) * i, j }, { (1.f / 8.f), 0.25f }));
 
         if(pi.getColor() == ChessColor::WHITE) {
             sprite.setPosition(gf::Vector2f(beginPlateau.col-(tabW[(int)i]%4)*15 + ((float)-1.25 * sizeSquare) , beginPlateau.height + (tabW[(int)i]/4)*15 + ((float)i * sizeSquare)));
@@ -83,70 +86,83 @@ void Vue::draw(Plateau p) {
     gf::Color4f lightBrown = gf::Color::fromRgba32(240,217,181,255);
     gf::Color4f darkBrown = gf::Color::fromRgba32(181,136,99,255);
 
-    gf::RectangleShape shape({ sizeSquare, sizeSquare });
+    
     
     //draw plateau 
     for  (Case &c : p.state) {
         int x = c.position.x;
         int y = c.position.y;
+        
+        gf::RectangleShape shape({ sizeSquare, sizeSquare });
         shape.setPosition(gf::Vector2f(beginPlateau.col+sizeSquare/2 + ((float)x * sizeSquare), beginPlateau.height+sizeSquare/2 + ((float)y * sizeSquare)));
         
-        if (y % 2 == 0) {
-            if (x % 2 == 0) {
-                shape.setColor(lightBrown);
-            }
-            else {
-                shape.setColor(darkBrown);
-            }
-        } else {
-            if (x % 2 == 0) {
-                shape.setColor(darkBrown);
-            }
-            else {
-                shape.setColor(lightBrown);
-            }
-        }
-
-        // case selected
+        // if case selected
         if(y == p.coordCaseSelected.y && x == p.coordCaseSelected.x) {
+            shape.setTextureRect(gf::RectF::fromSize({0.f, 0.f}));
+            
+            shape.setColor(gf::Color::lighter(gf::Color::Blue, .4f));
+        }else // if king echec 
+        if(c.piece.getType() == ChessPiece::KING && p.isInEchec(c.piece.getColor()) ) { //&& c.piece.getColor() == myColor
             shape.setColor(gf::Color::Red);
+        }else {
+            
+            if (y % 2 == 0) {
+                if (x % 2 == 0) {
+                    shape.setTexture(sheetPiece, gf::RectF::fromPositionSize({ (1.f / 8.f) * 1, .75f }, { (1.f / 8.f), .5f}));
+                    //shape.setColor(lightBrown);
+                }
+                else {
+                    shape.setTexture(sheetPiece, gf::RectF::fromPositionSize({ (1.f / 8.f) * 0, .75f }, { (1.f / 8.f), .5f }));
+                    //shape.setColor(darkBrown);
+                }
+            } else {
+                if (x % 2 == 0) {
+                    shape.setTexture(sheetPiece, gf::RectF::fromPositionSize({ (1.f / 8.f) * 0, .75f }, { (1.f / 8.f), .5f }));
+                    //shape.setColor(darkBrown);
+                }
+                else {
+                    shape.setTexture(sheetPiece, gf::RectF::fromPositionSize({ (1.f / 8.f) * 1, .75f }, { (1.f / 8.f), .5f }));
+                    //shape.setColor(lightBrown);
+                }
+            }
         }
 
+        
         shape.setAnchor(gf::Anchor::Center);
         shape.setOutlineColor(gf::Color::fromRgba32(85,60,40));
         shape.setOutlineThickness(2.5f);
         renderer.draw(shape);
         
 
-    // draw piece
-	if (c.piece.getType() != ChessPiece::NONE) {
-		gf::Sprite sprite;
-		float i = (float)c.piece.getType();
-		float j = (c.piece.getColor() == ChessColor::WHITE) ? 0 : 0.5f;
-        
-        sprite.setTexture(sheetPiece, gf::RectF::fromPositionSize({ (1.f / 7.f) * i, j }, { (1.f / 7.f), 0.5f }));
-        sprite.setPosition(gf::Vector2f(beginPlateau.col + sizeSquare/2 + ((float)x * sizeSquare) , beginPlateau.height+sizeSquare/2 + ((float)y * sizeSquare)));
-        sprite.setScale((1.f / 6.5f));
-        sprite.setAnchor(gf::Anchor::Center);
-		
-        if (myColor == ChessColor::BLACK) {
-            sprite.setRotation(gf::Pi);
+        // draw piece
+        if (c.piece.getType() != ChessPiece::NONE) {
+            gf::Sprite sprite;
+            float i = (float)c.piece.getType();
+            float j = (int)(c.piece.getColor())/4.f;
+            
+            sprite.setTexture(sheetPiece, gf::RectF::fromPositionSize({ (1.f / 8.f) * i, j }, { (1.f / 8.f), 0.25f }));
+            sprite.setPosition(gf::Vector2f(beginPlateau.col + sizeSquare/2 + ((float)x * sizeSquare) , beginPlateau.height+sizeSquare/2 + ((float)y * sizeSquare)));
+            sprite.setScale((1.f / 6.5f));
+            sprite.setAnchor(gf::Anchor::Center);
+            
+            if (myColor == ChessColor::BLACK) {
+                sprite.setRotation(gf::Pi);
+            }
+            
+            renderer.draw(sprite);
         }
-        
-		renderer.draw(sprite);
-	}
    
-   // draw move authorized
-    for(auto &coord : p.moveAvailable) {
-        if(y == coord.y && x == coord.x) {
-            gf::CircleShape c(9.5f);
-            c.setColor(gf::Color::Gray(0.6f));
-            c.setAnchor(gf::Anchor::Center);
-            c.setPosition(gf::Vector2f(beginPlateau.col+sizeSquare/2 + ((float)x * sizeSquare), beginPlateau.height+sizeSquare/2 + ((float)y * sizeSquare)));
-            renderer.draw(c);
-            break;
-        }
-    } 
+        // draw move authorized
+        for(auto &coord : p.moveAvailable) {
+            if(y == coord.y && x == coord.x) {
+                gf::CircleShape c(9.f);
+                c.setColor(gf::Color::Gray(0.6f));
+                c.setAnchor(gf::Anchor::Center);
+                c.setPosition(gf::Vector2f(beginPlateau.col+sizeSquare/2 + ((float)x * sizeSquare), beginPlateau.height+sizeSquare/2 + ((float)y * sizeSquare)));
+                renderer.draw(c);
+                break;
+            }
+        } 
    } 
    
    renderer.setView(screenView);
