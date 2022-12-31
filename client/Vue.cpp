@@ -15,7 +15,7 @@ Vue::Vue(gf::Vector2u SSize, ChessColor mycolor) : window("Tempete sur l'échiqu
 
 
     //screenView
-    plateauView = gf::LockedView(ScreenSize / 2, gf::Vector2f(sizeSquare*8));
+    plateauView = gf::LockedView(ScreenSize/2, gf::Vector2f((sizeSquare*8)+4.f));
     boardView = gf::LockedView(ScreenSize/2, gf::Vector2f(sizeSquare*12, sizeSquare*10));
 
     views.addView(plateauView);
@@ -30,7 +30,7 @@ void Vue::draw(Plateau p) {
     
     renderer.setView(boardView);
 
-    gf::RectangleShape tableCloth(gf::Vector2f(plateauSize.x + 4 * sizeSquare, plateauSize.y + 2 * sizeSquare));
+    gf::RectangleShape tableCloth(gf::Vector2f(plateauSize.x + 2 * sizeSquare, plateauSize.y + 2 * sizeSquare));
     tableCloth.setAnchor(gf::Anchor::Center);
     //tableCloth.setColor(gf::Color::fromRgba32(85,60,40));
     tableCloth.setPosition(ScreenSize/2);
@@ -70,10 +70,10 @@ void Vue::draw(Plateau p) {
         sprite.setTexture(sheetPiece, gf::RectF::fromPositionSize({ (1.f / 8.f) * i, j }, { (1.f / 8.f), 0.25f }));
 
         if(pi.getColor() == ChessColor::WHITE) {
-            sprite.setPosition(gf::Vector2f(beginPlateau.col-(tabW[(int)i]%4)*15 + (-1.25f * sizeSquare) , beginPlateau.height + (tabW[(int)i]/4)*15 + (i * sizeSquare)));
+            sprite.setPosition(gf::Vector2f(beginPlateau.col-(tabW[(int)i]%4)*15 + (-2.f * sizeSquare) , beginPlateau.height + (tabW[(int)i]/4)*15 + (i * sizeSquare)));
             tabW[(int)i]+=1;
         }else {
-            sprite.setPosition(gf::Vector2f(beginPlateau.col + (tabB[(int)i]%4)*15 + (8.25f * sizeSquare) , beginPlateau.height + (tabB[(int)i]/4)*15 + (i * sizeSquare)));
+            sprite.setPosition(gf::Vector2f(beginPlateau.col + (tabB[(int)i]%4)*15 + (9.f * sizeSquare) , beginPlateau.height + (tabB[(int)i]/4)*15 + (i * sizeSquare)));
             tabB[(int)i]+=1;
         }
         
