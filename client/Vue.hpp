@@ -38,7 +38,7 @@ class Vue {
 		
 		Vue(gf::Vector2u SSize, ChessColor mycolor);
 		void setColor (ChessColor color);
-		void draw(Plateau p);
+		void draw(Plateau p, bool myTurn);
 		gf::Vector2i transformInSelectedCase(gf::Vector2i mouseCoord);
 };
 

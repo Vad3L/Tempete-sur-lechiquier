@@ -3,7 +3,7 @@
 Vue::Vue(gf::Vector2u SSize, ChessColor mycolor) : window("Tempete sur l'échiquier", SSize),
 						renderer(window),
 						myColor(mycolor),
-                        font("../data/DejaVuSans.ttf") {
+                        font("../data/DroidSans.ttf") {
 
     ScreenSize = gf::Vector2u(1300, 1000);
     sizeSquare = 56.f;
@@ -26,7 +26,7 @@ Vue::Vue(gf::Vector2u SSize, ChessColor mycolor) : window("Tempete sur l'échiqu
     sheetPiece = gf::Texture("../data/ChessSheet.png");
 }
 
-void Vue::draw(Plateau p) {
+void Vue::draw(Plateau p, bool myTurn) {
     
     renderer.setView(boardView);
 
@@ -34,7 +34,7 @@ void Vue::draw(Plateau p) {
     tableCloth.setAnchor(gf::Anchor::Center);
     //tableCloth.setColor(gf::Color::fromRgba32(85,60,40));
     tableCloth.setPosition(ScreenSize/2);
-    tableCloth.setTexture(sheetPiece, gf::RectF::fromPositionSize({ (1.f / 8.f) * 2, .75f }, { (1.f / 8.f), (1.f / 8.f) }));
+    tableCloth.setTexture(sheetPiece, gf::RectF::fromPositionSize({ (1.f / 8.f) * 2, .75f }, { (1.f / 8.f), 0.25f }));
     renderer.draw(tableCloth);
     
     std::string letters[8] = {"A", "B", "C", "D", "E", "F", "G", "H"};
@@ -100,10 +100,15 @@ void Vue::draw(Plateau p) {
         if(y == p.coordCaseSelected.y && x == p.coordCaseSelected.x) {
             
             shape.setColor(gf::Color::lighter(gf::Color::Blue, .4f));
-        }/*else // if king echec 
-        if(c.piece.getType() == ChessPiece::KING && p.isInEchec(c.piece.getColor()) ) {
+        }else // if my king is in echec
+        if(c.piece.getType() == ChessPiece::KING && c.piece.getColor() == myColor && myTurn && p.playerInEchec) {
+            
             shape.setColor(gf::Color::Red);
-        }*/else {
+        }else // if adv king is in echec
+        if(c.piece.getType() == ChessPiece::KING && c.piece.getColor() != myColor && !myTurn && p.playerInEchec) {
+            
+            shape.setColor(gf::Color::Red);
+        }else {
             
             if (y % 2 == 0) {
                 if (x % 2 == 0) {
@@ -128,11 +133,11 @@ void Vue::draw(Plateau p) {
 
         
         shape.setAnchor(gf::Anchor::Center);
-        shape.setOutlineColor(gf::Color::fromRgba32(85,60,40));
-        shape.setOutlineThickness(2.5f);
+        //shape.setOutlineColor(gf::Color::fromRgba32(85,60,40));
+        //shape.setOutlineThickness(2.5f);
+        
         renderer.draw(shape);
         
-
         // draw piece
         if (c.piece.getType() != ChessPiece::NONE) {
             gf::Sprite sprite;

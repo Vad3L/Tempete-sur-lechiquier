@@ -5,6 +5,7 @@
 #include "Case.hpp"
 
 #include <gf/Vector.h>
+#include <gf/VectorOps.h>
 
 #include <vector>
 #include <cassert>
@@ -15,7 +16,8 @@ class Plateau {
 		gf::Vector2i coordCaseSelected;
 		std::vector<Piece> bin;
 		std::vector<Case> state;
-		
+		bool playerInEchec;
+
 		Plateau();
 		void prettyPrint();
 		bool setMovement(ChessColor color, gf::Vector2i v);

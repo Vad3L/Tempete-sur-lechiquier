@@ -15,6 +15,7 @@ enum class ChessPiece {
 };
     
 enum class ChessColor { 
+	NONE = -1,
 	WHITE = 0,
 	BLACK = 1,
 	GRAY = 2   

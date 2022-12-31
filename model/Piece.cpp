@@ -49,6 +49,8 @@ std::vector<gf::Vector2i> Piece::getMoves (gf::Vector2i pos) {
 		case ChessPiece::PRINCE:
 			newpos = getMovePrince(pos);
 			break;
+		default:
+			break;
 	}
 
 	for(const auto &coord : newpos) {
@@ -206,6 +208,8 @@ std::vector<gf::Vector2i> Piece::getCasesPass (gf::Vector2i posStart, gf::Vector
 			break;
 		case ChessPiece::PRINCE:
 			newpos = getCasesPassPrince(posStart, posEnd);
+			break;
+		default:
 			break;
 	}
 

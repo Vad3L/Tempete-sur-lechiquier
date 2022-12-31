@@ -28,6 +28,10 @@ add_executable(client
 
 add_executable(server
 	server/server.cpp
+	model/Plateau.cpp
+	model/Case.cpp
+	model/Piece.cpp
+	server/AnnexFctServer.cpp
 	)
 
 target_link_libraries(client

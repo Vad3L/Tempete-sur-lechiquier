@@ -6,7 +6,7 @@
 #include <cstdlib>
 #include <vector>
 
-#include "echec.hpp"
+#include "chess.hpp"
 
 class Piece  {
     public:

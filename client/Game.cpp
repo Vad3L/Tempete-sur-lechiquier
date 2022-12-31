@@ -17,12 +17,13 @@ Game::Game(char* argv[]) : vue(gf::Vector2u(1000, 1000), ChessColor::WHITE) {
 void Game::run() {
 	
 	gf::Packet packet;
+
 	network.queue.wait(packet);
 	assert(packet.getType() == PartieRep::type);
 
 	auto repPartie = packet.as<PartieRep>();
 
-	assert(repPartie.err == TCodeRep::OK);
+	assert(repPartie.err == CodeRep::NONE);
 
 	myColor = repPartie.coulPion;
 
@@ -76,16 +77,72 @@ void Game::run() {
 
 		gf::Time time = clock.restart();
 
-		if(true) { //myTurn
+		if(myTurn) { // myTurn
 			if(clickAction.isActive()) {
 				gf::Vector2i v = vue.transformInSelectedCase(event.mouseButton.coords);
-				myTurn = plateau.setMovement(myColor, v);
+				bool coupPionEnded = plateau.setMovement(myColor, v);
+
+				if(coupPionEnded) {
+        
+					CoupReq coup;
+					coup.posStart.x = plateau.coordCaseSelected.x;
+					coup.posStart.y = plateau.coordCaseSelected.y;
+					coup.posEnd.x = v.x;
+					coup.posEnd.y = v.y;
+					
+					network.send(coup);
+					
+					network.queue.wait(packet);
+					
+					assert(packet.getType() == CoupRep::type);
+					
+					auto coupRep = packet.as<CoupRep>();
+					
+					// move piece
+					if(coupRep.err == CodeRep::NONE) { // coup valide
+						
+						std::cout << "------COUP MOI------" << std::endl;
+						plateau.state[plateau.coordCaseSelected.y * 8 + plateau.coordCaseSelected.x].piece.isMoved = true;
+						plateau.movePieces(plateau.coordCaseSelected, v);
+						ChessColor colAdv = (myColor == ChessColor::WHITE) ? ChessColor::BLACK : ChessColor::WHITE;
+						plateau.playerInEchec = plateau.isInEchec(colAdv);
+						plateau.prettyPrint();
+
+						plateau.coordCaseSelected = gf::Vector2i(-1,-1);
+						plateau.moveAvailable.clear();	
+						myTurn = !myTurn;
+					}else if(coupRep.err == CodeRep::COUP_NO_VALIDE) {
+						std::cout << "------COUP MOI INVALIDE------" << std::endl;
+					}
+				}
+			}
+		}else {
+			
+			if(network.queue.poll(packet)) {
+				
+				//network.queue.wait(packet);
+				assert(packet.getType() == CoupRep::type);
+				
+				auto coupAdv = packet.as<CoupRep>();
+				
+				if(coupAdv.err == CodeRep::NONE) { // coup valide
+					
+					std::cout << "------COUP ADVERSE------" << std::endl;
+					plateau.state[coupAdv.posStart.y * 8 + coupAdv.posStart.x].piece.isMoved = true;
+					plateau.movePieces(gf::Vector2i(coupAdv.posStart.x, coupAdv.posStart.y), gf::Vector2i(coupAdv.posEnd.x, coupAdv.posEnd.y));
+					plateau.playerInEchec = plateau.isInEchec(myColor);
+					plateau.prettyPrint();
+
+					myTurn = !myTurn;	
+				}else if(coupAdv.err == CodeRep::COUP_NO_VALIDE) {
+					std::cout << "------COUP ADVERSE INVALIDE------" << std::endl;
+				}
 			}
 		}
 
 		
 		vue.renderer.clear(gf::Color::Gray(0.5));
-		vue.draw(plateau);
+		vue.draw(plateau, myTurn);
 		vue.renderer.display();
 
 		actions.reset();
