@@ -28,13 +28,15 @@ Vue::Vue(gf::Vector2u SSize, ChessColor mycolor) : window("Tempete sur l'échiqu
 
 void Vue::draw(Plateau p, bool myTurn) {
     
+    int numberPiece = ((int)ChessPiece::MAX - (int)ChessPiece::MIN + 1);
+
     renderer.setView(boardView);
 
     gf::RectangleShape tableCloth(gf::Vector2f(plateauSize.x + 4 * sizeSquare, plateauSize.y + 2 * sizeSquare));
     tableCloth.setAnchor(gf::Anchor::Center);
     //tableCloth.setColor(gf::Color::fromRgba32(85,60,40));
     tableCloth.setPosition(ScreenSize/2);
-    tableCloth.setTexture(sheetPiece, gf::RectF::fromPositionSize({ (1.f / 8.f) * 2, .75f }, { (1.f / 8.f), 0.25f }));
+    tableCloth.setTexture(sheetPiece, gf::RectF::fromPositionSize({ (1.f / numberPiece) * 2, .75f }, { (1.f / numberPiece), 0.25f }));
     renderer.draw(tableCloth);
     
     std::string letters[8] = {"A", "B", "C", "D", "E", "F", "G", "H"};
@@ -59,15 +61,19 @@ void Vue::draw(Plateau p, bool myTurn) {
     }
     
     // draw bin
-    int tabW[8] = {0, 0, 0, 0, 0, 0, 0, 0};
-    int tabB[8] = {0, 0, 0, 0, 0, 0, 0, 0};
+    int tabW[numberPiece];
+    int tabB[numberPiece];
+    for(int i = 0 ; i < numberPiece ; ++i){
+        tabB[i] = 0;
+        tabW[i] = 0;
+    }
     
     for(Piece &pi : p.bin) {
         gf::Sprite sprite;
         float i = (float)pi.getType();
 		float j = (int)(pi.getColor())/4.f;
 		
-        sprite.setTexture(sheetPiece, gf::RectF::fromPositionSize({ (1.f / 8.f) * i, j }, { (1.f / 8.f), 0.25f }));
+        sprite.setTexture(sheetPiece, gf::RectF::fromPositionSize({ (1.f / numberPiece) * i, j }, { (1.f / numberPiece), 0.25f }));
 
         if(pi.getColor() == ChessColor::WHITE) {
             sprite.setPosition(gf::Vector2f(beginPlateau.col-(tabW[(int)i]%4)*15 + (-1.25f * sizeSquare) , beginPlateau.height + (tabW[(int)i]/4)*15 + (i * sizeSquare)));
@@ -112,20 +118,20 @@ void Vue::draw(Plateau p, bool myTurn) {
             
             if (y % 2 == 0) {
                 if (x % 2 == 0) {
-                    shape.setTexture(sheetPiece, gf::RectF::fromPositionSize({ (1.f / 8.f) * 1, .75f }, { (1.f / 8.f), .5f}));
+                    shape.setTexture(sheetPiece, gf::RectF::fromPositionSize({ (1.f / numberPiece) * 1, .75f }, { (1.f / numberPiece), .5f}));
                     //shape.setColor(lightBrown);
                 }
                 else {
-                    shape.setTexture(sheetPiece, gf::RectF::fromPositionSize({ (1.f / 8.f) * 0, .75f }, { (1.f / 8.f), .5f }));
+                    shape.setTexture(sheetPiece, gf::RectF::fromPositionSize({ (1.f / numberPiece) * 0, .75f }, { (1.f / numberPiece), .5f }));
                     //shape.setColor(darkBrown);
                 }
             } else {
                 if (x % 2 == 0) {
-                    shape.setTexture(sheetPiece, gf::RectF::fromPositionSize({ (1.f / 8.f) * 0, .75f }, { (1.f / 8.f), .5f }));
+                    shape.setTexture(sheetPiece, gf::RectF::fromPositionSize({ (1.f / numberPiece) * 0, .75f }, { (1.f / numberPiece), .5f }));
                     //shape.setColor(darkBrown);
                 }
                 else {
-                    shape.setTexture(sheetPiece, gf::RectF::fromPositionSize({ (1.f / 8.f) * 1, .75f }, { (1.f / 8.f), .5f }));
+                    shape.setTexture(sheetPiece, gf::RectF::fromPositionSize({ (1.f / numberPiece) * 1, .75f }, { (1.f / numberPiece), .5f }));
                     //shape.setColor(lightBrown);
                 }
             }
@@ -144,7 +150,7 @@ void Vue::draw(Plateau p, bool myTurn) {
             float i = (float)c.piece.getType();
             float j = (int)(c.piece.getColor())/4.f;
             
-            sprite.setTexture(sheetPiece, gf::RectF::fromPositionSize({ (1.f / 8.f) * i, j }, { (1.f / 8.f), 0.25f }));
+            sprite.setTexture(sheetPiece, gf::RectF::fromPositionSize({ (1.f / numberPiece) * i, j }, { (1.f / numberPiece), 0.25f }));
             sprite.setPosition(gf::Vector2f(beginPlateau.col + sizeSquare/2 + ((float)x * sizeSquare) , beginPlateau.height+sizeSquare/2 + ((float)y * sizeSquare)));
             sprite.setScale((1.f / 6.5f));
             sprite.setAnchor(gf::Anchor::Center);

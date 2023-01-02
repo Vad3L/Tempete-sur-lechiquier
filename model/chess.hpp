@@ -4,14 +4,16 @@
 
 enum class ChessPiece {
 	NONE = -1,
-	PAWN = 5,
-	ROOK = 4,
-	BISHOP = 2,
+	MIN = 0,
+	KING = MIN,
 	QUEEN = 1,
-	KING = 0,
+	BISHOP = 2,
 	KNIGHT = 3,
+	ROOK = 4,
+	PAWN = 5,
 	CAMEL = 6 ,
-	PRINCE = 7
+	PRINCE = 7,
+	MAX = PRINCE
 };
     
 enum class ChessColor { 
