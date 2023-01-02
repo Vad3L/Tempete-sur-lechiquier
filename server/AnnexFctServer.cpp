@@ -25,6 +25,8 @@ bool FctAnnex::checkCoupValide(Plateau *plateau, gf::Vector2i coordStart, gf::Ve
 }
 
 CoupRep FctAnnex::buildRepCoup(Plateau *plateau, gf::Vector2i coordStart, gf::Vector2i coordEnd) {
+    assert(coordStart.x >= 0);
+	assert(coordStart.x < 8);
     assert(coordStart.y >= 0);
 	assert(coordStart.y < 8);
 

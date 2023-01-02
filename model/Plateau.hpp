@@ -34,6 +34,8 @@ class Plateau {
 		
 		bool isInEchec(ChessColor color);
 		bool caseIsInEchec(gf::Vector2i coord, ChessColor color);
+
+		void tmp(std::vector<gf::Vector2i>);
 };
 
 #endif // PLATEAU_H

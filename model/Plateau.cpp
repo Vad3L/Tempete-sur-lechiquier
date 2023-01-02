@@ -109,21 +109,26 @@ bool Plateau::setMovement(ChessColor color, gf::Vector2i v) {
 
 
 std::vector<gf::Vector2i> Plateau::filterMoveAuthorized(gf::Vector2i coordCaseStart, std::vector<gf::Vector2i> mAvailable) {
-	assert(coordCaseStart.y >= 0);
+	assert(coordCaseStart.x >= 0);
 	assert(coordCaseStart.x < 8);
+	assert(coordCaseStart.y >= 0);
+	assert(coordCaseStart.y < 8);
 
 	std::vector<gf::Vector2i> v;
 	
 	v = filterMoveAuthorized_Tangled_TakePion(coordCaseStart, mAvailable);
 	v = filterMoveAuthorized_Check(coordCaseStart, v);
 	v = addMoveBigSmallCastling(coordCaseStart, v);
-
+	
 	return v;
 }
 
 std::vector<gf::Vector2i> Plateau::filterMoveAuthorized_Tangled_TakePion(gf::Vector2i coordCaseStart, std::vector<gf::Vector2i> mAvailable) {
-	assert(coordCaseStart.y >= 0);
+	assert(coordCaseStart.x >= 0);
 	assert(coordCaseStart.x < 8);
+	assert(coordCaseStart.y >= 0);
+	assert(coordCaseStart.y < 8);
+
 	std::vector<gf::Vector2i> v;
 
 	Piece piece = state[coordCaseStart.y * 8 + coordCaseStart.x].piece;
@@ -183,6 +188,9 @@ std::vector<gf::Vector2i> Plateau::filterMoveAuthorized_Tangled_TakePion(gf::Vec
 		}
 	}
 	
+	//fonction tmp debug
+	tmp(v);
+
 	return v;
 }
 
@@ -212,6 +220,9 @@ std::vector<gf::Vector2i> Plateau::filterMoveAuthorized_Check(gf::Vector2i coord
 
 		deMovePieces(coordCaseStart, coordCase, sizeBf!=sizeAf);
 	}
+
+	//fonction tmp debug
+	tmp(v);
 
 	return v;
 }
@@ -295,7 +306,10 @@ std::vector<gf::Vector2i> Plateau::addMoveBigSmallCastling(gf::Vector2i coordCas
 			}
 		}
 	}
-
+	
+	//fonction tmp debug
+	tmp(mAvailable);
+	
 	return mAvailable;
 }
 
@@ -383,8 +397,10 @@ bool Plateau::isInEchec(ChessColor color) {
 }
 
 bool Plateau::caseIsInEchec(gf::Vector2i coord, ChessColor color) {
-	assert(coord.y >= 0);
+	assert(coord.x >= 0);
 	assert(coord.x < 8);
+	assert(coord.y >= 0);
+	assert(coord.y < 8);
 	
 	for(auto & caseP : state) {
 		if(caseP.piece.getType() != ChessPiece::NONE && caseP.piece.getColor() != color) {
@@ -405,4 +421,13 @@ bool Plateau::caseIsInEchec(gf::Vector2i coord, ChessColor color) {
 	}
 
 	return false;
+}
+
+void Plateau::tmp(std::vector<gf::Vector2i> a) {
+	for(const auto &it : a) {
+		assert(it.x >=0);
+		assert(it.x<8);
+		assert(it.y >=0);
+		assert(it.y<8);
+	}
 }
