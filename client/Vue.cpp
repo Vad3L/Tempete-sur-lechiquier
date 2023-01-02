@@ -98,22 +98,26 @@ void Vue::draw(Plateau p, bool myTurn) {
     for  (Case &c : p.state) {
         int x = c.position.x;
         int y = c.position.y;
-        
+        gf::Vector2i pos(x, y);
+
         gf::RectangleShape shape({ sizeSquare, sizeSquare });
         shape.setPosition(gf::Vector2f(beginPlateau.col+sizeSquare/2 + ((float)x * sizeSquare), beginPlateau.height+sizeSquare/2 + ((float)y * sizeSquare)));
         
         // if case selected
         if(y == p.coordCaseSelected.y && x == p.coordCaseSelected.x) {
             
-            shape.setColor(gf::Color::lighter(gf::Color::Blue, .4f));
+            shape.setColor(gf::Color::fromRgba32(30, 144, 255, 200));
         }else // if my king is in echec
         if(c.piece.getType() == ChessPiece::KING && c.piece.getColor() == myColor && myTurn && p.playerInEchec) {
             
-            shape.setColor(gf::Color::Red);
+            shape.setColor(gf::Color::fromRgba32(255, 0, 0, 128));
         }else // if adv king is in echec
         if(c.piece.getType() == ChessPiece::KING && c.piece.getColor() != myColor && !myTurn && p.playerInEchec) {
             
-            shape.setColor(gf::Color::Red);
+            shape.setColor(gf::Color::fromRgba32(255, 0, 0, 128));
+        }else if(p.lastCoup.size() >= 2 && (pos == p.lastCoup.back() || pos == p.lastCoup[p.lastCoup.size()-2])) {
+
+            shape.setColor(gf::Color::fromRgba32(255, 174, 0, 128));
         }else {
             
             if (y % 2 == 0) {
@@ -192,7 +196,7 @@ void Vue::setColor (ChessColor color) {
 
 gf::Vector2i Vue::transformInSelectedCase(gf::Vector2i mouseCoord) {
     gf::Vector2i mouseCoords = renderer.mapPixelToCoords(mouseCoord, plateauView);
-    //std::cout << "la : " << ((mouseCoords.height-beginPlateau.col))<< ";" << (mouseCoords.col-beginPlateau.height) << std::endl;
+    //std::cout << "la : " << ((mouseCoords.height-beginPlateau.height))<< ";" << (mouseCoords.col-beginPlateau.col) << std::endl;
     gf::Vector2i v(-1,-1); 
 
     if(mouseCoords.height > beginPlateau.height && mouseCoords.height < beginPlateau.height+plateauSize.height && mouseCoords.col > beginPlateau.col && mouseCoords.col < beginPlateau.col+plateauSize.col) {

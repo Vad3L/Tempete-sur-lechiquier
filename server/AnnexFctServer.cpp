@@ -9,12 +9,12 @@ FctAnnex::FctAnnex() {
 // check validité d'un coup
 bool FctAnnex::checkCoupValide(Plateau *plateau, gf::Vector2i coordStart, gf::Vector2i coordEnd) {
     if(coordStart.x < 0 || coordStart.y < 0 || coordEnd.x > 7 || coordEnd.y > 7) {
-        return true;
+        return false;
     }
     
     Piece p = plateau->state[coordEnd.y * 8 + coordEnd.x].piece;
     if(p.getType() == ChessPiece::KING) {
-        return true;
+        return false;
     }
     
     std::vector<gf::Vector2i> moveAvailable = plateau->state[coordStart.y * 8 + coordStart.x].piece.getMoves(gf::Vector2i(coordStart.x, coordStart.y));
@@ -49,13 +49,13 @@ CoupRep FctAnnex::buildRepCoup(Plateau *plateau, gf::Vector2i coordStart, gf::Ve
 
 int FctAnnex::performActionMoveNormal(Plateau *plateau, gf::TcpSocket *client1, gf::TcpSocket *client2, gf::Packet *packetP1, gf::Packet *packetP2, bool *turnPlayer1) {
     CoupReq coup;
-    
+    std::cout << "000000" << std::endl;
     if(*turnPlayer1) {
         if (gf::SocketStatus::Data != client1->recvPacket(*packetP1)) {
             std::cerr<<"erreur lors de la réception du packet qui contient le coup du client 1";
             return -1;
         }
-
+        std::cout << "11111" << std::endl;
         assert(packetP1->getType() == CoupReq::type);
         coup = packetP1->as<CoupReq>();
     }else {
@@ -63,14 +63,14 @@ int FctAnnex::performActionMoveNormal(Plateau *plateau, gf::TcpSocket *client1, 
             std::cerr<<"erreur lors de la réception du packet qui contient le coup du client 2";
             return -1;
         }
-
+        std::cout << "2222" << std::endl;
         assert(packetP2->getType() == CoupReq::type);
         coup = packetP2->as<CoupReq>();
     }
     
-    
+    std::cout << "33333333" << std::endl;
     CoupRep coupRep = buildRepCoup(plateau, gf::Vector2i(coup.posStart.x, coup.posStart.y), gf::Vector2i(coup.posEnd.x, coup.posEnd.y));
-
+    std::cout << "44444" << std::endl;
 
     if(coupRep.err == CodeRep::NONE) { // coup valide
         std::cout << "------COUP VALIDE------" << std::endl;

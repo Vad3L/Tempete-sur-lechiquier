@@ -5,6 +5,8 @@
 
 #include "Network.hpp"
 #include "../model/Plateau.hpp"
+#include "../protocole/protocole.h"
+
 #include "Vue.hpp"
 
 class Game {

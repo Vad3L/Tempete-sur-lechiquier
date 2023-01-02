@@ -17,6 +17,7 @@ class Plateau {
 		std::vector<Piece> bin;
 		std::vector<Case> state;
 		bool playerInEchec;
+		std::vector<gf::Vector2i> lastCoup;
 
 		Plateau();
 		void prettyPrint();

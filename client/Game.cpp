@@ -4,7 +4,6 @@
 #include <gf/Action.h>
 #include <cassert>
 
-#include "../protocole/protocole.h"
 #include <iostream>
 
 Game::Game(char* argv[]) : vue(gf::Vector2u(1000, 1000), ChessColor::WHITE) {
@@ -102,7 +101,7 @@ void Game::run() {
 					if(coupRep.err == CodeRep::NONE) { // coup valide
 						
 						std::cout << "------COUP MOI------" << std::endl;
-						plateau.state[plateau.coordCaseSelected.y * 8 + plateau.coordCaseSelected.x].piece.isMoved = true;
+						plateau.state[coupRep.posStart.y * 8 + coupRep.posStart.x].piece.isMoved = true;
 						plateau.movePieces(plateau.coordCaseSelected, v);
 						ChessColor colAdv = (myColor == ChessColor::WHITE) ? ChessColor::BLACK : ChessColor::WHITE;
 						plateau.playerInEchec = plateau.isInEchec(colAdv);
@@ -110,6 +109,10 @@ void Game::run() {
 
 						plateau.coordCaseSelected = gf::Vector2i(-1,-1);
 						plateau.moveAvailable.clear();	
+						
+						plateau.lastCoup.push_back(gf::Vector2i(coupRep.posStart.x,coupRep.posStart.y));
+						plateau.lastCoup.push_back(gf::Vector2i(coupRep.posEnd.x,coupRep.posEnd.y));
+						
 						myTurn = !myTurn;
 					}else if(coupRep.err == CodeRep::COUP_NO_VALIDE) {
 						std::cout << "------COUP MOI INVALIDE------" << std::endl;
@@ -133,6 +136,9 @@ void Game::run() {
 					plateau.playerInEchec = plateau.isInEchec(myColor);
 					plateau.prettyPrint();
 
+					plateau.lastCoup.push_back(gf::Vector2i(coupAdv.posStart.x,coupAdv.posStart.y));
+					plateau.lastCoup.push_back(gf::Vector2i(coupAdv.posEnd.x,coupAdv.posEnd.y));
+						
 					myTurn = !myTurn;	
 				}else if(coupAdv.err == CodeRep::COUP_NO_VALIDE) {
 					std::cout << "------COUP ADVERSE INVALIDE------" << std::endl;

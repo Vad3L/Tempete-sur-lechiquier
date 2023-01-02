@@ -1,7 +1,10 @@
 #include "Plateau.hpp"
 #include <iostream>
 
-Plateau::Plateau() : coordCaseSelected(-1, -1), moveAvailable() {
+Plateau::Plateau() : coordCaseSelected(-1, -1), moveAvailable(), 
+bin(), 
+lastCoup(), 
+playerInEchec(false) {
 	for (int i = 0; i < 8; i++) {
 		for (int coordPass = 0; coordPass < 8; coordPass++) {
 			state.push_back(Case(gf::Vector2i(coordPass, i)));
@@ -34,7 +37,6 @@ Plateau::Plateau() : coordCaseSelected(-1, -1), moveAvailable() {
 		}
 	}
 
-	playerInEchec = false;
 	prettyPrint();
 }
 
@@ -68,7 +70,7 @@ void Plateau::prettyPrint() {
 
 bool Plateau::setMovement(ChessColor color, gf::Vector2i v) {
 	if(v.x == -1 || v.y == -1) {
-		return true;
+		return false;
 	}
 	
 	Piece pSelect = state[v.y * 8 + v.x].piece;
