@@ -15,11 +15,11 @@ Vue::Vue(gf::Vector2u SSize, ChessColor mycolor) : window("Tempete sur l'échiqu
 
 
     //screenView
-    plateauView = gf::LockedView(ScreenSize/2, gf::Vector2f((sizeSquare*8)));
-    boardView = gf::LockedView(ScreenSize/2, gf::Vector2f(sizeSquare*12, sizeSquare*10));
+    plateauView = gf::LockedView((ScreenSize/2), gf::Vector2f((sizeSquare*(8+2.5f))));
+    gameView = gf::LockedView(ScreenSize/2, gf::Vector2f(sizeSquare*12, sizeSquare*10));
 
     views.addView(plateauView);
-    views.addView(boardView);
+    views.addView(gameView);
     views.addView(screenView);
     views.setInitialFramebufferSize(ScreenSize);
 
@@ -29,8 +29,9 @@ Vue::Vue(gf::Vector2u SSize, ChessColor mycolor) : window("Tempete sur l'échiqu
 void Vue::draw(Plateau p, bool myTurn) {
     
     int numberPiece = ((int)ChessPiece::MAX - (int)ChessPiece::MIN + 1);
+    float borderThickness = 2.5f;
 
-    renderer.setView(boardView);
+    renderer.setView(gameView);
 
     gf::RectangleShape tableCloth(gf::Vector2f(plateauSize.x + 4 * sizeSquare, plateauSize.y + 2 * sizeSquare));
     tableCloth.setAnchor(gf::Anchor::Center);
@@ -94,7 +95,7 @@ void Vue::draw(Plateau p, bool myTurn) {
 
     
     
-    //draw plateau 
+    //draw board 
     for  (Case &c : p.state) {
         int x = c.position.x;
         int y = c.position.y;
@@ -143,8 +144,8 @@ void Vue::draw(Plateau p, bool myTurn) {
 
         
         shape.setAnchor(gf::Anchor::Center);
-        //shape.setOutlineColor(gf::Color::fromRgba32(85,60,40));
-        //shape.setOutlineThickness(2.5f);
+        shape.setOutlineColor(gf::Color::fromRgba32(85,60,40));
+        shape.setOutlineThickness(borderThickness);
         
         renderer.draw(shape);
         

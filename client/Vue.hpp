@@ -31,7 +31,7 @@ class Vue {
 		gf::RenderWindow renderer;
 
 		gf::LockedView plateauView;
-		gf::LockedView boardView;
+		gf::LockedView gameView;
 		gf::ScreenView screenView;
 		gf::ViewContainer views;
 
