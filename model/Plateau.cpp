@@ -176,48 +176,41 @@ std::vector<gf::Vector2i> Plateau::filterMoveAuthorized_Pawn(gf::Vector2i coordC
 	assert(coordCaseStart.x < 8);
 	assert(coordCaseStart.y >= 0);
 	assert(coordCaseStart.y < 8);
-
-	std::vector<gf::Vector2i> v;
-
+	
 	Piece piece = state[coordCaseStart.y * 8 + coordCaseStart.x].piece;
+	
+	if(piece.getType() != ChessPiece::PAWN) {
+		return mAvailable;
+	}
+	
 	int add = (piece.getColor() == ChessColor::WHITE) ? 1 : -1;
-
-	for(const auto &coordCase : mAvailable) {
-		std::vector<gf::Vector2i> casesPass = piece.getCasesPass(coordCaseStart, coordCase);
-
-		bool find = true;
-		for(const auto &coordPass : casesPass) {
-			
-			// cas pion 
-			if(piece.getType() == ChessPiece::PAWN) {
-				
-				// if one case in front of pawn
-				if(coordPass.y == coordCaseStart.y - add ) {
-					// cas eat in diagonal
-					if(coordPass.x-1 >= 0) {
-						Piece pL = state[(coordPass.y) * 8 + coordPass.x-1].piece;
-						if(pL.getType() != ChessPiece::NONE && pL.getColor() != piece.getColor()) {
-							v.push_back(gf::Vector2i(coordPass.x-1, coordPass.y));
-						}
-					}
-					
-					if(coordPass.x+1 < 8) {
-						Piece pR = state[(coordPass.y) * 8 + coordPass.x+1].piece;
-						if(pR.getType() != ChessPiece::NONE && pR.getColor() != piece.getColor()) {
-							v.push_back(gf::Vector2i(coordPass.x+1, coordPass.y));
-						}
-					}		
-				}
-				
-				if(state[(coordPass.y) * 8 + coordPass.x].piece.getType() != ChessPiece::NONE) { // quelque chose devant le pion
-					find=false;
-					break;	
-				}
-			}
-		}
+	
 		
-		if(find){
-			v.push_back(coordCase);
+	// one case in front of pawn
+	
+	// cas eat in diagonal
+	if(coordCaseStart.x-1 >= 0) {
+		Piece pL = state[(coordCaseStart.y-add) * 8 + coordCaseStart.x-1].piece;
+		if(pL.getType() != ChessPiece::NONE && pL.getColor() != piece.getColor()) {
+			std::cout <<"pion peut manger diago gauche"<<std::endl;
+			mAvailable.push_back(gf::Vector2i(coordCaseStart.x-1, coordCaseStart.y-add));
+		}
+	}
+	
+	if(coordCaseStart.x+1 < 8) {
+		Piece pR = state[(coordCaseStart.y-add) * 8 + coordCaseStart.x+1].piece;
+		if(pR.getType() != ChessPiece::NONE && pR.getColor() != piece.getColor()) {
+			mAvailable.push_back(gf::Vector2i(coordCaseStart.x+1, coordCaseStart.y-add));
+			std::cout <<"pion peut manger diago droite"<<std::endl;
+		}
+	}		
+
+	
+	if(state[(coordCaseStart.y-add) * 8 + coordCaseStart.x].piece.getType() != ChessPiece::NONE) { // quelque chose devant le pion
+		auto it = std::find(mAvailable.begin(), mAvailable.end(), gf::Vector2i(coordCaseStart.x, coordCaseStart.y-add));
+		if(it != mAvailable.end()) {
+			std::cout << "piece devant pion"<<std::endl;
+			mAvailable.erase(it);
 		}
 	}
 	
@@ -230,7 +223,7 @@ std::vector<gf::Vector2i> Plateau::filterMoveAuthorized_Pawn(gf::Vector2i coordC
 				Piece pL = state[coordCaseStart.y * 8 + coordCaseStart.x-1].piece;
 				if(pL.getType()==ChessPiece::PAWN && pL.getColor() != piece.getColor()) {
 					std::cout << "prise en passant a gauche possible" << std::endl;
-					v.push_back(gf::Vector2i(coordCaseStart.x-1, coordCaseStart.y-add));
+					mAvailable.push_back(gf::Vector2i(coordCaseStart.x-1, coordCaseStart.y-add));
 					prisePassant = true;
 				}
 			}
@@ -239,18 +232,17 @@ std::vector<gf::Vector2i> Plateau::filterMoveAuthorized_Pawn(gf::Vector2i coordC
 				Piece pR = state[coordCaseStart.y * 8 + coordCaseStart.x+1].piece;
 				if(pR.getType()==ChessPiece::PAWN && pR.getColor() != piece.getColor()) {
 					std::cout << "prise en passant a droite possible" << std::endl;
-					v.push_back(gf::Vector2i(coordCaseStart.x+1, coordCaseStart.y-add));
+					mAvailable.push_back(gf::Vector2i(coordCaseStart.x+1, coordCaseStart.y-add));
 					prisePassant = true;
 				}
 			}
 		}
 	}
 	
-
 	//fonction tmp debug
-	tmp(v);
+	tmp(mAvailable);
 
-	return v;
+	return mAvailable;
 }
 
 std::vector<gf::Vector2i> Plateau::filterMoveAuthorized_Check(gf::Vector2i coordCaseStart, std::vector<gf::Vector2i> mAvailable) {
