@@ -17,6 +17,7 @@ class Plateau {
 		std::vector<Piece> bin;
 		std::vector<Case> state;
 		bool playerInEchec;
+		bool prisePassant;
 		std::vector<gf::Vector2i> lastCoup;
 
 		Plateau();
@@ -24,8 +25,9 @@ class Plateau {
 		bool setMovement(ChessColor color, gf::Vector2i v);
 		
 		std::vector<gf::Vector2i> filterMoveAuthorized(gf::Vector2i coordCaseStart, std::vector<gf::Vector2i> mAvailable);
-
-		std::vector<gf::Vector2i> filterMoveAuthorized_Tangled_TakePion(gf::Vector2i coordCaseStart, std::vector<gf::Vector2i> mAvailable);
+		
+		std::vector<gf::Vector2i> filterMoveAuthorized_Tangled(gf::Vector2i coordCaseStart, std::vector<gf::Vector2i> mAvailable);
+		std::vector<gf::Vector2i> filterMoveAuthorized_Pawn(gf::Vector2i coordCaseStart, std::vector<gf::Vector2i> mAvailable);
 		std::vector<gf::Vector2i> filterMoveAuthorized_Check(gf::Vector2i coordCaseStart, std::vector<gf::Vector2i> mAvailable);
 
 		std::vector<gf::Vector2i> addMoveBigSmallCastling(gf::Vector2i coordCaseStart, std::vector<gf::Vector2i> mAvailable);
@@ -33,8 +35,7 @@ class Plateau {
 		void movePieces(gf::Vector2i coord1, gf::Vector2i coord2);
 		void deMovePieces(gf::Vector2i coord1, gf::Vector2i coord2, bool inBin);
 		
-		bool isInEchec(ChessColor color);
-		bool caseIsInEchec(gf::Vector2i coord, ChessColor color);
+		bool isInEchec(ChessColor color, gf::Vector2i coord = gf::Vector2i(-1));
 
 		void tmp(std::vector<gf::Vector2i>);
 };

@@ -55,6 +55,7 @@ void Game::run() {
 	// boucle de jeu
 	gf::Clock clock;
 	bool fullscreen = false;
+	bool click = false;
 
 	while (vue.window.isOpen()) {
 		gf::Event event;
@@ -73,50 +74,55 @@ void Game::run() {
 			fullscreen = !fullscreen;
     		vue.window.setFullscreen(fullscreen);
     	}
+		
+		if(clickAction.isActive()) {
+			click = true;
+		}else {
+			click = false;
+		}
+		
+		//gf::Time time = clock.restart();
 
-		gf::Time time = clock.restart();
+		if(myTurn && click) { // myTurn
+			gf::Vector2i v = vue.transformInSelectedCase(event.mouseButton.coords);
+			bool coupPionEnded = plateau.setMovement(myColor, v);
 
-		if(myTurn) { // myTurn
-			if(clickAction.isActive()) {
-				gf::Vector2i v = vue.transformInSelectedCase(event.mouseButton.coords);
-				bool coupPionEnded = plateau.setMovement(myColor, v);
+			if(coupPionEnded) {
+	
+				CoupReq coup;
+				coup.posStart.x = plateau.coordCaseSelected.x;
+				coup.posStart.y = plateau.coordCaseSelected.y;
+				coup.posEnd.x = v.x;
+				coup.posEnd.y = v.y;
+				
+				network.send(coup);
+				
+				network.queue.wait(packet);
+				
+				assert(packet.getType() == CoupRep::type);
+				
+				auto coupRep = packet.as<CoupRep>();
+				
+				// move piece
+				if(coupRep.err == CodeRep::NONE) { // coup valide
+					
+					std::cout << "------COUP MOI------" << std::endl;
+					plateau.state[coupRep.posStart.y * 8 + coupRep.posStart.x].piece.isMoved = true;
+					plateau.movePieces(plateau.coordCaseSelected, v);
+					ChessColor colAdv = (myColor == ChessColor::WHITE) ? ChessColor::BLACK : ChessColor::WHITE;
+					plateau.playerInEchec = plateau.isInEchec(colAdv);
+					plateau.prettyPrint();
 
-				if(coupPionEnded) {
-        
-					CoupReq coup;
-					coup.posStart.x = plateau.coordCaseSelected.x;
-					coup.posStart.y = plateau.coordCaseSelected.y;
-					coup.posEnd.x = v.x;
-					coup.posEnd.y = v.y;
+					plateau.coordCaseSelected = gf::Vector2i(-1,-1);
+					plateau.moveAvailable.clear();	
 					
-					network.send(coup);
+					plateau.lastCoup.push_back(gf::Vector2i(coupRep.posStart.x,coupRep.posStart.y));
+					plateau.lastCoup.push_back(gf::Vector2i(coupRep.posEnd.x,coupRep.posEnd.y));
 					
-					network.queue.wait(packet);
-					
-					assert(packet.getType() == CoupRep::type);
-					
-					auto coupRep = packet.as<CoupRep>();
-					
-					// move piece
-					if(coupRep.err == CodeRep::NONE) { // coup valide
-						
-						std::cout << "------COUP MOI------" << std::endl;
-						plateau.state[coupRep.posStart.y * 8 + coupRep.posStart.x].piece.isMoved = true;
-						plateau.movePieces(plateau.coordCaseSelected, v);
-						ChessColor colAdv = (myColor == ChessColor::WHITE) ? ChessColor::BLACK : ChessColor::WHITE;
-						plateau.playerInEchec = plateau.isInEchec(colAdv);
-						plateau.prettyPrint();
-
-						plateau.coordCaseSelected = gf::Vector2i(-1,-1);
-						plateau.moveAvailable.clear();	
-						
-						plateau.lastCoup.push_back(gf::Vector2i(coupRep.posStart.x,coupRep.posStart.y));
-						plateau.lastCoup.push_back(gf::Vector2i(coupRep.posEnd.x,coupRep.posEnd.y));
-						
-						myTurn = !myTurn;
-					}else if(coupRep.err == CodeRep::COUP_NO_VALIDE) {
-						std::cout << "------COUP MOI INVALIDE------" << std::endl;
-					}
+					myTurn = !myTurn;
+					plateau.prisePassant = false;
+				}else if(coupRep.err == CodeRep::COUP_NO_VALIDE) {
+					std::cout << "------COUP MOI INVALIDE------" << std::endl;
 				}
 			}
 		}else {
@@ -140,6 +146,7 @@ void Game::run() {
 					plateau.lastCoup.push_back(gf::Vector2i(coupAdv.posEnd.x,coupAdv.posEnd.y));
 						
 					myTurn = !myTurn;	
+					plateau.prisePassant = false;
 				}else if(coupAdv.err == CodeRep::COUP_NO_VALIDE) {
 					std::cout << "------COUP ADVERSE INVALIDE------" << std::endl;
 				}

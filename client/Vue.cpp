@@ -8,17 +8,17 @@ Vue::Vue(gf::Vector2u SSize, ChessColor mycolor) : window("Tempete sur l'échiqu
     ScreenSize = gf::Vector2u(1300, 1000);
     sizeSquare = 56.f;
     beginPlateau = gf::Vector2f(426.f, 276.f);
-    plateauSize = gf::Vector2f(sizeSquare * 8, sizeSquare * 8);
+    plateauSize = gf::Vector2f(sizeSquare * 8+5.f, sizeSquare * 8+5.f);
 
     window.setSize(ScreenSize);
     window.setFramerateLimit(60);
 
 
     //screenView
-    plateauView = gf::LockedView((ScreenSize/2), gf::Vector2f((sizeSquare*(8+2.5f))));
+    boardView = gf::LockedView(ScreenSize/2, plateauSize);
     gameView = gf::LockedView(ScreenSize/2, gf::Vector2f(sizeSquare*12, sizeSquare*10));
 
-    views.addView(plateauView);
+    views.addView(boardView);
     views.addView(gameView);
     views.addView(screenView);
     views.setInitialFramebufferSize(ScreenSize);
@@ -29,7 +29,6 @@ Vue::Vue(gf::Vector2u SSize, ChessColor mycolor) : window("Tempete sur l'échiqu
 void Vue::draw(Plateau p, bool myTurn) {
     
     int numberPiece = ((int)ChessPiece::MAX - (int)ChessPiece::MIN + 1);
-    float borderThickness = 2.5f;
 
     renderer.setView(gameView);
 
@@ -40,6 +39,14 @@ void Vue::draw(Plateau p, bool myTurn) {
     tableCloth.setTexture(sheetPiece, gf::RectF::fromPositionSize({ (1.f / numberPiece) * 2, .75f }, { (1.f / numberPiece), 0.25f }));
     renderer.draw(tableCloth);
     
+    std::string turn = (myTurn) ? std::string("It\'s your turn !") : std::string("It's opponent's turn !");
+    gf::Text text(turn, font, 20);
+    
+    text.setPosition(gf::Vector2f(ScreenSize.x/2.f, (beginPlateau.height)-25.f));
+    text.setAnchor(gf::Anchor::Center);
+    text.setColor(gf::Color::Black);
+    renderer.draw(text);
+
     std::string letters[8] = {"A", "B", "C", "D", "E", "F", "G", "H"};
 
     int incr = (myColor == ChessColor::WHITE) ? 7 : 0; 
@@ -88,56 +95,47 @@ void Vue::draw(Plateau p, bool myTurn) {
         renderer.draw(sprite);
     }
     
-    renderer.setView(plateauView);
-
-    gf::Color4f lightBrown = gf::Color::fromRgba32(240,217,181,255);
-    gf::Color4f darkBrown = gf::Color::fromRgba32(181,136,99,255);
-
+    renderer.setView(boardView);
     
-    
-    //draw board 
+    //draw plateau 
     for  (Case &c : p.state) {
         int x = c.position.x;
         int y = c.position.y;
         gf::Vector2i pos(x, y);
 
-        gf::RectangleShape shape({ sizeSquare, sizeSquare });
+        gf::RectangleShape shape({ sizeSquare-2.5f, sizeSquare -2.5f});
         shape.setPosition(gf::Vector2f(beginPlateau.col+sizeSquare/2 + ((float)x * sizeSquare), beginPlateau.height+sizeSquare/2 + ((float)y * sizeSquare)));
         
         // if case selected
-        if(y == p.coordCaseSelected.y && x == p.coordCaseSelected.x) {
-            
-            shape.setColor(gf::Color::fromRgba32(30, 144, 255, 200));
+        if(pos == p.coordCaseSelected) {
+            shape.setColor(gf::Color::fromRgba32(250, 190, 88, 160));
+            //shape.setColor(gf::Color::fromRgba32(30, 144, 255, 180));
         }else // if my king is in echec
         if(c.piece.getType() == ChessPiece::KING && c.piece.getColor() == myColor && myTurn && p.playerInEchec) {
             
-            shape.setColor(gf::Color::fromRgba32(255, 0, 0, 128));
+            shape.setColor(gf::Color::fromRgba32(255, 0, 0, 100));
         }else // if adv king is in echec
         if(c.piece.getType() == ChessPiece::KING && c.piece.getColor() != myColor && !myTurn && p.playerInEchec) {
             
-            shape.setColor(gf::Color::fromRgba32(255, 0, 0, 128));
+            shape.setColor(gf::Color::fromRgba32(255, 0, 0, 100));
         }else if(p.lastCoup.size() >= 2 && (pos == p.lastCoup.back() || pos == p.lastCoup[p.lastCoup.size()-2])) {
 
-            shape.setColor(gf::Color::fromRgba32(255, 174, 0, 128));
+            shape.setColor(gf::Color::fromRgba32(250, 190, 88, 160));
         }else {
             
             if (y % 2 == 0) {
                 if (x % 2 == 0) {
                     shape.setTexture(sheetPiece, gf::RectF::fromPositionSize({ (1.f / numberPiece) * 1, .75f }, { (1.f / numberPiece), .5f}));
-                    //shape.setColor(lightBrown);
                 }
                 else {
                     shape.setTexture(sheetPiece, gf::RectF::fromPositionSize({ (1.f / numberPiece) * 0, .75f }, { (1.f / numberPiece), .5f }));
-                    //shape.setColor(darkBrown);
                 }
             } else {
                 if (x % 2 == 0) {
                     shape.setTexture(sheetPiece, gf::RectF::fromPositionSize({ (1.f / numberPiece) * 0, .75f }, { (1.f / numberPiece), .5f }));
-                    //shape.setColor(darkBrown);
                 }
                 else {
                     shape.setTexture(sheetPiece, gf::RectF::fromPositionSize({ (1.f / numberPiece) * 1, .75f }, { (1.f / numberPiece), .5f }));
-                    //shape.setColor(lightBrown);
                 }
             }
         }
@@ -145,7 +143,7 @@ void Vue::draw(Plateau p, bool myTurn) {
         
         shape.setAnchor(gf::Anchor::Center);
         shape.setOutlineColor(gf::Color::fromRgba32(85,60,40));
-        shape.setOutlineThickness(borderThickness);
+        shape.setOutlineThickness(2.5f);
         
         renderer.draw(shape);
         
@@ -155,16 +153,35 @@ void Vue::draw(Plateau p, bool myTurn) {
             float i = (float)c.piece.getType();
             float j = (int)(c.piece.getColor())/4.f;
             
-            sprite.setTexture(sheetPiece, gf::RectF::fromPositionSize({ (1.f / numberPiece) * i, j }, { (1.f / numberPiece), 0.25f }));
-            sprite.setPosition(gf::Vector2f(beginPlateau.col + sizeSquare/2 + ((float)x * sizeSquare) , beginPlateau.height+sizeSquare/2 + ((float)y * sizeSquare)));
-            sprite.setScale((1.f / 6.5f));
-            sprite.setAnchor(gf::Anchor::Center);
-            
-            if (myColor == ChessColor::BLACK) {
-                sprite.setRotation(gf::Pi);
-            }
-            
-            renderer.draw(sprite);
+            if(c.piece.getType() == ChessPiece::PAWN && (y == 0 || y == 7)) {
+                
+                int mul = (c.piece.getColor() == ChessColor::WHITE) ? 1: -1;
+                int tab[8] = {-1*mul,-1*mul,-1*mul, 1*mul, 1*mul, 1*mul, 1*mul, -1*mul};
+                for(int z = 0; z < 4 ; z++) {
+                    sprite.setTexture(sheetPiece, gf::RectF::fromPositionSize({ (1.f / numberPiece) * (z+1), j }, { (1.f / numberPiece), 0.25f }));
+                    sprite.setPosition(gf::Vector2f(beginPlateau.col + sizeSquare/2 + ((float)x * sizeSquare)+(sizeSquare/4)*tab[z*2] , beginPlateau.height+sizeSquare/2 + ((float)y * sizeSquare)+(sizeSquare/4)*tab[z*2+1]));
+                    sprite.setScale((1.f / (6.5f*2.f)));
+                    sprite.setAnchor(gf::Anchor::Center);
+                    
+                    if (myColor == ChessColor::BLACK) {
+                        sprite.setRotation(gf::Pi);
+                    }
+
+                    renderer.draw(sprite); 
+                }
+            }else {
+
+                sprite.setTexture(sheetPiece, gf::RectF::fromPositionSize({ (1.f / numberPiece) * i, j }, { (1.f / numberPiece), 0.25f }));
+                sprite.setPosition(gf::Vector2f(beginPlateau.col + sizeSquare/2 + ((float)x * sizeSquare) , beginPlateau.height+sizeSquare/2 + ((float)y * sizeSquare)));
+                sprite.setScale((1.f / 6.5f));
+                sprite.setAnchor(gf::Anchor::Center);
+                
+                if (myColor == ChessColor::BLACK) {
+                    sprite.setRotation(gf::Pi);
+                }
+
+                renderer.draw(sprite);
+            }            
         }
    
         // draw move authorized
@@ -185,18 +202,18 @@ void Vue::draw(Plateau p, bool myTurn) {
 
 void Vue::setColor (ChessColor color) {
     myColor = color;
-    plateauView.setRotation(0);
+    boardView.setRotation(0);
     
     std::string t = (myColor == ChessColor::WHITE) ? "White" : "Black";
     window.setTitle("Tempete sur l'échiquier - " + t);
     
     if (myColor == ChessColor::BLACK) {
-	    plateauView.setRotation(gf::Pi);
+	    boardView.setRotation(gf::Pi);
     } 
 }
 
 gf::Vector2i Vue::transformInSelectedCase(gf::Vector2i mouseCoord) {
-    gf::Vector2i mouseCoords = renderer.mapPixelToCoords(mouseCoord, plateauView);
+    gf::Vector2i mouseCoords = renderer.mapPixelToCoords(mouseCoord, boardView);
     //std::cout << "la : " << ((mouseCoords.height-beginPlateau.height))<< ";" << (mouseCoords.col-beginPlateau.col) << std::endl;
     gf::Vector2i v(-1,-1); 
 
