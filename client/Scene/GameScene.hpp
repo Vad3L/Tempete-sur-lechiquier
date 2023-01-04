@@ -25,15 +25,15 @@ class GameScene : public gf::Scene {
         void doHandleActions(gf::Window& window) override;
         void doProcessEvent(gf::Event& event) override;
         void doRender(gf::RenderTarget& target, const gf::RenderStates &states) override;
+        void doUpdate(gf::Time time) override;
+
         void onActivityChange(bool active)  override;
     private:
         GameHub& m_game;
 
         gf::Action m_quitAction;
-        gf::Action m_clickAction;
         gf::Action m_fullscreenAction;
 
-        bool m_click;
         bool m_myTurn;
         ChessColor m_myColor;
 
@@ -45,10 +45,8 @@ class GameScene : public gf::Scene {
         float m_sizeSquare;
 		gf::Vector2f m_plateauSize;
 
-        gf::Texture m_sheetPiece;
-
-
-
+        gf::LockedView m_boardView;
+        gf::LockedView m_gameView;
 };
 
 

@@ -12,35 +12,32 @@ GameScene::GameScene(GameHub& game)
 , m_game(game)
 , m_quitAction("quit")
 , m_fullscreenAction("Fullscreen")
-, m_clickAction("click")
-, m_click(false)
+
 , m_myTurn(true)
 , m_myColor(ChessColor::WHITE)
 , m_plateau()
 , m_network()
 , m_packet()
 {
-   
+    auto screenSize_2 = m_game.getRenderer().getSize()/2;
+    
     m_sizeSquare = 56.f;
-    m_beginPlateau = gf::Vector2f(426.f, 276.f);
+    m_beginPlateau = gf::Vector2f(screenSize_2-4*m_sizeSquare);
     m_plateauSize = gf::Vector2f(m_sizeSquare * 8+5.f, m_sizeSquare * 8+5.f);
 
-
-    setClearColor(gf::Color::Blue);
+    //setClearColor(gf::Color::Blue);
 
     m_quitAction.addKeycodeKeyControl(gf::Keycode::Escape);
     addAction(m_quitAction);
 
-	m_clickAction.addMouseButtonControl(gf::MouseButton::Left);
-	m_clickAction.setInstantaneous();
-	addAction(m_clickAction);
-
   	m_fullscreenAction.addKeycodeKeyControl(gf::Keycode::F);
   	addAction(m_fullscreenAction);
 
+    m_boardView = gf::LockedView(screenSize_2, m_plateauSize);
+    addView(m_boardView);
 
-
-
+    m_gameView = gf::LockedView(screenSize_2, gf::Vector2f(m_sizeSquare*12, m_sizeSquare*10));
+    addView(m_gameView);
 }
 
 
@@ -57,23 +54,22 @@ void GameScene::doHandleActions([[maybe_unused]] gf::Window& window) {
         window.toggleFullscreen();
     }
 
-    if(m_clickAction.isActive()) {
-        m_click = true;
-    }else {
-        m_click = false;
-    }
-
 }
 
 void GameScene::doProcessEvent(gf::Event& event) {
-        /*switch (event.type)
-        {
-            case gf::EventType::MouseMoved:
-            m_widgets.pointTo(m_game.computeWindowToGameCoordinates(event.mouseCursor.coords, getHudView()));
-            break;
-        }*/
+    bool click = false;
+    
+    switch (event.type)
+    {
+    //    case gf::EventType::MouseMoved:
+    //    m_widgets.pointTo(m_game.computeWindowToGameCoordinates(event.mouseCursor.coords, getHudView()));
+    //    break;
+        case gf::EventType::MouseButtonPressed:
+        click = true;
+        break;
+    }
 
-    if(m_myTurn && m_click) { // m_myTurn
+    if(m_myTurn && click) { // m_myTurn
         gf::Vector2i v = transformInSelectedCase(event.mouseButton.coords);
         bool coupPionEnded = m_plateau.setMovement(m_myColor, v);
 
@@ -117,30 +113,7 @@ void GameScene::doProcessEvent(gf::Event& event) {
         }
     }else {
         
-        if(m_network.queue.poll(m_packet)) {
-            
-            //m_network.queue.wait(m_packet);
-            assert(m_packet.getType() == CoupRep::type);
-            
-            auto coupAdv = m_packet.as<CoupRep>();
-            
-            if(coupAdv.err == CodeRep::NONE) { // coup valide
-                
-                std::cout << "------COUP ADVERSE------" << std::endl;
-                m_plateau.state[coupAdv.posStart.y * 8 + coupAdv.posStart.x].piece.isMoved = true;
-                m_plateau.movePieces(gf::Vector2i(coupAdv.posStart.x, coupAdv.posStart.y), gf::Vector2i(coupAdv.posEnd.x, coupAdv.posEnd.y));
-                m_plateau.playerInEchec = m_plateau.isInEchec(m_myColor);
-                m_plateau.prettyPrint();
-
-                m_plateau.lastCoup.push_back(gf::Vector2i(coupAdv.posStart.x,coupAdv.posStart.y));
-                m_plateau.lastCoup.push_back(gf::Vector2i(coupAdv.posEnd.x,coupAdv.posEnd.y));
-                    
-                m_myTurn = !m_myTurn;	
-                m_plateau.prisePassant = false;
-            }else if(coupAdv.err == CodeRep::COUP_NO_VALIDE) {
-                std::cout << "------COUP ADVERSE INVALIDE------" << std::endl;
-            }
-        }
+        
     }
 }
 
@@ -148,20 +121,19 @@ void GameScene::doRender(gf::RenderTarget& target, const gf::RenderStates &state
 
     int numberPiece = ((int)ChessPiece::MAX - (int)ChessPiece::MIN + 1);
 
-    target.setView(getHudView());
-
+    target.setView(m_gameView);
+    auto screenSize = m_game.getRenderer().getSize();
+    
     gf::RectangleShape tableCloth(gf::Vector2f(m_plateauSize.x + 4 * m_sizeSquare, m_plateauSize.y + 2 * m_sizeSquare));
     tableCloth.setAnchor(gf::Anchor::Center);
-    //tableCloth.setColor(gf::Color::fromRgba32(85,60,40));
-    auto ScreenSize = m_game.getRenderer().getSize();
-    tableCloth.setPosition(ScreenSize/2);
+    tableCloth.setPosition(screenSize/2);
     tableCloth.setTexture(m_game.resources.getTexture("ChessSheet.png"), gf::RectF::fromPositionSize({ (1.f / numberPiece) * 2, .75f }, { (1.f / numberPiece), 0.25f }));
     target.draw(tableCloth);
     
     std::string turn = (m_myTurn) ? std::string("It\'s your turn !") : std::string("It's opponent's turn !");
     gf::Text text(turn, m_game.resources.getFont("DroidSans.ttf"), 20);
     
-    text.setPosition(gf::Vector2f(ScreenSize.x/2.f, (m_beginPlateau.height)-25.f));
+    text.setPosition(gf::Vector2f(screenSize.x/2.f, (m_beginPlateau.height)-25.f));
     text.setAnchor(gf::Anchor::Center);
     text.setColor(gf::Color::Black);
     target.draw(text);
@@ -214,7 +186,7 @@ void GameScene::doRender(gf::RenderTarget& target, const gf::RenderStates &state
         target.draw(sprite);
     }
     
-    target.setView(getHudView());
+    target.setView(m_boardView);
     
     //draw plateau 
     for  (Case &c : m_plateau.state) {
@@ -316,8 +288,6 @@ void GameScene::doRender(gf::RenderTarget& target, const gf::RenderStates &state
    } 
    
    target.setView(getHudView());
-
-
 }
 
 
@@ -347,7 +317,7 @@ void GameScene::onActivityChange(bool active){
 
         std::cout << "Vous jouez la couleur : " << (int)m_myColor << std::endl;
         if (m_myColor == ChessColor::BLACK) {
-            getHudView().setRotation(gf::Pi);
+            m_boardView.setRotation(gf::Pi);
         } 
     }
 }
@@ -364,4 +334,31 @@ gf::Vector2i GameScene::transformInSelectedCase(gf::Vector2i mouseCoord) {
 
     std::cout << "caseSelectionne: [ligne/col] " << v.y << "," << v.x << std::endl;
     return v;
+}
+
+void GameScene::doUpdate(gf::Time time) {
+    if(m_network.queue.poll(m_packet)) {
+            
+        //m_network.queue.wait(m_packet);
+        assert(m_packet.getType() == CoupRep::type);
+        
+        auto coupAdv = m_packet.as<CoupRep>();
+        
+        if(coupAdv.err == CodeRep::NONE) { // coup valide
+            
+            std::cout << "------COUP ADVERSE------" << std::endl;
+            m_plateau.state[coupAdv.posStart.y * 8 + coupAdv.posStart.x].piece.isMoved = true;
+            m_plateau.movePieces(gf::Vector2i(coupAdv.posStart.x, coupAdv.posStart.y), gf::Vector2i(coupAdv.posEnd.x, coupAdv.posEnd.y));
+            m_plateau.playerInEchec = m_plateau.isInEchec(m_myColor);
+            m_plateau.prettyPrint();
+
+            m_plateau.lastCoup.push_back(gf::Vector2i(coupAdv.posStart.x,coupAdv.posStart.y));
+            m_plateau.lastCoup.push_back(gf::Vector2i(coupAdv.posEnd.x,coupAdv.posEnd.y));
+                
+            m_myTurn = !m_myTurn;	
+            m_plateau.prisePassant = false;
+        }else if(coupAdv.err == CodeRep::COUP_NO_VALIDE) {
+            std::cout << "------COUP ADVERSE INVALIDE------" << std::endl;
+        }
+    }
 }
