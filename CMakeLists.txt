@@ -24,7 +24,16 @@ add_executable(client
 	client/Network.cpp
 	model/Plateau.cpp
 	client/Vue.cpp
-	model/Case.cpp)
+	model/Case.cpp
+	client/GameHub.cpp
+	client/Scene/StartScene.cpp		
+	client/Scene/MenuScene.cpp
+	client/Scene/PlaySelectScene.cpp
+	client/Scene/GameScene.cpp
+
+	client/Entity/PlayTitleEntity.cpp
+	client/Entity/TitleEntity.cpp
+	)
 
 add_executable(server
 	server/server.cpp
