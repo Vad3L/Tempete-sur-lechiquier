@@ -14,8 +14,8 @@ BoardEntity::BoardEntity(gf::ResourceManager& resources, Plateau &plateau)
 , m_backgroundTexture(resources.getTexture("ChessSheet.png"))
 , m_sizeSquare(56.f)
 , m_caseSelected(-1)
-,m_myColor(ChessColor::WHITE)
-,m_plateau(plateau)
+, m_myColor(ChessColor::WHITE)
+, m_plateau(plateau)
 {
     m_backgroundTexture.setSmooth(true);
 }

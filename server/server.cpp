@@ -51,14 +51,14 @@ int main (int argc, char* argv[]) {
                 if (turnPlayer1) {
 
                     std::cout << "------TOUR J1------" << std::endl;
-                    if(fctAnnex.performActionMoveNormal(&plateau, &client1, &client2, &packetC1, &packetC2, &turnPlayer1) == -1) {
+                    if(fctAnnex.performActionMoveNormal(plateau, client1, client2, packetC1, packetC2, turnPlayer1) == -1) {
                         return -1;
                     }
                     
                 }else {
 
                     std::cout << "------TOUR J2------" << std::endl;
-                    if(fctAnnex.performActionMoveNormal(&plateau, &client1, &client2, &packetC1, &packetC2, &turnPlayer1) == -1) {
+                    if(fctAnnex.performActionMoveNormal(plateau, client1, client2, packetC1, packetC2, turnPlayer1) == -1) {
                         return -1;
                     }
 
