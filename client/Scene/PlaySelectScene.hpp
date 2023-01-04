@@ -32,7 +32,6 @@ class PlaySelectScene : public gf::Scene {
         PlayTitleEntity m_PlayTitleEntity;
 
         gf::WidgetContainer m_widgets;
-        gf::TextButtonWidget m_hostGame;
         gf::TextButtonWidget m_join;
 
         

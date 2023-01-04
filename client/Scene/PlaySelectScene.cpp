@@ -13,7 +13,6 @@ PlaySelectScene::PlaySelectScene(GameHub& game)
 , m_triggerAction("TriggerAction")
 , m_quitAction("Quit")
 , m_PlayTitleEntity(game.resources)
-, m_hostGame("Host", game.resources.getFont("Trajan-Color-Concept.otf"))
 , m_join("Join", game.resources.getFont("Trajan-Color-Concept.otf"))
 {
     setClearColor(gf::Color::Black);
@@ -44,13 +43,6 @@ PlaySelectScene::PlaySelectScene(GameHub& game)
         button.setCallback(callback);
         m_widgets.addWidget(button);
     };
-
-    setupButton(m_hostGame, [&] () {
-        gf::Log::debug("host button pressed!\n");
-        /*m_game.state.levelIndex = 0;
-        m_game.level.loadLevel(m_game.data, m_game.state.levelIndex);
-        m_game.replaceAllScenes(m_game.level);*/
-    });
 
     setupButton(m_join, [&] () {
         gf::Log::debug("join button pressed!\n");
@@ -101,11 +93,6 @@ PlaySelectScene::PlaySelectScene(GameHub& game)
         const float paddingSize = coords.getRelativeSize({0.01f, 0.f}).x;
         const unsigned resumeCharacterSize = coords.getRelativeCharacterSize(characterSize);
 
-        m_hostGame.setCharacterSize(resumeCharacterSize);
-        m_hostGame.setPosition(coords.getRelativePoint({0.275f, 0.425f}));
-        m_hostGame.setParagraphWidth(paragraphWidth);
-        m_hostGame.setPadding(paddingSize);
-
         m_join.setCharacterSize(resumeCharacterSize);
         m_join.setPosition(coords.getRelativePoint({0.275f, 0.425f + characterSize + spaceBetweenButton}));
         m_join.setParagraphWidth(paragraphWidth);
@@ -117,9 +104,6 @@ PlaySelectScene::PlaySelectScene(GameHub& game)
 
     void PlaySelectScene::doShow() {
     m_widgets.clear();
-
-    m_hostGame.setDefault();
-    m_widgets.addWidget(m_hostGame);
 
     m_join.setDefault();
     m_widgets.addWidget(m_join);

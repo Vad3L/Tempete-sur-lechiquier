@@ -1,6 +1,5 @@
 #include <iostream>
 
-#include "Game.hpp"
 #include "GameHub.hpp" 
 
 int main(int argc, char* argv[]) {

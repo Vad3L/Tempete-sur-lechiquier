@@ -179,7 +179,7 @@ std::vector<gf::Vector2i> Plateau::filterMoveAuthorized_Pawn(gf::Vector2i coordC
 	
 	Piece piece = state[coordCaseStart.y * 8 + coordCaseStart.x].piece;
 	
-	if(piece.getType() != ChessPiece::PAWN) {
+	if(piece.getType() != ChessPiece::PAWN || coordCaseStart.y == 0 || coordCaseStart.y == 7) {
 		return mAvailable;
 	}
 	

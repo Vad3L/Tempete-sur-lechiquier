@@ -12,6 +12,7 @@
 #include "../../model/Plateau.hpp"
 #include "../../protocole/protocole.h"
 
+#include "../Entity/BoardEntity.hpp"
 
 struct GameHub;
 
@@ -41,13 +42,9 @@ class GameScene : public gf::Scene {
         Network m_network;
         gf::Packet m_packet;
 
-        gf::Vector2f m_beginPlateau;
-        float m_sizeSquare;
-		gf::Vector2f m_plateauSize;
-
-        gf::LockedView m_boardView;
-        gf::LockedView m_gameView;
-};
+        BoardEntity m_boardEntity;    
+        gf::View l_view;
+};  
 
 
 
