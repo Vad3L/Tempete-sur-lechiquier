@@ -81,38 +81,38 @@ PlaySelectScene::PlaySelectScene(GameHub& game)
     }
 
     void PlaySelectScene::doProcessEvent(gf::Event& event) {
-    switch (event.type)
-    {
-        case gf::EventType::MouseMoved:
-        m_widgets.pointTo(m_game.computeWindowToGameCoordinates(event.mouseCursor.coords, getHudView()));
-        break;
-    }
+        switch (event.type)
+        {
+            case gf::EventType::MouseMoved:
+            m_widgets.pointTo(m_game.computeWindowToGameCoordinates(event.mouseCursor.coords, getHudView()));
+            break;
+        }
     }
 
     void PlaySelectScene::doRender(gf::RenderTarget& target, const gf::RenderStates &states) {
-    constexpr float characterSize = 0.075f;
-    constexpr float spaceBetweenButton = 0.050f;
-    constexpr gf::Vector2f backgroundSize(0.5f, 0.3f);
+        constexpr float characterSize = 0.075f;
+        constexpr float spaceBetweenButton = 0.050f;
+        constexpr gf::Vector2f backgroundSize(0.5f, 0.3f);
 
-    target.setView(getHudView());
-    gf::Coordinates coords(target);
+        target.setView(getHudView());
+        gf::Coordinates coords(target);
 
-    const float paragraphWidth = coords.getRelativeSize(backgroundSize - 0.05f).x;
-    const float paddingSize = coords.getRelativeSize({0.01f, 0.f}).x;
-    const unsigned resumeCharacterSize = coords.getRelativeCharacterSize(characterSize);
+        const float paragraphWidth = coords.getRelativeSize(backgroundSize - 0.05f).x;
+        const float paddingSize = coords.getRelativeSize({0.01f, 0.f}).x;
+        const unsigned resumeCharacterSize = coords.getRelativeCharacterSize(characterSize);
 
-    m_hostGame.setCharacterSize(resumeCharacterSize);
-    m_hostGame.setPosition(coords.getRelativePoint({0.275f, 0.425f}));
-    m_hostGame.setParagraphWidth(paragraphWidth);
-    m_hostGame.setPadding(paddingSize);
+        m_hostGame.setCharacterSize(resumeCharacterSize);
+        m_hostGame.setPosition(coords.getRelativePoint({0.275f, 0.425f}));
+        m_hostGame.setParagraphWidth(paragraphWidth);
+        m_hostGame.setPadding(paddingSize);
 
-    m_join.setCharacterSize(resumeCharacterSize);
-    m_join.setPosition(coords.getRelativePoint({0.275f, 0.425f + characterSize + spaceBetweenButton}));
-    m_join.setParagraphWidth(paragraphWidth);
-    m_join.setPadding(paddingSize);
+        m_join.setCharacterSize(resumeCharacterSize);
+        m_join.setPosition(coords.getRelativePoint({0.275f, 0.425f + characterSize + spaceBetweenButton}));
+        m_join.setParagraphWidth(paragraphWidth);
+        m_join.setPadding(paddingSize);
 
-    m_widgets.render(target, states);
-    m_PlayTitleEntity.render(target,states);
+        m_widgets.render(target, states);
+        m_PlayTitleEntity.render(target,states);
     }
 
     void PlaySelectScene::doShow() {

@@ -40,6 +40,7 @@ add_executable(server
 	model/Plateau.cpp
 	model/Case.cpp
 	model/Piece.cpp
+	model/Card.cpp
 	server/AnnexFctServer.cpp
 	)
 
