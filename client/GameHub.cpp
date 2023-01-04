@@ -1,6 +1,6 @@
 #include "GameHub.hpp"
 
-#define GAME_DATADIR "/home/xadel/Project/Tempete-sur-lechiquier/data/"
+#define GAME_DATADIR "../data/"
 
 
 GameHub::GameHub()
