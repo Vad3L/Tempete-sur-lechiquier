@@ -9,6 +9,7 @@
 
 #include <vector>
 #include <cassert>
+#include <string>
 
 class Plateau {
 	public:
@@ -21,6 +22,7 @@ class Plateau {
 		std::vector<gf::Vector2i> lastCoup;
 
 		Plateau();
+		std::string getSymbol (ChessColor c, ChessPiece p);
 		void prettyPrint();
 		bool setMovement(ChessColor color, gf::Vector2i v);
 		
