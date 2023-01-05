@@ -141,9 +141,10 @@ gf::Vector2i BoardEntity::getTransformCaseSelected(gf::Vector2i sizeWindows, gf:
         v.y = (int)((mouseCoord.height-beginPlateau.height)/(m_gameData.m_sizeSquare));
         v.x = (int)((mouseCoord.col-beginPlateau.col)/(m_gameData.m_sizeSquare));
     }
-    if(v.y < 0 || v.x < 0) {
+    if(v.y < 0 || v.x < 0 || v.y > 7 || v.x > 7) {
         v.x = v.y = -1;
     }
 
+    std::cout << "caseSelectionne: [ligne/col] " << v.y << "," << v.x << std::endl;
     return v;
 }

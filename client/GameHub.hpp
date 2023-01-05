@@ -7,6 +7,7 @@
 #include "Scene/MenuScene.hpp"
 #include "Scene/PlaySelectScene.hpp"
 #include "Scene/GameScene.hpp"
+#include "Scene/RulesScene.hpp"
 
 /*#include "QuitScene.hpp"
 #include "MenuScene.hpp"
@@ -21,6 +22,8 @@ struct GameHub : gf::GameManager {
     MenuScene menu;
     PlaySelectScene play;
     GameScene game;
+    RulesScene rules;
+
     /*CreditScene credits;
     QuitScene quit;
 */

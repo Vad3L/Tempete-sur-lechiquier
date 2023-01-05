@@ -30,12 +30,14 @@ add_executable(client
 	client/Scene/MenuScene.cpp
 	client/Scene/PlaySelectScene.cpp
 	client/Scene/GameScene.cpp
+	client/Scene/RulesScene.cpp
 
 	client/GameData.cpp
 	client/Entity/BoardEntity.cpp
 	client/Entity/TableBoardEntity.cpp
 	client/Entity/PlayTitleEntity.cpp
 	client/Entity/TitleEntity.cpp
+	client/Entity/RulesEntity.cpp
 	)
 
 add_executable(server

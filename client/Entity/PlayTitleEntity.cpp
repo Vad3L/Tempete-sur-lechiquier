@@ -39,7 +39,7 @@ void PlayTitleEntity::render(gf::RenderTarget &target, const gf::RenderStates &s
 
   unsigned subtitleCharacterSize = coords.getRelativeCharacterSize(0.05f);
 
-  gf::Text subtitle("Join or host", m_font, subtitleCharacterSize);
+  gf::Text subtitle("Join a game", m_font, subtitleCharacterSize);
   subtitle.setColor(gf::Color::White);
   subtitle.setPosition(coords.getRelativePoint({ 0.5f, 0.25f }));
   subtitle.setAnchor(gf::Anchor::Center);

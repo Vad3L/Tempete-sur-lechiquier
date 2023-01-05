@@ -54,7 +54,7 @@
 
     setupButton(m_rules, [&] () {
         gf::Log::debug("Rules pressed!\n");
-        //m_game.replaceAllScenes(m_game.rules);
+        m_game.replaceAllScenes(m_game.rules);
     });
 
     setupButton(m_quit, [&] () {
@@ -100,12 +100,6 @@
     float backgroundHeight = coords.getRelativeSize(gf::vec(0.0f, 1.0f)).height;
     float backgroundScale = backgroundHeight / m_backgroundTexture.getSize().height;
 
-    gf::Sprite background(m_backgroundTexture);
-    background.setColor(gf::Color::Opaque(0.20f));
-    background.setPosition(coords.getCenter());
-    background.setAnchor(gf::Anchor::Center);
-    background.setScale(backgroundScale);
-    target.draw(background, states);
 
     target.setView(getHudView());
 
@@ -141,6 +135,13 @@
     m_quit.setPadding(paddingSize);
 
     m_widgets.render(target, states);
+
+    gf::Sprite background(m_backgroundTexture);
+    background.setColor(gf::Color::Opaque(0.20f));
+    background.setPosition(coords.getCenter());
+    background.setAnchor(gf::Anchor::Center);
+    background.setScale(backgroundScale);
+    target.draw(background, states);
   }
 
   void MenuScene::doShow() {
