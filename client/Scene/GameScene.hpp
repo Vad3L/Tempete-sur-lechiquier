@@ -13,14 +13,15 @@
 #include "../../protocole/protocole.h"
 
 #include "../Entity/BoardEntity.hpp"
+#include "../Entity/TableBoardEntity.hpp"
+#include "../GameData.hpp"
 
 struct GameHub;
+struct GameData;
 
 class GameScene : public gf::Scene {
     public:
         GameScene(GameHub& game);
-        gf::Vector2i transformInSelectedCase(gf::Vector2i mouseCoord);
-        
 
     private:
         void doHandleActions(gf::Window& window) override;
@@ -31,19 +32,19 @@ class GameScene : public gf::Scene {
         void onActivityChange(bool active)  override;
     private:
         GameHub& m_game;
+        GameData m_gameData;
 
         gf::Action m_quitAction;
         gf::Action m_fullscreenAction;
 
-        bool m_myTurn;
-        ChessColor m_myColor;
-
-        Plateau m_plateau;
+        
         Network m_network;
         gf::Packet m_packet;
+    
+        gf::LockedView m_boardView;
 
         BoardEntity m_boardEntity;    
-        gf::View l_view;
+        TableBoardEntity m_tableBoardEntity;
 };  
 
 

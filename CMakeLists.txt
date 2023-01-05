@@ -31,7 +31,9 @@ add_executable(client
 	client/Scene/PlaySelectScene.cpp
 	client/Scene/GameScene.cpp
 
+	client/GameData.cpp
 	client/Entity/BoardEntity.cpp
+	client/Entity/TableBoardEntity.cpp
 	client/Entity/PlayTitleEntity.cpp
 	client/Entity/TitleEntity.cpp
 	)

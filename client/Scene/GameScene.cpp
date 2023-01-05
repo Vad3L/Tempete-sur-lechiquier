@@ -12,15 +12,13 @@ GameScene::GameScene(GameHub& game)
 , m_game(game)
 , m_quitAction("quit")
 , m_fullscreenAction("Fullscreen")
-, m_myTurn(true)
-, m_myColor(ChessColor::WHITE)
-, m_plateau()
 , m_network()
 , m_packet()
-, m_boardEntity(game.resources, m_plateau)
+, m_boardEntity(game.resources, m_gameData)
+, m_tableBoardEntity(game.resources, m_gameData)
 {
     //setClearColor(gf::Color::Blue);
-
+    
     m_quitAction.addKeycodeKeyControl(gf::Keycode::Escape);
     addAction(m_quitAction);
 
@@ -28,8 +26,10 @@ GameScene::GameScene(GameHub& game)
   	addAction(m_fullscreenAction);
 
     addWorldEntity(m_boardEntity);
-    
-    
+    addWorldEntity(m_tableBoardEntity);
+
+    m_boardView = gf::LockedView(game.getRenderer().getSize()/2, {8*m_gameData.m_sizeSquare+5.f, 8*m_gameData.m_sizeSquare+5.f});
+    addView(m_boardView);
 }
 
 void GameScene::doHandleActions([[maybe_unused]] gf::Window& window) {
@@ -58,18 +58,21 @@ void GameScene::doProcessEvent(gf::Event& event) {
         case gf::EventType::MouseButtonPressed:
         click = true;
         break;
+        case gf::EventType::Resized :
+        m_boardView.setCenter(event.resize.size/2);
+        break;
     }
     
-    if(m_myTurn && click) { // m_myTurn
-        gf::Vector2i v = m_boardEntity.getTransformCaseSelected(m_game.getWindow().getSize(), m_game.getRenderer().mapPixelToCoords(event.mouseButton.coords, getHudView()));
+    if(m_gameData.m_myTurn && click) { // m_gameData.m_myTurn
+        gf::Vector2i v = m_boardEntity.getTransformCaseSelected(m_game.getWindow().getSize(), m_game.getRenderer().mapPixelToCoords(event.mouseButton.coords, m_boardView));
         
-        bool coupPionEnded = m_plateau.setMovement(m_myColor, v);
+        bool coupPionEnded = m_gameData.m_plateau.setMovement(m_gameData.m_myColor, v);
         
         if(coupPionEnded) {
 
             CoupReq coup;
-            coup.posStart.x = m_plateau.coordCaseSelected.x;
-            coup.posStart.y = m_plateau.coordCaseSelected.y;
+            coup.posStart.x = m_gameData.m_plateau.coordCaseSelected.x;
+            coup.posStart.y = m_gameData.m_plateau.coordCaseSelected.y;
             coup.posEnd.x = v.x;
             coup.posEnd.y = v.y;
             
@@ -85,20 +88,20 @@ void GameScene::doProcessEvent(gf::Event& event) {
             if(coupRep.err == CodeRep::NONE) { // coup valide
                 
                 std::cout << "------COUP MOI------" << std::endl;
-                m_plateau.state[coupRep.posStart.y * 8 + coupRep.posStart.x].piece.isMoved = true;
-                m_plateau.movePieces(m_plateau.coordCaseSelected, v);
-                ChessColor colAdv = (m_myColor == ChessColor::WHITE) ? ChessColor::BLACK : ChessColor::WHITE;
-                m_plateau.playerInEchec = m_plateau.isInEchec(colAdv);
-                m_plateau.prettyPrint();
+                m_gameData.m_plateau.state[coupRep.posStart.y * 8 + coupRep.posStart.x].piece.isMoved = true;
+                m_gameData.m_plateau.movePieces(m_gameData.m_plateau.coordCaseSelected, v);
+                ChessColor colAdv = (m_gameData.m_myColor == ChessColor::WHITE) ? ChessColor::BLACK : ChessColor::WHITE;
+                m_gameData.m_plateau.playerInEchec = m_gameData.m_plateau.isInEchec(colAdv);
+                m_gameData.m_plateau.prettyPrint();
 
-                m_plateau.coordCaseSelected = gf::Vector2i(-1,-1);
-                m_plateau.moveAvailable.clear();	
+                m_gameData.m_plateau.coordCaseSelected = gf::Vector2i(-1,-1);
+                m_gameData.m_plateau.moveAvailable.clear();	
                 
-                m_plateau.lastCoup.push_back(gf::Vector2i(coupRep.posStart.x,coupRep.posStart.y));
-                m_plateau.lastCoup.push_back(gf::Vector2i(coupRep.posEnd.x,coupRep.posEnd.y));
+                m_gameData.m_plateau.lastCoup.push_back(gf::Vector2i(coupRep.posStart.x,coupRep.posStart.y));
+                m_gameData.m_plateau.lastCoup.push_back(gf::Vector2i(coupRep.posEnd.x,coupRep.posEnd.y));
                 
-                m_myTurn = !m_myTurn;
-                m_plateau.prisePassant = false;
+                m_gameData.m_myTurn = !m_gameData.m_myTurn;
+                m_gameData.m_plateau.prisePassant = false;
             }else if(coupRep.err == CodeRep::COUP_NO_VALIDE) {
                 std::cout << "------COUP MOI INVALIDE------" << std::endl;
             }
@@ -111,32 +114,17 @@ void GameScene::doProcessEvent(gf::Event& event) {
 
 void GameScene::doRender(gf::RenderTarget& target, const gf::RenderStates &states) {
     
-    auto screenSize_2 = m_game.getRenderer().getSize()/2;
-    int numberPiece = ((int)ChessPiece::MAX - (int)ChessPiece::MIN + 1);
-
     target.setView(getHudView());
-    gf::RectangleShape tableCloth(gf::Vector2f(672.f, 560.f));
-    tableCloth.setAnchor(gf::Anchor::Center);
-    tableCloth.setPosition(screenSize_2);
-    tableCloth.setTexture(m_game.resources.getTexture("ChessSheet.png"), gf::RectF::fromPositionSize({ (1.f / numberPiece) * 2, .75f }, { (1.f / numberPiece), 0.25f }));
-    target.draw(tableCloth);
-    
-    
+    m_tableBoardEntity.render(target, states);
+
+    target.setView(m_boardView);
     m_boardEntity.render(target, states);
-    
-    std::string turn = (m_myTurn) ? std::string("It\'s your turn !") : std::string("It's opponent's turn !");
-    gf::Text text(turn, m_game.resources.getFont("DroidSans.ttf"), 20);
-    
-    text.setPosition(gf::Vector2f(screenSize_2.x, screenSize_2.y-250.f));
-    text.setAnchor(gf::Anchor::Center);
-    text.setColor(gf::Color::Black);
-    target.draw(text, states);
     
     target.setView(getHudView());
 }
 
 void GameScene::doUpdate(gf::Time time) {
-    if(!m_myTurn && m_network.queue.poll(m_packet)) {
+    if(!m_gameData.m_myTurn && m_network.queue.poll(m_packet)) {
             
         //m_network.queue.wait(m_packet);
         assert(m_packet.getType() == CoupRep::type);
@@ -146,16 +134,16 @@ void GameScene::doUpdate(gf::Time time) {
         if(coupAdv.err == CodeRep::NONE) { // coup valide
             
             std::cout << "------COUP ADVERSE------" << std::endl;
-            m_plateau.state[coupAdv.posStart.y * 8 + coupAdv.posStart.x].piece.isMoved = true;
-            m_plateau.movePieces(gf::Vector2i(coupAdv.posStart.x, coupAdv.posStart.y), gf::Vector2i(coupAdv.posEnd.x, coupAdv.posEnd.y));
-            m_plateau.playerInEchec = m_plateau.isInEchec(m_myColor);
-            m_plateau.prettyPrint();
+            m_gameData.m_plateau.state[coupAdv.posStart.y * 8 + coupAdv.posStart.x].piece.isMoved = true;
+            m_gameData.m_plateau.movePieces(gf::Vector2i(coupAdv.posStart.x, coupAdv.posStart.y), gf::Vector2i(coupAdv.posEnd.x, coupAdv.posEnd.y));
+            m_gameData.m_plateau.playerInEchec = m_gameData.m_plateau.isInEchec(m_gameData.m_myColor);
+            m_gameData.m_plateau.prettyPrint();
 
-            m_plateau.lastCoup.push_back(gf::Vector2i(coupAdv.posStart.x,coupAdv.posStart.y));
-            m_plateau.lastCoup.push_back(gf::Vector2i(coupAdv.posEnd.x,coupAdv.posEnd.y));
+            m_gameData.m_plateau.lastCoup.push_back(gf::Vector2i(coupAdv.posStart.x,coupAdv.posStart.y));
+            m_gameData.m_plateau.lastCoup.push_back(gf::Vector2i(coupAdv.posEnd.x,coupAdv.posEnd.y));
                 
-            m_myTurn = !m_myTurn;	
-            m_plateau.prisePassant = false;
+            m_gameData.m_myTurn = !m_gameData.m_myTurn;	
+            m_gameData.m_plateau.prisePassant = false;
         }else if(coupAdv.err == CodeRep::COUP_NO_VALIDE) {
             std::cout << "------COUP ADVERSE INVALIDE------" << std::endl;
         }
@@ -176,19 +164,19 @@ void GameScene::onActivityChange(bool active){
 
         assert(repPartie.err == CodeRep::NONE);
 
-        m_myColor = repPartie.coulPion;
+        m_gameData.m_myColor = repPartie.coulPion;
 
-        if (m_myColor == ChessColor::WHITE) {
-            m_myTurn = true;
+        if (m_gameData.m_myColor == ChessColor::WHITE) {
+            m_gameData.m_myTurn = true;
         }
         else {
-            m_myTurn = false;
+            m_gameData.m_myTurn = false;
         }
 
-        std::cout << "Vous jouez la couleur : " << (int)m_myColor << std::endl;
-        m_boardEntity.setColor(m_myColor);
-        if(m_myColor == ChessColor::BLACK) {
-            //l_view.setRotation(gf::Pi);
+        std::cout << "Vous jouez la couleur : " << (int)m_gameData.m_myColor << std::endl;
+
+        if(m_gameData.m_myColor == ChessColor::BLACK) {
+            m_boardView.setRotation(gf::Pi);
         }
     }
 }

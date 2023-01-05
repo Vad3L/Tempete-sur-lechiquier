@@ -1,5 +1,5 @@
-#ifndef BOARD_ENTITY_H
-#define BOARD_ENTITY_H
+#ifndef TABLE_BOARD_ENTITY_H
+#define TABLE_BOARD_ENTITY_H
 
 #include <gf/Entity.h>
 #include <gf/Font.h>
@@ -9,25 +9,23 @@
 #include "../../model/chess.hpp"
 #include "../GameData.hpp"
 
-struct GameData;
+struct GameDate;
 
-class BoardEntity : public gf::Entity {
+class TableBoardEntity: public gf::Entity {
     public:
-        BoardEntity(gf::ResourceManager& resources, GameData &gameData);
+        TableBoardEntity(gf::ResourceManager& resources, GameData &gameData);
         void update(gf::Time time) override;
         void render(gf::RenderTarget &target, const gf::RenderStates &states) override;
-
-        gf::Vector2i getTransformCaseSelected(gf::Vector2i sizeWindows, gf::Vector2i mouseCoord);
-
+        
     private:
-        GameData &m_gameData;
 
         gf::Font& m_font;
         gf::Texture& m_backgroundTexture;
 
+        GameData &m_gameData;
 };
 
 
 
 
-#endif // BOARD_ENTITY_H
+#endif // TABLE_BOARD_ENTITY_H
