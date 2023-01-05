@@ -12,7 +12,7 @@ StartScene::StartScene(GameHub& game)
 , m_fullscreenAction("Fullscreen")
 , m_titleEntity(game.resources)
 {
-    setClearColor(gf::Color::Black);
+    setClearColor(gf::Color::White);
 
     m_startAction.addKeycodeKeyControl(gf::Keycode::Space);
     m_startAction.addMouseButtonControl(gf::MouseButton::Left);

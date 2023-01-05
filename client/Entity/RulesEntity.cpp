@@ -5,12 +5,13 @@
 #include <gf/RenderTarget.h>
 #include <gf/Sprite.h>
 #include <gf/Text.h>
+#include <gf/Shapes.h>
 
 
 RulesEntity::RulesEntity(gf::ResourceManager& resources)
 : m_font(resources.getFont("Trajan-Color-Concept.otf"))
 , m_backgroundTexture(resources.getTexture("startMenu1.png"))
-, m_rulesFont(resources.getFont("Signature.otf"))
+, m_rulesFont(resources.getFont("RifficFree-Bold.ttf"))
 {
 
 }
@@ -35,31 +36,34 @@ void RulesEntity::render(gf::RenderTarget &target, const gf::RenderStates &state
     unsigned subtitleCharacterSize = coords.getRelativeCharacterSize(0.07f);
     unsigned gitCharacterSize = coords.getRelativeCharacterSize(0.05f);
 
-    gf::Text title("Rules", m_font, titleCharacterSize);
-    title.setColor(gf::Color::White);
+    /*gf::Text title("Storm on Chess", m_font, titleCharacterSize);
+    title.setCharacterSize(50);
+    title.setAlignment(gf::Alignment::Center);
+    title.setColor(gf::Color::Yellow);
     title.setPosition(coords.getRelativePoint({ 0.5f, 0.1f }));
     title.setAnchor(gf::Anchor::Center);
-    target.draw(title, states);
+    title.setOutlineColor(gf::Color::Black);
+    title.setLineSpacing(0.7f);
+    title.setRotation(gf::Pi/-10.f);
+    title.setOutlineThickness(2.5f);
 
-    gf::Text git("", m_rulesFont, gitCharacterSize);
-    git.setParagraphWidth(20.0f);
-    git.setString("Github: https://github.com/Vad3L/Tempete-sur-lechiquier");
-    git.setColor(gf::Color::White);
-    git.setPosition(coords.getRelativePoint({ 0.5f, 0.7f}));
-    git.setAnchor(gf::Anchor::Center);
+    target.draw(title, states);*/
 
-    gf::Text developper("", m_rulesFont, subtitleCharacterSize);
-    developper.setParagraphWidth(10.0f);
-    developper.setAlignment(gf::Alignment::Justify);
-    developper.setString("Developper:"
-                            " Anthony "
-                            " Leo "
-                            " Louis "
-                            " Quentin ");
-    developper.setColor(gf::Color::White);
-    developper.setPosition(coords.getRelativePoint({ 0.1f, 0.4f}));
-    developper.setAnchor(gf::Anchor::Center);
+    gf::RectangleShape tableCloth(gf::Vector2f(672.f, 560.f));
+    tableCloth.setAnchor(gf::Anchor::Center);
+    tableCloth.setPosition(coords.getWindowSize()/2);
+    tableCloth.setColor(gf::Color::fromRgba32(100,74,75,150));
+
+    gf::Text gameRules("Règles du jeux", m_rulesFont, subtitleCharacterSize);
     
-    target.draw(developper, states);
-    target.draw(git, states);
+    gameRules.setColor(gf::Color::Yellow);
+    gameRules.setCharacterSize(50);
+    gameRules.setPosition(coords.getRelativePoint({ 0.5f, 0.2f}));
+    gameRules.setAnchor(gf::Anchor::Center);
+    gameRules.setOutlineColor(gf::Color::Black);
+    gameRules.setOutlineThickness(5.f);
+
+    target.draw(tableCloth, states);
+    target.draw(gameRules, states);
+    
 }
