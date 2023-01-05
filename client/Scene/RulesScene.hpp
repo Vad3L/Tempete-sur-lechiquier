@@ -33,7 +33,8 @@ public:
 
         gf::Action m_upAction;
         gf::Action m_downAction;
-
+        gf::Action m_fullscreenAction;
+        
         RulesEntity m_rulesEntity;
 };
 

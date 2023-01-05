@@ -14,9 +14,13 @@
   , m_rulesEntity(game.resources)
   , m_upAction("UpAction")
   , m_downAction("DownAction")
+  , m_fullscreenAction("FullScreen")
   {
     setClearColor(gf::Color::Black);
 
+    m_fullscreenAction.addKeycodeKeyControl(gf::Keycode::F);
+    addAction(m_fullscreenAction);
+    
     m_quitAction.addGamepadButtonControl(gf::AnyGamepad, gf::GamepadButton::B);
     m_quitAction.addKeycodeKeyControl(gf::Keycode::Escape);
     addAction(m_quitAction);
@@ -58,6 +62,10 @@
   void RulesScene::doHandleActions([[maybe_unused]] gf::Window& window) {
     if (!isActive()) {
       return;
+    }
+
+    if (m_fullscreenAction.isActive()) {
+        window.toggleFullscreen();
     }
 
     if (m_upAction.isActive()) {

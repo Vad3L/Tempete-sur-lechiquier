@@ -28,7 +28,8 @@ class PlaySelectScene : public gf::Scene {
         gf::Action m_upAction;
         gf::Action m_downAction;
         gf::Action m_triggerAction;
-
+        gf::Action m_fullscreenAction;
+        
         PlayTitleEntity m_PlayTitleEntity;
 
         gf::WidgetContainer m_widgets;

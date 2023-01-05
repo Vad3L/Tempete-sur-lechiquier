@@ -30,7 +30,8 @@ class MenuScene : public gf::Scene {
         gf::Action m_upAction;
         gf::Action m_downAction;
         gf::Action m_triggerAction;
-
+        gf::Action m_fullscreenAction;
+        
         gf::TextButtonWidget m_play;
         gf::TextButtonWidget m_rules;
         gf::TextButtonWidget m_quit;

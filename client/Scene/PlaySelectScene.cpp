@@ -12,12 +12,16 @@ PlaySelectScene::PlaySelectScene(GameHub& game)
 , m_downAction("DownAction")
 , m_triggerAction("TriggerAction")
 , m_quitAction("Quit")
+, m_fullscreenAction("Fullscreen")
 , m_PlayTitleEntity(game.resources)
 , m_join("Join", game.resources.getFont("Trajan-Color-Concept.otf"))
 {
     setClearColor(gf::Color::Black);
     addHudEntity(m_PlayTitleEntity);
 
+    m_fullscreenAction.addKeycodeKeyControl(gf::Keycode::F);
+    addAction(m_fullscreenAction);
+    
     m_quitAction.addKeycodeKeyControl(gf::Keycode::Escape);
     addAction(m_quitAction);
 
@@ -53,6 +57,10 @@ PlaySelectScene::PlaySelectScene(GameHub& game)
     void PlaySelectScene::doHandleActions([[maybe_unused]] gf::Window& window) {
     if (!isActive()) {
         return;
+    }
+
+    if (m_fullscreenAction.isActive()) {
+        window.toggleFullscreen();
     }
 
     if (m_upAction.isActive()) {

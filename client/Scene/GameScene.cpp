@@ -17,7 +17,7 @@ GameScene::GameScene(GameHub& game)
 , m_boardEntity(game.resources, m_gameData)
 , m_tableBoardEntity(game.resources, m_gameData)
 {
-    //setClearColor(gf::Color::Blue);
+    setClearColor(gf::Color::Black);
     
     m_quitAction.addKeycodeKeyControl(gf::Keycode::Escape);
     addAction(m_quitAction);
@@ -152,7 +152,7 @@ void GameScene::doUpdate(gf::Time time) {
 
 void GameScene::onActivityChange(bool active){
     if(active){
-        
+        m_boardView.setCenter(m_game.getRenderer().getSize()/2);
         m_network.connect("localhost","4555");
         gf::sleep(gf::milliseconds(500));
         assert(m_network.isConnected());

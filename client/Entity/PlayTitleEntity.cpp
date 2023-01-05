@@ -8,7 +8,7 @@
 
   PlayTitleEntity::PlayTitleEntity(gf::ResourceManager& resources)
 : m_font(resources.getFont("Trajan-Color-Concept.otf"))
-, m_backgroundTexture(resources.getTexture("startMenu.png"))
+, m_backgroundTexture(resources.getTexture("startMenu1.png"))
 {
 
 }
