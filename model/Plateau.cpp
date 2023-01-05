@@ -41,30 +41,33 @@ prisePassant(false) {
 	prettyPrint();
 }
 
+std::string Plateau::getSymbol(ChessColor c, ChessPiece p) {
+	std::vector<std::string> blacks = {
+		"♚", "♛", "♝", "♞", "♜", "♟︎", "🨇", "🨏"
+	};
+	std::vector<std::string> white = {
+		"♔", "♕", "♗", "♘", "♖", "♙", "🨆", "🨉"
+	};
+	std::vector<std::string> neutral = {
+		"🨀", "🨁", "🨃", "🨄", "🨂", "🨅", "🨈", "🨏"
+	};
+
+	if (c == ChessColor::WHITE) {
+		return white[(int)p];
+	} else if (c == ChessColor::BLACK) {
+		return blacks[(int)p];
+	} else if (c == ChessColor::GRAY) {
+		return neutral[(int)p];
+	} else {
+		return ".";
+	}
+}
+
 void Plateau::prettyPrint() {
 	for  (Case &c : this->state) {
-		std::string s = (c.piece.getType() == ChessPiece::NONE) ? "   " : "    ";
+		std::cout << " " << getSymbol(c.piece.getColor(), c.piece.getType());
 		if(c.position.x == 7) {
-			if(c.piece.getColor() == ChessColor::WHITE) {
-				std::cout << "W" << (int)c.piece.getType() << s;
-			   
-			}else if(c.piece.getColor() == ChessColor::BLACK) {
-				std::cout << "B" <<(int)c.piece.getType() << s;
-
-			}else {
-				std::cout << "N" <<(int)c.piece.getType() << s;
-			}
 			std::cout << "\n";
-		}else {
-			if(c.piece.getColor() == ChessColor::WHITE) {
-				std::cout << "W" << (int)c.piece.getType() << s;
-			   
-			}else if(c.piece.getColor() == ChessColor::BLACK) {
-				std::cout << "B" <<(int)c.piece.getType() << s;
-
-			}else {
-				std::cout << "N" <<(int)c.piece.getType() << s;
-			}
 		}
 	}
 }
