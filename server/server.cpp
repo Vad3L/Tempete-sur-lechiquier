@@ -3,13 +3,9 @@
 
 int main (int argc, char* argv[]) {
 
-<<<<<<< HEAD
     int port = 43771;
-    FctAnnex fctAnnex;
+    //FctAnnex fctAnnex;
 
-=======
-    int port = atoi(argv[1]);
->>>>>>> dfa0e2bf8846e9a79d31ba605347a0e415e1dc9f
     gf::TcpListener listener(std::to_string(port));
     
     gf::TcpSocket client1 = listener.accept();

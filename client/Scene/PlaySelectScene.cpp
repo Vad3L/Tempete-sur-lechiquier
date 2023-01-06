@@ -15,7 +15,6 @@ PlaySelectScene::PlaySelectScene(GameHub& game)
 , m_fullscreenAction("Fullscreen")
 , m_PlayTitleEntity(game.resources)
 , m_join("Join", game.resources.getFont("Trajan-Color-Concept.otf"))
-, m_field(game.resources.getFont("Trajan-Color-Concept.otf"))
 {
     setClearColor(gf::Color::Black);
     addHudEntity(m_PlayTitleEntity);
@@ -49,33 +48,14 @@ PlaySelectScene::PlaySelectScene(GameHub& game)
         m_widgets.addWidget(button);
     };
 
-    auto setupButtone = [&] (TextFieldWidget& button, auto callback) {
-        /*button.setDefaultTextColor(gf::Color::Black);
-        button.setDefaultBackgroundColor(gf::Color::Gray(0.7f));
-        button.setSelectedTextColor(gf::Color::Black);
-        button.setSelectedBackgroundColor(gf::Color::fromRgba32(212,30,27,255));
-        button.setDisabledTextColor(gf::Color::Black);
-        button.setDisabledBackgroundColor(gf::Color::Red);*/
-        button.setAnchor(gf::Anchor::TopLeft);
-        button.setAlignment(gf::Alignment::Center);
-        button.setCallback(callback);
-        m_widgets.addWidget(button);
-    };
+
 
     setupButton(m_join, [&] () {
         gf::Log::debug("join button pressed!\n");
         m_game.replaceAllScenes(m_game.game);
     });
 
-    setupButtone(m_field, [&] () {
-        gf::Log::debug("field pressed!\n");
-        if(m_field.getState() == gf::WidgetState::Disabled){
-            m_field.setSelected();
-        }else if(m_field.getState() == gf::WidgetState::Selected){
-            m_field.setDisabled();
-        }
-        
-    });
+  
 }
 
 void PlaySelectScene::doHandleActions([[maybe_unused]] gf::Window& window) {
@@ -129,12 +109,6 @@ void PlaySelectScene::doRender(gf::RenderTarget& target, const gf::RenderStates 
     m_join.setParagraphWidth(paragraphWidth);
     m_join.setPadding(paddingSize);
 
-    m_field.setCharacterSize(resumeCharacterSize);
-    m_field.setPosition(coords.getRelativePoint({0.275f, 0.425f + (characterSize + spaceBetweenButton )*2}));
-    m_field.setParagraphWidth(paragraphWidth);
-    m_field.setPadding(paddingSize);
-    m_field.setBackgroundOutlineThickness(5.f);
-
     m_widgets.render(target, states);
     m_PlayTitleEntity.render(target,states);
 }
@@ -144,7 +118,6 @@ void PlaySelectScene::doShow() {
 
     m_join.setDefault();
     m_widgets.addWidget(m_join);
-    m_widgets.addWidget(m_field);
     m_widgets.selectNextWidget();
 }
 
