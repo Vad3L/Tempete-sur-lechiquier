@@ -13,7 +13,9 @@ using namespace gf::literals;
 /* Types d'erreur */
 typedef enum {
     NONE,     /* Validation de la requete */
-    COUP_NO_VALIDE      
+    COUP_NO_VALIDE,      
+    GAME_START,
+    GAME_END
 } CodeRep;
 
 /* struct pos d'une pièce*/

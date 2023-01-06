@@ -1,7 +1,6 @@
 #ifndef ECHEC_H
 #define ECHEC_H
 
-
 enum class ChessPiece {
 	NONE = -1,
 	MIN = 0,
@@ -20,7 +19,14 @@ enum class ChessColor {
 	NONE = -1,
 	WHITE = 0,
 	BLACK = 1,
-	GRAY = 2   
+	GRAY = 2  
 };
+
+inline ChessColor operator! (const ChessColor& c) {
+	if (c == ChessColor::WHITE) {
+		return ChessColor::BLACK;
+	}
+	return ChessColor::WHITE;
+}
 
 #endif // ECHEC_H

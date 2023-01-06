@@ -37,6 +37,7 @@ class GameScene : public gf::Scene {
         gf::Action m_quitAction;
         gf::Action m_fullscreenAction;
 
+	bool m_gameStart = false;
         
         Network m_network;
         gf::Packet m_packet;

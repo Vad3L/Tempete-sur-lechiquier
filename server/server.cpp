@@ -1,7 +1,6 @@
 #include "AnnexFctServer.hpp"
 #include <cstring>
 
-
 int main (int argc, char* argv[]) {
 	if (argc != 2) {
 		std::cerr << "Usage: " << argv[0] << " [port]" << std::endl;
@@ -9,8 +8,6 @@ int main (int argc, char* argv[]) {
 	}
 
     int port = atoi(argv[1]);
-    FctAnnex fctAnnex;
-
     gf::TcpListener listener(std::to_string(port));
     
     gf::TcpSocket client1 = listener.accept();
@@ -40,29 +37,27 @@ int main (int argc, char* argv[]) {
             if (gf::SocketStatus::Data != client2.sendPacket(packetC2)) {
                 std::cerr << "erreur lors de l'envoie du packet au client 2";
             }
+
+	    sendStart(client1, client2);
             
             Plateau plateau;
             bool turnPlayer1 = true;
-
             std::cout << "Je suis le serveur" << std::endl;
             while (true) {
                 plateau.moveAvailable.clear();
 
                 if (turnPlayer1) {
-
                     std::cout << "------TOUR J1------" << std::endl;
-                    if(fctAnnex.performActionMoveNormal(plateau, client1, client2, packetC1, packetC2, turnPlayer1) == -1) {
+                    if(performActionMoveNormal(plateau, client1, client2, packetC1, packetC2, turnPlayer1) == -1) {
                         return -1;
                     }
-                    
-                }else {
-
+                } else {
                     std::cout << "------TOUR J2------" << std::endl;
-                    if(fctAnnex.performActionMoveNormal(plateau, client1, client2, packetC1, packetC2, turnPlayer1) == -1) {
+                    if(performActionMoveNormal(plateau, client1, client2, packetC1, packetC2, turnPlayer1) == -1) {
                         return -1;
                     }
 
-                }   
+                }
             }
         }
 
