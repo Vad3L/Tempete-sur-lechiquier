@@ -21,7 +21,6 @@ void Network::connect(const std::string& hostname, const std::string& port) {
 
     std::thread thread(&Network::run, this, hostname, port);
     thread.detach();
-
 }
 
 

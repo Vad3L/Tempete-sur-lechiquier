@@ -2,12 +2,8 @@
 
 #include "AnnexFctServer.hpp"
 
-FctAnnex::FctAnnex() {
-
-}
-
 // check validité d'un coup
-bool FctAnnex::checkCoupValide(Plateau& plateau, gf::Vector2i coordStart, gf::Vector2i coordEnd) {
+bool checkCoupValide(Plateau& plateau, gf::Vector2i coordStart, gf::Vector2i coordEnd) {
     if(coordStart.x < 0 || coordStart.y < 0 || coordEnd.x > 7 || coordEnd.y > 7) {
         return false;
     }
@@ -24,7 +20,7 @@ bool FctAnnex::checkCoupValide(Plateau& plateau, gf::Vector2i coordStart, gf::Ve
     return it != moveAvailable.end(); 
 }
 
-CoupRep FctAnnex::buildRepCoup(Plateau& plateau, gf::Vector2i coordStart, gf::Vector2i coordEnd) {
+CoupRep buildRepCoup(Plateau& plateau, gf::Vector2i coordStart, gf::Vector2i coordEnd) {
     assert(coordStart.x >= 0);
     assert(coordStart.x < 8);
     assert(coordStart.y >= 0);
@@ -47,7 +43,7 @@ CoupRep FctAnnex::buildRepCoup(Plateau& plateau, gf::Vector2i coordStart, gf::Ve
     return coupRep;
 }
 
-int FctAnnex::performActionMoveNormal(Plateau& plateau, gf::TcpSocket& client1, gf::TcpSocket& client2, gf::Packet& packetP1, gf::Packet& packetP2, bool& turnPlayer1) {
+int performActionMoveNormal(Plateau& plateau, gf::TcpSocket& client1, gf::TcpSocket& client2, gf::Packet& packetP1, gf::Packet& packetP2, bool& turnPlayer1) {
     CoupReq coup;
     
     if(turnPlayer1) {
@@ -100,3 +96,23 @@ int FctAnnex::performActionMoveNormal(Plateau& plateau, gf::TcpSocket& client1, 
     
     return 0;
 }
+
+void sendStart (gf::TcpSocket& a, gf::TcpSocket& b) {
+	gf::Packet packet;
+
+	PartieRep rep;
+	rep.err = GAME_START;
+	rep.coulPion = ChessColor::BLACK;
+
+	packet.is(rep);
+
+	if (gf::SocketStatus::Data != a.sendPacket(packet)) {
+		std::cerr << "erreur lors de l'envoie du packet au client 1";
+	}
+
+	if (gf::SocketStatus::Data != b.sendPacket(packet)) {
+		std::cerr << "erreur lors de l'envoi du packet au client 2";
+	}
+}
+
+
