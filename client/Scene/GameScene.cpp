@@ -50,17 +50,16 @@ void GameScene::doHandleActions([[maybe_unused]] gf::Window& window) {
 void GameScene::doProcessEvent(gf::Event& event) {
     bool click = false;
     
-    switch (event.type)
-    {
+    switch (event.type){
     //    case gf::EventType::MouseMoved:
     //    m_widgets.pointTo(m_game.computeWindowToGameCoordinates(event.mouseCursor.coords, getHudView()));
     //    break;
         case gf::EventType::MouseButtonPressed:
-        click = true;
-        break;
+            click = true;
+            break;
         case gf::EventType::Resized :
-        m_boardView.setCenter(event.resize.size/2);
-        break;
+            m_boardView.setCenter(event.resize.size/2);
+            break;
     }
     
     if(m_gameData.m_myTurn && click) { // m_gameData.m_myTurn
@@ -153,7 +152,7 @@ void GameScene::doUpdate(gf::Time time) {
 void GameScene::onActivityChange(bool active){
     if(active){
         m_boardView.setCenter(m_game.getRenderer().getSize()/2);
-        m_network.connect("localhost","4555");
+		m_network.connect("localhost","43771");
         gf::sleep(gf::milliseconds(500));
         assert(m_network.isConnected());
 

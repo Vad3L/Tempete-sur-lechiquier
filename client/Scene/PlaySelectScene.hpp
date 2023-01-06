@@ -8,6 +8,7 @@
 #include <gf/Event.h>
 
 #include "../Entity/PlayTitleEntity.hpp"
+#include "../Widget/TextFieldWidget.hpp"
 
 struct GameHub;
 
@@ -34,6 +35,7 @@ class PlaySelectScene : public gf::Scene {
 
         gf::WidgetContainer m_widgets;
         gf::TextButtonWidget m_join;
+        TextFieldWidget m_field;
 
         
 };

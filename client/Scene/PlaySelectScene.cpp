@@ -15,6 +15,7 @@ PlaySelectScene::PlaySelectScene(GameHub& game)
 , m_fullscreenAction("Fullscreen")
 , m_PlayTitleEntity(game.resources)
 , m_join("Join", game.resources.getFont("Trajan-Color-Concept.otf"))
+, m_field(game.resources.getFont("Trajan-Color-Concept.otf"))
 {
     setClearColor(gf::Color::Black);
     addHudEntity(m_PlayTitleEntity);
@@ -48,13 +49,36 @@ PlaySelectScene::PlaySelectScene(GameHub& game)
         m_widgets.addWidget(button);
     };
 
+    auto setupButtone = [&] (TextFieldWidget& button, auto callback) {
+        /*button.setDefaultTextColor(gf::Color::Black);
+        button.setDefaultBackgroundColor(gf::Color::Gray(0.7f));
+        button.setSelectedTextColor(gf::Color::Black);
+        button.setSelectedBackgroundColor(gf::Color::fromRgba32(212,30,27,255));
+        button.setDisabledTextColor(gf::Color::Black);
+        button.setDisabledBackgroundColor(gf::Color::Red);*/
+        button.setAnchor(gf::Anchor::TopLeft);
+        button.setAlignment(gf::Alignment::Center);
+        button.setCallback(callback);
+        m_widgets.addWidget(button);
+    };
+
     setupButton(m_join, [&] () {
         gf::Log::debug("join button pressed!\n");
         m_game.replaceAllScenes(m_game.game);
     });
-    }
 
-    void PlaySelectScene::doHandleActions([[maybe_unused]] gf::Window& window) {
+    setupButtone(m_field, [&] () {
+        gf::Log::debug("field pressed!\n");
+        if(m_field.getState() == gf::WidgetState::Disabled){
+            m_field.setSelected();
+        }else if(m_field.getState() == gf::WidgetState::Selected){
+            m_field.setDisabled();
+        }
+        
+    });
+}
+
+void PlaySelectScene::doHandleActions([[maybe_unused]] gf::Window& window) {
     if (!isActive()) {
         return;
     }
@@ -78,44 +102,49 @@ PlaySelectScene::PlaySelectScene(GameHub& game)
     if (m_quitAction.isActive()) {
         m_game.replaceScene(m_game.start);
     }
-    }
+}
 
-    void PlaySelectScene::doProcessEvent(gf::Event& event) {
-        switch (event.type)
-        {
-            case gf::EventType::MouseMoved:
+void PlaySelectScene::doProcessEvent(gf::Event& event) {
+    switch (event.type){
+        case gf::EventType::MouseMoved:
             m_widgets.pointTo(m_game.computeWindowToGameCoordinates(event.mouseCursor.coords, getHudView()));
             break;
-        }
     }
+}
 
-    void PlaySelectScene::doRender(gf::RenderTarget& target, const gf::RenderStates &states) {
-        constexpr float characterSize = 0.075f;
-        constexpr float spaceBetweenButton = 0.050f;
-        constexpr gf::Vector2f backgroundSize(0.5f, 0.3f);
+void PlaySelectScene::doRender(gf::RenderTarget& target, const gf::RenderStates &states) {
+    constexpr float characterSize = 0.075f;
+    constexpr float spaceBetweenButton = 0.10f;
+    constexpr gf::Vector2f backgroundSize(0.5f, 0.3f);
 
-        target.setView(getHudView());
-        gf::Coordinates coords(target);
+    target.setView(getHudView());
+    gf::Coordinates coords(target);
 
-        const float paragraphWidth = coords.getRelativeSize(backgroundSize - 0.05f).x;
-        const float paddingSize = coords.getRelativeSize({0.01f, 0.f}).x;
-        const unsigned resumeCharacterSize = coords.getRelativeCharacterSize(characterSize);
+    const float paragraphWidth = coords.getRelativeSize(backgroundSize - 0.05f).x;
+    const float paddingSize = coords.getRelativeSize({0.01f, 0.f}).x;
+    const unsigned resumeCharacterSize = coords.getRelativeCharacterSize(characterSize);
 
-        m_join.setCharacterSize(resumeCharacterSize);
-        m_join.setPosition(coords.getRelativePoint({0.275f, 0.425f + characterSize + spaceBetweenButton}));
-        m_join.setParagraphWidth(paragraphWidth);
-        m_join.setPadding(paddingSize);
+    m_join.setCharacterSize(resumeCharacterSize);
+    m_join.setPosition(coords.getRelativePoint({0.275f, 0.425f + characterSize + spaceBetweenButton}));
+    m_join.setParagraphWidth(paragraphWidth);
+    m_join.setPadding(paddingSize);
 
-        m_widgets.render(target, states);
-        m_PlayTitleEntity.render(target,states);
-    }
+    m_field.setCharacterSize(resumeCharacterSize);
+    m_field.setPosition(coords.getRelativePoint({0.275f, 0.425f + (characterSize + spaceBetweenButton )*2}));
+    m_field.setParagraphWidth(paragraphWidth);
+    m_field.setPadding(paddingSize);
+    m_field.setBackgroundOutlineThickness(5.f);
 
-    void PlaySelectScene::doShow() {
+    m_widgets.render(target, states);
+    m_PlayTitleEntity.render(target,states);
+}
+
+void PlaySelectScene::doShow() {
     m_widgets.clear();
 
     m_join.setDefault();
     m_widgets.addWidget(m_join);
-
+    m_widgets.addWidget(m_field);
     m_widgets.selectNextWidget();
 }
 
