@@ -5,7 +5,7 @@
 #include <gf/RenderTarget.h>
 #include <gf/Sprite.h>
 #include <gf/Text.h>
-
+#include <iostream>
 
 TitleEntity::TitleEntity(gf::ResourceManager& resources)
 : m_font(resources.getFont("DejaVuSans.ttf"))
@@ -37,7 +37,13 @@ void TitleEntity::render(gf::RenderTarget &target, const gf::RenderStates &state
     instructions.setOutlineThickness(instructionsCharacterSize * 0.05f);
     instructions.setPosition(coords.getRelativePoint({ 0.5f, 0.91f }));
     instructions.setAnchor(gf::Anchor::Center);
-    target.draw(instructions, states);
+    
+    std::time_t result = std::time(nullptr);
+    if((result % 2) ) {
+        target.draw(instructions, states);
+    }
+
+    
 }
 
 
