@@ -22,6 +22,7 @@ class PlaySelectScene : public gf::Scene {
         void doHandleActions(gf::Window& window) override;
         void doRender(gf::RenderTarget& target, const gf::RenderStates &states) override;
         void doShow() override;
+        void changeRightLeft(bool value);
 
     private:
         GameHub& m_game;
@@ -29,13 +30,21 @@ class PlaySelectScene : public gf::Scene {
 
         gf::Action m_upAction;
         gf::Action m_downAction;
+        gf::Action m_leftAction;
+        gf::Action m_rightAction;
+
         gf::Action m_triggerAction;
         gf::Action m_fullscreenAction;
         
         PlayTitleEntity m_PlayTitleEntity;
 
+        gf::TextButtonWidget m_leftWidget;
+        gf::TextButtonWidget m_rightWidget;
+
         gf::WidgetContainer m_widgets;
-        std::vector<gf::TextButtonWidget> m_listIp;
+        gf::TextButtonWidget m_ipWidget;
+        std::vector<std::string> m_listIp;
+        int m_index;
         
 };
 

@@ -16,11 +16,16 @@ PlaySelectScene::PlaySelectScene(GameHub& game)
 , m_game(game)
 , m_upAction("UpAction")
 , m_downAction("DownAction")
+, m_rightAction("RightAction")
+, m_leftAction("LeftAction")
 , m_triggerAction("TriggerAction")
 , m_quitAction("Quit")
 , m_fullscreenAction("Fullscreen")
 , m_PlayTitleEntity(game.resources)
-//, m_join("Join", game.resources.getFont("Trajan-Color-Concept.otf"))
+, m_ipWidget("127.0.0.1", game.resources.getFont("Trajan-Color-Concept.otf"))
+, m_index(0)
+, m_leftWidget("<", game.resources.getFont("DejaVuSans.ttf"))
+, m_rightWidget(">", game.resources.getFont("DejaVuSans.ttf"))
 {
     setClearColor(gf::Color::Black);
     addHudEntity(m_PlayTitleEntity);
@@ -36,6 +41,12 @@ PlaySelectScene::PlaySelectScene(GameHub& game)
 
     m_downAction.addScancodeKeyControl(gf::Scancode::Down);
     addAction(m_downAction);
+
+    m_leftAction.addScancodeKeyControl(gf::Scancode::Left);
+    addAction(m_leftAction);
+
+    m_rightAction.addScancodeKeyControl(gf::Scancode::Right);
+    addAction(m_rightAction);
 
     m_triggerAction.addScancodeKeyControl(gf::Scancode::Return);
     m_triggerAction.addMouseButtonControl(gf::MouseButton::Left);
@@ -62,36 +73,38 @@ PlaySelectScene::PlaySelectScene(GameHub& game)
     }else{
         std::string line;
         while (std::getline(file, line)) {
-            std::string temp(line);
-            gf::TextButtonWidget ipWidget(temp, game.resources.getFont("Trajan-Color-Concept.otf"));
-            
-            std::cout << "ip " << temp << std::endl;
-            setupButton(ipWidget, [=] () {
-                std::cout << "ip " << temp << std::endl;
-                m_game.setIp(temp);
-                m_game.replaceAllScenes(m_game.game);
-            });
-
-            m_listIp.push_back(ipWidget);
+            m_listIp.insert(m_listIp.begin(), line);
         }
 
         file.close();
     }
-    //gf::Log::debug("size list : %s\n",m_listIp.size());
 
-
-
-    /*setupButton(m_join, [&] () {
-        gf::Log::debug("join button pressed!\n");
+    setupButton(m_ipWidget, [&] () {
+        m_game.setIp(std::string(m_ipWidget.getString()));
         m_game.replaceAllScenes(m_game.game);
-    });*/
+    });
 
+    setupButton(m_rightWidget, [&] () {
+        changeRightLeft(true);
+    });
+
+    setupButton(m_leftWidget, [&] () {
+        changeRightLeft(false);
+    });
   
 }
 
 void PlaySelectScene::doHandleActions([[maybe_unused]] gf::Window& window) {
     if (!isActive()) {
         return;
+    }
+
+    if(m_leftAction.isActive()) {
+        changeRightLeft(false);
+    }
+
+    if(m_rightAction.isActive()) {
+        changeRightLeft(true);
     }
 
     if (m_fullscreenAction.isActive()) {
@@ -125,27 +138,31 @@ void PlaySelectScene::doProcessEvent(gf::Event& event) {
 
 void PlaySelectScene::doRender(gf::RenderTarget& target, const gf::RenderStates &states) {
     constexpr float characterSize = 0.075f;
-    constexpr float spaceBetweenButton = 0.10f;
     constexpr gf::Vector2f backgroundSize(0.5f, 0.3f);
+    constexpr gf::Vector2f backgroundSizeArrow(0.2f, 0.3f);
 
     target.setView(getHudView());
     gf::Coordinates coords(target);
 
     const float paragraphWidth = coords.getRelativeSize(backgroundSize - 0.05f).x;
+    const float paragraphWidthArrow = coords.getRelativeSize(backgroundSizeArrow - 0.05f).x;
     const float paddingSize = coords.getRelativeSize({0.01f, 0.f}).x;
     const unsigned resumeCharacterSize = coords.getRelativeCharacterSize(characterSize);
     
-    for(int i = 0 ; i < m_listIp.size() ; ++i){
-        m_listIp[i].setCharacterSize(resumeCharacterSize);
-        m_listIp[i].setPosition(coords.getRelativePoint({0.275f, 0.425f + (characterSize + spaceBetweenButton) * i}));
-        m_listIp[i].setParagraphWidth(paragraphWidth);
-        m_listIp[i].setPadding(paddingSize);
-    }
+    m_ipWidget.setCharacterSize(resumeCharacterSize);
+    m_ipWidget.setPosition(coords.getRelativePoint({0.275f, 0.425f + characterSize}));
+    m_ipWidget.setParagraphWidth(paragraphWidth);
+    m_ipWidget.setPadding(paddingSize);
 
-    /*m_join.setCharacterSize(resumeCharacterSize);
-    m_join.setPosition(coords.getRelativePoint({0.275f, 0.425f + characterSize + spaceBetweenButton}));
-    m_join.setParagraphWidth(paragraphWidth);
-    m_join.setPadding(paddingSize);*/
+    m_leftWidget.setCharacterSize(resumeCharacterSize);
+    m_leftWidget.setPosition(coords.getRelativePoint({0.075f, 0.425f + characterSize }));
+    m_leftWidget.setParagraphWidth(paragraphWidthArrow);
+    m_leftWidget.setPadding(paddingSize);
+
+    m_rightWidget.setCharacterSize(resumeCharacterSize);
+    m_rightWidget.setPosition(coords.getRelativePoint({0.775, 0.425f + characterSize }));
+    m_rightWidget.setParagraphWidth(paragraphWidthArrow);
+    m_rightWidget.setPadding(paddingSize);
 
     m_widgets.render(target, states);
     m_PlayTitleEntity.render(target,states);
@@ -154,14 +171,35 @@ void PlaySelectScene::doRender(gf::RenderTarget& target, const gf::RenderStates 
 void PlaySelectScene::doShow() {
     m_widgets.clear();
 
-    for(int i = 0 ; i < m_listIp.size() ; ++i){
-        m_listIp[i].setDefault();
-        m_widgets.addWidget(m_listIp[i]);
-    }
+    m_ipWidget.setDefault();
+    m_leftWidget.setDefault();
+    m_rightWidget.setDefault();
+    
+    m_widgets.addWidget(m_ipWidget);
+    m_widgets.addWidget(m_leftWidget);
+    m_widgets.addWidget(m_rightWidget);
     /*m_join.setDefault();
     m_widgets.addWidget(m_join);*/
     m_widgets.selectNextWidget();
 }
 
-
-
+void PlaySelectScene::changeRightLeft(bool value) {
+    //true right
+    if(value){
+        if(m_index+1 < m_listIp.size()){
+            m_ipWidget.setString(m_listIp[m_index+1]);
+            m_index++;
+            m_rightWidget.setSelected();
+            m_leftWidget.setDefault();
+            m_ipWidget.setDefault();
+        }
+    }else{
+        if(m_index-1 >= 0){
+            m_ipWidget.setString(m_listIp[m_index-1]);
+            m_index--;
+            m_leftWidget.setSelected();
+            m_rightWidget.setDefault();
+            m_ipWidget.setDefault();
+        }
+    }
+}
