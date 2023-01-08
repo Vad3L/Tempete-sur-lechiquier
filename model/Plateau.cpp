@@ -426,7 +426,7 @@ void Plateau::deMovePieces(gf::Vector2i coord1, gf::Vector2i coord2, bool inBin)
 
 	std::swap(state[coord1.y * 8 + coord1.x].piece, state[coord2.y * 8 + coord2.x].piece);
 	
-	if(p2.getType() == ChessPiece::PAWN && inBin && coord1.x != coord2.x && prisePassant) {
+	if(p2.getType() == ChessPiece::PAWN  && p1.getType() == ChessPiece::NONE && inBin && coord1.x != coord2.x && prisePassant) {
 		std::cout << "on demove une prise en passant" << std::endl;
 		Piece pBin = bin.back();
 		state[coord1.y*8+coord2.x].piece = pBin;

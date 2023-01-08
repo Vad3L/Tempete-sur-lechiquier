@@ -43,25 +43,26 @@ CoupRep buildRepCoup(Plateau& plateau, gf::Vector2i coordStart, gf::Vector2i coo
     return coupRep;
 }
 
-int performActionMoveNormal(Plateau& plateau, gf::TcpSocket& client1, gf::TcpSocket& client2, gf::Packet& packetP1, gf::Packet& packetP2, bool& turnPlayer1) {
+int performActionMoveNormal(Plateau& plateau, gf::TcpSocket& client1, gf::TcpSocket& client2, bool& turnPlayer1) {
     CoupReq coup;
-    
+    gf::Packet packet;
+
     if(turnPlayer1) {
-        if (gf::SocketStatus::Data != client1.recvPacket(packetP1)) {
+        if (gf::SocketStatus::Data != client1.recvPacket(packet)) {
             std::cerr<<"erreur lors de la réception du packet qui contient le coup du client 1";
             return -1;
         }
         
-        assert(packetP1.getType() == CoupReq::type);
-        coup = packetP1.as<CoupReq>();
+        assert(packet.getType() == CoupReq::type);
+        coup = packet.as<CoupReq>();
     }else {
-        if (gf::SocketStatus::Data != client2.recvPacket(packetP2)) {
+        if (gf::SocketStatus::Data != client2.recvPacket(packet)) {
             std::cerr<<"erreur lors de la réception du packet qui contient le coup du client 2";
             return -1;
         }
         
-        assert(packetP2.getType() == CoupReq::type);
-        coup = packetP2.as<CoupReq>();
+        assert(packet.getType() == CoupReq::type);
+        coup = packet.as<CoupReq>();
     }
     
     
@@ -80,16 +81,16 @@ int performActionMoveNormal(Plateau& plateau, gf::TcpSocket& client1, gf::TcpSoc
         plateau.prisePassant = false; 
     }
     
-    packetP1.is(coupRep);
+    packet.is(coupRep);
 
-    if (gf::SocketStatus::Data != client1.sendPacket(packetP1)) {
+    if (gf::SocketStatus::Data != client1.sendPacket(packet)) {
         std::cerr<<"erreur lors de l'envoie du packet coupRep au client 1";
         return -1;
     }
     
-    packetP2.is(coupRep);
+    packet.is(coupRep);
 
-    if (gf::SocketStatus::Data != client2.sendPacket(packetP2)) {
+    if (gf::SocketStatus::Data != client2.sendPacket(packet)) {
         std::cerr<<"erreur lors de l'envoie du packet coupRep au client 2";
         return -1;
     }

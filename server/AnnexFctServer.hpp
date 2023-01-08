@@ -18,7 +18,7 @@
 
 bool checkCoupValide(Plateau& plateau, gf::Vector2i coordStart, gf::Vector2i coordEnd);
 CoupRep buildRepCoup(Plateau& plateau, gf::Vector2i coordStart, gf::Vector2i coordEnd);
-int performActionMoveNormal(Plateau& plateau, gf::TcpSocket& client1, gf::TcpSocket& client2, gf::Packet& packetP1, gf::Packet& packetP2, bool& turnPlayer1);
+int performActionMoveNormal(Plateau& plateau, gf::TcpSocket& client1, gf::TcpSocket& client2, bool& turnPlayer1);
 void sendStart (gf::TcpSocket& a, gf::TcpSocket& b);
 
 #endif // ANNEXFCTSERVER_H

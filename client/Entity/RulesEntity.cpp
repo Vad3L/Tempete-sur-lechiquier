@@ -34,7 +34,6 @@ void RulesEntity::render(gf::RenderTarget &target, const gf::RenderStates &state
 
     unsigned titleCharacterSize = coords.getRelativeCharacterSize(0.1f);
     unsigned subtitleCharacterSize = coords.getRelativeCharacterSize(0.07f);
-    unsigned gitCharacterSize = coords.getRelativeCharacterSize(0.05f);
 
     /*gf::Text title("Storm on Chess", m_font, titleCharacterSize);
     title.setCharacterSize(50);
@@ -49,21 +48,20 @@ void RulesEntity::render(gf::RenderTarget &target, const gf::RenderStates &state
 
     target.draw(title, states);*/
 
-    gf::RectangleShape tableCloth(gf::Vector2f(672.f, 560.f));
+    gf::RectangleShape tableCloth(coords.getRelativePoint({0.8f, 0.7f}));
     tableCloth.setAnchor(gf::Anchor::Center);
-    tableCloth.setPosition(coords.getWindowSize()/2);
+    tableCloth.setPosition(coords.getRelativePoint({0.5f, 0.4f}));
     tableCloth.setColor(gf::Color::fromRgba32(100,74,75,150));
+    tableCloth.setScale(backgroundScale);
 
-    gf::Text gameRules("Règles du jeux", m_rulesFont, subtitleCharacterSize);
-    
+    gf::Text gameRules("Règles du jeux", m_rulesFont, subtitleCharacterSize);    
     gameRules.setColor(gf::Color::Yellow);
-    gameRules.setCharacterSize(50);
-    gameRules.setPosition(coords.getRelativePoint({ 0.5f, 0.2f}));
-    gameRules.setAnchor(gf::Anchor::Center);
+    gameRules.setPosition(coords.getRelativePoint({ 0.5f, 0.1f}));
+    gameRules.setAnchor(gf::Anchor::TopCenter);
     gameRules.setOutlineColor(gf::Color::Black);
     gameRules.setOutlineThickness(5.f);
 
+
     target.draw(tableCloth, states);
     target.draw(gameRules, states);
-    
 }
