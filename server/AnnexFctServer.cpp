@@ -64,8 +64,7 @@ int performActionMoveNormal(Plateau& plateau, gf::TcpSocket& client1, gf::TcpSoc
         assert(packet.getType() == CoupReq::type);
         coup = packet.as<CoupReq>();
     }
-    
-    
+
     CoupRep coupRep = buildRepCoup(plateau, gf::Vector2i(coup.posStart.x, coup.posStart.y), gf::Vector2i(coup.posEnd.x, coup.posEnd.y));
 
     if(coupRep.err == CodeRep::NONE) { // coup valide
@@ -76,7 +75,9 @@ int performActionMoveNormal(Plateau& plateau, gf::TcpSocket& client1, gf::TcpSoc
 
         plateau.lastCoup.push_back(gf::Vector2i(coup.posStart.x,coup.posStart.y));
         plateau.lastCoup.push_back(gf::Vector2i(coup.posEnd.x,coup.posEnd.y));   
-        
+	plateau.all_position.push_back(plateau.getFen());
+	std::cout << "position : " << plateau.all_position.back() << std::endl;
+ 
         turnPlayer1 = !(turnPlayer1);
         plateau.prisePassant = false; 
     }

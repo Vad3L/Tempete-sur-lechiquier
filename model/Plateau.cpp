@@ -1,11 +1,7 @@
 #include "Plateau.hpp"
 #include <iostream>
 #include <gf/Sleep.h>
-Plateau::Plateau() : coordCaseSelected(-1, -1), moveAvailable(), 
-bin(), 
-lastCoup(), 
-playerInEchec(false),
-prisePassant(false) {
+Plateau::Plateau() : coordCaseSelected(-1, -1) {
 	for (int i = 0; i < 8; i++) {
 		for (int coordPass = 0; coordPass < 8; coordPass++) {
 			state.push_back(Case(gf::Vector2i(coordPass, i)));
@@ -480,3 +476,106 @@ void Plateau::tmp(std::vector<gf::Vector2i> a) {
 		assert(it.y<8);
 	}
 }
+
+/*
+		NONE = -1,
+	MIN = 0,
+	KING = MIN,
+	QUEEN = 1,
+	BISHOP = 2,
+	KNIGHT = 3,
+	ROOK = 4,
+	PAWN = 5,
+	CAMEL = 6 ,
+	PRINCE = 7,
+	MAX = PRINCE
+
+*/
+
+std::string Plateau::getFen () {
+	std::string fen = "";
+	std::vector<std::string> white = { "K", "Q", "B", "N", "R", "P", "C", "I" };
+	std::vector<std::string> black = { "k", "q", "b", "n", "r", "p", "c", "i" };
+	std::vector<std::string> neutral = { "Z", "E", "T", "Y", "U", "J", "V", "X" };
+
+	int empty_case = 0;
+	for (auto & c : state) {
+		if (c.piece.getType() != ChessPiece::NONE) {
+			if (empty_case > 0) {
+				fen += std::to_string(empty_case);
+			}
+		} else {
+			empty_case++;
+		}
+
+		if (c.piece.getColor() == ChessColor::BLACK) {
+			fen += black[(int)c.piece.getType()];
+			empty_case = 0;
+		} else if (c.piece.getColor() == ChessColor::WHITE) {
+			fen += white[(int)c.piece.getType()];
+			empty_case = 0;
+		} else if (c.piece.getColor() == ChessColor::GRAY) {
+			fen += neutral[(int)c.piece.getType()];
+			empty_case = 0;
+		}
+
+		if (c.position.x == 7) {
+			if (empty_case > 0) {
+				fen += std::to_string(empty_case);
+			}
+			empty_case = 0;
+			fen += "/";
+		}
+	}
+
+	return fen;
+}
+
+ChessStatus Plateau::isGameOver (ChessColor col) {
+	std::vector<gf::Vector2i> moves;
+	bool has_move = false;
+	for (auto & c : state) {
+		if (c.piece.getType() != ChessPiece::NONE && c.piece.getColor() == col) {
+			moves = c.piece.getMoves(c.position);
+			moves = filterMoveAuthorized(c.position, moves); 
+			if (!moves.empty()) {
+				std::cout << "has move\n";
+				has_move = true;
+				break;
+			}
+		}
+	}
+
+	if (!has_move) {
+		if (isInEchec(col)) {
+			return ChessStatus::WIN;
+		}
+		return ChessStatus::PAT;
+	}
+
+	bool only_king = true;
+	for (auto & c : state) {
+		if (c.piece.getType() != ChessPiece::NONE && c.piece.getType() != ChessPiece::KING) {
+			only_king = false;	
+			break;
+		}
+	}
+
+	if (only_king) {
+		return ChessStatus::PAT;
+	}
+
+	for (size_t i = 0; i < all_position.size(); i++) {
+		size_t count = 0;
+		for (size_t j = i; j < all_position.size(); j++) {
+			if (all_position[i] == all_position[j] && i != j) {
+				count++;
+			}
+		}
+		if (count >= 3) {
+			return ChessStatus::PAT;
+		}
+	}
+	return ChessStatus::ON_GOING;
+}
+
