@@ -14,8 +14,6 @@
 PlaySelectScene::PlaySelectScene(GameHub& game)
 : gf::Scene(game.getRenderer().getSize())
 , m_game(game)
-, m_upAction("UpAction")
-, m_downAction("DownAction")
 , m_rightAction("RightAction")
 , m_leftAction("LeftAction")
 , m_triggerAction("TriggerAction")
@@ -35,12 +33,6 @@ PlaySelectScene::PlaySelectScene(GameHub& game)
     
     m_quitAction.addKeycodeKeyControl(gf::Keycode::Escape);
     addAction(m_quitAction);
-
-    m_upAction.addScancodeKeyControl(gf::Scancode::Up);
-    addAction(m_upAction);
-
-    m_downAction.addScancodeKeyControl(gf::Scancode::Down);
-    addAction(m_downAction);
 
     m_leftAction.addScancodeKeyControl(gf::Scancode::Left);
     addAction(m_leftAction);
@@ -101,22 +93,20 @@ void PlaySelectScene::doHandleActions([[maybe_unused]] gf::Window& window) {
 
     if(m_leftAction.isActive()) {
         changeRightLeft(false);
+        while(m_leftWidget.isDefault()){
+            m_widgets.selectPreviousWidget();
+        }
     }
 
     if(m_rightAction.isActive()) {
         changeRightLeft(true);
+        while(m_rightWidget.isDefault()){
+            m_widgets.selectNextWidget();
+        }
     }
 
     if (m_fullscreenAction.isActive()) {
         window.toggleFullscreen();
-    }
-
-    if (m_upAction.isActive()) {
-        m_widgets.selectPreviousWidget();
-    }
-
-    if (m_downAction.isActive()) {
-        m_widgets.selectNextWidget();
     }
 
     if (m_triggerAction.isActive()) {
@@ -154,16 +144,24 @@ void PlaySelectScene::doRender(gf::RenderTarget& target, const gf::RenderStates 
     m_ipWidget.setParagraphWidth(paragraphWidth);
     m_ipWidget.setPadding(paddingSize);
 
-    m_leftWidget.setCharacterSize(resumeCharacterSize);
-    m_leftWidget.setPosition(coords.getRelativePoint({0.075f, 0.425f + characterSize }));
-    m_leftWidget.setParagraphWidth(paragraphWidthArrow);
-    m_leftWidget.setPadding(paddingSize);
+    if(m_index != 0 ){
+        m_leftWidget.setCharacterSize(resumeCharacterSize);
+        m_leftWidget.setPosition(coords.getRelativePoint({0.075f, 0.425f + characterSize }));
+        m_leftWidget.setParagraphWidth(paragraphWidthArrow);
+        m_leftWidget.setPadding(paddingSize);
+    }else{
+        m_leftWidget.setPosition(coords.getRelativePoint({2.775, 0.425f + characterSize }));
+    }
 
-    m_rightWidget.setCharacterSize(resumeCharacterSize);
-    m_rightWidget.setPosition(coords.getRelativePoint({0.775, 0.425f + characterSize }));
-    m_rightWidget.setParagraphWidth(paragraphWidthArrow);
-    m_rightWidget.setPadding(paddingSize);
 
+    if(m_index != m_listIp.size()-1 ){
+        m_rightWidget.setCharacterSize(resumeCharacterSize);
+        m_rightWidget.setPosition(coords.getRelativePoint({0.775, 0.425f + characterSize }));
+        m_rightWidget.setParagraphWidth(paragraphWidthArrow);
+        m_rightWidget.setPadding(paddingSize);
+    }else{
+        m_rightWidget.setPosition(coords.getRelativePoint({2.775, 0.425f + characterSize }));
+    }
     m_widgets.render(target, states);
     m_PlayTitleEntity.render(target,states);
 }
@@ -178,8 +176,7 @@ void PlaySelectScene::doShow() {
     m_widgets.addWidget(m_ipWidget);
     m_widgets.addWidget(m_leftWidget);
     m_widgets.addWidget(m_rightWidget);
-    /*m_join.setDefault();
-    m_widgets.addWidget(m_join);*/
+
     m_widgets.selectNextWidget();
 }
 
@@ -189,17 +186,12 @@ void PlaySelectScene::changeRightLeft(bool value) {
         if(m_index+1 < m_listIp.size()){
             m_ipWidget.setString(m_listIp[m_index+1]);
             m_index++;
-            m_rightWidget.setSelected();
-            m_leftWidget.setDefault();
-            m_ipWidget.setDefault();
         }
     }else{
         if(m_index-1 >= 0){
             m_ipWidget.setString(m_listIp[m_index-1]);
             m_index--;
-            m_leftWidget.setSelected();
-            m_rightWidget.setDefault();
-            m_ipWidget.setDefault();
         }
     }
+
 }

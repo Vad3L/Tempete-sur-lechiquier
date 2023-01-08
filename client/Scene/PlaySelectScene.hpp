@@ -28,8 +28,6 @@ class PlaySelectScene : public gf::Scene {
         GameHub& m_game;
         gf::Action m_quitAction;
 
-        gf::Action m_upAction;
-        gf::Action m_downAction;
         gf::Action m_leftAction;
         gf::Action m_rightAction;
 
