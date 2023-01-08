@@ -7,6 +7,7 @@
 #include <gf/Widgets.h>
 #include <gf/Event.h>
 
+#include <regex>
 #include <vector>
 
 #include "../Entity/PlayTitleEntity.hpp"
@@ -23,9 +24,10 @@ class PlaySelectScene : public gf::Scene {
         void doRender(gf::RenderTarget& target, const gf::RenderStates &states) override;
         void doShow() override;
         void changeRightLeft(bool value);
-
+        void onActivityChange(bool active)  override;
     private:
         GameHub& m_game;
+        
         gf::Action m_quitAction;
 
         gf::Action m_leftAction;

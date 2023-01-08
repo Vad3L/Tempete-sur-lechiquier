@@ -7,8 +7,9 @@
 #include <gf/Texture.h>
 #include <gf/Font.h>
 #include <gf/Text.h>
+#include <gf/Sleep.h>
+#include <gf/Color.h>
 
-#include "../Network.hpp"
 #include "../../model/Plateau.hpp"
 #include "../../protocole/protocole.h"
 
@@ -40,9 +41,6 @@ class GameScene : public gf::Scene {
         gf::Action m_fullscreenAction;
 
 	    bool m_gameStart;
-        
-        Network m_network;
-        gf::Packet m_packet;
     
         gf::ExtendView m_boardView;
         gf::ExtendView m_tableBoardView;        
