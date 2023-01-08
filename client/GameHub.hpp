@@ -2,12 +2,15 @@
 #define GAME_HUB_H
 
 #include <gf/GameManager.h>
+#include <gf/Packet.h>
 
 #include "Scene/StartScene.hpp"
 #include "Scene/MenuScene.hpp"
 #include "Scene/PlaySelectScene.hpp"
 #include "Scene/GameScene.hpp"
 #include "Scene/RulesScene.hpp"
+
+#include "Network.hpp"
 
 /*#include "QuitScene.hpp"
 #include "MenuScene.hpp"
@@ -24,7 +27,8 @@ struct GameHub : gf::GameManager {
     GameScene game;
     RulesScene rules;
 
-    void setIp(std::string ip);
+    Network m_network;
+    gf::Packet m_packet;
 
     /*CreditScene credits;
     QuitScene quit;

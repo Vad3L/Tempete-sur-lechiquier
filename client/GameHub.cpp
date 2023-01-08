@@ -12,8 +12,4 @@ GameHub::GameHub()
 pushScene(start);
 }
 
-void GameHub::setIp(std::string ip){
-    game.setIp(ip);
-}
-
 

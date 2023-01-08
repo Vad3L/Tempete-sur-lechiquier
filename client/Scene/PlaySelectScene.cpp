@@ -58,21 +58,17 @@ PlaySelectScene::PlaySelectScene(GameHub& game)
         m_widgets.addWidget(button);
     };
 
-    std::ifstream file(std::string(GAME_CONFIGDIR)+"IpList.txt");
-
-    if (!file) {
-        std::cerr << "Error: Unable to open file." << std::endl;
-    }else{
-        std::string line;
-        while (std::getline(file, line)) {
-            m_listIp.insert(m_listIp.begin(), line);
-        }
-
-        file.close();
-    }
-
     setupButton(m_ipWidget, [&] () {
-        m_game.setIp(std::string(m_ipWidget.getString()));
+
+		m_game.m_network.connect(std::string(m_ipWidget.getString()),"43771");
+        gf::Log::debug("connexion\n");
+        gf::sleep(gf::milliseconds(500));
+        assert(m_game.m_network.isConnected());
+
+        m_game.m_network.queue.wait(m_game.m_packet);
+        assert(m_game.m_packet.getType() == PartieRep::type);
+        
+
         m_game.replaceAllScenes(m_game.game);
     });
 
@@ -194,4 +190,23 @@ void PlaySelectScene::changeRightLeft(bool value) {
         }
     }
 
+}
+
+void PlaySelectScene::onActivityChange(bool active){
+    std::ifstream file(std::string(GAME_CONFIGDIR)+"IpList.txt");
+
+    if (!file) {
+        std::cerr << "Error: Unable to open file." << std::endl;
+    }else{
+        std::string line;
+        m_listIp.clear();
+        std::regex pattern(R"(^((25[0-5]|(2[0-4]|1\d|[1-9]|)\d).?\b){4}$)");
+        while (std::getline(file, line)) {
+            if(std::regex_search(line, pattern)){
+                m_listIp.push_back(line);
+            }
+        }
+
+        file.close();
+    }
 }

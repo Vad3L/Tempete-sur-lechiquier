@@ -1,9 +1,7 @@
 #include "GameScene.hpp"
 
-#include <gf/Color.h>
 #include <gf/Log.h>
 #include <iostream>
-#include <gf/Sleep.h>
 
 #include "../GameHub.hpp"
 
@@ -13,9 +11,6 @@ GameScene::GameScene(GameHub& game)
 , m_gameStart(false)
 , m_quitAction("quit")
 , m_fullscreenAction("Fullscreen")
-, m_network()
-, m_packet()
-, m_views()
 , m_boardEntity(game.resources, m_gameData)
 , m_tableBoardEntity(game.resources, m_gameData)
 {
@@ -81,7 +76,7 @@ void GameScene::doProcessEvent(gf::Event& event) {
 	    	m_gameData.m_plateau.coordCaseSelected = gf::Vector2i(-1,-1);
             m_gameData.m_plateau.moveAvailable.clear();	
                 
-            m_network.send(coup);
+            m_game.m_network.send(coup);
         }
     }
 }
@@ -98,12 +93,12 @@ void GameScene::doRender(gf::RenderTarget& target, const gf::RenderStates &state
 }
 
 void GameScene::doUpdate(gf::Time time) {
-    if(!m_network.queue.poll(m_packet)) {
+    if(!m_game.m_network.queue.poll(m_game.m_packet)) {
 		return;
 	}
 	
-	if (m_packet.getType() == PartieRep::type) {
-		auto repPartie = m_packet.as<PartieRep>();
+	if (m_game.m_packet.getType() == PartieRep::type) {
+		auto repPartie = m_game.m_packet.as<PartieRep>();
 		if (repPartie.err == CodeRep::GAME_START) {
 			std::cout << "game start\n";
 			m_gameStart = true;
@@ -114,7 +109,7 @@ void GameScene::doUpdate(gf::Time time) {
 		}
 	}     
 
-	auto coupRep = m_packet.as<CoupRep>();
+	auto coupRep = m_game.m_packet.as<CoupRep>();
 	
 	// move piece
 	if(coupRep.err == CodeRep::NONE) { // coup valide
@@ -149,16 +144,8 @@ void GameScene::onActivityChange(bool active) {
     if(active){
         //m_views.setInitialScreenSize(m_game.getRenderer().getSize());
         m_views.setInitialFramebufferSize(m_game.getRenderer().getSize());
-        std::cout << "ip selected : " << m_ip << std::endl;
-		m_network.connect(m_ip,"43771");
-        gf::Log::debug("connexion\n");
-        gf::sleep(gf::milliseconds(500));
-        assert(m_network.isConnected());
 
-        m_network.queue.wait(m_packet);
-        assert(m_packet.getType() == PartieRep::type);
-
-        auto repPartie = m_packet.as<PartieRep>();
+        auto repPartie = m_game.m_packet.as<PartieRep>();
         assert(repPartie.err == CodeRep::NONE);
 
         m_gameData.m_myColor = repPartie.coulPion;
@@ -177,8 +164,3 @@ void GameScene::onActivityChange(bool active) {
         }
     }
 }
-
-void GameScene::setIp(std::string ip){
-    m_ip = ip;
-}
-
