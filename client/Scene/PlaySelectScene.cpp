@@ -79,6 +79,7 @@ PlaySelectScene::PlaySelectScene(GameHub& game)
     setupButton(m_leftWidget, [&] () {
         changeRightLeft(false);
     });
+    
   
 }
 
@@ -193,20 +194,24 @@ void PlaySelectScene::changeRightLeft(bool value) {
 }
 
 void PlaySelectScene::onActivityChange(bool active){
-    std::ifstream file(std::string(GAME_CONFIGDIR)+"IpList.txt");
+    if(active){
+        gf::Log::debug("active scene\n");
+        std::ifstream file(std::string(GAME_CONFIGDIR)+"IpList.txt");
 
-    if (!file) {
-        std::cerr << "Error: Unable to open file." << std::endl;
-    }else{
-        std::string line;
-        m_listIp.clear();
-        std::regex pattern(R"(^((25[0-5]|(2[0-4]|1\d|[1-9]|)\d).?\b){4}$)");
-        while (std::getline(file, line)) {
-            if(std::regex_search(line, pattern)){
-                m_listIp.push_back(line);
+        if (!file) {
+            std::cerr << "Error: Unable to open file." << std::endl;
+        }else{
+            std::string line;
+            m_listIp.clear();
+            std::regex pattern(R"(^((25[0-5]|(2[0-4]|1\d|[1-9]|)\d).?\b){4}$)");
+            while (std::getline(file, line)) {
+                if(std::regex_search(line, pattern)){
+                    m_listIp.push_back(line);
+                }
             }
-        }
+            m_ipWidget.setString(m_listIp[0]);
 
-        file.close();
+            file.close();
+        }
     }
 }
