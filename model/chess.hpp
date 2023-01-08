@@ -1,6 +1,12 @@
 #ifndef ECHEC_H
 #define ECHEC_H
 
+enum class ChessStatus {
+	ON_GOING,
+	PAT,
+	WIN
+};
+
 enum class ChessPiece {
 	NONE = -1,
 	MIN = 0,

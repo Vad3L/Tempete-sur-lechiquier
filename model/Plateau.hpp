@@ -17,12 +17,14 @@ class Plateau {
 		gf::Vector2i coordCaseSelected;
 		std::vector<Piece> bin;
 		std::vector<Case> state;
-		bool playerInEchec;
-		bool prisePassant;
+		bool playerInEchec = false;
+		bool prisePassant = false;
 		std::vector<gf::Vector2i> lastCoup;
+		std::vector<std::string> all_position;
 
 		Plateau();
 		std::string getSymbol (ChessColor c, ChessPiece p);
+		std::string getFen ();
 		void prettyPrint();
 		bool setMovement(ChessColor color, gf::Vector2i v);
 		
@@ -38,8 +40,9 @@ class Plateau {
 		void deMovePieces(gf::Vector2i coord1, gf::Vector2i coord2, bool inBin);
 		
 		bool isInEchec(ChessColor color, gf::Vector2i coord = gf::Vector2i(-1));
+		ChessStatus isGameOver (ChessColor c);
 
-		void tmp(std::vector<gf::Vector2i>);
+		void tmp(std::vector<gf::Vector2i> t);
 };
 
 #endif // PLATEAU_H

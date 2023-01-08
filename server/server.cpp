@@ -39,6 +39,7 @@ int main (int argc, char* argv[]) {
 	    sendStart(client1, client2);
             
             Plateau plateau;
+	    ChessStatus game_status = ChessStatus::ON_GOING;
             bool turnPlayer1 = true;
             std::cout << "Je suis le serveur" << std::endl;
             while (true) {
@@ -46,17 +47,34 @@ int main (int argc, char* argv[]) {
 
                 if (turnPlayer1) {
                     std::cout << "------TOUR J1------" << std::endl;
+		    if ((game_status = plateau.isGameOver(ChessColor::WHITE)) != ChessStatus::ON_GOING) {
+			break;
+		    }
+
                     if(performActionMoveNormal(plateau, client1, client2, turnPlayer1) == -1) {
                         return -1;
                     }
                 } else {
                     std::cout << "------TOUR J2------" << std::endl;
+		    if ((game_status = plateau.isGameOver(ChessColor::BLACK)) != ChessStatus::ON_GOING) {
+			break;
+		    }
+
                     if(performActionMoveNormal(plateau, client1, client2, turnPlayer1) == -1) {
                         return -1;
                     }
-
                 }
             }
+
+	    if (game_status == ChessStatus::PAT) {
+		std::cout << "égalité\n";
+	    }
+
+	    if (turnPlayer1 && game_status == ChessStatus::WIN) {
+		std::cout << "black win\n";
+	    } else if (game_status == ChessStatus::WIN) {
+		std::cout << "white win\n";
+	    }
         }
 
         client2.~TcpSocket();
