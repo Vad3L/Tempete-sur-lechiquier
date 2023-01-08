@@ -2,7 +2,6 @@
 #define CASE_H
 
 #include <gf/Vector.h>
-
 #include "Piece.hpp"
 
 class Case {

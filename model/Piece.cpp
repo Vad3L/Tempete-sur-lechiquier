@@ -1,6 +1,4 @@
 #include "Piece.hpp"
-#include <iostream>
-#include <cassert>
 
 Piece::Piece(ChessColor c, ChessPiece t){
     color = c;

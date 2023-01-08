@@ -1,5 +1,3 @@
-#include <iostream>
-
 #include "AnnexFctServer.hpp"
 
 // check validité d'un coup

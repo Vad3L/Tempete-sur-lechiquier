@@ -2,7 +2,8 @@
 #define PIECE_H
 
 #include <gf/Vector.h>
-
+#include <iostream>
+#include <cassert>
 #include <cstdlib>
 #include <vector>
 

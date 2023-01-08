@@ -6,7 +6,8 @@
 
 #include <gf/Vector.h>
 #include <gf/VectorOps.h>
-
+#include <iostream>
+#include <gf/Sleep.h>
 #include <vector>
 #include <cassert>
 #include <string>

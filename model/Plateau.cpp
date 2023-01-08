@@ -1,6 +1,4 @@
 #include "Plateau.hpp"
-#include <iostream>
-#include <gf/Sleep.h>
 Plateau::Plateau() : coordCaseSelected(-1, -1) {
 	for (int i = 0; i < 8; i++) {
 		for (int coordPass = 0; coordPass < 8; coordPass++) {
