@@ -55,7 +55,6 @@ void GameScene::doHandleActions([[maybe_unused]] gf::Window& window) {
 
 void GameScene::doProcessEvent(gf::Event& event) {
     bool click = false;
-
 	m_views.processEvent(event);
     
 	if (!m_gameStart) { return; }
@@ -148,8 +147,11 @@ void GameScene::doUpdate(gf::Time time) {
 
 void GameScene::onActivityChange(bool active) {
     if(active){
-        m_views.setInitialScreenSize(m_game.getRenderer().getSize());
-        m_network.connect("localhost","4555");
+        //m_views.setInitialScreenSize(m_game.getRenderer().getSize());
+        m_views.setInitialFramebufferSize(m_game.getRenderer().getSize());
+        std::cout << "ip selected : " << m_ip << std::endl;
+		m_network.connect(m_ip,"43771");
+        gf::Log::debug("connexion\n");
         gf::sleep(gf::milliseconds(500));
         assert(m_network.isConnected());
 
@@ -174,50 +176,9 @@ void GameScene::onActivityChange(bool active) {
             m_boardView.setRotation(gf::Pi);
         }
     }
-
-    Piece p(ChessColor::WHITE, ChessPiece::PAWN);
-    m_gameData.m_plateau.bin.push_back(p);
-    m_gameData.m_plateau.bin.push_back(p);
-    m_gameData.m_plateau.bin.push_back(p);
-    m_gameData.m_plateau.bin.push_back(p);
-    m_gameData.m_plateau.bin.push_back(p);
-    m_gameData.m_plateau.bin.push_back(p);
-    m_gameData.m_plateau.bin.push_back(p);
-    m_gameData.m_plateau.bin.push_back(p);
-    Piece a(ChessColor::WHITE, ChessPiece::ROOK);
-    m_gameData.m_plateau.bin.push_back(a);
-    m_gameData.m_plateau.bin.push_back(a);
-    Piece z(ChessColor::WHITE, ChessPiece::BISHOP);
-    m_gameData.m_plateau.bin.push_back(z);
-    m_gameData.m_plateau.bin.push_back(z);
-    Piece h(ChessColor::WHITE, ChessPiece::KING);
-    m_gameData.m_plateau.bin.push_back(h);
-    Piece q(ChessColor::WHITE, ChessPiece::QUEEN);
-    m_gameData.m_plateau.bin.push_back(q);
-    Piece k(ChessColor::WHITE, ChessPiece::KNIGHT);
-    m_gameData.m_plateau.bin.push_back(k);
-    m_gameData.m_plateau.bin.push_back(k);
-    
-    Piece p2(ChessColor::BLACK, ChessPiece::PAWN);
-    m_gameData.m_plateau.bin.push_back(p2);
-    m_gameData.m_plateau.bin.push_back(p2);
-    m_gameData.m_plateau.bin.push_back(p2);
-    m_gameData.m_plateau.bin.push_back(p2);
-    m_gameData.m_plateau.bin.push_back(p2);
-    m_gameData.m_plateau.bin.push_back(p2);
-    m_gameData.m_plateau.bin.push_back(p2);
-    m_gameData.m_plateau.bin.push_back(p2);
-    Piece a2(ChessColor::BLACK, ChessPiece::ROOK);
-    m_gameData.m_plateau.bin.push_back(a2);
-    m_gameData.m_plateau.bin.push_back(a2);
-    Piece z2(ChessColor::BLACK, ChessPiece::BISHOP);
-    m_gameData.m_plateau.bin.push_back(z2);
-    m_gameData.m_plateau.bin.push_back(z2);
-    Piece h2(ChessColor::BLACK, ChessPiece::KING);
-    m_gameData.m_plateau.bin.push_back(h2);
-    Piece q2(ChessColor::BLACK, ChessPiece::QUEEN);
-    m_gameData.m_plateau.bin.push_back(q2);
-    Piece k2(ChessColor::BLACK, ChessPiece::KNIGHT);
-    m_gameData.m_plateau.bin.push_back(k2);
-    m_gameData.m_plateau.bin.push_back(k2);
 }
+
+void GameScene::setIp(std::string ip){
+    m_ip = ip;
+}
+

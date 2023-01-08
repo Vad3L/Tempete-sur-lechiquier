@@ -24,6 +24,8 @@ struct GameHub : gf::GameManager {
     GameScene game;
     RulesScene rules;
 
+    void setIp(std::string ip);
+
     /*CreditScene credits;
     QuitScene quit;
 */

@@ -2,12 +2,10 @@
 #include <cstring>
 
 int main (int argc, char* argv[]) {
-	if (argc != 2) {
-		std::cerr << "Usage: " << argv[0] << " [port]" << std::endl;
-		return -1;
-	}
 
-    int port = atoi(argv[1]);
+    int port = 43771;
+    //FctAnnex fctAnnex;
+
     gf::TcpListener listener(std::to_string(port));
     
     gf::TcpSocket client1 = listener.accept();

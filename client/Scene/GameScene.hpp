@@ -22,7 +22,7 @@ struct GameData;
 class GameScene : public gf::Scene {
     public:
         GameScene(GameHub& game);
-
+        void setIp(std::string ip);
     private:
         void doHandleActions(gf::Window& window) override;
         void doProcessEvent(gf::Event& event) override;
@@ -31,6 +31,8 @@ class GameScene : public gf::Scene {
 
         void onActivityChange(bool active)  override;
     private:
+        std::string m_ip;
+
         GameHub& m_game;
         GameData m_gameData;
 

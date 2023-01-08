@@ -21,14 +21,14 @@ void BoardEntity::update([[maybe_unused]] gf::Time time) {
 }
 
 void BoardEntity::render(gf::RenderTarget &target, const gf::RenderStates &states) {
-
+    
     int numberPiece = ((int)ChessPiece::MAX - (int)ChessPiece::MIN + 1);
     gf::Coordinates coords(gf::Vector2i(200.f , 200.f));
     
     float sizeSquare = coords.getRelativeSize(gf::vec(0.0f, 1.f/8.f)).height;
     float sizeLine = 1.5f;
     bool myTurn = m_gameData.m_myTurn;
-
+    
     //draw plateau 
     for  (Case &c : m_gameData.m_plateau.state) {
         int x = c.position.x;
@@ -37,7 +37,7 @@ void BoardEntity::render(gf::RenderTarget &target, const gf::RenderStates &state
         
         gf::RectangleShape shape({ sizeSquare-sizeLine, sizeSquare-sizeLine});
         shape.setPosition(coords.getRelativePoint({-0.5f + (float)x * 1.f/8.f + 1/16.f, -0.5f + (float)y * 1.f/8.f + 1/16.f}));
-
+        
         // if case selected
         if(pos == m_gameData.m_plateau.coordCaseSelected) {
             

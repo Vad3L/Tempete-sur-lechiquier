@@ -1,7 +1,5 @@
 #include "GameHub.hpp"
 
-#define GAME_DATADIR "../data/"
-
 
 GameHub::GameHub()
 : GameManager("Storm on chess", { GAME_DATADIR })
@@ -12,6 +10,10 @@ GameHub::GameHub()
 , rules(*this)
 {
 pushScene(start);
+}
+
+void GameHub::setIp(std::string ip){
+    game.setIp(ip);
 }
 
 

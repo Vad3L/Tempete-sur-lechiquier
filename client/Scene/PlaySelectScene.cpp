@@ -1,8 +1,14 @@
 #include "MenuScene.hpp"
+#include "../GameHub.hpp"
+
+#include <iostream>
+#include <fstream>
+#include <string>
 
 #include <gf/Log.h>
 #include <gf/Coordinates.h>
-#include "../GameHub.hpp"
+
+
 
 
 PlaySelectScene::PlaySelectScene(GameHub& game)
@@ -14,7 +20,7 @@ PlaySelectScene::PlaySelectScene(GameHub& game)
 , m_quitAction("Quit")
 , m_fullscreenAction("Fullscreen")
 , m_PlayTitleEntity(game.resources)
-, m_join("Join", game.resources.getFont("Trajan-Color-Concept.otf"))
+//, m_join("Join", game.resources.getFont("Trajan-Color-Concept.otf"))
 {
     setClearColor(gf::Color::Black);
     addHudEntity(m_PlayTitleEntity);
@@ -35,6 +41,7 @@ PlaySelectScene::PlaySelectScene(GameHub& game)
     m_triggerAction.addMouseButtonControl(gf::MouseButton::Left);
     addAction(m_triggerAction);
 
+
     auto setupButton = [&] (gf::TextButtonWidget& button, auto callback) {
         button.setDefaultTextColor(gf::Color::Black);
         button.setDefaultBackgroundColor(gf::Color::Gray(0.7f));
@@ -48,13 +55,41 @@ PlaySelectScene::PlaySelectScene(GameHub& game)
         m_widgets.addWidget(button);
     };
 
-    setupButton(m_join, [&] () {
+    std::ifstream file(std::string(GAME_CONFIGDIR)+"IpList.txt");
+
+    if (!file) {
+        std::cerr << "Error: Unable to open file." << std::endl;
+    }else{
+        std::string line;
+        while (std::getline(file, line)) {
+            std::string temp(line);
+            gf::TextButtonWidget ipWidget(temp, game.resources.getFont("Trajan-Color-Concept.otf"));
+            
+            std::cout << "ip " << temp << std::endl;
+            setupButton(ipWidget, [=] () {
+                std::cout << "ip " << temp << std::endl;
+                m_game.setIp(temp);
+                m_game.replaceAllScenes(m_game.game);
+            });
+
+            m_listIp.push_back(ipWidget);
+        }
+
+        file.close();
+    }
+    //gf::Log::debug("size list : %s\n",m_listIp.size());
+
+
+
+    /*setupButton(m_join, [&] () {
         gf::Log::debug("join button pressed!\n");
         m_game.replaceAllScenes(m_game.game);
-    });
-    }
+    });*/
 
-    void PlaySelectScene::doHandleActions([[maybe_unused]] gf::Window& window) {
+  
+}
+
+void PlaySelectScene::doHandleActions([[maybe_unused]] gf::Window& window) {
     if (!isActive()) {
         return;
     }
@@ -78,44 +113,53 @@ PlaySelectScene::PlaySelectScene(GameHub& game)
     if (m_quitAction.isActive()) {
         m_game.replaceScene(m_game.start);
     }
-    }
+}
 
-    void PlaySelectScene::doProcessEvent(gf::Event& event) {
-        switch (event.type)
-        {
-            case gf::EventType::MouseMoved:
+void PlaySelectScene::doProcessEvent(gf::Event& event) {
+    switch (event.type){
+        case gf::EventType::MouseMoved:
             m_widgets.pointTo(m_game.computeWindowToGameCoordinates(event.mouseCursor.coords, getHudView()));
             break;
-        }
+    }
+}
+
+void PlaySelectScene::doRender(gf::RenderTarget& target, const gf::RenderStates &states) {
+    constexpr float characterSize = 0.075f;
+    constexpr float spaceBetweenButton = 0.10f;
+    constexpr gf::Vector2f backgroundSize(0.5f, 0.3f);
+
+    target.setView(getHudView());
+    gf::Coordinates coords(target);
+
+    const float paragraphWidth = coords.getRelativeSize(backgroundSize - 0.05f).x;
+    const float paddingSize = coords.getRelativeSize({0.01f, 0.f}).x;
+    const unsigned resumeCharacterSize = coords.getRelativeCharacterSize(characterSize);
+    
+    for(int i = 0 ; i < m_listIp.size() ; ++i){
+        m_listIp[i].setCharacterSize(resumeCharacterSize);
+        m_listIp[i].setPosition(coords.getRelativePoint({0.275f, 0.425f + (characterSize + spaceBetweenButton) * i}));
+        m_listIp[i].setParagraphWidth(paragraphWidth);
+        m_listIp[i].setPadding(paddingSize);
     }
 
-    void PlaySelectScene::doRender(gf::RenderTarget& target, const gf::RenderStates &states) {
-        constexpr float characterSize = 0.075f;
-        constexpr float spaceBetweenButton = 0.050f;
-        constexpr gf::Vector2f backgroundSize(0.5f, 0.3f);
+    /*m_join.setCharacterSize(resumeCharacterSize);
+    m_join.setPosition(coords.getRelativePoint({0.275f, 0.425f + characterSize + spaceBetweenButton}));
+    m_join.setParagraphWidth(paragraphWidth);
+    m_join.setPadding(paddingSize);*/
 
-        target.setView(getHudView());
-        gf::Coordinates coords(target);
+    m_widgets.render(target, states);
+    m_PlayTitleEntity.render(target,states);
+}
 
-        const float paragraphWidth = coords.getRelativeSize(backgroundSize - 0.05f).x;
-        const float paddingSize = coords.getRelativeSize({0.01f, 0.f}).x;
-        const unsigned resumeCharacterSize = coords.getRelativeCharacterSize(characterSize);
-
-        m_join.setCharacterSize(resumeCharacterSize);
-        m_join.setPosition(coords.getRelativePoint({0.275f, 0.425f + characterSize + spaceBetweenButton}));
-        m_join.setParagraphWidth(paragraphWidth);
-        m_join.setPadding(paddingSize);
-
-        m_widgets.render(target, states);
-        m_PlayTitleEntity.render(target,states);
-    }
-
-    void PlaySelectScene::doShow() {
+void PlaySelectScene::doShow() {
     m_widgets.clear();
 
-    m_join.setDefault();
-    m_widgets.addWidget(m_join);
-
+    for(int i = 0 ; i < m_listIp.size() ; ++i){
+        m_listIp[i].setDefault();
+        m_widgets.addWidget(m_listIp[i]);
+    }
+    /*m_join.setDefault();
+    m_widgets.addWidget(m_join);*/
     m_widgets.selectNextWidget();
 }
 

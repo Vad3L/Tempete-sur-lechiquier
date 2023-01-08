@@ -7,6 +7,8 @@
 #include <gf/Widgets.h>
 #include <gf/Event.h>
 
+#include <vector>
+
 #include "../Entity/PlayTitleEntity.hpp"
 
 struct GameHub;
@@ -33,8 +35,7 @@ class PlaySelectScene : public gf::Scene {
         PlayTitleEntity m_PlayTitleEntity;
 
         gf::WidgetContainer m_widgets;
-        gf::TextButtonWidget m_join;
-
+        std::vector<gf::TextButtonWidget> m_listIp;
         
 };
 
