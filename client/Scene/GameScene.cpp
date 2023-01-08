@@ -145,6 +145,9 @@ void GameScene::onActivityChange(bool active) {
         //m_views.setInitialScreenSize(m_game.getRenderer().getSize());
         m_views.setInitialFramebufferSize(m_game.getRenderer().getSize());
 
+        m_game.m_network.queue.wait(m_game.m_packet);
+        assert(m_game.m_packet.getType() == PartieRep::type);
+
         auto repPartie = m_game.m_packet.as<PartieRep>();
         assert(repPartie.err == CodeRep::NONE);
 

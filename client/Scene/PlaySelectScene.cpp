@@ -61,15 +61,19 @@ PlaySelectScene::PlaySelectScene(GameHub& game)
     setupButton(m_ipWidget, [&] () {
 
 		m_game.m_network.connect(std::string(m_ipWidget.getString()),"43771");
-        gf::Log::debug("connexion\n");
+        std::cout << std::string(m_ipWidget.getString()) << std::endl;
+        gf::Log::debug("Try connexion \n");
         gf::sleep(gf::milliseconds(500));
-        assert(m_game.m_network.isConnected());
 
-        m_game.m_network.queue.wait(m_game.m_packet);
-        assert(m_game.m_packet.getType() == PartieRep::type);
         
-
-        m_game.replaceAllScenes(m_game.game);
+        if(m_game.m_network.isConnected()){
+            gf::Log::debug("Succeful connexion\n");
+            m_game.replaceAllScenes(m_game.game);
+        }else{
+            gf::Log::debug("Failed connexion\n");
+            m_PlayTitleEntity.m_errorText.setString("Connection to server failed");
+        }
+        
     });
 
     setupButton(m_rightWidget, [&] () {
@@ -213,5 +217,7 @@ void PlaySelectScene::onActivityChange(bool active){
 
             file.close();
         }
+    }else{
+        m_PlayTitleEntity.m_errorText.setString(" ");
     }
 }

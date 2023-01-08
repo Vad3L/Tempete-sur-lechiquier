@@ -4,11 +4,11 @@
 #include <gf/Log.h>
 #include <gf/RenderTarget.h>
 #include <gf/Sprite.h>
-#include <gf/Text.h>
 
   PlayTitleEntity::PlayTitleEntity(gf::ResourceManager& resources)
 : m_font(resources.getFont("Trajan-Color-Concept.otf"))
 , m_backgroundTexture(resources.getTexture("startMenu1.png"))
+, m_errorText("", resources.getFont("DejaVuSans.ttf"))
 {
 
 }
@@ -44,5 +44,10 @@ void PlayTitleEntity::render(gf::RenderTarget &target, const gf::RenderStates &s
   subtitle.setPosition(coords.getRelativePoint({ 0.5f, 0.25f }));
   subtitle.setAnchor(gf::Anchor::Center);
   target.draw(subtitle, states);
+
+  m_errorText.setColor(gf::Color::Red);
+  m_errorText.setPosition(coords.getRelativePoint({ 0.5f, 0.40f }));
+  m_errorText.setAnchor(gf::Anchor::Center);
+  target.draw(m_errorText, states);
 }
 

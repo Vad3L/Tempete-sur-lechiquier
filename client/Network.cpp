@@ -17,7 +17,6 @@ bool Network::isConnected() {
 }
 
 void Network::connect(const std::string& hostname, const std::string& port) {
-    m_connecting = true;
 
     std::thread thread(&Network::run, this, hostname, port);
     thread.detach();
@@ -56,3 +55,4 @@ void Network::run(std::string hostname, std::string port) {
         }
     }
 }
+
