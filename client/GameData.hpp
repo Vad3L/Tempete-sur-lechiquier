@@ -4,6 +4,10 @@
 #include "../model/chess.hpp"
 #include "../model/Plateau.hpp"
 
+#define GAME_DATADIR "../data/"
+#define GAME_CONFIGDIR "../config/"
+
+
 struct GameData {
     GameData();
     
@@ -11,6 +15,7 @@ struct GameData {
     ChessColor m_myColor;
     bool m_myTurn;
     Plateau m_plateau;
+    
 };
 
 

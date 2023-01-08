@@ -140,8 +140,10 @@ void GameScene::doUpdate(gf::Time time) {
 
 void GameScene::onActivityChange(bool active){
     if(active){
+        std::cout << "ip selected : " << m_ip << std::endl;
         m_boardView.setCenter(m_game.getRenderer().getSize()/2);
-		m_network.connect("localhost","43771");
+		m_network.connect(m_ip,"43771");
+        gf::Log::debug("connexion\n");
         gf::sleep(gf::milliseconds(500));
         assert(m_network.isConnected());
 
@@ -168,3 +170,8 @@ void GameScene::onActivityChange(bool active){
         }
     }
 }
+
+void GameScene::setIp(std::string ip){
+    m_ip = ip;
+}
+
