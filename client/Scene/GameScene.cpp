@@ -68,8 +68,9 @@ void GameScene::doProcessEvent(gf::Event& event) {
                 PromotionReq promo;
                 promo.pos.x = v.x;
                 promo.pos.y = v.y;
-                promo.choix = ChessPiece::QUEEN;
-                std::cout << "envoie au serveur la promotion du pion en " << v.y << "," << v.x << "avec comme choix "<< (int)ChessPiece::QUEEN<< std::endl;
+                ChessPiece choice = m_boardEntity.getChoice(m_boardView.getSize(), m_game.getRenderer().mapPixelToCoords(event.mouseButton.coords, m_boardView));
+                promo.choice = choice;
+                std::cout << "envoie au serveur la promotion du pion en " << v.y << "," << v.x << "avec comme choice "<< (int)promo.choice<< std::endl;
                 m_game.m_network.send(promo);
            }
         }else {
@@ -172,7 +173,7 @@ void GameScene::doUpdate(gf::Time time) {
         if(promoRep.err == CodeRep::NONE) {
             std::cout << "------PROMOTION CORRECT------" << std::endl;
             
-            m_gameData.m_plateau.promotionPiece(gf::Vector2i(promoRep.pos.x, promoRep.pos.y), promoRep.choix);
+            m_gameData.m_plateau.promotionPiece(gf::Vector2i(promoRep.pos.x, promoRep.pos.y), promoRep.choice);
 
             ChessColor c = !m_gameData.m_myColor;
             if (m_gameData.m_myTurn) {
@@ -193,7 +194,7 @@ void GameScene::doUpdate(gf::Time time) {
 void GameScene::onActivityChange(bool active) {
     if(active){
         m_gameStart = false;
-        m_gameData.m_gameStatus =  ChessStatus::NONE;
+        m_gameData.m_gameStatus =  ChessStatus::ON_GOING;
         m_views.setInitialFramebufferSize(m_game.getRenderer().getSize());
 
         m_game.m_network.queue.wait(m_packet);

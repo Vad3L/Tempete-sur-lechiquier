@@ -144,3 +144,36 @@ gf::Vector2i BoardEntity::getTransformCaseSelected(gf::Vector2i sizeWindows, gf:
     std::cout << "caseSelectionne: [ligne/col] " << v.y << "," << v.x << std::endl;
     return v;
 }
+
+ChessPiece BoardEntity::getChoice(gf::Vector2i sizeWindows, gf::Vector2i mouseCoord) {
+    ChessPiece p;
+    
+    float min = std::min(sizeWindows.height, sizeWindows.width);
+    
+    gf::Vector2i v(-1,-1); 
+    v.y = (int)((16.f/min) * (mouseCoord.y + min/2.f))%2; //+min/2 pour ramener les coordonées dans le positif 
+    v.x = (int)((16.f/min) * (mouseCoord.x + min/2.f))%2;
+    
+    int val = 2*v.y +v.x;
+    if(m_gameData.m_myColor != ChessColor::WHITE) {
+        val = std::abs(3-val);
+    }
+    
+    //std::cout << "case promotion[y/x] " << v.y<< ","<< v.x<< std::endl;
+    std::cout << "val : " << val << "\n";
+    switch (val) {
+        case 0:
+            p = ChessPiece::QUEEN;
+            break;
+        case 1:
+            p = ChessPiece::ROOK;
+            break;
+        case 2:
+            p = ChessPiece::BISHOP;
+            break;
+        case 3:
+            p = ChessPiece::KNIGHT;
+            break;
+    }
+    return p;
+}

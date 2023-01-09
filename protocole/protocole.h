@@ -78,23 +78,23 @@ Archive operator|(Archive& ar, CoupRep& data) {
 struct PromotionReq {
     static constexpr gf::Id type = "PromotionReq"_id;
     Pos pos;
-    ChessPiece choix;
+    ChessPiece choice;
 };
 
 template<typename Archive>
 Archive operator|(Archive& ar, PromotionReq& data) {
-    return ar | data.pos | data.choix;
+    return ar | data.pos | data.choice;
 }
 
 struct PromotionRep {
     static constexpr gf::Id type = "PromotionRep"_id;
     CodeRep err;                   /* Code de retour */
     Pos pos;
-    ChessPiece choix;
+    ChessPiece choice;
 };
 
 template<typename Archive>
 Archive operator|(Archive& ar, PromotionRep& data) {
-    return ar | data.err | data.pos | data.choix;
+    return ar | data.err | data.pos | data.choice;
 }
 #endif // PROTOCOLE_H

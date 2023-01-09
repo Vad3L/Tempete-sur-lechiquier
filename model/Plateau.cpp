@@ -34,15 +34,15 @@ Plateau::Plateau()
 			}
 		}
 	}
-	//allPositions.push_back(getFen()); ?????
+	allPositions.push_back(getFen());
 	prettyPrint();
 }
 
 std::string Plateau::getSymbol(ChessColor c, ChessPiece p) {
-	std::vector<std::string> whites = {
+	std::vector<std::string> blacks = {
 		"♚", "♛", "♝", "♞", "♜", "♟︎", "🨇", "🨏"
 	};
-	std::vector<std::string> blacks = {
+	std::vector<std::string> whites = {
 		"♔", "♕", "♗", "♘", "♖", "♙", "🨆", "🨉"
 	};
 	std::vector<std::string> neutral = {
@@ -559,7 +559,7 @@ ChessStatus Plateau::isGameOver (ChessColor col) {
 		if (isInEchec(col)) {
 			return ChessStatus::WIN;
 		}
-		return ChessStatus::PAT;
+		return ChessStatus::EQUALITY;
 	}
 
 	bool onlyKing = true;
@@ -571,18 +571,6 @@ ChessStatus Plateau::isGameOver (ChessColor col) {
 	}
 
 	if (onlyKing) {
-		return ChessStatus::EQUALITY;
-	}
-
-	std::vector<int> tab;
-	for (auto & c : state) {
-		if (c.piece.getType() == ChessPiece::KNIGHT || c.piece.getType() == ChessPiece::KING) {
-			tab.push_back((int)c.piece.getType());
-			break;
-		}
-	}
-
-	if(tab.size() == 3) {
 		return ChessStatus::EQUALITY;
 	}
 

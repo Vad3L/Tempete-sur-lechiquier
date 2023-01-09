@@ -58,12 +58,12 @@ PromotionRep buildRepPromotion(Plateau& plateau, gf::Vector2i coord, ChessPiece 
     assert(coord.y >= 0);
     assert(coord.y < 8);
 
-    bool promoValide = false;
+    bool promoValide = true;
     Piece piece = plateau.state[coord.y * 8 + coord.x].piece;
     
     //TO DO VERIFIE PROMO VALIDE
-    for(auto &c : plateau.state) {
-        if(c.piece.getType() == ChessPiece::PAWN || coord == c.position) {
+    /*for(auto &c : plateau.state) {
+        if(c.piece.getType() != ChessPiece::PAWN || coord != c.position) {
             continue;
         } 
         if(c.piece.getColor() == ChessColor::WHITE && c.position.y == 7) {
@@ -72,13 +72,13 @@ PromotionRep buildRepPromotion(Plateau& plateau, gf::Vector2i coord, ChessPiece 
         if(c.piece.getColor() == ChessColor::BLACK && c.position.y == 0) {
             promoValide = true;
         }
-    }
+    }*/
 
     PromotionRep promoRep;
 
     promoRep.pos.x = coord.x;
     promoRep.pos.y = coord.y;
-    promoRep.choix = c;
+    promoRep.choice = c;
 
     if(promoValide) { // promotion valide				    
         promoRep.err = CodeRep::NONE;
@@ -174,12 +174,12 @@ int performActionMoveNormal(Plateau& plateau, gf::TcpSocket& client1, gf::TcpSoc
             promo = packet2.as<PromotionReq>();  
         }
 
-        PromotionRep promoRep = buildRepPromotion(plateau, gf::Vector2i(promo.pos.x, promo.pos.y), promo.choix); 
+        PromotionRep promoRep = buildRepPromotion(plateau, gf::Vector2i(promo.pos.x, promo.pos.y), promo.choice); 
 
         if(promoRep.err == CodeRep::NONE) { // coup valide
             std::cout << "------PROMO VALIDE------" << std::endl;
             
-            plateau.promotionPiece(gf::Vector2i(promo.pos.x, promo.pos.y), promo.choix);
+            plateau.promotionPiece(gf::Vector2i(promo.pos.x, promo.pos.y), promo.choice);
             promotion = false;
             plateau.allPositions.push_back(plateau.getFen());
             std::cout << "position : " << plateau.allPositions.back() << std::endl;
