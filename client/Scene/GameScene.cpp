@@ -8,7 +8,6 @@
 GameScene::GameScene(GameHub& game)
 : gf::Scene(game.getRenderer().getSize())
 , m_game(game)
-, m_gameStart(false)
 , m_quitAction("quit")
 , m_fullscreenAction("Fullscreen")
 , m_boardEntity(game.resources, m_gameData)
@@ -93,62 +92,71 @@ void GameScene::doRender(gf::RenderTarget& target, const gf::RenderStates &state
 }
 
 void GameScene::doUpdate(gf::Time time) {
-    if(!m_game.m_network.queue.poll(m_game.m_packet)) {
+    
+    if(!m_game.m_network.queue.poll(m_packet)) {
 		return;
 	}
 	
-	if (m_game.m_packet.getType() == PartieRep::type) {
-		auto repPartie = m_game.m_packet.as<PartieRep>();
+	if (m_packet.getType() == PartieRep::type) {
+		auto repPartie = m_packet.as<PartieRep>();
 		if (repPartie.err == CodeRep::GAME_START) {
 			std::cout << "game start\n";
-			m_gameStart = true;
+            m_gameStart = true;
 			return;
 		} else if (repPartie.err == CodeRep::GAME_END) {
-			std::cout << "game end\n";
+            std::cout << "game end\n";
+            m_gameStart = false;
+            if(repPartie.status == ChessStatus::WIN && repPartie.coulPion != m_gameData.m_myColor) {
+                m_gameData.m_gameStatus = ChessStatus::LOOSE;    
+            }else {
+			        m_gameData.m_gameStatus = repPartie.status;
+                }
 			return;
 		}
 	}     
 
-	auto coupRep = m_game.m_packet.as<CoupRep>();
+    if(m_packet.getType() == CoupRep::type) {
+        auto coupRep = m_packet.as<CoupRep>();
 	
-	// move piece
-	if(coupRep.err == CodeRep::NONE) { // coup valide
-		
-		std::cout << "------COUP CORRECT------" << std::endl;
-		m_gameData.m_plateau.state[coupRep.posStart.y * 8 + coupRep.posStart.x].piece.isMoved = true;
-		m_gameData.m_plateau.movePieces(gf::Vector2i(coupRep.posStart.x, coupRep.posStart.y), gf::Vector2i(coupRep.posEnd.x, coupRep.posEnd.y));
+        // move piece
+        if(coupRep.err == CodeRep::NONE) { // coup valide
+            
+            std::cout << "------COUP CORRECT------" << std::endl;
+            m_gameData.m_plateau.state[coupRep.posStart.y * 8 + coupRep.posStart.x].piece.isMoved = true;
+            m_gameData.m_plateau.movePieces(gf::Vector2i(coupRep.posStart.x, coupRep.posStart.y), gf::Vector2i(coupRep.posEnd.x, coupRep.posEnd.y));
 
-		ChessColor c = !m_gameData.m_myColor;
+            ChessColor c = !m_gameData.m_myColor;
 
-		if (m_gameData.m_myTurn) {
-			m_gameData.m_plateau.playerInEchec = m_gameData.m_plateau.isInEchec(c);
-		} else {
-			m_gameData.m_plateau.playerInEchec = m_gameData.m_plateau.isInEchec(m_gameData.m_myColor);
-		}
+            if (m_gameData.m_myTurn) {
+                m_gameData.m_plateau.playerInEchec = m_gameData.m_plateau.isInEchec(c);
+            } else {
+                m_gameData.m_plateau.playerInEchec = m_gameData.m_plateau.isInEchec(m_gameData.m_myColor);
+            }
 
-		m_gameData.m_plateau.prettyPrint();
-		
-		m_gameData.m_plateau.lastCoup.push_back(gf::Vector2i(coupRep.posStart.x,coupRep.posStart.y));
-		m_gameData.m_plateau.lastCoup.push_back(gf::Vector2i(coupRep.posEnd.x,coupRep.posEnd.y));
-		
-		m_gameData.m_myTurn = !m_gameData.m_myTurn;
-		m_gameData.m_plateau.prisePassant = false;
-		
-	}else if(coupRep.err == CodeRep::COUP_NO_VALIDE) {
-		std::cout << "------COUP INVALIDE------" << std::endl;
-	}
-
+            m_gameData.m_plateau.prettyPrint();
+            
+            m_gameData.m_plateau.lastCoup.push_back(gf::Vector2i(coupRep.posStart.x,coupRep.posStart.y));
+            m_gameData.m_plateau.lastCoup.push_back(gf::Vector2i(coupRep.posEnd.x,coupRep.posEnd.y));
+            
+            m_gameData.m_myTurn = !m_gameData.m_myTurn;
+            m_gameData.m_plateau.prisePassant = false;
+            
+        }else if(coupRep.err == CodeRep::COUP_NO_VALIDE) {
+            std::cout << "------COUP INVALIDE------" << std::endl;
+        }
+    }
 }
 
 void GameScene::onActivityChange(bool active) {
     if(active){
-        //m_views.setInitialScreenSize(m_game.getRenderer().getSize());
+        m_gameStart = false;
+        m_gameData.m_gameStatus =  ChessStatus::NONE;
         m_views.setInitialFramebufferSize(m_game.getRenderer().getSize());
 
-        m_game.m_network.queue.wait(m_game.m_packet);
-        assert(m_game.m_packet.getType() == PartieRep::type);
+        m_game.m_network.queue.wait(m_packet);
+        assert(m_packet.getType() == PartieRep::type);
 
-        auto repPartie = m_game.m_packet.as<PartieRep>();
+        auto repPartie = m_packet.as<PartieRep>();
         assert(repPartie.err == CodeRep::NONE);
 
         m_gameData.m_myColor = repPartie.coulPion;

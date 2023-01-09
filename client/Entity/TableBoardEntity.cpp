@@ -23,18 +23,7 @@ void TableBoardEntity::update([[maybe_unused]] gf::Time time) {
 void TableBoardEntity::render(gf::RenderTarget &target, const gf::RenderStates &states) {
     gf::Coordinates coords(gf::Vector2i(200.f , 200.f));
 
-    gf::Vector2f beginPlateau(coords.getWindowSize()/2-4*m_gameData.m_sizeSquare);
     int numberPiece = ((int)ChessPiece::MAX - (int)ChessPiece::MIN + 1);
-
-
-    /*gf::RectF world = gf::RectF::fromPositionSize({ -100, -100 }, { 200, 200 });
-    gf::RectF extendedWorld = world.grow(100);
-    gf::RectangleShape background(world);
-    background.setColor(gf::Color::Red);
-    gf::RectangleShape extendedBackground(extendedWorld);
-    extendedBackground.setColor(gf::Color::Gray());
-    target.draw(extendedBackground);
-    target.draw(background);*/
 
     gf::RectangleShape tableCloth(gf::Vector2f(200.f, 175.f));
     tableCloth.setAnchor(gf::Anchor::Center);
@@ -43,8 +32,26 @@ void TableBoardEntity::render(gf::RenderTarget &target, const gf::RenderStates &
     target.draw(tableCloth,states);
 
     
-    std::string turn = (m_gameData.m_myTurn) ? std::string("It's your turn !") : std::string("It's opponent's turn !");
-    gf::Text text(turn, m_font);
+    std::string indication = (m_gameData.m_myTurn) ? std::string("It's your turn !") : std::string("It's opponent's tirn !");
+    if(m_gameData.m_gameStatus != ChessStatus::NONE) {
+        switch (m_gameData.m_gameStatus)
+        {
+        case ChessStatus::WIN:
+                indication = "You have WIN";
+            break;
+        case ChessStatus::LOOSE:
+                indication = "You have LOOSE";
+            break;
+        case ChessStatus::EQUALITY:
+                indication = "There is equality";
+            break;
+        case ChessStatus::PAT:
+                indication = "There is equality";
+            break;
+        }
+    }
+
+    gf::Text text(indication, m_font);
     text.setScale(0.2f);
     text.setPosition(gf::Vector2f(coords.getRelativePoint({0.f, -0.38f})));
     text.setAnchor(gf::Anchor::Center);

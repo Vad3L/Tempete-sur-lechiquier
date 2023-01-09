@@ -4,7 +4,10 @@
 enum class ChessStatus {
 	ON_GOING,
 	PAT,
-	WIN
+	EQUALITY,
+	WIN, 
+	LOOSE,
+	NONE
 };
 
 enum class ChessPiece {

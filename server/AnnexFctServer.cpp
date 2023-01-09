@@ -73,8 +73,8 @@ int performActionMoveNormal(Plateau& plateau, gf::TcpSocket& client1, gf::TcpSoc
 
         plateau.lastCoup.push_back(gf::Vector2i(coup.posStart.x,coup.posStart.y));
         plateau.lastCoup.push_back(gf::Vector2i(coup.posEnd.x,coup.posEnd.y));   
-	plateau.all_position.push_back(plateau.getFen());
-	std::cout << "position : " << plateau.all_position.back() << std::endl;
+        plateau.allPositions.push_back(plateau.getFen());
+        std::cout << "position : " << plateau.allPositions.back() << std::endl;
  
         turnPlayer1 = !(turnPlayer1);
         plateau.prisePassant = false; 
@@ -97,22 +97,28 @@ int performActionMoveNormal(Plateau& plateau, gf::TcpSocket& client1, gf::TcpSoc
     return 0;
 }
 
-void sendStart (gf::TcpSocket& a, gf::TcpSocket& b) {
-	gf::Packet packet;
+int sendStartOrEnd (gf::TcpSocket& a, gf::TcpSocket& b, CodeRep code, ChessStatus s, ChessColor c) {
+	
+    gf::Packet packet;
 
 	PartieRep rep;
-	rep.err = GAME_START;
-	rep.coulPion = ChessColor::BLACK;
+	rep.err = code;
+	rep.coulPion = c;
+    rep.status = s;
 
 	packet.is(rep);
-
+    
 	if (gf::SocketStatus::Data != a.sendPacket(packet)) {
 		std::cerr << "erreur lors de l'envoie du packet au client 1";
+        return -1;
 	}
 
 	if (gf::SocketStatus::Data != b.sendPacket(packet)) {
 		std::cerr << "erreur lors de l'envoi du packet au client 2";
+        return -1;
 	}
+
+    return 0;
 }
 
 

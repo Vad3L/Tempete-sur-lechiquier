@@ -19,6 +19,6 @@
 bool checkCoupValide(Plateau& plateau, gf::Vector2i coordStart, gf::Vector2i coordEnd);
 CoupRep buildRepCoup(Plateau& plateau, gf::Vector2i coordStart, gf::Vector2i coordEnd);
 int performActionMoveNormal(Plateau& plateau, gf::TcpSocket& client1, gf::TcpSocket& client2, bool& turnPlayer1);
-void sendStart (gf::TcpSocket& a, gf::TcpSocket& b);
+int sendStartOrEnd (gf::TcpSocket& a, gf::TcpSocket& b, CodeRep code, ChessStatus s = ChessStatus::NONE, ChessColor c = ChessColor::NONE);
 
 #endif // ANNEXFCTSERVER_H

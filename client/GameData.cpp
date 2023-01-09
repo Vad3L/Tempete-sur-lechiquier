@@ -8,7 +8,6 @@
 GameData::GameData()
 : m_myColor(ChessColor::WHITE)
 , m_myTurn(false)
-, m_sizeSquare(56.f)
 , m_plateau()
 {
     

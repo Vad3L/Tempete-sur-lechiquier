@@ -10,8 +10,7 @@
 #include <gf/Shapes.h>
 
 BoardEntity::BoardEntity(gf::ResourceManager& resources, GameData &gameData)
-: m_font(resources.getFont("DejaVuSans.ttf"))
-, m_backgroundTexture(resources.getTexture("ChessSheet.png"))
+: m_backgroundTexture(resources.getTexture("ChessSheet.png"))
 ,m_gameData(gameData)
 {
     m_backgroundTexture.setSmooth(true);

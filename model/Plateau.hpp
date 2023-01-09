@@ -21,7 +21,7 @@ class Plateau {
 		bool playerInEchec = false;
 		bool prisePassant = false;
 		std::vector<gf::Vector2i> lastCoup;
-		std::vector<std::string> all_position;
+		std::vector<std::string> allPositions;
 
 		Plateau();
 		std::string getSymbol (ChessColor c, ChessPiece p);

@@ -22,7 +22,6 @@ class BoardEntity : public gf::Entity {
     private:
         GameData &m_gameData;
 
-        gf::Font& m_font;
         gf::Texture& m_backgroundTexture;
 
 };

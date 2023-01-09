@@ -16,6 +16,7 @@
 #include "../Entity/BoardEntity.hpp"
 #include "../Entity/TableBoardEntity.hpp"
 #include "../GameData.hpp"
+#include "../Network.hpp"
 
 struct GameHub;
 struct GameData;
@@ -41,7 +42,9 @@ class GameScene : public gf::Scene {
         gf::Action m_fullscreenAction;
 
 	    bool m_gameStart;
-    
+        
+        gf::Packet m_packet;
+
         gf::ExtendView m_boardView;
         gf::ExtendView m_tableBoardView;        
         gf::ViewContainer m_views;

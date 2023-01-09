@@ -26,12 +26,15 @@ public:
     private:
         GameHub& m_game;
 
-        gf::Action m_quitAction;
-        gf::Action m_triggerAction;
         gf::TextButtonWidget m_quitButton;
+        gf::TextButtonWidget m_pageLeft;
+        gf::TextButtonWidget m_pageRight;
         gf::WidgetContainer m_widgets;
 
-        gf::Action m_upAction;
+        gf::Action m_quitAction;
+        gf::Action m_triggerAction;
+        gf::Action m_leftAction;
+        gf::Action m_rightAction;
         gf::Action m_downAction;
         gf::Action m_fullscreenAction;
         

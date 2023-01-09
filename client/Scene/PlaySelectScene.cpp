@@ -17,10 +17,11 @@ PlaySelectScene::PlaySelectScene(GameHub& game)
 , m_rightAction("RightAction")
 , m_leftAction("LeftAction")
 , m_triggerAction("TriggerAction")
-, m_quitAction("Quit")
-, m_fullscreenAction("Fullscreen")
+, m_quitAction("QuitAction")
+, m_fullscreenAction("FullscreenAction")
 , m_PlayTitleEntity(game.resources)
 , m_ipWidget("127.0.0.1", game.resources.getFont("Trajan-Color-Concept.otf"))
+, m_connectAction("ConnectAction")
 , m_index(0)
 , m_leftWidget("<", game.resources.getFont("DejaVuSans.ttf"))
 , m_rightWidget(">", game.resources.getFont("DejaVuSans.ttf"))
@@ -40,11 +41,12 @@ PlaySelectScene::PlaySelectScene(GameHub& game)
     m_rightAction.addScancodeKeyControl(gf::Scancode::Right);
     addAction(m_rightAction);
 
-    m_triggerAction.addScancodeKeyControl(gf::Scancode::Return);
     m_triggerAction.addMouseButtonControl(gf::MouseButton::Left);
     addAction(m_triggerAction);
 
-
+    m_connectAction.addScancodeKeyControl(gf::Scancode::Return);
+    addAction(m_connectAction);
+    
     auto setupButton = [&] (gf::TextButtonWidget& button, auto callback) {
         button.setDefaultTextColor(gf::Color::Black);
         button.setDefaultBackgroundColor(gf::Color::Gray(0.7f));
@@ -114,6 +116,10 @@ void PlaySelectScene::doHandleActions([[maybe_unused]] gf::Window& window) {
         m_widgets.triggerAction();
     }
 
+    if(m_connectAction.isActive()) {
+        m_ipWidget.triggerCallback();
+    }
+
     if (m_quitAction.isActive()) {
         m_game.replaceScene(m_game.start);
     }
@@ -178,7 +184,7 @@ void PlaySelectScene::doShow() {
     m_widgets.addWidget(m_leftWidget);
     m_widgets.addWidget(m_rightWidget);
 
-    m_widgets.selectNextWidget();
+    //m_widgets.selectNextWidget();
 }
 
 void PlaySelectScene::changeRightLeft(bool value) {

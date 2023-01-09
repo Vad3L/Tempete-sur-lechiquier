@@ -5,122 +5,157 @@
 #include "../GameHub.hpp"
 
 
-  RulesScene::RulesScene(GameHub& game)
-  : gf::Scene(game.getRenderer().getSize())
-  , m_game(game)
-  , m_quitAction("Quit")
-  , m_triggerAction("TriggerAction")
-  , m_quitButton("Main Menu", game.resources.getFont("Trajan-Color-Concept.otf"))
-  , m_rulesEntity(game.resources)
-  , m_upAction("UpAction")
-  , m_downAction("DownAction")
-  , m_fullscreenAction("FullScreen")
-  {
-    setClearColor(gf::Color::Black);
+RulesScene::RulesScene(GameHub& game)
+: gf::Scene(game.getRenderer().getSize())
+, m_game(game)
+, m_quitAction("Quit")
+, m_triggerAction("TriggerAction")
+, m_quitButton("Main Menu", game.resources.getFont("Trajan-Color-Concept.otf"))
+, m_pageLeft("<", game.resources.getFont("DejaVuSans.ttf"))
+, m_pageRight(">", game.resources.getFont("DejaVuSans.ttf"))
+, m_rulesEntity(game.resources)
+, m_downAction("DownAction")
+, m_leftAction("PageLeft")
+, m_rightAction("PageRight")
+, m_fullscreenAction("FullScreen")
+{
+	setClearColor(gf::Color::Black);
 
-    m_fullscreenAction.addKeycodeKeyControl(gf::Keycode::F);
-    addAction(m_fullscreenAction);
-    
-    m_quitAction.addGamepadButtonControl(gf::AnyGamepad, gf::GamepadButton::B);
-    m_quitAction.addKeycodeKeyControl(gf::Keycode::Escape);
-    addAction(m_quitAction);
+	m_fullscreenAction.addKeycodeKeyControl(gf::Keycode::F);
+	addAction(m_fullscreenAction);
 
-    m_upAction.addGamepadAxisControl(gf::AnyGamepad, gf::GamepadAxis::LeftY, gf::GamepadAxisDirection::Negative);
-    m_upAction.addGamepadButtonControl(gf::AnyGamepad, gf::GamepadButton::DPadUp);
-    m_upAction.addScancodeKeyControl(gf::Scancode::Up);
-    addAction(m_upAction);
+	m_quitAction.addKeycodeKeyControl(gf::Keycode::Escape);
+	addAction(m_quitAction);
 
-    m_downAction.addGamepadAxisControl(gf::AnyGamepad, gf::GamepadAxis::LeftY, gf::GamepadAxisDirection::Positive);
-    m_downAction.addGamepadButtonControl(gf::AnyGamepad, gf::GamepadButton::DPadDown);
-    m_downAction.addScancodeKeyControl(gf::Scancode::Down);
-    addAction(m_downAction);
+	m_downAction.addScancodeKeyControl(gf::Scancode::Down);
+	addAction(m_downAction);
 
-    m_triggerAction.addGamepadButtonControl(gf::AnyGamepad, gf::GamepadButton::A);
-    m_triggerAction.addMouseButtonControl(gf::MouseButton::Left);
-    m_triggerAction.addScancodeKeyControl(gf::Scancode::Return);
-    addAction(m_triggerAction);
+	m_triggerAction.addMouseButtonControl(gf::MouseButton::Left);
+	m_triggerAction.addScancodeKeyControl(gf::Scancode::Return);
+	addAction(m_triggerAction);
 
-    auto setupButton = [&] (gf::TextButtonWidget& button, auto callback) {
-        button.setDefaultTextColor(gf::Color::Black);
-        button.setDefaultBackgroundColor(gf::Color::Gray(0.7f));
-        button.setSelectedTextColor(gf::Color::Black);
-        button.setSelectedBackgroundColor(gf::Color::fromRgba32(212,30,27,255));
-        button.setDisabledTextColor(gf::Color::Black);
-        button.setDisabledBackgroundColor(gf::Color::Red);
-        button.setAnchor(gf::Anchor::TopLeft);
-        button.setAlignment(gf::Alignment::Center);
-        button.setCallback(callback);
-        m_widgets.addWidget(button);
-    };
+	m_leftAction.addScancodeKeyControl(gf::Scancode::Left);
+    addAction(m_leftAction);
 
-    setupButton(m_quitButton, [&] () {
-        gf::Log::debug("Quit pressed!\n");
-        m_game.replaceAllScenes(m_game.menu);
-    });
-  }
+    m_rightAction.addScancodeKeyControl(gf::Scancode::Right);
+    addAction(m_rightAction);
 
-  void RulesScene::doHandleActions([[maybe_unused]] gf::Window& window) {
-    if (!isActive()) {
-      return;
+	auto setupButton = [&] (gf::TextButtonWidget& button, auto callback) {
+		button.setDefaultTextColor(gf::Color::Black);
+		button.setDefaultBackgroundColor(gf::Color::Gray(0.7f));
+		button.setSelectedTextColor(gf::Color::Black);
+		button.setSelectedBackgroundColor(gf::Color::fromRgba32(212,30,27,255));
+		button.setDisabledTextColor(gf::Color::Black);
+		button.setDisabledBackgroundColor(gf::Color::Red);
+		button.setAnchor(gf::Anchor::TopLeft);
+		button.setAlignment(gf::Alignment::Center);
+		button.setCallback(callback);
+		m_widgets.addWidget(button);
+	};
+
+	setupButton(m_quitButton, [&] () {
+		gf::Log::debug("Quit pressed!\n");
+		m_game.replaceAllScenes(m_game.menu);
+	});
+
+	setupButton(m_pageRight, [&] () {
+		gf::Log::debug("Page up pressed!\n");
+		//m_game.replaceAllScenes(m_game.menu);
+	});
+
+	setupButton(m_pageLeft, [&] () {
+		gf::Log::debug("Page down pressed!\n");
+		//m_game.replaceAllScenes(m_game.menu);
+	});
+
+}
+
+void RulesScene::doHandleActions([[maybe_unused]] gf::Window& window) {
+	if (!isActive()) {
+		return;
+	}
+
+	if (m_fullscreenAction.isActive()) {
+		window.toggleFullscreen();
+	}
+
+	if (m_downAction.isActive()) {
+		while(m_quitButton.isDefault()){
+            m_widgets.selectPreviousWidget();
+        }
+	}
+
+	if (m_triggerAction.isActive()) {
+		m_widgets.triggerAction();
+	}
+
+	if (m_quitAction.isActive()) {
+		m_game.replaceScene(m_game.start);
+	}
+
+	if(m_leftAction.isActive()) {
+		while(m_pageLeft.isDefault()){
+            m_widgets.selectPreviousWidget();
+        }
     }
 
-    if (m_fullscreenAction.isActive()) {
-        window.toggleFullscreen();
+    if(m_rightAction.isActive()) {
+		while(m_pageRight.isDefault()){
+            m_widgets.selectPreviousWidget();
+        }
     }
 
-    if (m_upAction.isActive()) {
-      m_widgets.selectPreviousWidget();
-    }
+}
 
-    if (m_downAction.isActive()) {
-      m_widgets.selectNextWidget();
-    }
+void RulesScene::doProcessEvent(gf::Event& event) {
+	switch (event.type)	{
+		case gf::EventType::MouseMoved:
+			m_widgets.pointTo(m_game.computeWindowToGameCoordinates(event.mouseCursor.coords, getHudView()));
+		break;
+	}
+}
 
-    if (m_triggerAction.isActive()) {
-      m_widgets.triggerAction();
-    }
+void RulesScene::doRender(gf::RenderTarget& target, const gf::RenderStates &states) {
 
-    if (m_quitAction.isActive()) {
-      m_game.replaceScene(m_game.start);
-    }
-  }
+	target.setView(getHudView());
+	gf::Coordinates coords(target);
 
-  void RulesScene::doProcessEvent(gf::Event& event) {
-    switch (event.type)
-    {
-      case gf::EventType::MouseMoved:
-        m_widgets.pointTo(m_game.computeWindowToGameCoordinates(event.mouseCursor.coords, getHudView()));
-        break;
-    }
-  }
+	constexpr float characterSize = 0.075f;
+	constexpr gf::Vector2f backgroundSize(0.5f, 0.3f);
+	constexpr gf::Vector2f backgroundSizeArrow(0.1f, 0.3f);
+	
+	float paragraphWidth = coords.getRelativeSize(backgroundSize - 0.05f).x;
+	const float paragraphWidthArrow = coords.getRelativeSize(backgroundSizeArrow - 0.05f).x;
+	const float paddingSize = coords.getRelativeSize({0.01f, 0.f}).x;
+	const unsigned resumeCharacterSize = coords.getRelativeCharacterSize(characterSize);
 
-  void RulesScene::doRender(gf::RenderTarget& target, const gf::RenderStates &states) {
+	m_quitButton.setCharacterSize(resumeCharacterSize);
+	m_quitButton.setPosition(coords.getRelativePoint({0.275f, 0.825f}));
+	m_quitButton.setParagraphWidth(paragraphWidth);
+	m_quitButton.setPadding(paddingSize);
+	
+	m_pageLeft.setCharacterSize(resumeCharacterSize);
+	m_pageLeft.setPosition(coords.getRelativePoint({0.075f, 0.4}));
+	m_pageLeft.setParagraphWidth(paragraphWidthArrow);	
+	m_pageLeft.setPadding(paddingSize);
 
-    target.setView(getHudView());
-    gf::Coordinates coords(target);
+	m_pageRight.setCharacterSize(resumeCharacterSize);
+	m_pageRight.setPosition(coords.getRelativePoint({0.87f, 0.4}));
+	m_pageRight.setParagraphWidth(paragraphWidthArrow);
+	m_pageRight.setPadding(paddingSize);
+	
+	m_widgets.render(target, states);
+	m_rulesEntity.render(target,states);
+}
 
-    constexpr float characterSize = 0.075f;
-    constexpr float spaceBetweenButton = 0.045f;
-    constexpr gf::Vector2f backgroundSize(0.5f, 0.3f);
+void RulesScene::doShow() {
+	m_widgets.clear();
 
-    const float paragraphWidth = coords.getRelativeSize(backgroundSize - 0.05f).x;
-    const float paddingSize = coords.getRelativeSize({0.01f, 0.f}).x;
-    const unsigned resumeCharacterSize = coords.getRelativeCharacterSize(characterSize);
+	m_quitButton.setDefault();
+	m_pageLeft.setDefault();
+	m_pageRight.setDefault();
 
-    m_quitButton.setCharacterSize(resumeCharacterSize);
-    m_quitButton.setPosition(coords.getRelativePoint({0.275f, 0.825f}));
-    m_quitButton.setParagraphWidth(paragraphWidth);
-    m_quitButton.setPadding(paddingSize);
-
-    m_widgets.render(target, states);
-    m_rulesEntity.render(target,states);
-  }
-
-  void RulesScene::doShow() {
-    m_widgets.clear();
-
-    m_quitButton.setDefault();
-    m_widgets.addWidget(m_quitButton);
-
-    m_widgets.selectNextWidget();
-  }
+	m_widgets.addWidget(m_quitButton);
+	m_widgets.addWidget(m_pageRight);
+	m_widgets.addWidget(m_pageLeft);
+}

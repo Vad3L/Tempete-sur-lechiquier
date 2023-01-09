@@ -12,11 +12,6 @@
 
 #include "Network.hpp"
 
-/*#include "QuitScene.hpp"
-#include "MenuScene.hpp"
-#include "CreditScene.hpp"
-*/
-
 struct GameHub : gf::GameManager {
     GameHub();
 
@@ -28,12 +23,7 @@ struct GameHub : gf::GameManager {
     RulesScene rules;
 
     Network m_network;
-    gf::Packet m_packet;
-
-    /*CreditScene credits;
-    QuitScene quit;
-*/
-
+    
 };
 
 

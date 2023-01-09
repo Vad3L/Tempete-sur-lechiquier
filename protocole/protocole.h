@@ -36,11 +36,12 @@ struct PartieRep {
     static constexpr gf::Id type = "PartieRep"_id;
     CodeRep err;                   /* Code de retour */
     ChessColor coulPion;
+    ChessStatus status;
 };
 
 template<typename Archive>
 Archive operator|(Archive& ar, PartieRep& data) {
-    return ar | data.err | data.coulPion;
+    return ar | data.err | data.coulPion | data.status;
 }
 
 

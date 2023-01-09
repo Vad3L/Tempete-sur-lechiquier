@@ -31,7 +31,7 @@ Plateau::Plateau() : coordCaseSelected(-1, -1) {
 			}
 		}
 	}
-
+	allPositions.push_back(getFen());
 	prettyPrint();
 }
 
@@ -560,18 +560,21 @@ ChessStatus Plateau::isGameOver (ChessColor col) {
 	}
 
 	if (only_king) {
-		return ChessStatus::PAT;
+		return ChessStatus::EQUALITY;
 	}
 
-	for (size_t i = 0; i < all_position.size(); i++) {
+	for (size_t i = 0; i < allPositions.size(); i++) {
+		std::cout << "-" <<allPositions[i] << std::endl;
 		size_t count = 0;
-		for (size_t j = i; j < all_position.size(); j++) {
-			if (all_position[i] == all_position[j] && i != j) {
+		for (size_t j = i; j < allPositions.size(); j++) {
+			
+			if (allPositions[i] == allPositions[j] && i != j) {
+				std::cout << "equalité entre le tour " << i << " et le tour " << j << std::endl;
 				count++;
 			}
 		}
 		if (count >= 3) {
-			return ChessStatus::PAT;
+			return ChessStatus::EQUALITY;
 		}
 	}
 	return ChessStatus::ON_GOING;

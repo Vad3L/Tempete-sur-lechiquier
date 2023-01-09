@@ -7,6 +7,7 @@
 #include <gf/Text.h>
 #include <gf/Shapes.h>
 
+#include <iostream>
 
 RulesEntity::RulesEntity(gf::ResourceManager& resources)
 : m_font(resources.getFont("Trajan-Color-Concept.otf"))
@@ -24,6 +25,8 @@ void RulesEntity::render(gf::RenderTarget &target, const gf::RenderStates &state
 
     float backgroundHeight = coords.getRelativeSize(gf::vec(0.0f, 1.0f)).height;
     float backgroundScale = backgroundHeight / m_backgroundTexture.getSize().height;
+    unsigned titleCharacterSize = coords.getRelativeCharacterSize(0.04f);
+    unsigned subtitleCharacterSize = coords.getRelativeCharacterSize(0.02f);
 
     gf::Sprite background(m_backgroundTexture);
     background.setColor(gf::Color::Opaque(0.20f));
@@ -32,36 +35,34 @@ void RulesEntity::render(gf::RenderTarget &target, const gf::RenderStates &state
     background.setScale(backgroundScale);
     target.draw(background, states);
 
-    unsigned titleCharacterSize = coords.getRelativeCharacterSize(0.1f);
-    unsigned subtitleCharacterSize = coords.getRelativeCharacterSize(0.07f);
+    float height = target.getSize().height/1.5;
+    float width = target.getSize().width/2;
 
-    /*gf::Text title("Storm on Chess", m_font, titleCharacterSize);
-    title.setCharacterSize(50);
-    title.setAlignment(gf::Alignment::Center);
-    title.setColor(gf::Color::Yellow);
-    title.setPosition(coords.getRelativePoint({ 0.5f, 0.1f }));
-    title.setAnchor(gf::Anchor::Center);
-    title.setOutlineColor(gf::Color::Black);
-    title.setLineSpacing(0.7f);
-    title.setRotation(gf::Pi/-10.f);
-    title.setOutlineThickness(2.5f);
+    gf::RectangleShape paper({width, height});
+    paper.setAnchor(gf::Anchor::Center);
+    paper.setPosition(coords.getRelativePoint({0.5f, 0.4f}));
+    paper.setColor(gf::Color::fromRgba32(100,74,75,150));
 
-    target.draw(title, states);*/
-
-    gf::RectangleShape tableCloth(coords.getRelativePoint({0.8f, 0.7f}));
-    tableCloth.setAnchor(gf::Anchor::Center);
-    tableCloth.setPosition(coords.getRelativePoint({0.5f, 0.4f}));
-    tableCloth.setColor(gf::Color::fromRgba32(100,74,75,150));
-    tableCloth.setScale(backgroundScale);
-
-    gf::Text gameRules("Règles du jeux", m_rulesFont, subtitleCharacterSize);    
+    gf::Text gameRules("Game rules", m_rulesFont, titleCharacterSize);    
     gameRules.setColor(gf::Color::Yellow);
     gameRules.setPosition(coords.getRelativePoint({ 0.5f, 0.1f}));
     gameRules.setAnchor(gf::Anchor::TopCenter);
     gameRules.setOutlineColor(gf::Color::Black);
-    gameRules.setOutlineThickness(5.f);
+    gameRules.setOutlineThickness(titleCharacterSize/4.f);
 
+    gf::Text paragraph;
+    paragraph.setColor(gf::Color::Yellow);
+    paragraph.setOutlineColor(gf::Color::Black);
+    paragraph.setOutlineThickness(subtitleCharacterSize/3.f);
+    paragraph.setFont(m_rulesFont);
+    paragraph.setCharacterSize((width*height)/25000.f);
+    paragraph.setParagraphWidth(width);
+    paragraph.setAlignment(gf::Alignment::Justify);
+    paragraph.setString("Line breaking, also known as word wrapping, is the process of breaking a section of text into lines such that it will fit in the available width of a page, window or other display area.\nIn text display, line wrap is the feature of continuing on a new line when a line is full, such that each line fits in the viewable window, allowing text to be read from top to bottom without any horizontal scrolling.\nWord wrap is the additional feature of most text editors, word processors, and web browsers, of breaking lines between words rather than within words, when possible. Word wrap makes it unnecessary to hard-code newline delimiters within paragraphs, and allows the display of text to adapt flexibly and dynamically to displays of varying sizes.\nLine breaking, also known as word wrapping, is the process of breaking a section of text into lines such that it will fit in the available width of a page, window or other display area.\nIn text display, line wrap is the feature of continuing on a new line when a line is full, such that each line fits in the viewable window, allowing text to be read from top to bottom without any horizontal scrolling.\nWord wrap is the additional feature of most text editors, word processors, and web browsers, of breaking lines between words rather than within words, when possible. Word wrap makes it unnecessary to hard-code newline delimiters within paragraphs, and allows the display of text to adapt flexibly and dynamically to displays of varying sizes.");
+    paragraph.setPosition(coords.getRelativePoint({ 0.5f, 0.45f}));
+    paragraph.setAnchor(gf::Anchor::Center);
 
-    target.draw(tableCloth, states);
+    target.draw(paper, states);
     target.draw(gameRules, states);
+    target.draw(paragraph);
 }
