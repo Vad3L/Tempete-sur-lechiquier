@@ -49,7 +49,7 @@ Archive operator|(Archive& ar, PartieRep& data) {
 **********COUP**********
 ***********************/
 struct CoupReq {
-    static constexpr gf::Id type = "PartieRep"_id;
+    static constexpr gf::Id type = "CoupReq"_id;
     Pos posStart;
     Pos posEnd;
 };
@@ -60,7 +60,7 @@ Archive operator|(Archive& ar, CoupReq& data) {
 }
 
 struct CoupRep {
-    static constexpr gf::Id type = "PartieRep"_id;
+    static constexpr gf::Id type = "CoupRep"_id;
     CodeRep err;                   /* Code de retour */
     Pos posStart;
     Pos posEnd;
@@ -71,4 +71,30 @@ Archive operator|(Archive& ar, CoupRep& data) {
     return ar | data.err | data.posStart | data.posEnd;
 }
 
+
+/***********************
+**********PROMOTION**********
+***********************/
+struct PromotionReq {
+    static constexpr gf::Id type = "PromotionReq"_id;
+    Pos pos;
+    ChessPiece choix;
+};
+
+template<typename Archive>
+Archive operator|(Archive& ar, PromotionReq& data) {
+    return ar | data.pos | data.choix;
+}
+
+struct PromotionRep {
+    static constexpr gf::Id type = "PromotionRep"_id;
+    CodeRep err;                   /* Code de retour */
+    Pos pos;
+    ChessPiece choix;
+};
+
+template<typename Archive>
+Archive operator|(Archive& ar, PromotionRep& data) {
+    return ar | data.err | data.pos | data.choix;
+}
 #endif // PROTOCOLE_H

@@ -12,6 +12,7 @@ GameScene::GameScene(GameHub& game)
 , m_fullscreenAction("Fullscreen")
 , m_boardEntity(game.resources, m_gameData)
 , m_tableBoardEntity(game.resources, m_gameData)
+, m_promotion(false)
 {
     setClearColor(gf::Color::Black);
     
@@ -61,21 +62,32 @@ void GameScene::doProcessEvent(gf::Event& event) {
     
     if(m_gameData.m_myTurn && click) { 
         gf::Vector2i v = m_boardEntity.getTransformCaseSelected(m_boardView.getSize(), m_game.getRenderer().mapPixelToCoords(event.mouseButton.coords, m_boardView));
+        Piece p = m_gameData.m_plateau.state[v.y * 8 + v.x].piece;
+        if(m_promotion) {
+           if(p.getType() == ChessPiece::PAWN && p.getColor() == m_gameData.m_myColor && (v.y == 0 || v.y ==7)) {
+                PromotionReq promo;
+                promo.pos.x = v.x;
+                promo.pos.y = v.y;
+                promo.choix = ChessPiece::QUEEN;
+                std::cout << "envoie au serveur la promotion du pion en " << v.y << "," << v.x << "avec comme choix "<< (int)ChessPiece::QUEEN<< std::endl;
+                m_game.m_network.send(promo);
+           }
+        }else {
+            bool coupPionEnded = m_gameData.m_plateau.setMovement(m_gameData.m_myColor, v);
         
-        bool coupPionEnded = m_gameData.m_plateau.setMovement(m_gameData.m_myColor, v);
-        
-        if(coupPionEnded) {
+            if(coupPionEnded) {
 
-            CoupReq coup;
-            coup.posStart.x = m_gameData.m_plateau.coordCaseSelected.x;
-            coup.posStart.y = m_gameData.m_plateau.coordCaseSelected.y;
-            coup.posEnd.x = v.x;
-            coup.posEnd.y = v.y;
-            
-	    	m_gameData.m_plateau.coordCaseSelected = gf::Vector2i(-1,-1);
-            m_gameData.m_plateau.moveAvailable.clear();	
+                CoupReq coup;
+                coup.posStart.x = m_gameData.m_plateau.coordCaseSelected.x;
+                coup.posStart.y = m_gameData.m_plateau.coordCaseSelected.y;
+                coup.posEnd.x = v.x;
+                coup.posEnd.y = v.y;
                 
-            m_game.m_network.send(coup);
+                m_gameData.m_plateau.coordCaseSelected = gf::Vector2i(-1,-1);
+                m_gameData.m_plateau.moveAvailable.clear();	
+                    
+                m_game.m_network.send(coup);
+            }
         }
     }
 }
@@ -116,17 +128,19 @@ void GameScene::doUpdate(gf::Time time) {
 	}     
 
     if(m_packet.getType() == CoupRep::type) {
+        std::cout << "coup recu serveur\n";
         auto coupRep = m_packet.as<CoupRep>();
 	
         // move piece
         if(coupRep.err == CodeRep::NONE) { // coup valide
             
             std::cout << "------COUP CORRECT------" << std::endl;
-            m_gameData.m_plateau.state[coupRep.posStart.y * 8 + coupRep.posStart.x].piece.isMoved = true;
+            Piece pieceStart =  m_gameData.m_plateau.state[coupRep.posStart.y * 8 + coupRep.posStart.x].piece;
+            pieceStart.isMoved= true;
+
             m_gameData.m_plateau.movePieces(gf::Vector2i(coupRep.posStart.x, coupRep.posStart.y), gf::Vector2i(coupRep.posEnd.x, coupRep.posEnd.y));
 
             ChessColor c = !m_gameData.m_myColor;
-
             if (m_gameData.m_myTurn) {
                 m_gameData.m_plateau.playerInEchec = m_gameData.m_plateau.isInEchec(c);
             } else {
@@ -138,10 +152,40 @@ void GameScene::doUpdate(gf::Time time) {
             m_gameData.m_plateau.lastCoup.push_back(gf::Vector2i(coupRep.posStart.x,coupRep.posStart.y));
             m_gameData.m_plateau.lastCoup.push_back(gf::Vector2i(coupRep.posEnd.x,coupRep.posEnd.y));
             
-            m_gameData.m_myTurn = !m_gameData.m_myTurn;
+            if(pieceStart.getType() == ChessPiece::PAWN &&( coupRep.posEnd.y == 0 || coupRep.posEnd.y == 7)) {
+                m_promotion = true;
+            }else {
+                m_gameData.m_myTurn = !m_gameData.m_myTurn;
+                m_promotion = false;
+            }
             
         }else if(coupRep.err == CodeRep::COUP_NO_VALIDE) {
             std::cout << "------COUP INVALIDE------" << std::endl;
+        }
+    }
+
+    if(m_packet.getType() == PromotionRep::type) {
+        std::cout << "promo recu serveur\n";
+        assert(m_promotion);
+
+        auto promoRep = m_packet.as<PromotionRep>();
+        if(promoRep.err == CodeRep::NONE) {
+            std::cout << "------PROMOTION CORRECT------" << std::endl;
+            
+            m_gameData.m_plateau.promotionPiece(gf::Vector2i(promoRep.pos.x, promoRep.pos.y), promoRep.choix);
+
+            ChessColor c = !m_gameData.m_myColor;
+            if (m_gameData.m_myTurn) {
+                m_gameData.m_plateau.playerInEchec = m_gameData.m_plateau.isInEchec(c);
+            } else {
+                m_gameData.m_plateau.playerInEchec = m_gameData.m_plateau.isInEchec(m_gameData.m_myColor);
+            }
+
+            m_gameData.m_plateau.prettyPrint();
+            m_gameData.m_myTurn = !m_gameData.m_myTurn;
+            m_promotion = false;
+        }else {
+            std::cout << "------PROMOTION INVALIDE------" << std::endl;
         }
     }
 }

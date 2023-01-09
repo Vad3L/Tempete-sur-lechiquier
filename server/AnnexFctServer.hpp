@@ -16,9 +16,11 @@
 #include "../model/Plateau.hpp"
 #include "../protocole/protocole.h"
 
+
 bool checkCoupValide(Plateau& plateau, gf::Vector2i coordStart, gf::Vector2i coordEnd);
 CoupRep buildRepCoup(Plateau& plateau, gf::Vector2i coordStart, gf::Vector2i coordEnd);
-int performActionMoveNormal(Plateau& plateau, gf::TcpSocket& client1, gf::TcpSocket& client2, bool& turnPlayer1);
+int performActionMoveNormal(Plateau& plateau, gf::TcpSocket& client1, gf::TcpSocket& client2, bool& turnPlayer1, bool &promotion);
 int sendStartOrEnd (gf::TcpSocket& a, gf::TcpSocket& b, CodeRep code, ChessStatus s = ChessStatus::NONE, ChessColor c = ChessColor::NONE);
+PromotionRep buildRepPromotion(Plateau& plateau, gf::Vector2i coord, ChessPiece c);
 
 #endif // ANNEXFCTSERVER_H

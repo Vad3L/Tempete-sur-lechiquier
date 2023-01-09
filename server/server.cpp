@@ -44,6 +44,7 @@ int main (int argc, char* argv[]) {
             Plateau plateau;
 	        ChessStatus gameStatus = ChessStatus::ON_GOING;
             bool turnPlayer1 = true;
+            bool promotion = false;
             std::cout << "Je suis le serveur" << std::endl;
             while (true) {
                 plateau.moveAvailable.clear();
@@ -54,7 +55,7 @@ int main (int argc, char* argv[]) {
 			            break;
 		            }
 
-                    if(performActionMoveNormal(plateau, client1, client2, turnPlayer1) == -1) {
+                    if(performActionMoveNormal(plateau, client1, client2, turnPlayer1, promotion) == -1) {
                         break;
                     }
                 } else {
@@ -63,7 +64,7 @@ int main (int argc, char* argv[]) {
 			            break;
 		            }
 
-                    if(performActionMoveNormal(plateau, client1, client2, turnPlayer1) == -1) {
+                    if(performActionMoveNormal(plateau, client1, client2, turnPlayer1, promotion) == -1) {
                         break;;
                     }
                 }

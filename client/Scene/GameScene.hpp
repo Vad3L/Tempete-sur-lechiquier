@@ -42,7 +42,8 @@ class GameScene : public gf::Scene {
         gf::Action m_fullscreenAction;
 
 	    bool m_gameStart;
-        
+        bool m_promotion;
+
         gf::Packet m_packet;
 
         gf::ExtendView m_boardView;

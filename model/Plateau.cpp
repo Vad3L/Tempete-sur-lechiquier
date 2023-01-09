@@ -1,7 +1,8 @@
 #include "Plateau.hpp"
 Plateau::Plateau()
 : coordCaseSelected(-1, -1)
-, coordPrisePassant(-1, -1) {
+, coordPrisePassant(-1, -1)
+, playerInEchec(false) {
 	for (int i = 0; i < 8; i++) {
 		for (int coordPass = 0; coordPass < 8; coordPass++) {
 			state.push_back(Case(gf::Vector2i(coordPass, i)));
@@ -69,13 +70,13 @@ void Plateau::prettyPrint() {
 }
 
 bool Plateau::setMovement(ChessColor color, gf::Vector2i v) {
+	coordPrisePassant = gf::Vector2i(-1);
 	if(v.x == -1 || v.y == -1) {
 		return false;
 	}
-	coordPrisePassant = gf::Vector2i(-1);
 
 	Piece pSelect = state[v.y * 8 + v.x].piece;
-	ChessColor colAdv = (color == ChessColor::WHITE) ? ChessColor::BLACK : ChessColor::WHITE;
+	ChessColor colAdv = !color;
 
 	if(coordCaseSelected.y ==-1 && coordCaseSelected.x == -1) { // aucune première de selectionné
 		if( pSelect.getType() != ChessPiece::NONE && pSelect.getColor() == color) { // selectionne case si la piece nous appartient 
@@ -92,8 +93,7 @@ bool Plateau::setMovement(ChessColor color, gf::Vector2i v) {
 		}
 		
 		for(auto &coord : moveAvailable) {
-			if(coord.y == v.y && coord.x == v.x) {
-				
+			if(coord == v) {
 				return true;
 			}
 		}
@@ -370,8 +370,12 @@ std::vector<gf::Vector2i> Plateau::addMoveBigSmallCastling(gf::Vector2i coordCas
 
 void Plateau::movePieces(gf::Vector2i coord1, gf::Vector2i coord2) {
 	assert(coord1.y >= 0);
+	assert(coord1.y < 8);
+	assert(coord1.x >= 0);
 	assert(coord1.x < 8);
 	assert(coord2.y >= 0);
+	assert(coord2.y < 8);
+	assert(coord2.x >= 0);
 	assert(coord2.x < 8);
 	assert(coord1 != coord2);
 	
@@ -403,6 +407,7 @@ void Plateau::movePieces(gf::Vector2i coord1, gf::Vector2i coord2) {
 	// prise en passant
 	if(p1.getType() == ChessPiece::PAWN && p2.getType() == ChessPiece::NONE && coord1.x != coord2.x) {
 		std::cout << "on fait une prise en passant" << std::endl;
+		assert(state[coord1.y*8+coord2.x].piece.getType()==ChessPiece::PAWN);
 		bin.push_back(state[coord1.y*8+coord2.x].piece);
 		state[coord1.y*8+coord2.x].piece = Piece(ChessColor::NONE, ChessPiece::NONE);
 		return;
@@ -411,8 +416,12 @@ void Plateau::movePieces(gf::Vector2i coord1, gf::Vector2i coord2) {
 
 void Plateau::deMovePieces(gf::Vector2i coord1, gf::Vector2i coord2, bool inBin) {
 	assert(coord1.y >= 0);
+	assert(coord1.y < 8);
+	assert(coord1.x >= 0);
 	assert(coord1.x < 8);
 	assert(coord2.y >= 0);
+	assert(coord2.y < 8);
+	assert(coord2.x >= 0);
 	assert(coord2.x < 8);
 	assert(coord1 != coord2);
 
@@ -567,7 +576,7 @@ ChessStatus Plateau::isGameOver (ChessColor col) {
 
 	std::vector<int> tab;
 	for (auto & c : state) {
-		if (c.piece.getType() == ChessPiece::KNIGHT && c.piece.getType() == ChessPiece::KING) {
+		if (c.piece.getType() == ChessPiece::KNIGHT || c.piece.getType() == ChessPiece::KING) {
 			tab.push_back((int)c.piece.getType());
 			break;
 		}
@@ -576,7 +585,6 @@ ChessStatus Plateau::isGameOver (ChessColor col) {
 	if(tab.size() == 3) {
 		return ChessStatus::EQUALITY;
 	}
-
 
 	for (size_t i = 0; i < allPositions.size(); i++) {
 		std::cout << "-" <<allPositions[i] << std::endl;
@@ -595,3 +603,12 @@ ChessStatus Plateau::isGameOver (ChessColor col) {
 	return ChessStatus::ON_GOING;
 }
 
+void Plateau::promotionPiece(gf::Vector2i coord, ChessPiece p) {
+	assert(coord.x >= 0);
+	assert(coord.x < 8);
+	assert(coord.y >= 0);
+	assert(coord.y < 8);
+	ChessColor c = state[coord.y * 8 + coord.x].piece.getColor();
+	std::cout << "choix " << (int)p << "\n";
+	state[coord.y * 8 + coord.x].piece = Piece(c, p);
+}
