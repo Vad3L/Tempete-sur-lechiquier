@@ -13,11 +13,12 @@ RulesScene::RulesScene(GameHub& game)
 , m_quitButton("Main Menu", game.resources.getFont("Trajan-Color-Concept.otf"))
 , m_pageLeft("<", game.resources.getFont("DejaVuSans.ttf"))
 , m_pageRight(">", game.resources.getFont("DejaVuSans.ttf"))
-, m_rulesEntity(game.resources)
+, m_rulesEntity(game.resources, m_index)
 , m_downAction("DownAction")
 , m_leftAction("PageLeft")
 , m_rightAction("PageRight")
 , m_fullscreenAction("FullScreen")
+, m_index(0)
 {
 	setClearColor(gf::Color::Black);
 
@@ -60,12 +61,12 @@ RulesScene::RulesScene(GameHub& game)
 
 	setupButton(m_pageRight, [&] () {
 		gf::Log::debug("Page up pressed!\n");
-		//m_game.replaceAllScenes(m_game.menu);
+		changeRightLeft(true);
 	});
 
 	setupButton(m_pageLeft, [&] () {
 		gf::Log::debug("Page down pressed!\n");
-		//m_game.replaceAllScenes(m_game.menu);
+		changeRightLeft(false);
 	});
 
 }
@@ -94,12 +95,14 @@ void RulesScene::doHandleActions([[maybe_unused]] gf::Window& window) {
 	}
 
 	if(m_leftAction.isActive()) {
+		changeRightLeft(false);
 		while(m_pageLeft.isDefault()){
             m_widgets.selectPreviousWidget();
         }
     }
 
     if(m_rightAction.isActive()) {
+		changeRightLeft(true);
 		while(m_pageRight.isDefault()){
             m_widgets.selectPreviousWidget();
         }
@@ -135,15 +138,26 @@ void RulesScene::doRender(gf::RenderTarget& target, const gf::RenderStates &stat
 	m_quitButton.setPadding(paddingSize);
 	
 	m_pageLeft.setCharacterSize(resumeCharacterSize);
-	m_pageLeft.setPosition(coords.getRelativePoint({0.075f, 0.4}));
 	m_pageLeft.setParagraphWidth(paragraphWidthArrow);	
 	m_pageLeft.setPadding(paddingSize);
-
+	m_pageLeft.setAnchor(gf::Anchor::Center);
+	if(m_index>0) {
+		m_pageLeft.setPosition(coords.getRelativePoint({0.15f, 0.4}));
+	}else {
+		m_pageLeft.setPosition(coords.getRelativePoint({-2.87f, 0.4}));
+	}
+	
 	m_pageRight.setCharacterSize(resumeCharacterSize);
-	m_pageRight.setPosition(coords.getRelativePoint({0.87f, 0.4}));
 	m_pageRight.setParagraphWidth(paragraphWidthArrow);
 	m_pageRight.setPadding(paddingSize);
+	m_pageRight.setAnchor(gf::Anchor::Center);
+	if(m_index<3) {
+		m_pageRight.setPosition(coords.getRelativePoint({0.85f, 0.4}));
+	}else {
+		m_pageRight.setPosition(coords.getRelativePoint({2.87f, 0.4}));
+	}
 	
+
 	m_widgets.render(target, states);
 	m_rulesEntity.render(target,states);
 }
@@ -156,6 +170,24 @@ void RulesScene::doShow() {
 	m_pageRight.setDefault();
 
 	m_widgets.addWidget(m_quitButton);
-	m_widgets.addWidget(m_pageRight);
 	m_widgets.addWidget(m_pageLeft);
+	m_widgets.addWidget(m_pageRight);
+}
+
+void RulesScene::changeRightLeft(bool value) {
+	if(value){
+        if(m_index < 3){
+			m_index++;
+        }
+    }else{
+        if(m_index > 0){
+            m_index--;
+        }
+    }
+}
+
+void RulesScene::onActivityChange(bool active){
+    if(active){
+        m_index = 0;
+	}
 }

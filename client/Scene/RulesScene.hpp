@@ -22,7 +22,8 @@ public:
         void doHandleActions(gf::Window& window) override;
         void doRender(gf::RenderTarget& target, const gf::RenderStates &states) override;
         void doShow() override;
-
+        void changeRightLeft(bool value);
+        void onActivityChange(bool active)  override;
     private:
         GameHub& m_game;
 
@@ -39,6 +40,8 @@ public:
         gf::Action m_fullscreenAction;
         
         RulesEntity m_rulesEntity;
+
+        int m_index;
 };
 
 #endif // RULES_SCENE_H

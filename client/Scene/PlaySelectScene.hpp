@@ -24,7 +24,7 @@ class PlaySelectScene : public gf::Scene {
         void doRender(gf::RenderTarget& target, const gf::RenderStates &states) override;
         void doShow() override;
         void changeRightLeft(bool value);
-        void onActivityChange(bool active)  override;
+        void onActivityChange(bool active) override;
     private:
         GameHub& m_game;
         

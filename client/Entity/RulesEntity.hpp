@@ -8,7 +8,7 @@
 
 class RulesEntity : public gf::Entity {
     public:
-    RulesEntity(gf::ResourceManager& resources);
+    RulesEntity(gf::ResourceManager& resources, int &index);
     void update(gf::Time time) override;
     void render(gf::RenderTarget &target, const gf::RenderStates &states) override;
     
@@ -16,6 +16,8 @@ class RulesEntity : public gf::Entity {
     gf::Font& m_font;
     gf::Texture& m_backgroundTexture;
     gf::Font& m_rulesFont;
+
+    int &m_index;
 };
 
 

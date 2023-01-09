@@ -19,7 +19,7 @@ class Plateau {
 		std::vector<Piece> bin;
 		std::vector<Case> state;
 		bool playerInEchec = false;
-		bool prisePassant = false;
+		gf::Vector2i coordPrisePassant;
 		std::vector<gf::Vector2i> lastCoup;
 		std::vector<std::string> allPositions;
 

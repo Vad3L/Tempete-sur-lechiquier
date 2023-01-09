@@ -76,7 +76,7 @@ int main (int argc, char* argv[]) {
                 std::cout << "############white win############\n";
                 sendStartOrEnd(client1, client2, CodeRep::GAME_END, gameStatus, ChessColor::WHITE);
             }else {
-                std::cout << "############pat############\n";
+                std::cout << "############nulle############\n";
                 sendStartOrEnd(client1, client2, CodeRep::GAME_END, gameStatus);
             }
         }

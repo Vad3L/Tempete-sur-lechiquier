@@ -189,6 +189,7 @@ void PlaySelectScene::doShow() {
 
 void PlaySelectScene::changeRightLeft(bool value) {
     //true right
+    m_PlayTitleEntity.m_errorText.setString(" ");
     if(value){
         if(m_index+1 < m_listIp.size()){
             m_ipWidget.setString(m_listIp[m_index+1]);
@@ -205,6 +206,7 @@ void PlaySelectScene::changeRightLeft(bool value) {
 
 void PlaySelectScene::onActivityChange(bool active){
     if(active){
+        m_index = 0;
         gf::Log::debug("active scene\n");
         std::ifstream file(std::string(GAME_CONFIGDIR)+"IpList.txt");
 
@@ -223,7 +225,5 @@ void PlaySelectScene::onActivityChange(bool active){
 
             file.close();
         }
-    }else{
-        m_PlayTitleEntity.m_errorText.setString(" ");
     }
 }

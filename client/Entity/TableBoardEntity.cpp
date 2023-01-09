@@ -32,15 +32,15 @@ void TableBoardEntity::render(gf::RenderTarget &target, const gf::RenderStates &
     target.draw(tableCloth,states);
 
     
-    std::string indication = (m_gameData.m_myTurn) ? std::string("It's your turn !") : std::string("It's opponent's tirn !");
+    std::string indication = (m_gameData.m_myTurn) ? std::string("It's your turn !") : std::string("It's opponent's turn !");
     if(m_gameData.m_gameStatus != ChessStatus::NONE) {
         switch (m_gameData.m_gameStatus)
         {
         case ChessStatus::WIN:
-                indication = "You have WIN";
+                indication = "You WIN";
             break;
         case ChessStatus::LOOSE:
-                indication = "You have LOOSE";
+                indication = "You LOOSE";
             break;
         case ChessStatus::EQUALITY:
                 indication = "There is equality";

@@ -139,7 +139,6 @@ void GameScene::doUpdate(gf::Time time) {
             m_gameData.m_plateau.lastCoup.push_back(gf::Vector2i(coupRep.posEnd.x,coupRep.posEnd.y));
             
             m_gameData.m_myTurn = !m_gameData.m_myTurn;
-            m_gameData.m_plateau.prisePassant = false;
             
         }else if(coupRep.err == CodeRep::COUP_NO_VALIDE) {
             std::cout << "------COUP INVALIDE------" << std::endl;

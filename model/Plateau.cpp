@@ -1,5 +1,7 @@
 #include "Plateau.hpp"
-Plateau::Plateau() : coordCaseSelected(-1, -1) {
+Plateau::Plateau()
+: coordCaseSelected(-1, -1)
+, coordPrisePassant(-1, -1) {
 	for (int i = 0; i < 8; i++) {
 		for (int coordPass = 0; coordPass < 8; coordPass++) {
 			state.push_back(Case(gf::Vector2i(coordPass, i)));
@@ -31,15 +33,15 @@ Plateau::Plateau() : coordCaseSelected(-1, -1) {
 			}
 		}
 	}
-	allPositions.push_back(getFen());
+	//allPositions.push_back(getFen()); ?????
 	prettyPrint();
 }
 
 std::string Plateau::getSymbol(ChessColor c, ChessPiece p) {
-	std::vector<std::string> blacks = {
+	std::vector<std::string> whites = {
 		"♚", "♛", "♝", "♞", "♜", "♟︎", "🨇", "🨏"
 	};
-	std::vector<std::string> white = {
+	std::vector<std::string> blacks = {
 		"♔", "♕", "♗", "♘", "♖", "♙", "🨆", "🨉"
 	};
 	std::vector<std::string> neutral = {
@@ -47,7 +49,7 @@ std::string Plateau::getSymbol(ChessColor c, ChessPiece p) {
 	};
 
 	if (c == ChessColor::WHITE) {
-		return white[(int)p];
+		return whites[(int)p];
 	} else if (c == ChessColor::BLACK) {
 		return blacks[(int)p];
 	} else if (c == ChessColor::GRAY) {
@@ -70,7 +72,8 @@ bool Plateau::setMovement(ChessColor color, gf::Vector2i v) {
 	if(v.x == -1 || v.y == -1) {
 		return false;
 	}
-	
+	coordPrisePassant = gf::Vector2i(-1);
+
 	Piece pSelect = state[v.y * 8 + v.x].piece;
 	ChessColor colAdv = (color == ChessColor::WHITE) ? ChessColor::BLACK : ChessColor::WHITE;
 
@@ -79,7 +82,6 @@ bool Plateau::setMovement(ChessColor color, gf::Vector2i v) {
 			coordCaseSelected = v;
 			moveAvailable = pSelect.getMoves(coordCaseSelected);
 			moveAvailable = filterMoveAuthorized(coordCaseSelected, moveAvailable); // à commenter si on veux test la validité d'un coup par le serveur
-			//std::cout << moveAvailable.size() << std::endl;
 			return false;
 		}
 	}else {
@@ -101,7 +103,6 @@ bool Plateau::setMovement(ChessColor color, gf::Vector2i v) {
 			moveAvailable.clear();
 			moveAvailable = pSelect.getMoves(coordCaseSelected);
 			moveAvailable = filterMoveAuthorized(coordCaseSelected, moveAvailable); // à commenter si on veux test la validité d'un coup par le serveur
-			//std::cout << moveAvailable.size() << std::endl;
 		}
 	}
 	return false;
@@ -230,7 +231,7 @@ std::vector<gf::Vector2i> Plateau::filterMoveAuthorized_Pawn(gf::Vector2i coordC
 				if(pL.getType()==ChessPiece::PAWN && pL.getColor() != piece.getColor()) {
 					std::cout << "prise en passant a gauche possible" << std::endl;
 					v.push_back(gf::Vector2i(coordCaseStart.x-1, coordCaseStart.y-add));
-					prisePassant = true;
+					coordPrisePassant = gf::Vector2i(coordCaseStart.x-1, coordCaseStart.y);
 				}
 			}
 
@@ -239,7 +240,7 @@ std::vector<gf::Vector2i> Plateau::filterMoveAuthorized_Pawn(gf::Vector2i coordC
 				if(pR.getType()==ChessPiece::PAWN && pR.getColor() != piece.getColor()) {
 					std::cout << "prise en passant a droite possible" << std::endl;
 					v.push_back(gf::Vector2i(coordCaseStart.x+1, coordCaseStart.y-add));
-					prisePassant = true;
+					coordPrisePassant = gf::Vector2i(coordCaseStart.x+1, coordCaseStart.y);
 				}
 			}
 		}
@@ -420,9 +421,10 @@ void Plateau::deMovePieces(gf::Vector2i coord1, gf::Vector2i coord2, bool inBin)
 
 	std::swap(state[coord1.y * 8 + coord1.x].piece, state[coord2.y * 8 + coord2.x].piece);
 	
-	if(p2.getType() == ChessPiece::PAWN  && p1.getType() == ChessPiece::NONE && inBin && coord1.x != coord2.x && prisePassant) {
+	if(p2.getType() == ChessPiece::PAWN  && p1.getType() == ChessPiece::NONE && inBin && coord1.x != coord2.x && coordPrisePassant.y == coord1.y && coordPrisePassant.x == coord2.x) {
 		std::cout << "on demove une prise en passant" << std::endl;
 		Piece pBin = bin.back();
+		assert(pBin.getType() == ChessPiece::PAWN);
 		state[coord1.y*8+coord2.x].piece = pBin;
 		bin.pop_back();
 	}else if(inBin) {
@@ -537,7 +539,7 @@ ChessStatus Plateau::isGameOver (ChessColor col) {
 			moves = c.piece.getMoves(c.position);
 			moves = filterMoveAuthorized(c.position, moves); 
 			if (!moves.empty()) {
-				std::cout << "has move\n";
+				//std::cout << "has move\n";
 				has_move = true;
 				break;
 			}
@@ -551,17 +553,30 @@ ChessStatus Plateau::isGameOver (ChessColor col) {
 		return ChessStatus::PAT;
 	}
 
-	bool only_king = true;
+	bool onlyKing = true;
 	for (auto & c : state) {
 		if (c.piece.getType() != ChessPiece::NONE && c.piece.getType() != ChessPiece::KING) {
-			only_king = false;	
+			onlyKing = false;	
 			break;
 		}
 	}
 
-	if (only_king) {
+	if (onlyKing) {
 		return ChessStatus::EQUALITY;
 	}
+
+	std::vector<int> tab;
+	for (auto & c : state) {
+		if (c.piece.getType() == ChessPiece::KNIGHT && c.piece.getType() == ChessPiece::KING) {
+			tab.push_back((int)c.piece.getType());
+			break;
+		}
+	}
+
+	if(tab.size() == 3) {
+		return ChessStatus::EQUALITY;
+	}
+
 
 	for (size_t i = 0; i < allPositions.size(); i++) {
 		std::cout << "-" <<allPositions[i] << std::endl;

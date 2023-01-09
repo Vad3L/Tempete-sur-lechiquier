@@ -74,10 +74,10 @@ int performActionMoveNormal(Plateau& plateau, gf::TcpSocket& client1, gf::TcpSoc
         plateau.lastCoup.push_back(gf::Vector2i(coup.posStart.x,coup.posStart.y));
         plateau.lastCoup.push_back(gf::Vector2i(coup.posEnd.x,coup.posEnd.y));   
         plateau.allPositions.push_back(plateau.getFen());
-        std::cout << "position : " << plateau.allPositions.back() << std::endl;
+        //std::cout << "position : " << plateau.allPositions.back() << std::endl;
  
         turnPlayer1 = !(turnPlayer1);
-        plateau.prisePassant = false; 
+        plateau.coordPrisePassant = gf::Vector2i(-1); 
     }
     
     packet.is(coupRep);
