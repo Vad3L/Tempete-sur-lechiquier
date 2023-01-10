@@ -20,6 +20,8 @@ endif ()
 add_executable(client
 	client/client.cpp
 	model/Piece.cpp
+	model/Card.cpp
+	model/Deck.cpp
   	#client/Game.cpp
 	client/Network.cpp
 	model/Plateau.cpp
@@ -45,6 +47,8 @@ add_executable(server
 	server/server.cpp
 	model/Plateau.cpp
 	model/Case.cpp
+	model/Card.cpp
+	model/Deck.cpp
 	model/Piece.cpp
 	server/AnnexFctServer.cpp
 	)
