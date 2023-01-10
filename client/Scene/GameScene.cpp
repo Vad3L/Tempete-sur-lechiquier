@@ -65,7 +65,7 @@ void GameScene::doProcessEvent(gf::Event& event) {
         Piece p = m_gameData.m_plateau.state[v.y * 8 + v.x].piece;
         if(m_promotion) {
            if(p.getType() == ChessPiece::PAWN && p.getColor() == m_gameData.m_myColor && (v.y == 0 || v.y ==7)) {
-                PromotionReq promo;
+                PromotionRep promo;
                 promo.pos.x = v.x;
                 promo.pos.y = v.y;
                 ChessPiece choice = m_boardEntity.getChoice(m_boardView.getSize(), m_game.getRenderer().mapPixelToCoords(event.mouseButton.coords, m_boardView));
@@ -77,8 +77,7 @@ void GameScene::doProcessEvent(gf::Event& event) {
             bool coupPionEnded = m_gameData.m_plateau.setMovement(m_gameData.m_myColor, v);
         
             if(coupPionEnded) {
-
-                CoupReq coup;
+                CoupRep coup;
                 coup.posStart.x = m_gameData.m_plateau.coordCaseSelected.x;
                 coup.posStart.y = m_gameData.m_plateau.coordCaseSelected.y;
                 coup.posEnd.x = v.x;

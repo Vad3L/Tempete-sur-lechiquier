@@ -39,21 +39,14 @@ void BoardEntity::render(gf::RenderTarget &target, const gf::RenderStates &state
         
         // if case selected
         if(pos == m_gameData.m_plateau.coordCaseSelected) {
-            
             shape.setColor(gf::Color::fromRgba32(250, 190, 88, 200));
-        }else // if my king is in echec
-        if(c.piece.getType() == ChessPiece::KING && c.piece.getColor() == m_gameData.m_myColor && myTurn && m_gameData.m_plateau.playerInEchec) {
-            
+        } else if (c.piece.getType() == ChessPiece::KING && c.piece.getColor() == m_gameData.m_myColor && myTurn && m_gameData.m_plateau.playerInEchec) {
             shape.setColor(gf::Color::fromRgba32(255, 0, 0, 100));
-        }else // if adv king is in echec
-        if(c.piece.getType() == ChessPiece::KING && c.piece.getColor() != m_gameData.m_myColor && !myTurn && m_gameData.m_plateau.playerInEchec) {
-            
+        } else if(c.piece.getType() == ChessPiece::KING && c.piece.getColor() != m_gameData.m_myColor && !myTurn && m_gameData.m_plateau.playerInEchec) {
             shape.setColor(gf::Color::fromRgba32(255, 0, 0, 100));
-        }else if(m_gameData.m_plateau.lastCoup.size() >= 2 && (pos == m_gameData.m_plateau.lastCoup.back() || pos == m_gameData.m_plateau.lastCoup[m_gameData.m_plateau.lastCoup.size()-2])) {
-
+        } else if(m_gameData.m_plateau.lastCoup.size() >= 2 && (pos == m_gameData.m_plateau.lastCoup.back() || pos == m_gameData.m_plateau.lastCoup[m_gameData.m_plateau.lastCoup.size()-2])) {
             shape.setColor(gf::Color::fromRgba32(250, 190, 88, 200));
-        }else {
-            
+        } else {
             if (y % 2 == 0) {
                 if (x % 2 == 0) {
                     shape.setTexture(m_backgroundTexture, gf::RectF::fromPositionSize({ (1.f / numberPiece) * 1, .75f }, { (1.f / numberPiece), .5f}));
@@ -81,7 +74,7 @@ void BoardEntity::render(gf::RenderTarget &target, const gf::RenderStates &state
         if (c.piece.getType() != ChessPiece::NONE) {
             gf::Sprite sprite;
             float i = (float)c.piece.getType();
-            float j = (int)(c.piece.getColor())/4.f;
+            float j = ((int)c.piece.getColor())/4.f;
             
             if(c.piece.getType() == ChessPiece::PAWN && (y == 0 || y == 7)) {
 
@@ -100,7 +93,7 @@ void BoardEntity::render(gf::RenderTarget &target, const gf::RenderStates &state
                     target.draw(sprite, states);                 
                 }
 
-            }else {
+            } else {
                 
                 sprite.setTexture(m_backgroundTexture, gf::RectF::fromPositionSize({ (1.f / numberPiece) * i, j }, { (1.f / numberPiece), 0.25f }));
                 sprite.setPosition(coords.getRelativePoint({ -0.5f + 1.f/16.f + x * 1.f/8.f, -0.5f + 1.f/16.f + y * 1.f/8.f }));
@@ -109,11 +102,10 @@ void BoardEntity::render(gf::RenderTarget &target, const gf::RenderStates &state
                 
                 if (m_gameData.m_myColor == ChessColor::BLACK) {
                     sprite.setRotation(gf::Pi);
-                    
                 }
 
                 target.draw(sprite, states);
-            }            
+            }
         }
         
         // draw move authorized

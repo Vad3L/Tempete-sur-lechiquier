@@ -20,17 +20,7 @@ typedef enum {
 
 /* struct pos d'une pièce*/
 
-struct Pos {
- 	static constexpr gf::Id type = "TCase"_id;
-	int y;           /* Ligne de la position d'une piece */
-	int x;           /* Colonne de la position d'une piece */
-};
-
-template<typename Archive>
-  Archive& operator|(Archive& ar, Pos& data) {
-    return ar | data.y | data.x;
-}
-
+using Pos = gf::Vector2i;
 
 struct PartieRep {
     static constexpr gf::Id type = "PartieRep"_id;
@@ -44,21 +34,9 @@ Archive operator|(Archive& ar, PartieRep& data) {
     return ar | data.err | data.coulPion | data.status;
 }
 
-
 /***********************
 **********COUP**********
 ***********************/
-struct CoupReq {
-    static constexpr gf::Id type = "CoupReq"_id;
-    Pos posStart;
-    Pos posEnd;
-};
-
-template<typename Archive>
-Archive operator|(Archive& ar, CoupReq& data) {
-    return ar | data.posStart | data.posEnd;
-}
-
 struct CoupRep {
     static constexpr gf::Id type = "CoupRep"_id;
     CodeRep err;                   /* Code de retour */
@@ -75,17 +53,6 @@ Archive operator|(Archive& ar, CoupRep& data) {
 /***********************
 **********PROMOTION**********
 ***********************/
-struct PromotionReq {
-    static constexpr gf::Id type = "PromotionReq"_id;
-    Pos pos;
-    ChessPiece choice;
-};
-
-template<typename Archive>
-Archive operator|(Archive& ar, PromotionReq& data) {
-    return ar | data.pos | data.choice;
-}
-
 struct PromotionRep {
     static constexpr gf::Id type = "PromotionRep"_id;
     CodeRep err;                   /* Code de retour */
