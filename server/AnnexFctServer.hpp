@@ -17,11 +17,13 @@
 #include "../model/Plateau.hpp"
 #include "../protocole/protocole.h"
 
-int performActionMoveNormal(Plateau& plateau, gf::TcpSocket& client1, gf::TcpSocket& client2, bool& turnPlayer1, bool &promotion);
-
-// REWORKED
+void performPromotion (Plateau& plateau, PromotionRep& p);
+bool performCoup (Plateau& plateau, CoupRep& c);
+int performAction (Plateau& plateau, gf::TcpSocket& client1, gf::TcpSocket& client2, bool& turnPlayer1, bool &promotion);
 
 gf::Packet recvPacket (gf::TcpSocket& client);
+void sendPacket (gf::TcpSocket& client);
+
 void checkPromotionValidity (Plateau& plateau, PromotionRep& r);
 void checkCoupPacketValidity (Plateau& plateau, CoupRep& c);
 bool checkCoupValide(Plateau& plateau, gf::Vector2i coordStart, gf::Vector2i coordEnd);

@@ -52,7 +52,7 @@ int main (int argc, char* argv[]) {
 			break;
 		    }
 
-                    if(performActionMoveNormal(plateau, client1, client2, turnPlayer1, promotion) == -1) {
+                    if(performAction(plateau, client1, client2, turnPlayer1, promotion) == -1) {
                         break;
                     }
                 } else {
@@ -61,8 +61,8 @@ int main (int argc, char* argv[]) {
 		          break;
 		    }
 
-                    if(performActionMoveNormal(plateau, client1, client2, turnPlayer1, promotion) == -1) {
-                        break;;
+                    if(performAction(plateau, client1, client2, turnPlayer1, promotion) == -1) {
+                        break;
                     }
                 }
             }
