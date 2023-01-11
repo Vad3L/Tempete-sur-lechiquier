@@ -15,6 +15,10 @@
 
 #include "../Entity/BoardEntity.hpp"
 #include "../Entity/TableBoardEntity.hpp"
+
+//A CHANGER
+#include "../Entity/CardsEntity.hpp"
+
 #include "../GameData.hpp"
 #include "../Network.hpp"
 
@@ -49,11 +53,14 @@ class GameScene : public gf::Scene {
         gf::Packet m_packet;
 
         gf::ExtendView m_boardView;
-        gf::ExtendView m_tableBoardView;        
+        gf::ExtendView m_tableBoardView;
+        gf::ExtendView m_cardsView;        
         gf::ViewContainer m_views;
 
         BoardEntity m_boardEntity;    
         TableBoardEntity m_tableBoardEntity;
+        //MODIFIER
+        CardsEntity m_CardsEntity;
 };  
 
 

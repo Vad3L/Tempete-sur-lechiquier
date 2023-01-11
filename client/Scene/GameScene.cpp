@@ -13,6 +13,7 @@ GameScene::GameScene(GameHub& game)
 , m_texture1Action("Texture1")
 , m_texture2Action("Texture2")
 , m_boardEntity(game.resources, m_gameData)
+, m_CardsEntity(game.resources,m_gameData)
 , m_tableBoardEntity(game.resources, m_gameData)
 , m_promotion(false)
 {
@@ -32,11 +33,16 @@ GameScene::GameScene(GameHub& game)
 
 	m_boardView = gf::ExtendView({ 0, 0 }, { 203, 203 });
 	m_boardView.setViewport(gf::RectF::fromPositionSize({ 0.3f, 0.3f}, { 0.4f, 0.4f }));
+
     m_tableBoardView = gf::ExtendView({ 0, 0 }, { 200, 200 });
 	m_tableBoardView.setViewport(gf::RectF::fromPositionSize({ 0.2f, 0.2f}, { 0.6f, 0.6f }));
+
+    m_cardsView = gf::ExtendView({0,0},{200,200}); 
+    m_cardsView.setViewport(gf::RectF::fromPositionSize({ 0.f, 0.f}, { 1.f, 1.f }));
     
 	m_views.addView(m_boardView);
     m_views.addView(m_tableBoardView);
+    m_views.addView(m_cardsView);
     
 	m_views.setInitialFramebufferSize({game.getRenderer().getSize()});
 }
@@ -122,8 +128,12 @@ void GameScene::doRender(gf::RenderTarget& target, const gf::RenderStates &state
 
     target.setView(m_boardView);
     m_boardEntity.render(target, states);
-    
+    //A MODIFIER
+    //target.setView(m_cardsView);
+   // m_CardsEntity.render(target,states);
+
     target.setView(getHudView());
+    
 }
 
 void GameScene::doUpdate(gf::Time time) {

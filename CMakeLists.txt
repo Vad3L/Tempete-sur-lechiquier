@@ -42,6 +42,7 @@ add_executable(client
 	client/Entity/PlayTitleEntity.cpp
 	client/Entity/TitleEntity.cpp
 	client/Entity/RulesEntity.cpp
+	client/Entity/CardsEntity.cpp
 
 	)
 
