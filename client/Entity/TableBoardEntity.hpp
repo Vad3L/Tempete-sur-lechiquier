@@ -17,10 +17,12 @@ class TableBoardEntity: public gf::Entity {
         void update(gf::Time time) override;
         void render(gf::RenderTarget &target, const gf::RenderStates &states) override;
         
+        int m_numTexture;
     private:
 
         gf::Font& m_font;
         gf::Texture& m_backgroundTexture;
+        gf::Texture& m_backgroundTexture2;
 
         GameData &m_gameData;
 };

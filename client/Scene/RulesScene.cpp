@@ -10,15 +10,14 @@ RulesScene::RulesScene(GameHub& game)
 , m_game(game)
 , m_quitAction("Quit")
 , m_triggerAction("TriggerAction")
-, m_quitButton("Main Menu", game.resources.getFont("Trajan-Color-Concept.otf"))
-, m_pageLeft("<", game.resources.getFont("DejaVuSans.ttf"))
-, m_pageRight(">", game.resources.getFont("DejaVuSans.ttf"))
-, m_rulesEntity(game.resources, m_index)
+, m_quitButton("Main Menu", game.resources.getFont("fonts/Trajan-Color-Concept.otf"))
+, m_pageLeft("<", game.resources.getFont("fonts/DejaVuSans.ttf"))
+, m_pageRight(">", game.resources.getFont("fonts/DejaVuSans.ttf"))
+, m_rulesEntity(game.resources)
 , m_downAction("DownAction")
 , m_leftAction("PageLeft")
 , m_rightAction("PageRight")
 , m_fullscreenAction("FullScreen")
-, m_index(0)
 {
 	setClearColor(gf::Color::Black);
 
@@ -141,7 +140,7 @@ void RulesScene::doRender(gf::RenderTarget& target, const gf::RenderStates &stat
 	m_pageLeft.setParagraphWidth(paragraphWidthArrow);	
 	m_pageLeft.setPadding(paddingSize);
 	m_pageLeft.setAnchor(gf::Anchor::Center);
-	if(m_index>0) {
+	if(m_rulesEntity.m_index>0) {
 		m_pageLeft.setPosition(coords.getRelativePoint({0.15f, 0.4}));
 	}else {
 		m_pageLeft.setPosition(coords.getRelativePoint({-2.87f, 0.4}));
@@ -151,7 +150,7 @@ void RulesScene::doRender(gf::RenderTarget& target, const gf::RenderStates &stat
 	m_pageRight.setParagraphWidth(paragraphWidthArrow);
 	m_pageRight.setPadding(paddingSize);
 	m_pageRight.setAnchor(gf::Anchor::Center);
-	if(m_index<3) {
+	if(m_rulesEntity.m_index<3) {
 		m_pageRight.setPosition(coords.getRelativePoint({0.85f, 0.4}));
 	}else {
 		m_pageRight.setPosition(coords.getRelativePoint({2.87f, 0.4}));
@@ -176,18 +175,18 @@ void RulesScene::doShow() {
 
 void RulesScene::changeRightLeft(bool value) {
 	if(value){
-        if(m_index < 3){
-			m_index++;
+        if(m_rulesEntity.m_index < 3){
+			m_rulesEntity.m_index++;
         }
     }else{
-        if(m_index > 0){
-            m_index--;
+        if(m_rulesEntity.m_index > 0){
+            m_rulesEntity.m_index--;
         }
     }
 }
 
 void RulesScene::onActivityChange(bool active){
     if(active){
-        m_index = 0;
+        m_rulesEntity.m_index = 0;
 	}
 }

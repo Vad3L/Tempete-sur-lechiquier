@@ -6,9 +6,9 @@
 #include <gf/Sprite.h>
 
   PlayTitleEntity::PlayTitleEntity(gf::ResourceManager& resources)
-: m_font(resources.getFont("Trajan-Color-Concept.otf"))
-, m_backgroundTexture(resources.getTexture("startMenu1.png"))
-, m_errorText("", resources.getFont("DejaVuSans.ttf"))
+: m_font(resources.getFont("fonts/Trajan-Color-Concept.otf"))
+, m_backgroundTexture(resources.getTexture("images/startMenu1.png"))
+, m_errorText("", resources.getFont("fonts/DejaVuSans.ttf"))
 {
 
 }
@@ -45,6 +45,7 @@ void PlayTitleEntity::render(gf::RenderTarget &target, const gf::RenderStates &s
   subtitle.setAnchor(gf::Anchor::Center);
   target.draw(subtitle, states);
 
+  m_errorText.setCharacterSize(subtitleCharacterSize/2.f);
   m_errorText.setColor(gf::Color::Red);
   m_errorText.setPosition(coords.getRelativePoint({ 0.5f, 0.40f }));
   m_errorText.setAnchor(gf::Anchor::Center);

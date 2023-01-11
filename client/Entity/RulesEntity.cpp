@@ -9,11 +9,11 @@
 
 #include <iostream>
 
-RulesEntity::RulesEntity(gf::ResourceManager& resources, int &index)
-: m_font(resources.getFont("Trajan-Color-Concept.otf"))
-, m_backgroundTexture(resources.getTexture("startMenu1.png"))
-, m_rulesFont(resources.getFont("RifficFree-Bold.ttf"))
-, m_index(index)
+RulesEntity::RulesEntity(gf::ResourceManager& resources)
+: m_font(resources.getFont("fonts/Trajan-Color-Concept.otf"))
+, m_backgroundTexture(resources.getTexture("images/startMenu1.png"))
+, m_rulesFont(resources.getFont("fonts/RifficFree-Bold.ttf"))
+, m_index(0)
 {
 
 }

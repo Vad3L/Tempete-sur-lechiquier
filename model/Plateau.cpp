@@ -71,9 +71,6 @@ void Plateau::prettyPrint() {
 
 bool Plateau::setMovement(ChessColor color, gf::Vector2i v) {
 	coordPrisePassant = gf::Vector2i(-1);
-	if(v.x == -1 || v.y == -1) {
-		return false;
-	}
 
 	Piece pSelect = state[v.y * 8 + v.x].piece;
 	ChessColor colAdv = !color;

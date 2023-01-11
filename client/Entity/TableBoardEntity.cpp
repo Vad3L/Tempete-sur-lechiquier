@@ -10,11 +10,14 @@
 #include <gf/Shapes.h>
 
 TableBoardEntity::TableBoardEntity(gf::ResourceManager& resources, GameData &gameData)
-: m_font(resources.getFont("DejaVuSans.ttf"))
-, m_backgroundTexture(resources.getTexture("ChessSheet.png"))
+: m_font(resources.getFont("fonts/DejaVuSans.ttf"))
+, m_backgroundTexture(resources.getTexture("images/ChessSheet.png"))
+, m_backgroundTexture2(resources.getTexture("images/ChessSheet2.png"))
 ,m_gameData(gameData)
 {
     m_backgroundTexture.setSmooth(true);
+    m_backgroundTexture2.setSmooth(true);
+    m_numTexture = 0;
 }
 
 void TableBoardEntity::update([[maybe_unused]] gf::Time time) {
@@ -24,11 +27,12 @@ void TableBoardEntity::render(gf::RenderTarget &target, const gf::RenderStates &
     gf::Coordinates coords(gf::Vector2i(200.f , 200.f));
 
     int numberPiece = ((int)ChessPiece::MAX - (int)ChessPiece::MIN + 1);
+    gf::Texture &texture = (m_numTexture == 0) ? m_backgroundTexture : m_backgroundTexture2;
 
     gf::RectangleShape tableCloth(gf::Vector2f(200.f, 175.f));
     tableCloth.setAnchor(gf::Anchor::Center);
     tableCloth.setPosition(coords.getRelativePoint({0.f, 0.f}));
-    tableCloth.setTexture(m_backgroundTexture, gf::RectF::fromPositionSize({ (1.f / numberPiece) * 2, .75f }, { (1.f / numberPiece), 0.25f }));
+    tableCloth.setTexture(texture, gf::RectF::fromPositionSize({ (1.f / numberPiece) * 2, .75f }, { (1.f / numberPiece), 0.25f }));
     target.draw(tableCloth,states);
 
     
@@ -51,7 +55,7 @@ void TableBoardEntity::render(gf::RenderTarget &target, const gf::RenderStates &
     text.setScale(0.2f);
     text.setPosition(gf::Vector2f(coords.getRelativePoint({0.f, -0.38f})));
     text.setAnchor(gf::Anchor::Center);
-    text.setColor(gf::Color::Black);
+    (m_numTexture==0) ? text.setColor(gf::Color::Black) : text.setColor(gf::Color::Gray(0.8f)) ;
     target.draw(text, states);
 
     std::string letters[8] = {"A", "B", "C", "D", "E", "F", "G", "H"};
@@ -64,7 +68,12 @@ void TableBoardEntity::render(gf::RenderTarget &target, const gf::RenderStates &
         
         text.setScale(0.2f);
         text.setPosition({coords.getRelativePoint({-0.3f + (i-1) * 0.082f, 0.39f})});
-        text.setColor(gf::Color::fromRgba32(238,198,108));
+        
+        if(m_numTexture == 0) {
+            text.setColor(gf::Color::fromRgba32(238,198,108));
+        }else {
+            text.setColor(gf::Color::fromRgba32(160,160,160));
+        }
         
         target.draw(text);
 
@@ -90,7 +99,7 @@ void TableBoardEntity::render(gf::RenderTarget &target, const gf::RenderStates &
         float i = (float)pi.getType();
 		float j = (int)(pi.getColor())/4.f;
 		
-        sprite.setTexture(m_backgroundTexture, gf::RectF::fromPositionSize({ (1.f / numberPiece) * i, j }, { (1.f / numberPiece), 0.25f }));
+        sprite.setTexture(texture, gf::RectF::fromPositionSize({ (1.f / numberPiece) * i, j }, { (1.f / numberPiece), 0.25f }));
         
         if(pi.getColor() == ChessColor::WHITE) {
             sprite.setPosition(coords.getRelativePoint({-0.45f - 0.02f * (tabW[(int)i]%4), -0.25f + (i-1) * 0.082f + 0.02f * (tabW[(int)i]/4)}));

@@ -20,11 +20,13 @@ class BoardEntity : public gf::Entity {
         gf::Vector2i getTransformCaseSelected(gf::Vector2i sizeWindows, gf::Vector2i mouseCoord);
         ChessPiece getChoice(gf::Vector2i sizeWindows, gf::Vector2i mouseCoord);
 
+        int m_numTexture;
     private:
-        GameData &m_gameData;
-
+        
         gf::Texture& m_backgroundTexture;
+        gf::Texture& m_backgroundTexture2;
 
+        GameData &m_gameData;
 };
 
 

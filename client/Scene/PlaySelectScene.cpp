@@ -20,11 +20,11 @@ PlaySelectScene::PlaySelectScene(GameHub& game)
 , m_quitAction("QuitAction")
 , m_fullscreenAction("FullscreenAction")
 , m_PlayTitleEntity(game.resources)
-, m_ipWidget("127.0.0.1", game.resources.getFont("Trajan-Color-Concept.otf"))
+, m_ipWidget("127.0.0.1", game.resources.getFont("fonts/Trajan-Color-Concept.otf"))
 , m_connectAction("ConnectAction")
 , m_index(0)
-, m_leftWidget("<", game.resources.getFont("DejaVuSans.ttf"))
-, m_rightWidget(">", game.resources.getFont("DejaVuSans.ttf"))
+, m_leftWidget("<", game.resources.getFont("fonts/DejaVuSans.ttf"))
+, m_rightWidget(">", game.resources.getFont("fonts/DejaVuSans.ttf"))
 {
     setClearColor(gf::Color::Black);
     addHudEntity(m_PlayTitleEntity);

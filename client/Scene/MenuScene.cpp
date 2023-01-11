@@ -10,15 +10,15 @@
 MenuScene::MenuScene(GameHub& game)
 : gf::Scene(game.getRenderer().getSize())
 , m_game(game)
-, m_backgroundTexture(game.resources.getTexture("startMenu1.png"))
+, m_backgroundTexture(game.resources.getTexture("images/startMenu1.png"))
 , m_upAction("UpAction")
 , m_downAction("DownAction")
 , m_triggerAction("TriggerAction")
 , m_quitAction("Quit")
 , m_fullscreenAction("Fullscreen")
-, m_play("Play", game.resources.getFont("Trajan-Color-Concept.otf"))
-, m_rules("Rules", game.resources.getFont("Trajan-Color-Concept.otf"))
-, m_quit("Quit", game.resources.getFont("Trajan-Color-Concept.otf"))
+, m_play("Play", game.resources.getFont("fonts/Trajan-Color-Concept.otf"))
+, m_rules("Rules", game.resources.getFont("fonts/Trajan-Color-Concept.otf"))
+, m_quit("Quit", game.resources.getFont("fonts/Trajan-Color-Concept.otf"))
 {
 	setClearColor(gf::Color::Black);
 
@@ -112,7 +112,7 @@ void MenuScene::doRender(gf::RenderTarget& target, const gf::RenderStates &state
 
 	unsigned titleCharacterSize = coords.getRelativeCharacterSize(0.1f);
 
-	gf::Text title("Storm on Chess", m_game.resources.getFont("Trajan-Color-Concept.otf"), titleCharacterSize);
+	gf::Text title("Storm on Chess", m_game.resources.getFont("../data/fonts/Trajan-Color-Concept.otf"), titleCharacterSize);
 	title.setColor(gf::Color::White);
 	title.setPosition(coords.getRelativePoint({ 0.5f, 0.1f }));
 	title.setAnchor(gf::Anchor::TopCenter);

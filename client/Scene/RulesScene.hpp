@@ -40,8 +40,6 @@ public:
         gf::Action m_fullscreenAction;
         
         RulesEntity m_rulesEntity;
-
-        int m_index;
 };
 
 #endif // RULES_SCENE_H

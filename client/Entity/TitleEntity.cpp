@@ -8,8 +8,8 @@
 #include <iostream>
 
 TitleEntity::TitleEntity(gf::ResourceManager& resources)
-: m_font(resources.getFont("DejaVuSans.ttf"))
-, m_backgroundTexture(resources.getTexture("startMenu1.png"))
+: m_font(resources.getFont("fonts/DejaVuSans.ttf"))
+, m_backgroundTexture(resources.getTexture("images/startMenu1.png"))
 {
 m_backgroundTexture.setSmooth(true);
 }

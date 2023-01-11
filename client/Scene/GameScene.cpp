@@ -10,6 +10,8 @@ GameScene::GameScene(GameHub& game)
 , m_game(game)
 , m_quitAction("quit")
 , m_fullscreenAction("Fullscreen")
+, m_texture1Action("Texture1")
+, m_texture2Action("Texture2")
 , m_boardEntity(game.resources, m_gameData)
 , m_tableBoardEntity(game.resources, m_gameData)
 , m_promotion(false)
@@ -22,6 +24,12 @@ GameScene::GameScene(GameHub& game)
   	m_fullscreenAction.addKeycodeKeyControl(gf::Keycode::F);
   	addAction(m_fullscreenAction);
 	
+    m_texture1Action.addScancodeKeyControl(gf::Scancode::Num1);
+  	addAction(m_texture1Action);
+
+    m_texture2Action.addScancodeKeyControl(gf::Scancode::Num2);
+  	addAction(m_texture2Action);
+
 	m_boardView = gf::ExtendView({ 0, 0 }, { 203, 203 });
 	m_boardView.setViewport(gf::RectF::fromPositionSize({ 0.3f, 0.3f}, { 0.4f, 0.4f }));
     m_tableBoardView = gf::ExtendView({ 0, 0 }, { 200, 200 });
@@ -46,6 +54,15 @@ void GameScene::doHandleActions([[maybe_unused]] gf::Window& window) {
         window.toggleFullscreen();
     }
 
+    if(m_texture1Action.isActive()) {
+        m_tableBoardEntity.m_numTexture = 0;
+        m_boardEntity.m_numTexture = 0;
+    }
+
+    if(m_texture2Action.isActive()) {
+        m_tableBoardEntity.m_numTexture = 1;
+        m_boardEntity.m_numTexture = 1;
+    }
 }
 
 void GameScene::doProcessEvent(gf::Event& event) {
@@ -62,8 +79,12 @@ void GameScene::doProcessEvent(gf::Event& event) {
     
     if(m_gameData.m_myTurn && click) { 
         gf::Vector2i v = m_boardEntity.getTransformCaseSelected(m_boardView.getSize(), m_game.getRenderer().mapPixelToCoords(event.mouseButton.coords, m_boardView));
-        Piece p = m_gameData.m_plateau.state[v.y * 8 + v.x].piece;
+        if(v.x == -1 || v.y == -1) {
+		    return;
+	    }
+        
         if(m_promotion) {
+            Piece p = m_gameData.m_plateau.state[v.y * 8 + v.x].piece;
            if(p.getType() == ChessPiece::PAWN && p.getColor() == m_gameData.m_myColor && (v.y == 0 || v.y ==7)) {
                 PromotionReq promo;
                 promo.pos.x = v.x;
@@ -74,6 +95,7 @@ void GameScene::doProcessEvent(gf::Event& event) {
                 m_game.m_network.send(promo);
            }
         }else {
+            std::cout << "je suis dans le else\n";
             bool coupPionEnded = m_gameData.m_plateau.setMovement(m_gameData.m_myColor, v);
         
             if(coupPionEnded) {

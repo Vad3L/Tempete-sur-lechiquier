@@ -10,10 +10,13 @@
 #include <gf/Shapes.h>
 
 BoardEntity::BoardEntity(gf::ResourceManager& resources, GameData &gameData)
-: m_backgroundTexture(resources.getTexture("ChessSheet.png"))
+: m_backgroundTexture(resources.getTexture("images/ChessSheet.png"))
+, m_backgroundTexture2(resources.getTexture("images/ChessSheet2.png"))
 ,m_gameData(gameData)
 {
     m_backgroundTexture.setSmooth(true);
+    m_backgroundTexture2.setSmooth(true);
+    m_numTexture = 0;
 }
 
 void BoardEntity::update([[maybe_unused]] gf::Time time) {
@@ -27,7 +30,8 @@ void BoardEntity::render(gf::RenderTarget &target, const gf::RenderStates &state
     float sizeSquare = coords.getRelativeSize(gf::vec(0.0f, 1.f/8.f)).height;
     float sizeLine = 1.5f;
     bool myTurn = m_gameData.m_myTurn;
-    
+    gf::Texture &texture = (m_numTexture == 0) ? m_backgroundTexture : m_backgroundTexture2;
+
     //draw plateau 
     for  (Case &c : m_gameData.m_plateau.state) {
         int x = c.position.x;
@@ -53,26 +57,31 @@ void BoardEntity::render(gf::RenderTarget &target, const gf::RenderStates &state
 
             shape.setColor(gf::Color::fromRgba32(250, 190, 88, 200));
         }else {
-            
+
             if (y % 2 == 0) {
                 if (x % 2 == 0) {
-                    shape.setTexture(m_backgroundTexture, gf::RectF::fromPositionSize({ (1.f / numberPiece) * 1, .75f }, { (1.f / numberPiece), .5f}));
+                    shape.setTexture(texture, gf::RectF::fromPositionSize({ (1.f / numberPiece) * 1, .75f }, { (1.f / numberPiece), .5f}));
                 }
                 else {
-                    shape.setTexture(m_backgroundTexture, gf::RectF::fromPositionSize({ (1.f / numberPiece) * 0, .75f }, { (1.f / numberPiece), .5f }));
+                    shape.setTexture(texture, gf::RectF::fromPositionSize({ (1.f / numberPiece) * 0, .75f }, { (1.f / numberPiece), .5f }));
                 }
             } else {
                 if (x % 2 == 0) {
-                    shape.setTexture(m_backgroundTexture, gf::RectF::fromPositionSize({ (1.f / numberPiece) * 0, .75f }, { (1.f / numberPiece), .5f }));
+                    shape.setTexture(texture, gf::RectF::fromPositionSize({ (1.f / numberPiece) * 0, .75f }, { (1.f / numberPiece), .5f }));
                 }
                 else {
-                    shape.setTexture(m_backgroundTexture, gf::RectF::fromPositionSize({ (1.f / numberPiece) * 1, .75f }, { (1.f / numberPiece), .5f }));
+                    shape.setTexture(texture, gf::RectF::fromPositionSize({ (1.f / numberPiece) * 1, .75f }, { (1.f / numberPiece), .5f }));
                 }
             }
         }
 
         shape.setAnchor(gf::Anchor::Center);
-        shape.setOutlineColor(gf::Color::fromRgba32(85,60,40));
+        if(m_numTexture == 0) {
+            shape.setOutlineColor(gf::Color::fromRgba32(85,60,40));
+        }else {
+            shape.setOutlineColor(gf::Color::fromRgba32(60,60,60));
+        }
+        
         shape.setOutlineThickness(sizeLine);
         
         target.draw(shape, states);
@@ -85,10 +94,10 @@ void BoardEntity::render(gf::RenderTarget &target, const gf::RenderStates &state
             
             if(c.piece.getType() == ChessPiece::PAWN && (y == 0 || y == 7)) {
 
-                int mul = (c.piece.getColor() == ChessColor::WHITE) ? 1: -1;
+                int mul = (m_gameData.m_myColor == ChessColor::WHITE) ? 1: -1;
                 int tab[8] = {-1*mul,-1*mul,-1*mul, 1*mul, 1*mul, 1*mul, 1*mul, -1*mul};
                 for(int z = 0; z < 4 ; z++) {
-                    sprite.setTexture(m_backgroundTexture, gf::RectF::fromPositionSize({ (1.f / numberPiece) * (z+1), j }, { (1.f / numberPiece), 0.25f }));
+                    sprite.setTexture(texture, gf::RectF::fromPositionSize({ (1.f / numberPiece) * (z+1), j }, { (1.f / numberPiece), 0.25f }));
                     sprite.setPosition(coords.getRelativePoint({ -0.5f + 1.f/16.f + x * 1.f/8.f + (1.f/32.f)*tab[z*2] , -0.5f + 1.f/16.f + y * 1.f/8.f + (1.f/32.f)*tab[z*2+1]}));
                     sprite.setScale((1.f / (25.f)));
                     sprite.setAnchor(gf::Anchor::Center);
@@ -102,7 +111,7 @@ void BoardEntity::render(gf::RenderTarget &target, const gf::RenderStates &state
 
             }else {
                 
-                sprite.setTexture(m_backgroundTexture, gf::RectF::fromPositionSize({ (1.f / numberPiece) * i, j }, { (1.f / numberPiece), 0.25f }));
+                sprite.setTexture(texture, gf::RectF::fromPositionSize({ (1.f / numberPiece) * i, j }, { (1.f / numberPiece), 0.25f }));
                 sprite.setPosition(coords.getRelativePoint({ -0.5f + 1.f/16.f + x * 1.f/8.f, -0.5f + 1.f/16.f + y * 1.f/8.f }));
                 sprite.setScale((1.f / 14.f));
                 sprite.setAnchor(gf::Anchor::Center);
@@ -134,13 +143,14 @@ gf::Vector2i BoardEntity::getTransformCaseSelected(gf::Vector2i sizeWindows, gf:
     gf::Vector2i v(-1,-1); 
     float min = std::min(sizeWindows.height, sizeWindows.width);
     
+    if(mouseCoord.y + min/2.f<0 || mouseCoord.x + min/2.f<0 || mouseCoord.y + min/2.f>min || mouseCoord.x + min/2.f>min ) {
+        std::cout << "caseSelectionne: [ligne/col] " << v.y << "," << v.x << std::endl;
+        return v;
+    }
+
     v.y = (int)((8.f/min) * (mouseCoord.y + min/2.f)); //+min/2 pour ramener les coordonées dans le positif 
     v.x = (int)((8.f/min) * (mouseCoord.x + min/2.f));
     
-    if(v.y < 0 || v.x < 0 || v.y > 7 || v.x > 7) {
-        v.x = v.y = -1;
-    }
-
     std::cout << "caseSelectionne: [ligne/col] " << v.y << "," << v.x << std::endl;
     return v;
 }
@@ -159,8 +169,6 @@ ChessPiece BoardEntity::getChoice(gf::Vector2i sizeWindows, gf::Vector2i mouseCo
         val = std::abs(3-val);
     }
     
-    //std::cout << "case promotion[y/x] " << v.y<< ","<< v.x<< std::endl;
-    std::cout << "val : " << val << "\n";
     switch (val) {
         case 0:
             p = ChessPiece::QUEEN;
