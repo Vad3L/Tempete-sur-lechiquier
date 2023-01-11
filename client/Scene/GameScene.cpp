@@ -84,23 +84,23 @@ void GameScene::doProcessEvent(gf::Event& event) {
 	    }
         
         if(m_promotion) {
-            Piece p = m_gameData.m_plateau.state[v.y * 8 + v.x].piece;
-           if(p.getType() == ChessPiece::PAWN && p.getColor() == m_gameData.m_myColor && (v.y == 0 || v.y ==7)) {
-                PromotionReq promo;
-                promo.pos.x = v.x;
-                promo.pos.y = v.y;
-                ChessPiece choice = m_boardEntity.getChoice(m_boardView.getSize(), m_game.getRenderer().mapPixelToCoords(event.mouseButton.coords, m_boardView));
-                promo.choice = choice;
-                std::cout << "envoie au serveur la promotion du pion en " << v.y << "," << v.x << "avec comme choice "<< (int)promo.choice<< std::endl;
-                m_game.m_network.send(promo);
-           }
+
+            PromotionRep promo;
+
+            promo.pos.x = v.x;
+            promo.pos.y = (m_gameData.m_myColor == ChessColor::WHITE ? 0: 7);
+
+            ChessPiece choice = m_boardEntity.getChoice(m_boardView.getSize(),v);
+            promo.choice = choice;
+            std::cout << "envoie au serveur la promotion du pion en " << v.y << "," << v.x << "avec comme choice "<< (int)promo.choice<< std::endl;
+            m_game.m_network.send(promo);
+           
         }else {
             std::cout << "je suis dans le else\n";
             bool coupPionEnded = m_gameData.m_plateau.setMovement(m_gameData.m_myColor, v);
         
             if(coupPionEnded) {
-
-                CoupReq coup;
+                CoupRep coup;
                 coup.posStart.x = m_gameData.m_plateau.coordCaseSelected.x;
                 coup.posStart.y = m_gameData.m_plateau.coordCaseSelected.y;
                 coup.posEnd.x = v.x;
@@ -135,11 +135,11 @@ void GameScene::doUpdate(gf::Time time) {
 	if (m_packet.getType() == PartieRep::type) {
 		auto repPartie = m_packet.as<PartieRep>();
 		if (repPartie.err == CodeRep::GAME_START) {
-			std::cout << "game start\n";
+			gf::Log::debug("Game start\n");
             m_gameStart = true;
 			return;
 		} else if (repPartie.err == CodeRep::GAME_END) {
-            std::cout << "game end\n";
+            gf::Log::debug("Game end\n");
             m_gameStart = false;
             if(repPartie.status == ChessStatus::WIN && repPartie.coulPion != m_gameData.m_myColor) {
                 m_gameData.m_gameStatus = ChessStatus::LOOSE;    
@@ -151,13 +151,13 @@ void GameScene::doUpdate(gf::Time time) {
 	}     
 
     if(m_packet.getType() == CoupRep::type) {
-        std::cout << "coup recu serveur\n";
+        gf::Log::debug("coup recu serveur\n");
         auto coupRep = m_packet.as<CoupRep>();
 	
         // move piece
         if(coupRep.err == CodeRep::NONE) { // coup valide
             
-            std::cout << "------COUP CORRECT------" << std::endl;
+            gf::Log::debug("------COUP CORRECT------\n");
             Piece pieceStart =  m_gameData.m_plateau.state[coupRep.posStart.y * 8 + coupRep.posStart.x].piece;
             pieceStart.isMoved= true;
 
@@ -183,17 +183,17 @@ void GameScene::doUpdate(gf::Time time) {
             }
             
         }else if(coupRep.err == CodeRep::COUP_NO_VALIDE) {
-            std::cout << "------COUP INVALIDE------" << std::endl;
+            gf::Log::debug("------COUP INVALIDE------\n");
         }
     }
 
     if(m_packet.getType() == PromotionRep::type) {
-        std::cout << "promo recu serveur\n";
+        gf::Log::debug("promo recu serveur\n");
         assert(m_promotion);
 
         auto promoRep = m_packet.as<PromotionRep>();
         if(promoRep.err == CodeRep::NONE) {
-            std::cout << "------PROMOTION CORRECT------" << std::endl;
+            gf::Log::debug("------PROMOTION CORRECT------\n");
             
             m_gameData.m_plateau.promotionPiece(gf::Vector2i(promoRep.pos.x, promoRep.pos.y), promoRep.choice);
 
@@ -208,7 +208,7 @@ void GameScene::doUpdate(gf::Time time) {
             m_gameData.m_myTurn = !m_gameData.m_myTurn;
             m_promotion = false;
         }else {
-            std::cout << "------PROMOTION INVALIDE------" << std::endl;
+            gf::Log::debug("------PROMOTION INVALIDE------\n");
         }
     }
 }

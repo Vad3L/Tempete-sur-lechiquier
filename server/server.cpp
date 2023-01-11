@@ -4,7 +4,6 @@
 int main (int argc, char* argv[]) {
 
     int port = 43771;
-    //FctAnnex fctAnnex;
 
     gf::TcpListener listener(std::to_string(port));
     
@@ -36,33 +35,31 @@ int main (int argc, char* argv[]) {
                 std::cerr << "erreur lors de l'envoie du packet au client 2";
             }
 
-	        if(sendStartOrEnd(client1, client2, CodeRep::GAME_START) == -1) {
-                return -1;
+	    if(sendStartOrEnd(client1, client2, CodeRep::GAME_START) == -1) {
+            	return -1;
             };
             
-
             Plateau plateau;
-	        ChessStatus gameStatus = ChessStatus::ON_GOING;
+	    ChessStatus gameStatus = ChessStatus::ON_GOING;
             bool turnPlayer1 = true;
             bool promotion = false;
             std::cout << "Je suis le serveur" << std::endl;
             while (true) {
                 plateau.moveAvailable.clear();
-
                 if (turnPlayer1) {
                     std::cout << "------TOUR J1------" << std::endl;
-		            if ((gameStatus = plateau.isGameOver(ChessColor::WHITE)) != ChessStatus::ON_GOING) {
-			            break;
-		            }
+		    if ((gameStatus = plateau.isGameOver(ChessColor::WHITE)) != ChessStatus::ON_GOING) {
+			break;
+		    }
 
                     if(performActionMoveNormal(plateau, client1, client2, turnPlayer1, promotion) == -1) {
                         break;
                     }
                 } else {
                     std::cout << "------TOUR J2------" << std::endl;
-		            if ((gameStatus = plateau.isGameOver(ChessColor::BLACK)) != ChessStatus::ON_GOING) {
-			            break;
-		            }
+		    if ((gameStatus = plateau.isGameOver(ChessColor::BLACK)) != ChessStatus::ON_GOING) {
+		          break;
+		    }
 
                     if(performActionMoveNormal(plateau, client1, client2, turnPlayer1, promotion) == -1) {
                         break;;
@@ -76,7 +73,7 @@ int main (int argc, char* argv[]) {
             } else if (gameStatus == ChessStatus::WIN) {
                 std::cout << "############white win############\n";
                 sendStartOrEnd(client1, client2, CodeRep::GAME_END, gameStatus, ChessColor::WHITE);
-            }else {
+            } else {
                 std::cout << "############nulle############\n";
                 sendStartOrEnd(client1, client2, CodeRep::GAME_END, gameStatus);
             }

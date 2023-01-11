@@ -206,6 +206,7 @@ void PlaySelectScene::changeRightLeft(bool value) {
 
 void PlaySelectScene::onActivityChange(bool active){
     if(active){
+        m_PlayTitleEntity.m_errorText.setString(" ");
         m_index = 0;
         gf::Log::debug("active scene\n");
         std::ifstream file(std::string(GAME_CONFIGDIR)+"IpList.txt");
