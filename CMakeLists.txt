@@ -19,20 +19,21 @@ endif ()
 
 add_executable(client
 	client/client.cpp
-	model/Piece.cpp
-  	#client/Game.cpp
 	client/Network.cpp
+	
+	model/Piece.cpp
 	model/Plateau.cpp
-	#client/Vue.cpp
 	model/Case.cpp
+
 	client/GameHub.cpp
+	client/GameData.cpp
+
 	client/Scene/StartScene.cpp		
 	client/Scene/MenuScene.cpp
 	client/Scene/PlaySelectScene.cpp
 	client/Scene/GameScene.cpp
 	client/Scene/RulesScene.cpp
 
-	client/GameData.cpp
 	client/Entity/BoardEntity.cpp
 	client/Entity/TableBoardEntity.cpp
 	client/Entity/PlayTitleEntity.cpp

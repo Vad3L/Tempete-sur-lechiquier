@@ -11,7 +11,7 @@
 
 BoardEntity::BoardEntity(gf::ResourceManager& resources, GameData &gameData)
 : m_backgroundTexture(resources.getTexture("ChessSheet.png"))
-,m_gameData(gameData)
+, m_gameData(gameData)
 {
     m_backgroundTexture.setSmooth(true);
 }
@@ -23,10 +23,15 @@ void BoardEntity::render(gf::RenderTarget &target, const gf::RenderStates &state
     
     int numberPiece = ((int)ChessPiece::MAX - (int)ChessPiece::MIN + 1);
     gf::Coordinates coords(gf::Vector2i(200.f , 200.f));
-    
+
+
     float sizeSquare = coords.getRelativeSize(gf::vec(0.0f, 1.f/8.f)).height;
     float sizeLine = 1.5f;
     bool myTurn = m_gameData.m_myTurn;
+
+    bool promotion = false;
+    gf::Vector2f pieceToPromuteCoords;
+    ChessColor pieceToPromuteColor;
     
     //draw plateau 
     for  (Case &c : m_gameData.m_plateau.state) {
@@ -53,7 +58,7 @@ void BoardEntity::render(gf::RenderTarget &target, const gf::RenderStates &state
 
             shape.setColor(gf::Color::fromRgba32(250, 190, 88, 200));
         }else {
-            
+
             if (y % 2 == 0) {
                 if (x % 2 == 0) {
                     shape.setTexture(m_backgroundTexture, gf::RectF::fromPositionSize({ (1.f / numberPiece) * 1, .75f }, { (1.f / numberPiece), .5f}));
@@ -74,37 +79,26 @@ void BoardEntity::render(gf::RenderTarget &target, const gf::RenderStates &state
         shape.setAnchor(gf::Anchor::Center);
         shape.setOutlineColor(gf::Color::fromRgba32(85,60,40));
         shape.setOutlineThickness(sizeLine);
-        
+
         target.draw(shape, states);
-        
+
         // draw pieces
         if (c.piece.getType() != ChessPiece::NONE) {
+   
             gf::Sprite sprite;
             float i = (float)c.piece.getType();
             float j = (int)(c.piece.getColor())/4.f;
             
-            if(c.piece.getType() == ChessPiece::PAWN && (y == 0 || y == 7)) {
-
-                int mul = (c.piece.getColor() == ChessColor::WHITE) ? 1: -1;
-                int tab[8] = {-1*mul,-1*mul,-1*mul, 1*mul, 1*mul, 1*mul, 1*mul, -1*mul};
-                for(int z = 0; z < 4 ; z++) {
-                    sprite.setTexture(m_backgroundTexture, gf::RectF::fromPositionSize({ (1.f / numberPiece) * (z+1), j }, { (1.f / numberPiece), 0.25f }));
-                    sprite.setPosition(coords.getRelativePoint({ -0.5f + 1.f/16.f + x * 1.f/8.f + (1.f/32.f)*tab[z*2] , -0.5f + 1.f/16.f + y * 1.f/8.f + (1.f/32.f)*tab[z*2+1]}));
-                    sprite.setScale((1.f / (25.f)));
-                    sprite.setAnchor(gf::Anchor::Center);
-                    
-                    if (m_gameData.m_myColor == ChessColor::BLACK) {
-                        sprite.setRotation(gf::Pi);
-                    }
-
-                    target.draw(sprite, states);                 
-                }
-
+            if(c.piece.getType() == ChessPiece::PAWN && (y == 0 || y == 7) && myTurn) {
+                promotion = true;
+                pieceToPromuteCoords.x = x;
+                pieceToPromuteCoords.y = y;
+                pieceToPromuteColor = c.piece.getColor();
             }else {
                 
                 sprite.setTexture(m_backgroundTexture, gf::RectF::fromPositionSize({ (1.f / numberPiece) * i, j }, { (1.f / numberPiece), 0.25f }));
                 sprite.setPosition(coords.getRelativePoint({ -0.5f + 1.f/16.f + x * 1.f/8.f, -0.5f + 1.f/16.f + y * 1.f/8.f }));
-                sprite.setScale((1.f / 14.f));
+                sprite.setScale(1.f/14.f);
                 sprite.setAnchor(gf::Anchor::Center);
                 
                 if (m_gameData.m_myColor == ChessColor::BLACK) {
@@ -113,7 +107,10 @@ void BoardEntity::render(gf::RenderTarget &target, const gf::RenderStates &state
                 }
 
                 target.draw(sprite, states);
-            }            
+                
+            }     
+            
+                   
         }
         
         // draw move authorized
@@ -125,6 +122,36 @@ void BoardEntity::render(gf::RenderTarget &target, const gf::RenderStates &state
             circle.setPosition(coords.getRelativePoint({ -0.5f + 1.f/16.f + x * 1.f/8.f, -0.5f + 1.f/16.f + y * 1.f/8.f }));
             circle.setAnchor(gf::Anchor::Center);
             target.draw(circle, states);
+        }
+    }
+
+    if(promotion){
+        gf::RectangleShape rectangle({sizeSquare-sizeLine,((sizeSquare*4)-sizeLine)});
+        rectangle.setColor(gf::Color::White);
+        rectangle.setOutlineColor(gf::Color::Black);
+        rectangle.setOutlineThickness(sizeLine);
+        
+        /*std::cout << "piece y :" << (float)pieceToPromuteCoords.y * 1.f/8.f + 1/16.f << std::endl;
+        std::cout << "sizeSquare :" << sizeSquare << std::endl;*/
+
+        int mul = (pieceToPromuteColor == ChessColor::WHITE) ? 1 : -1;
+
+        rectangle.setPosition(coords.getRelativePoint({-0.5f + (float)pieceToPromuteCoords.x * 1.f/8.f + 1/16.f, -0.5f + (float)pieceToPromuteCoords.y * 1.f/8.f + (pieceToPromuteColor == ChessColor::WHITE ? (1/4.f) : (-1/8.f))}));
+        rectangle.setAnchor(gf::Anchor::Center);
+        target.draw(rectangle, states);
+        
+        for(int z = 0; z < 4 ; z++) {
+            //std::cout << << std::endl;
+            gf::Sprite sprite;
+            sprite.setTexture(m_backgroundTexture, gf::RectF::fromPositionSize({ (1.f / numberPiece) * (z+1), (int)(pieceToPromuteColor)/4.f }, { (1.f / numberPiece), 0.25f }));
+            sprite.setPosition(coords.getRelativePoint({ (float)pieceToPromuteCoords.x * 1.f/8.f + -0.5f + 1.f/16.f, (float)(pieceToPromuteCoords.y+z)* 1.f/8.f + -0.5f + (pieceToPromuteColor == ChessColor::WHITE ? (1/16.f) : (-1/3.2f))}));
+            sprite.setScale(1.f/14.f);
+            sprite.setAnchor(gf::Anchor::Center);
+            
+            if (m_gameData.m_myColor == ChessColor::BLACK) {
+                sprite.setRotation(gf::Pi);
+            }
+            target.draw(sprite, states);
         }
     }
 }
@@ -145,35 +172,42 @@ gf::Vector2i BoardEntity::getTransformCaseSelected(gf::Vector2i sizeWindows, gf:
     return v;
 }
 
-ChessPiece BoardEntity::getChoice(gf::Vector2i sizeWindows, gf::Vector2i mouseCoord) {
+ChessPiece BoardEntity::getChoice(gf::Vector2i sizeWindows, gf::Vector2i clickCoord) {
     ChessPiece p;
-    
+    std::cout << "case cliquer " << clickCoord.y<< ","<< clickCoord.x<< std::endl;
     float min = std::min(sizeWindows.height, sizeWindows.width);
-    
-    gf::Vector2i v(-1,-1); 
-    v.y = (int)((16.f/min) * (mouseCoord.y + min/2.f))%2; //+min/2 pour ramener les coordonées dans le positif 
-    v.x = (int)((16.f/min) * (mouseCoord.x + min/2.f))%2;
-    
-    int val = 2*v.y +v.x;
-    if(m_gameData.m_myColor != ChessColor::WHITE) {
-        val = std::abs(3-val);
+        
+    if(m_gameData.m_myColor == ChessColor::WHITE){
+        switch(clickCoord.y){
+            case 0:
+                p = ChessPiece::QUEEN;
+                break;
+            case 1:
+                p = ChessPiece::BISHOP;
+                break;
+            case 2:
+                p = ChessPiece::KNIGHT;
+                break;
+            case 3:
+                p = ChessPiece::ROOK;
+                break;
+        }
+    }else{
+        switch(clickCoord.y){
+            case 7:
+                p = ChessPiece::ROOK;
+                break;
+            case 6:
+                p = ChessPiece::KNIGHT;
+                break;
+            case 5:
+                p = ChessPiece::BISHOP;
+                break;
+            case 4:
+                p = ChessPiece::QUEEN;
+                break;
+        }
     }
     
-    //std::cout << "case promotion[y/x] " << v.y<< ","<< v.x<< std::endl;
-    std::cout << "val : " << val << "\n";
-    switch (val) {
-        case 0:
-            p = ChessPiece::QUEEN;
-            break;
-        case 1:
-            p = ChessPiece::ROOK;
-            break;
-        case 2:
-            p = ChessPiece::BISHOP;
-            break;
-        case 3:
-            p = ChessPiece::KNIGHT;
-            break;
-    }
     return p;
 }
