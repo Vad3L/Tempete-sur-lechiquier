@@ -32,10 +32,10 @@ GameScene::GameScene(GameHub& game)
   	addAction(m_texture2Action);
 
 	m_boardView = gf::ExtendView({ 0, 0 }, { 403, 403 });
-	m_boardView.setViewport(gf::RectF::fromPositionSize({ 0.1f, 0.1f}, { 0.5f, 0.5f }));
+	m_boardView.setViewport(gf::RectF::fromPositionSize({ 0.1f, 0.1f}, { 0.4f, 0.4f }));
 
     m_tableBoardView = gf::ExtendView({ 0, 0 }, { 500, 500 });
-	m_tableBoardView.setViewport(gf::RectF::fromPositionSize({ 0.f, 0.f}, { 0.7f, 0.7f }));
+	m_tableBoardView.setViewport(gf::RectF::fromPositionSize({ 0.f, 0.f}, { 0.6f, 0.6f }));
 
 
 	m_views.addView(m_boardView);
@@ -71,7 +71,7 @@ void GameScene::doProcessEvent(gf::Event& event) {
 	m_views.processEvent(event);
     
 	if (m_gameData.m_gameStatus == ChessStatus::NO_STARTED) { return; }
-
+    gf::Log::debug("laaaaaaaaaaa");
     switch (event.type) {
         case gf::EventType::MouseButtonPressed:
         click = true;
@@ -242,7 +242,7 @@ void GameScene::onActivityChange(bool active) {
             m_boardView.setRotation(gf::Pi);
         }
     }
-    m_gameData.m_plateau.bin.push_back(Piece (ChessColor::WHITE, ChessPiece::PAWN));
+    /*m_gameData.m_plateau.bin.push_back(Piece (ChessColor::WHITE, ChessPiece::PAWN));
     m_gameData.m_plateau.bin.push_back(Piece (ChessColor::WHITE, ChessPiece::PAWN));
     m_gameData.m_plateau.bin.push_back(Piece (ChessColor::WHITE, ChessPiece::PAWN));
     m_gameData.m_plateau.bin.push_back(Piece (ChessColor::WHITE, ChessPiece::PAWN));
@@ -269,5 +269,5 @@ void GameScene::onActivityChange(bool active) {
     m_gameData.m_plateau.bin.push_back(Piece (ChessColor::BLACK, ChessPiece::KNIGHT));
     m_gameData.m_plateau.bin.push_back(Piece (ChessColor::BLACK, ChessPiece::KNIGHT));
     m_gameData.m_plateau.bin.push_back(Piece (ChessColor::BLACK, ChessPiece::QUEEN));
-    m_gameData.m_plateau.bin.push_back(Piece (ChessColor::BLACK, ChessPiece::QUEEN));
+    m_gameData.m_plateau.bin.push_back(Piece (ChessColor::BLACK, ChessPiece::QUEEN));*/
 }

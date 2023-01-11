@@ -92,13 +92,18 @@ void checkPromotionValidity (Plateau& plateau, PromotionRep& r) {
     if (piece.getType() == ChessPiece::PAWN) {
     	if (c.position.y == 0 && piece.getColor() == ChessColor::WHITE) {
         	gf::Log::debug("Promotion white Pawn Accepted\n");
-		promoValide = true;
+		    promoValide = true;
     	}
 
     	if (c.position.y == 7 && piece.getColor() == ChessColor::BLACK) {
        		gf::Log::debug("Promotion Black Pawn Accepted\n");
     		promoValide = true;
     	}
+    }
+
+    if(!(r.choice == ChessPiece::QUEEN || r.choice == ChessPiece::ROOK || r.choice == ChessPiece::BISHOP || r.choice == ChessPiece::KNIGHT)) {
+        gf::Log::debug("Promotion type invalide\n");
+        promoValide = false;
     }
 
     if (promoValide) {

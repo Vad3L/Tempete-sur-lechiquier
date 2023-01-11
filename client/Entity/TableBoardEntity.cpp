@@ -23,7 +23,7 @@ void TableBoardEntity::update([[maybe_unused]] gf::Time time) {
 }
 
 void TableBoardEntity::render(gf::RenderTarget &target, const gf::RenderStates &states) {
-    gf::Coordinates coords(gf::Vector2i(450.f , 450.f));
+    gf::Coordinates coords(gf::Vector2i(500.f , 500.f));
 
     int numberPiece = ((int)ChessPiece::MAX - (int)ChessPiece::MIN + 1);
     gf::Texture &texture = (m_gameData.m_style == 0) ? m_backgroundTexture : m_backgroundTexture2;
@@ -55,7 +55,7 @@ void TableBoardEntity::render(gf::RenderTarget &target, const gf::RenderStates &
 
     gf::Text text(indication, m_font);
     text.setScale(0.5f);
-    text.setPosition(gf::Vector2f(coords.getRelativePoint({0.f, -0.4f})));
+    text.setPosition(gf::Vector2f(coords.getRelativePoint({0.f, -0.37f})));
     text.setAnchor(gf::Anchor::Center);
     (m_gameData.m_style==0) ? text.setColor(gf::Color::Black) : text.setColor(gf::Color::Gray(0.8f)) ;
     target.draw(text, states);
@@ -69,7 +69,7 @@ void TableBoardEntity::render(gf::RenderTarget &target, const gf::RenderStates &
         gf::Text text(letters[7 - incr], m_font);
         
         text.setScale(0.5f);
-        text.setPosition({coords.getRelativePoint({-0.315f + (i-1) * 0.086f, 0.4f})});
+        text.setPosition({coords.getRelativePoint({-0.305f + (i-1) * 0.084f, 0.37f})});
         
         if(m_gameData.m_style == 0) {
             text.setColor(gf::Color::fromRgba32(238,198,108));
@@ -81,7 +81,7 @@ void TableBoardEntity::render(gf::RenderTarget &target, const gf::RenderStates &
 
         // number   
         text.setString(std::to_string(incr+1));
-        text.setPosition(coords.getRelativePoint({-0.39f, -0.29f + (i-1) * 0.086f}));
+        text.setPosition(coords.getRelativePoint({-0.37f, -0.285f + (i-1) * 0.084f}));
         
         target.draw(text, states);
         (m_gameData.m_myColor == ChessColor::WHITE) ? incr-- : incr++; 
@@ -104,14 +104,14 @@ void TableBoardEntity::render(gf::RenderTarget &target, const gf::RenderStates &
         sprite.setTexture(texture, gf::RectF::fromPositionSize({ (1.f / numberPiece) * i, j }, { (1.f / numberPiece), 0.25f }));
         
         if(pi.getColor() == ChessColor::WHITE) {
-            sprite.setPosition(coords.getRelativePoint({-0.45f - 0.03f * (tabW[(int)i]%4), -0.24f + (i-1) * 0.082f + 0.03f * (tabW[(int)i]/4)}));
+            sprite.setPosition(coords.getRelativePoint({-0.43f - 0.027f * (tabW[(int)i]%4), -0.255f + (i-1) * 0.084f + 0.025f * (tabW[(int)i]/4)}));
             tabW[(int)i]+=1;
         }else {
-            sprite.setPosition(coords.getRelativePoint({0.38f + 0.03f * (tabB[(int)i]%4), -0.24f + (i-1) * 0.082f + 0.03f * (tabB[(int)i]/4)}));
+            sprite.setPosition(coords.getRelativePoint({0.35f + 0.027f * (tabB[(int)i]%4), -0.255f + (i-1) * 0.084f + 0.025f * (tabB[(int)i]/4)}));
             tabB[(int)i]+=1;
         }
         
-        sprite.setScale((1.f / 14.f));
+        sprite.setScale((1.f / 11.f));
         target.draw(sprite, states);
     } 
     
