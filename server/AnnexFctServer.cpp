@@ -74,22 +74,19 @@ void checkPromotionValidity (Plateau& plateau, PromotionRep& r) {
     Piece piece = plateau.state[r.pos.y * 8 + r.pos.x].piece;
     Case c = plateau.state[r.pos.y * 8 + r.pos.x];    
 
-    std::cout << c.position.y  << std::endl;
+    std::cout << c.position.y << std::endl;
     std::cout << (piece.getColor() == ChessColor::WHITE ? "white" : "black") << std::endl;
 
-    if (piece.getType() != ChessPiece::PAWN) {
-        gf::Log::debug("Promotion piece choosed is not a Pawn\n");
-	    promoValide = false;
-    }
-    
-    if (c.position.y == 0 && piece.getColor() == ChessColor::WHITE) {
-        gf::Log::debug("Promotion white Pawn Accepted\n");
-	    promoValide = true;
-    }
+    if (piece.getType() == ChessPiece::PAWN) {
+    	if (c.position.y == 0 && piece.getColor() == ChessColor::WHITE) {
+        	gf::Log::debug("Promotion white Pawn Accepted\n");
+		promoValide = true;
+    	}
 
-    if (c.position.y == 7 && piece.getColor() == ChessColor::BLACK) {
-        gf::Log::debug("Promotion Black Pawn Accepted\n");
-    	promoValide = true;
+    	if (c.position.y == 7 && piece.getColor() == ChessColor::BLACK) {
+       		gf::Log::debug("Promotion Black Pawn Accepted\n");
+    		promoValide = true;
+    	}
     }
 
     if (promoValide) {

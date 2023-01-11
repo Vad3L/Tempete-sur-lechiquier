@@ -483,21 +483,6 @@ void Plateau::tmp(std::vector<gf::Vector2i> a) {
 	}
 }
 
-/*
-		NONE = -1,
-	MIN = 0,
-	KING = MIN,
-	QUEEN = 1,
-	BISHOP = 2,
-	KNIGHT = 3,
-	ROOK = 4,
-	PAWN = 5,
-	CAMEL = 6 ,
-	PRINCE = 7,
-	MAX = PRINCE
-
-*/
-
 std::string Plateau::getFen () {
 	std::string fen = "";
 	std::vector<std::string> white = { "K", "Q", "B", "N", "R", "P", "C", "I" };
