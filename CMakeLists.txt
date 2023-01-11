@@ -24,6 +24,9 @@ add_executable(client
 	model/Piece.cpp
 	model/Plateau.cpp
 	model/Case.cpp
+	model/Card.cpp
+	model/Deck.cpp
+
 
 	client/GameHub.cpp
 	client/GameData.cpp
@@ -46,6 +49,8 @@ add_executable(server
 	server/server.cpp
 	model/Plateau.cpp
 	model/Case.cpp
+	model/Card.cpp
+	model/Deck.cpp
 	model/Piece.cpp
 	server/AnnexFctServer.cpp
 	)

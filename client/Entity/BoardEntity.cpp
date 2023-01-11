@@ -44,18 +44,12 @@ void BoardEntity::render(gf::RenderTarget &target, const gf::RenderStates &state
         
         // if case selected
         if(pos == m_gameData.m_plateau.coordCaseSelected) {
-            
             shape.setColor(gf::Color::fromRgba32(250, 190, 88, 200));
-        }else // if my king is in echec
-        if(c.piece.getType() == ChessPiece::KING && c.piece.getColor() == m_gameData.m_myColor && myTurn && m_gameData.m_plateau.playerInEchec) {
-            
+        } else if (c.piece.getType() == ChessPiece::KING && c.piece.getColor() == m_gameData.m_myColor && myTurn && m_gameData.m_plateau.playerInEchec) {
             shape.setColor(gf::Color::fromRgba32(255, 0, 0, 100));
-        }else // if adv king is in echec
-        if(c.piece.getType() == ChessPiece::KING && c.piece.getColor() != m_gameData.m_myColor && !myTurn && m_gameData.m_plateau.playerInEchec) {
-            
+        } else if(c.piece.getType() == ChessPiece::KING && c.piece.getColor() != m_gameData.m_myColor && !myTurn && m_gameData.m_plateau.playerInEchec) {
             shape.setColor(gf::Color::fromRgba32(255, 0, 0, 100));
-        }else if(m_gameData.m_plateau.lastCoup.size() >= 2 && (pos == m_gameData.m_plateau.lastCoup.back() || pos == m_gameData.m_plateau.lastCoup[m_gameData.m_plateau.lastCoup.size()-2])) {
-
+        } else if(m_gameData.m_plateau.lastCoup.size() >= 2 && (pos == m_gameData.m_plateau.lastCoup.back() || pos == m_gameData.m_plateau.lastCoup[m_gameData.m_plateau.lastCoup.size()-2])) {
             shape.setColor(gf::Color::fromRgba32(250, 190, 88, 200));
         }else {
 
@@ -87,7 +81,7 @@ void BoardEntity::render(gf::RenderTarget &target, const gf::RenderStates &state
    
             gf::Sprite sprite;
             float i = (float)c.piece.getType();
-            float j = (int)(c.piece.getColor())/4.f;
+            float j = ((int)c.piece.getColor())/4.f;
             
             if(c.piece.getType() == ChessPiece::PAWN && (y == 0 || y == 7) && myTurn) {
                 promotion = true;
@@ -103,14 +97,10 @@ void BoardEntity::render(gf::RenderTarget &target, const gf::RenderStates &state
                 
                 if (m_gameData.m_myColor == ChessColor::BLACK) {
                     sprite.setRotation(gf::Pi);
-                    
                 }
 
                 target.draw(sprite, states);
-                
             }     
-            
-                   
         }
         
         // draw move authorized

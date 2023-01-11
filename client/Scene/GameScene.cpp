@@ -64,8 +64,7 @@ void GameScene::doProcessEvent(gf::Event& event) {
         gf::Vector2i v = m_boardEntity.getTransformCaseSelected(m_boardView.getSize(), m_game.getRenderer().mapPixelToCoords(event.mouseButton.coords, m_boardView));
         Piece p = m_gameData.m_plateau.state[v.y * 8 + v.x].piece;
         if(m_promotion) {
-           
-                PromotionReq promo;
+                PromotionRep promo;
                 promo.pos.x = v.x;
                 promo.pos.y = (m_gameData.m_myColor == ChessColor::WHITE ? 0: 7);
 
@@ -78,8 +77,7 @@ void GameScene::doProcessEvent(gf::Event& event) {
             bool coupPionEnded = m_gameData.m_plateau.setMovement(m_gameData.m_myColor, v);
         
             if(coupPionEnded) {
-
-                CoupReq coup;
+                CoupRep coup;
                 coup.posStart.x = m_gameData.m_plateau.coordCaseSelected.x;
                 coup.posStart.y = m_gameData.m_plateau.coordCaseSelected.y;
                 coup.posEnd.x = v.x;
