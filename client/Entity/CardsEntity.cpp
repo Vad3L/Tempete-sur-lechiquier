@@ -24,7 +24,7 @@ void CardsEntity::update([[maybe_unused]] gf::Time time) {
 
 void CardsEntity::render(gf::RenderTarget &target, const gf::RenderStates &states){
 
-    gf::Coordinates coordsCard(gf::Vector2i(0.5f , 0.5f));
+    gf::Coordinates coordsCard(gf::Vector2f(0.5f , 0.5f));
     gf::RectangleShape card1({ 60.f , 100.f});
     card1.setColor(gf::Color::White);
     card1.setOutlineColor(gf::Color::Black);

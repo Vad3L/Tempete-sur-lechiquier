@@ -2,6 +2,7 @@
 #define ECHEC_H
 
 enum class ChessStatus {
+	NO_STARTED,
 	ON_GOING,
 	EQUALITY,
 	WIN, 

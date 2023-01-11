@@ -47,7 +47,6 @@ class GameScene : public gf::Scene {
         gf::Action m_texture1Action;
         gf::Action m_texture2Action;
 
-	    bool m_gameStart;
         bool m_promotion;
 
         gf::Packet m_packet;

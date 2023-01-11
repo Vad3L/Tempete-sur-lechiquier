@@ -13,7 +13,7 @@ GameScene::GameScene(GameHub& game)
 , m_texture1Action("Texture1")
 , m_texture2Action("Texture2")
 , m_boardEntity(game.resources, m_gameData)
-, m_CardsEntity(game.resources,m_gameData)
+, m_CardsEntity(game.resources, m_gameData)
 , m_tableBoardEntity(game.resources, m_gameData)
 , m_promotion(false)
 {
@@ -31,18 +31,15 @@ GameScene::GameScene(GameHub& game)
     m_texture2Action.addScancodeKeyControl(gf::Scancode::Num2);
   	addAction(m_texture2Action);
 
-	m_boardView = gf::ExtendView({ 0, 0 }, { 203, 203 });
-	m_boardView.setViewport(gf::RectF::fromPositionSize({ 0.3f, 0.3f}, { 0.4f, 0.4f }));
+	m_boardView = gf::ExtendView({ 0, 0 }, { 403, 403 });
+	m_boardView.setViewport(gf::RectF::fromPositionSize({ 0.1f, 0.1f}, { 0.5f, 0.5f }));
 
-    m_tableBoardView = gf::ExtendView({ 0, 0 }, { 200, 200 });
-	m_tableBoardView.setViewport(gf::RectF::fromPositionSize({ 0.2f, 0.2f}, { 0.6f, 0.6f }));
+    m_tableBoardView = gf::ExtendView({ 0, 0 }, { 500, 500 });
+	m_tableBoardView.setViewport(gf::RectF::fromPositionSize({ 0.f, 0.f}, { 0.7f, 0.7f }));
 
-    m_cardsView = gf::ExtendView({0,0},{200,200}); 
-    m_cardsView.setViewport(gf::RectF::fromPositionSize({ 0.f, 0.f}, { 1.f, 1.f }));
-    
+
 	m_views.addView(m_boardView);
     m_views.addView(m_tableBoardView);
-    m_views.addView(m_cardsView);
     
 	m_views.setInitialFramebufferSize({game.getRenderer().getSize()});
 }
@@ -61,13 +58,11 @@ void GameScene::doHandleActions([[maybe_unused]] gf::Window& window) {
     }
 
     if(m_texture1Action.isActive()) {
-        m_tableBoardEntity.m_numTexture = 0;
-        m_boardEntity.m_numTexture = 0;
+        m_gameData.m_style = 0;
     }
 
     if(m_texture2Action.isActive()) {
-        m_tableBoardEntity.m_numTexture = 1;
-        m_boardEntity.m_numTexture = 1;
+        m_gameData.m_style = 1;
     }
 }
 
@@ -75,7 +70,7 @@ void GameScene::doProcessEvent(gf::Event& event) {
     bool click = false;
 	m_views.processEvent(event);
     
-	if (!m_gameStart) { return; }
+	if (m_gameData.m_gameStatus == ChessStatus::NO_STARTED) { return; }
 
     switch (event.type) {
         case gf::EventType::MouseButtonPressed:
@@ -128,12 +123,8 @@ void GameScene::doRender(gf::RenderTarget& target, const gf::RenderStates &state
 
     target.setView(m_boardView);
     m_boardEntity.render(target, states);
-    //A MODIFIER
-    //target.setView(m_cardsView);
-   // m_CardsEntity.render(target,states);
-
-    target.setView(getHudView());
     
+    target.setView(getHudView());
 }
 
 void GameScene::doUpdate(gf::Time time) {
@@ -146,11 +137,13 @@ void GameScene::doUpdate(gf::Time time) {
 		auto repPartie = m_packet.as<PartieRep>();
 		if (repPartie.err == CodeRep::GAME_START) {
 			gf::Log::debug("Game start\n");
-            m_gameStart = true;
+            m_gameData.m_gameStatus =  ChessStatus::ON_GOING;
+            
 			return;
 		} else if (repPartie.err == CodeRep::GAME_END) {
             gf::Log::debug("Game end\n");
-            m_gameStart = false;
+            m_gameData.m_gameStatus =  ChessStatus::NO_STARTED;
+
             if(repPartie.status == ChessStatus::WIN && repPartie.coulPion != m_gameData.m_myColor) {
                 m_gameData.m_gameStatus = ChessStatus::LOOSE;    
             }else {
@@ -225,8 +218,7 @@ void GameScene::doUpdate(gf::Time time) {
 
 void GameScene::onActivityChange(bool active) {
     if(active){
-        m_gameStart = false;
-        m_gameData.m_gameStatus =  ChessStatus::ON_GOING;
+        m_gameData.reset();
         m_views.setInitialFramebufferSize(m_game.getRenderer().getSize());
 
         m_game.m_network.queue.wait(m_packet);
@@ -250,4 +242,32 @@ void GameScene::onActivityChange(bool active) {
             m_boardView.setRotation(gf::Pi);
         }
     }
+    m_gameData.m_plateau.bin.push_back(Piece (ChessColor::WHITE, ChessPiece::PAWN));
+    m_gameData.m_plateau.bin.push_back(Piece (ChessColor::WHITE, ChessPiece::PAWN));
+    m_gameData.m_plateau.bin.push_back(Piece (ChessColor::WHITE, ChessPiece::PAWN));
+    m_gameData.m_plateau.bin.push_back(Piece (ChessColor::WHITE, ChessPiece::PAWN));
+    m_gameData.m_plateau.bin.push_back(Piece (ChessColor::WHITE, ChessPiece::PAWN));
+    m_gameData.m_plateau.bin.push_back(Piece (ChessColor::WHITE, ChessPiece::PAWN));
+    m_gameData.m_plateau.bin.push_back(Piece (ChessColor::WHITE, ChessPiece::BISHOP));
+    m_gameData.m_plateau.bin.push_back(Piece (ChessColor::WHITE, ChessPiece::BISHOP));
+    m_gameData.m_plateau.bin.push_back(Piece (ChessColor::WHITE, ChessPiece::ROOK));
+    m_gameData.m_plateau.bin.push_back(Piece (ChessColor::WHITE, ChessPiece::ROOK));
+    m_gameData.m_plateau.bin.push_back(Piece (ChessColor::WHITE, ChessPiece::KNIGHT));
+    m_gameData.m_plateau.bin.push_back(Piece (ChessColor::WHITE, ChessPiece::KNIGHT));
+    m_gameData.m_plateau.bin.push_back(Piece (ChessColor::WHITE, ChessPiece::QUEEN));
+    m_gameData.m_plateau.bin.push_back(Piece (ChessColor::WHITE, ChessPiece::QUEEN));
+    m_gameData.m_plateau.bin.push_back(Piece (ChessColor::BLACK, ChessPiece::PAWN));
+    m_gameData.m_plateau.bin.push_back(Piece (ChessColor::BLACK, ChessPiece::PAWN));
+    m_gameData.m_plateau.bin.push_back(Piece (ChessColor::BLACK, ChessPiece::PAWN));
+    m_gameData.m_plateau.bin.push_back(Piece (ChessColor::BLACK, ChessPiece::PAWN));
+    m_gameData.m_plateau.bin.push_back(Piece (ChessColor::BLACK, ChessPiece::PAWN));
+    m_gameData.m_plateau.bin.push_back(Piece (ChessColor::BLACK, ChessPiece::PAWN));
+    m_gameData.m_plateau.bin.push_back(Piece (ChessColor::BLACK, ChessPiece::BISHOP));
+    m_gameData.m_plateau.bin.push_back(Piece (ChessColor::BLACK, ChessPiece::BISHOP));
+    m_gameData.m_plateau.bin.push_back(Piece (ChessColor::BLACK, ChessPiece::ROOK));
+    m_gameData.m_plateau.bin.push_back(Piece (ChessColor::BLACK, ChessPiece::ROOK));
+    m_gameData.m_plateau.bin.push_back(Piece (ChessColor::BLACK, ChessPiece::KNIGHT));
+    m_gameData.m_plateau.bin.push_back(Piece (ChessColor::BLACK, ChessPiece::KNIGHT));
+    m_gameData.m_plateau.bin.push_back(Piece (ChessColor::BLACK, ChessPiece::QUEEN));
+    m_gameData.m_plateau.bin.push_back(Piece (ChessColor::BLACK, ChessPiece::QUEEN));
 }

@@ -10,11 +10,13 @@
 
 struct GameData {
     GameData();
-    
+    void reset();
+
     ChessColor m_myColor;
     bool m_myTurn;
     Plateau m_plateau;
     ChessStatus m_gameStatus;
+    int m_style;
 };
 
 
