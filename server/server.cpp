@@ -43,7 +43,6 @@ int main (int argc, char* argv[]) {
 	        ChessStatus gameStatus = ChessStatus::ON_GOING;
             bool turnPlayer1 = true;
             bool promotion = false;
-            std::cout << "Je suis le serveur" << std::endl;
             while (true) {
                 plateau.moveAvailable.clear();
                 if (turnPlayer1) {

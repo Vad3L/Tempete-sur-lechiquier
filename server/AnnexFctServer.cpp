@@ -29,7 +29,7 @@ bool checkCoupValide(Plateau& plateau, gf::Vector2i coordStart, gf::Vector2i coo
     return it != moveAvailable.end(); 
 }
 
-int recvPacket (gf::TcpSocket& s, gf::Packet &p) {
+int receivingPacket (gf::TcpSocket& s, gf::Packet &p) {
 	if (!s) {
 		std::cerr << "client déconnecté";
 		return -1;
@@ -43,7 +43,7 @@ int recvPacket (gf::TcpSocket& s, gf::Packet &p) {
 	return 0;
 }
 
-int sendPacket (gf::TcpSocket& s, gf::Packet& p) {
+int sendingPacket (gf::TcpSocket& s, gf::Packet& p) {
 	if (!s) {
 		std::cerr << "client déconnecté";
 		return -1;
@@ -145,14 +145,14 @@ int performAction (Plateau& plateau, gf::TcpSocket& client1, gf::TcpSocket& clie
     if (!promotion) {
         if (turnPlayer1) {
 	        gf::Packet pack;
-            if(recvPacket(client1, pack) == -1) {
+            if(receivingPacket(client1, pack) == -1) {
                 return -1;
             }
             assert(pack.getType() == CoupRep::type);
             coup = pack.as<CoupRep>();
         } else {
             gf::Packet pack;
-	        if(recvPacket(client2, pack) == -1) {
+	        if(receivingPacket(client2, pack) == -1) {
                 return -1;
             }
             assert(pack.getType() == CoupRep::type);
@@ -177,10 +177,10 @@ int performAction (Plateau& plateau, gf::TcpSocket& client1, gf::TcpSocket& clie
         gf::Packet pack;
         pack.is(coup);
 
-        if(sendPacket(client1, pack) == -1){
+       	if(sendingPacket(client1, pack) == -1){
             return -1;
         }
-        if(sendPacket(client2, pack) == -1) {
+        if(sendingPacket(client2, pack) == -1) {
             return -1;
         }
     }
@@ -188,14 +188,14 @@ int performAction (Plateau& plateau, gf::TcpSocket& client1, gf::TcpSocket& clie
     if (promotion) {
         if(turnPlayer1) {
 	        gf::Packet pack;
-            if(recvPacket(client1, pack) == -1) {
+            if(receivingPacket(client1, pack) == -1) {
                 return -1;
             }
             assert(pack.getType() == PromotionRep::type);
             promo = pack.as<PromotionRep>();
         } else {
             gf::Packet pack;
-	        if(recvPacket(client2, pack) == -1) {
+	        if(receivingPacket(client2, pack) == -1) {
                 return -1;
             }
             assert(pack.getType() == PromotionRep::type);
@@ -216,10 +216,10 @@ int performAction (Plateau& plateau, gf::TcpSocket& client1, gf::TcpSocket& clie
         gf::Packet pack;
         pack.is(promo);
 
-        if(sendPacket(client1, pack) == -1){
+        if(sendingPacket(client1, pack) == -1){
             return -1;
         }
-        if(sendPacket(client2, pack) == -1) {
+        if(sendingPacket(client2, pack) == -1) {
             return -1;
         }
     }
