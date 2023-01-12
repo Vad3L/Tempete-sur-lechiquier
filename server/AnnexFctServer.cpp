@@ -29,31 +29,32 @@ bool checkCoupValide(Plateau& plateau, gf::Vector2i coordStart, gf::Vector2i coo
     return it != moveAvailable.end(); 
 }
 
-gf::Packet recvPacket (gf::TcpSocket& s) {
-	gf::Packet p;
+int recvPacket (gf::TcpSocket& s, gf::Packet &p) {
 	if (!s) {
 		std::cerr << "client déconnecté";
-		exit(1);
+		return -1;
 	}
 
 	if (gf::SocketStatus::Data != s.recvPacket(p)) {
-        	std::cerr << "erreur lors de la réception du packet qui contient le coup du client";
-                exit(1);
+        std::cerr << "erreur lors de la réception du packet qui contient le coup du client";
+        return -1;
 	}
 
-	return p;
+	return 0;
 }
 
-void sendPacket (gf::TcpSocket& s, gf::Packet& p) {
+int sendPacket (gf::TcpSocket& s, gf::Packet& p) {
 	if (!s) {
 		std::cerr << "client déconnecté";
-		exit(1);
+		return -1;
 	}
 
 	if (gf::SocketStatus::Data != s.sendPacket(p)) {
-            std::cerr<<"erreur lors de l'envoie du packet coupRep au client 1";
-            exit(-1);
-        }
+        std::cerr<<"erreur lors de l'envoie du packet coupRep au client";
+        return -1;
+    }
+
+    return 0;
 }
 
 void checkCoupPacketValidity (Plateau& plateau, CoupRep& r) {
@@ -117,12 +118,12 @@ void checkPromotionValidity (Plateau& plateau, PromotionRep& r) {
 
 bool performCoup (Plateau& plateau, CoupRep& coup) {
 	std::cout << "------COUP VALIDE------" << std::endl;
-        Piece p = plateau.state[coup.posStart.y * 8 + coup.posStart.x].piece;
-        p.isMoved = true;
-        plateau.movePieces(gf::Vector2i(coup.posStart.x, coup.posStart.y), gf::Vector2i(coup.posEnd.x, coup.posEnd.y));
-        plateau.prettyPrint();
-        plateau.lastCoup.push_back(gf::Vector2i(coup.posStart.x,coup.posStart.y));
-        plateau.lastCoup.push_back(gf::Vector2i(coup.posEnd.x,coup.posEnd.y));   
+    Piece p = plateau.state[coup.posStart.y * 8 + coup.posStart.x].piece;
+    p.isMoved = true;
+    plateau.movePieces(gf::Vector2i(coup.posStart.x, coup.posStart.y), gf::Vector2i(coup.posEnd.x, coup.posEnd.y));
+    plateau.prettyPrint();
+    plateau.lastCoup.push_back(gf::Vector2i(coup.posStart.x,coup.posStart.y));
+    plateau.lastCoup.push_back(gf::Vector2i(coup.posEnd.x,coup.posEnd.y));   
 
 	if (p.getType() == ChessPiece::PAWN && (coup.posEnd.y == 0 || coup.posEnd.y == 7)) {
 		return true;
@@ -132,22 +133,28 @@ bool performCoup (Plateau& plateau, CoupRep& coup) {
 
 void performPromotion (Plateau& plateau, PromotionRep& promo) {
 	std::cout << "------PROMO VALIDE------" << std::endl;
-        plateau.promotionPiece(gf::Vector2i(promo.pos.x, promo.pos.y), promo.choice);
-        plateau.allPositions.push_back(plateau.getFen());
-        std::cout << "position : " << plateau.allPositions.back() << std::endl;
+    plateau.promotionPiece(gf::Vector2i(promo.pos.x, promo.pos.y), promo.choice);
+    plateau.allPositions.push_back(plateau.getFen());
+    std::cout << "position : " << plateau.allPositions.back() << std::endl;
 }
 
 int performAction (Plateau& plateau, gf::TcpSocket& client1, gf::TcpSocket& client2, bool& turnPlayer1, bool &promotion) {
     CoupRep coup;
     PromotionRep promo;
-
+    
     if (!promotion) {
         if (turnPlayer1) {
-	    gf::Packet pack = recvPacket(client1);
+	        gf::Packet pack;
+            if(recvPacket(client1, pack) == -1) {
+                return -1;
+            }
             assert(pack.getType() == CoupRep::type);
             coup = pack.as<CoupRep>();
         } else {
-	    gf::Packet pack = recvPacket(client2);
+            gf::Packet pack;
+	        if(recvPacket(client2, pack) == -1) {
+                return -1;
+            }
             assert(pack.getType() == CoupRep::type);
             coup = pack.as<CoupRep>();
         }
@@ -155,41 +162,50 @@ int performAction (Plateau& plateau, gf::TcpSocket& client1, gf::TcpSocket& clie
         checkCoupPacketValidity(plateau, coup);
 
         if (coup.err == CodeRep::NONE) { // coup valide
-	    promotion = performCoup(plateau, coup);
+            promotion = performCoup(plateau, coup);
 
-	    if (!promotion) {
+            if (!promotion) {
                 plateau.allPositions.push_back(plateau.getFen());
                 std::cout << "position : " << plateau.allPositions.back() << std::endl;
                 turnPlayer1 = !(turnPlayer1);
             }
 
-            plateau.coordPrisePassant = gf::Vector2i(-1); 
         } else {
             return 2;
         }
         
-	gf::Packet pack;
+        gf::Packet pack;
         pack.is(coup);
 
-	sendPacket(client1, pack);
-	sendPacket(client2, pack);
+        if(sendPacket(client1, pack) == -1){
+            return -1;
+        }
+        if(sendPacket(client2, pack) == -1) {
+            return -1;
+        }
     }
 
     if (promotion) {
         if(turnPlayer1) {
-	    gf::Packet pack = recvPacket(client1);
+	        gf::Packet pack;
+            if(recvPacket(client1, pack) == -1) {
+                return -1;
+            }
             assert(pack.getType() == PromotionRep::type);
             promo = pack.as<PromotionRep>();
         } else {
-	    gf::Packet pack = recvPacket(client2);
+            gf::Packet pack;
+	        if(recvPacket(client2, pack) == -1) {
+                return -1;
+            }
             assert(pack.getType() == PromotionRep::type);
             promo = pack.as<PromotionRep>();  
         }
 
-	checkPromotionValidity(plateau, promo); 
+        checkPromotionValidity(plateau, promo); 
 
         if(promo.err == CodeRep::NONE) { // coup valide
-	    performPromotion(plateau, promo);
+            performPromotion(plateau, promo);
             promotion = false;
             turnPlayer1 = !(turnPlayer1);
         } else {
@@ -197,34 +213,44 @@ int performAction (Plateau& plateau, gf::TcpSocket& client1, gf::TcpSocket& clie
             return 2;
         }
 
-	gf::Packet pack;
+        gf::Packet pack;
         pack.is(promo);
 
-	sendPacket(client1, pack);
-	sendPacket(client2, pack);
+        if(sendPacket(client1, pack) == -1){
+            return -1;
+        }
+        if(sendPacket(client2, pack) == -1) {
+            return -1;
+        }
     }
 
     return 0;
 }
 
 int sendStartOrEnd (gf::TcpSocket& a, gf::TcpSocket& b, CodeRep code, ChessStatus s, ChessColor c) {
-	gf::Packet packet;
+	int ret = 0;
+    gf::Packet packet;
 	PartieRep rep;
 	rep.err = code;
-	rep.coulPion = c;
+	rep.colorPion = c;
 	rep.status = s;
 	packet.is(rep);
     
+    if (!a || !b) {
+		std::cerr << "client déconnecté";
+		ret = -1;
+	}
+    
 	if (gf::SocketStatus::Data != a.sendPacket(packet)) {
-		std::cerr << "erreur lors de l'envoie du packet au client 1";
-        	return -1;
+		std::cerr << "erreur lors de l'envoie du packet de debut ou fin au client 1\n";
+        ret = -1;
 	}
-
+    
 	if (gf::SocketStatus::Data != b.sendPacket(packet)) {
-		std::cerr << "erreur lors de l'envoi du packet au client 2";
-        	return -1;
+		std::cerr << "erreur lors de l'envoi du packet de debut fin au client 2\n";
+        ret = -1;
 	}
 
-    	return 0;
+    return 0;
 }
 

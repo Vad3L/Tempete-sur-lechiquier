@@ -10,9 +10,9 @@
 using namespace gf::literals;
 
 
-/* Types d'erreur */
 typedef enum {
-    NONE,     /* Validation de la requete */
+    NONE, 
+    COLOR,    
     COUP_NO_VALIDE,      
     GAME_START,
     GAME_END
@@ -25,13 +25,13 @@ using Pos = gf::Vector2i;
 struct PartieRep {
     static constexpr gf::Id type = "PartieRep"_id;
     CodeRep err;                   /* Code de retour */
-    ChessColor coulPion;
+    ChessColor colorPion;
     ChessStatus status;
 };
 
 template<typename Archive>
 Archive operator|(Archive& ar, PartieRep& data) {
-    return ar | data.err | data.coulPion | data.status;
+    return ar | data.err | data.colorPion | data.status;
 }
 
 /***********************

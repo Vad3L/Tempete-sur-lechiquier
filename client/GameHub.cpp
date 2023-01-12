@@ -8,6 +8,7 @@ GameHub::GameHub()
 , play(*this)
 , game(*this)
 , rules(*this)
+, quit(*this)
 {
 pushScene(start);
 }

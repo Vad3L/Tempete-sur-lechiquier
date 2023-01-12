@@ -9,6 +9,7 @@
 #include "Scene/PlaySelectScene.hpp"
 #include "Scene/GameScene.hpp"
 #include "Scene/RulesScene.hpp"
+#include "Scene/QuitScene.hpp"
 
 #include "Network.hpp"
 
@@ -21,7 +22,8 @@ struct GameHub : gf::GameManager {
     PlaySelectScene play;
     GameScene game;
     RulesScene rules;
-
+    QuitScene quit;
+    
     Network m_network;
     
 };

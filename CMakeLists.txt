@@ -27,7 +27,6 @@ add_executable(client
 	model/Card.cpp
 	model/Deck.cpp
 
-
 	client/GameHub.cpp
 	client/GameData.cpp
 
@@ -36,6 +35,7 @@ add_executable(client
 	client/Scene/PlaySelectScene.cpp
 	client/Scene/GameScene.cpp
 	client/Scene/RulesScene.cpp
+	client/Scene/QuitScene.cpp
 
 	client/Entity/BoardEntity.cpp
 	client/Entity/TableBoardEntity.cpp

@@ -11,7 +11,7 @@
 #include <gf/Color.h>
 
 #include "../../model/Plateau.hpp"
-#include "../../protocole/protocole.h"
+#include "../../protocole/protocole.hpp"
 
 #include "../Entity/BoardEntity.hpp"
 #include "../Entity/TableBoardEntity.hpp"

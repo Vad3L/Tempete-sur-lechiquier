@@ -15,6 +15,7 @@ class Network {
 
         bool isConnected();
         void connect(const std::string& hostname, const std::string& port);
+        void deconnect();
 
         template<typename T>
         void send(const T& data) {
@@ -23,7 +24,7 @@ class Network {
             m_socket.sendPacket(packet);
         }
 
-        gf::Queue<gf::Packet> queue;
+        gf::Queue<gf::Packet> m_queue;
 
     private:
         gf::TcpSocket m_socket;

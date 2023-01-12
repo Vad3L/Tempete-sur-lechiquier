@@ -50,6 +50,9 @@ void TableBoardEntity::render(gf::RenderTarget &target, const gf::RenderStates &
         case ChessStatus::NO_STARTED:
             indication = "Game no started";
             break;
+        case ChessStatus::SURRENDER:
+            indication = "You win by surrender";
+            break;
     }
     
 

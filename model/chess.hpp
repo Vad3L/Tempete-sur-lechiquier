@@ -7,6 +7,7 @@ enum class ChessStatus {
 	EQUALITY,
 	WIN, 
 	LOOSE,
+	SURRENDER,
 };
 
 enum class ChessPiece {

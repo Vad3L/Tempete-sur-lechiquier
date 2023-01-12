@@ -22,6 +22,11 @@ void Network::connect(const std::string& hostname, const std::string& port) {
     thread.detach();
 }
 
+void::Network::deconnect() {
+    m_socket.~TcpSocket();
+    m_socket = gf::TcpSocket();
+    m_queue.clear();
+}
 
 void Network::run(std::string hostname, std::string port) {
     gf::TcpSocket socket(hostname, port);
@@ -41,7 +46,7 @@ void Network::run(std::string hostname, std::string port) {
 
         switch (m_socket.recvPacket(packet)) {
         case gf::SocketStatus::Data:
-            queue.push(std::move(packet));
+            m_queue.push(std::move(packet));
             break;
         case gf::SocketStatus::Error:
             gf::Log::error("Error while receiving a packet from server\n");

@@ -50,7 +50,8 @@ void GameScene::doHandleActions([[maybe_unused]] gf::Window& window) {
     }
 
     if (m_quitAction.isActive()) {
-        m_game.replaceScene(m_game.play);
+        m_game.pushScene(m_game.quit);
+        pause();
     }
 
     if (m_fullscreenAction.isActive()) {
@@ -70,8 +71,8 @@ void GameScene::doProcessEvent(gf::Event& event) {
     bool click = false;
 	m_views.processEvent(event);
     
-	if (m_gameData.m_gameStatus == ChessStatus::NO_STARTED) { return; }
-    gf::Log::debug("laaaaaaaaaaa");
+	if (m_gameData.m_gameStatus != ChessStatus::ON_GOING) { return; }
+    
     switch (event.type) {
         case gf::EventType::MouseButtonPressed:
         click = true;
@@ -97,7 +98,7 @@ void GameScene::doProcessEvent(gf::Event& event) {
             m_game.m_network.send(promo);
            
         }else {
-            std::cout << "je suis dans le else\n";
+
             bool coupPionEnded = m_gameData.m_plateau.setMovement(m_gameData.m_myColor, v);
         
             if(coupPionEnded) {
@@ -129,28 +130,45 @@ void GameScene::doRender(gf::RenderTarget& target, const gf::RenderStates &state
 
 void GameScene::doUpdate(gf::Time time) {
     
-    if(!m_game.m_network.queue.poll(m_packet)) {
+    if(!m_game.m_network.m_queue.poll(m_packet)) {
 		return;
 	}
 	
 	if (m_packet.getType() == PartieRep::type) {
-		auto repPartie = m_packet.as<PartieRep>();
+		std::cout << "recu serveur partueeeeeeeeeeeeeeeee\n";
+        auto repPartie = m_packet.as<PartieRep>();
 		if (repPartie.err == CodeRep::GAME_START) {
 			gf::Log::debug("Game start\n");
-            m_gameData.m_gameStatus =  ChessStatus::ON_GOING;
+            m_gameData.m_gameStatus = ChessStatus::ON_GOING;
             
 			return;
 		} else if (repPartie.err == CodeRep::GAME_END) {
             gf::Log::debug("Game end\n");
-            m_gameData.m_gameStatus =  ChessStatus::NO_STARTED;
 
-            if(repPartie.status == ChessStatus::WIN && repPartie.coulPion != m_gameData.m_myColor) {
+            if(repPartie.status == ChessStatus::WIN && repPartie.colorPion != m_gameData.m_myColor) {
                 m_gameData.m_gameStatus = ChessStatus::LOOSE;    
             }else {
-			        m_gameData.m_gameStatus = repPartie.status;
-                }
-			return;
-		}
+                m_gameData.m_gameStatus = repPartie.status;
+            }
+
+		} else if(repPartie.err == CodeRep::COLOR) {
+            auto repPartie = m_packet.as<PartieRep>();
+
+            m_gameData.m_myColor = repPartie.colorPion;
+
+            if (m_gameData.m_myColor == ChessColor::WHITE) {
+                m_gameData.m_myTurn = true;
+            }
+            else {
+                m_gameData.m_myTurn = false;
+            }
+
+            std::cout << "Vous jouez la couleur : " << (int)m_gameData.m_myColor << std::endl;
+
+            if(m_gameData.m_myColor == ChessColor::BLACK) {
+                m_boardView.setRotation(gf::Pi);
+            }
+        }
 	}     
 
     if(m_packet.getType() == CoupRep::type) {
@@ -217,57 +235,14 @@ void GameScene::doUpdate(gf::Time time) {
 }
 
 void GameScene::onActivityChange(bool active) {
-    if(active){
-        m_gameData.reset();
+    gf::Log::debug("en pause = %d et active = %d\n",isPaused(), isActive());
+    if(active && !isPaused()){
+        gf::Log::debug("scene game active\n");
         m_views.setInitialFramebufferSize(m_game.getRenderer().getSize());
-
-        m_game.m_network.queue.wait(m_packet);
-        assert(m_packet.getType() == PartieRep::type);
-
-        auto repPartie = m_packet.as<PartieRep>();
-        assert(repPartie.err == CodeRep::NONE);
-
-        m_gameData.m_myColor = repPartie.coulPion;
-
-        if (m_gameData.m_myColor == ChessColor::WHITE) {
-            m_gameData.m_myTurn = true;
-        }
-        else {
-            m_gameData.m_myTurn = false;
-        }
-
-        std::cout << "Vous jouez la couleur : " << (int)m_gameData.m_myColor << std::endl;
-
-        if(m_gameData.m_myColor == ChessColor::BLACK) {
-            m_boardView.setRotation(gf::Pi);
-        }
+    }else if(!active && isPaused()){
+        gf::Log::debug("scene game desactive\n");
+        m_game.m_network.deconnect();
+        m_boardView.setRotation(0);
+        m_gameData.reset();
     }
-    /*m_gameData.m_plateau.bin.push_back(Piece (ChessColor::WHITE, ChessPiece::PAWN));
-    m_gameData.m_plateau.bin.push_back(Piece (ChessColor::WHITE, ChessPiece::PAWN));
-    m_gameData.m_plateau.bin.push_back(Piece (ChessColor::WHITE, ChessPiece::PAWN));
-    m_gameData.m_plateau.bin.push_back(Piece (ChessColor::WHITE, ChessPiece::PAWN));
-    m_gameData.m_plateau.bin.push_back(Piece (ChessColor::WHITE, ChessPiece::PAWN));
-    m_gameData.m_plateau.bin.push_back(Piece (ChessColor::WHITE, ChessPiece::PAWN));
-    m_gameData.m_plateau.bin.push_back(Piece (ChessColor::WHITE, ChessPiece::BISHOP));
-    m_gameData.m_plateau.bin.push_back(Piece (ChessColor::WHITE, ChessPiece::BISHOP));
-    m_gameData.m_plateau.bin.push_back(Piece (ChessColor::WHITE, ChessPiece::ROOK));
-    m_gameData.m_plateau.bin.push_back(Piece (ChessColor::WHITE, ChessPiece::ROOK));
-    m_gameData.m_plateau.bin.push_back(Piece (ChessColor::WHITE, ChessPiece::KNIGHT));
-    m_gameData.m_plateau.bin.push_back(Piece (ChessColor::WHITE, ChessPiece::KNIGHT));
-    m_gameData.m_plateau.bin.push_back(Piece (ChessColor::WHITE, ChessPiece::QUEEN));
-    m_gameData.m_plateau.bin.push_back(Piece (ChessColor::WHITE, ChessPiece::QUEEN));
-    m_gameData.m_plateau.bin.push_back(Piece (ChessColor::BLACK, ChessPiece::PAWN));
-    m_gameData.m_plateau.bin.push_back(Piece (ChessColor::BLACK, ChessPiece::PAWN));
-    m_gameData.m_plateau.bin.push_back(Piece (ChessColor::BLACK, ChessPiece::PAWN));
-    m_gameData.m_plateau.bin.push_back(Piece (ChessColor::BLACK, ChessPiece::PAWN));
-    m_gameData.m_plateau.bin.push_back(Piece (ChessColor::BLACK, ChessPiece::PAWN));
-    m_gameData.m_plateau.bin.push_back(Piece (ChessColor::BLACK, ChessPiece::PAWN));
-    m_gameData.m_plateau.bin.push_back(Piece (ChessColor::BLACK, ChessPiece::BISHOP));
-    m_gameData.m_plateau.bin.push_back(Piece (ChessColor::BLACK, ChessPiece::BISHOP));
-    m_gameData.m_plateau.bin.push_back(Piece (ChessColor::BLACK, ChessPiece::ROOK));
-    m_gameData.m_plateau.bin.push_back(Piece (ChessColor::BLACK, ChessPiece::ROOK));
-    m_gameData.m_plateau.bin.push_back(Piece (ChessColor::BLACK, ChessPiece::KNIGHT));
-    m_gameData.m_plateau.bin.push_back(Piece (ChessColor::BLACK, ChessPiece::KNIGHT));
-    m_gameData.m_plateau.bin.push_back(Piece (ChessColor::BLACK, ChessPiece::QUEEN));
-    m_gameData.m_plateau.bin.push_back(Piece (ChessColor::BLACK, ChessPiece::QUEEN));*/
 }

@@ -20,7 +20,6 @@ void GameData::reset() {
     m_myTurn = false;
     m_plateau = Plateau();
     m_style = 0;
-    m_gameStatus = ChessStatus::NO_STARTED; 
-    
+    m_gameStatus = ChessStatus::NO_STARTED;   
 }
 
