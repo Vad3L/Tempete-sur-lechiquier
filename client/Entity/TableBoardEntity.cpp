@@ -1,14 +1,5 @@
 #include "TableBoardEntity.hpp"
 
-#include<iostream>
-
-#include <gf/Coordinates.h>
-#include <gf/Log.h>
-#include <gf/RenderTarget.h>
-#include <gf/Sprite.h>
-#include <gf/Text.h>
-#include <gf/Shapes.h>
-
 TableBoardEntity::TableBoardEntity(gf::ResourceManager& resources, GameData &gameData)
 : m_font(resources.getFont("fonts/DejaVuSans.ttf"))
 , m_backgroundTexture(resources.getTexture("images/ChessSheet.png"))
@@ -35,23 +26,23 @@ void TableBoardEntity::render(gf::RenderTarget &target, const gf::RenderStates &
     target.draw(tableCloth,states);
 
     
-    std::string indication = (m_gameData.m_myTurn) ? std::string("It's your turn !") : std::string("It's opponent's turn !");
+    std::string indication = (m_gameData.m_myTurn) ? std::string("À vous de jouer !") : std::string("Au tour de l'adversaire");
     
     switch (m_gameData.m_gameStatus) {
         case ChessStatus::WIN:
-            indication = "You WIN";
+            indication = "Vous avez GAGNEZ";
             break;
         case ChessStatus::LOOSE:
-            indication = "You LOOSE";
+            indication = "Vous avez PERDU";
             break;
         case ChessStatus::EQUALITY:
-            indication = "There is equality";
+            indication = "Il y a égalité";
             break;
         case ChessStatus::NO_STARTED:
-            indication = "Game no started";
+            indication = "Le jeu n'a pas commencé";
             break;
         case ChessStatus::SURRENDER:
-            indication = "You win by surrender";
+            indication = "Vous gagnez Abandon";
             break;
     }
     

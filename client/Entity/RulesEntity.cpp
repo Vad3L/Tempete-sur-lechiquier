@@ -1,13 +1,6 @@
 #include "RulesEntity.hpp"
 
-#include <gf/Coordinates.h>
-#include <gf/Log.h>
-#include <gf/RenderTarget.h>
-#include <gf/Sprite.h>
-#include <gf/Text.h>
-#include <gf/Shapes.h>
 
-#include <iostream>
 
 RulesEntity::RulesEntity(gf::ResourceManager& resources)
 : m_font(resources.getFont("fonts/Trajan-Color-Concept.otf"))
@@ -44,7 +37,7 @@ void RulesEntity::render(gf::RenderTarget &target, const gf::RenderStates &state
     paper.setPosition(coords.getRelativePoint({0.5f, 0.4f}));
     paper.setColor(gf::Color::fromRgba32(100,74,75,150));
 
-    gf::Text gameRules("Game rules", m_rulesFont, height/75+width/20);    
+    gf::Text gameRules("Regles du jeu", m_rulesFont, height/75+width/20);    
     gameRules.setColor(gf::Color::Yellow);
     gameRules.setPosition(coords.getRelativePoint({ 0.5f, 0.1f}));
     gameRules.setAnchor(gf::Anchor::TopCenter);
@@ -52,10 +45,10 @@ void RulesEntity::render(gf::RenderTarget &target, const gf::RenderStates &state
     gameRules.setOutlineThickness(titleCharacterSize/4.f);
 
     std::string rules[4];
-    rules[0] = "The play of a card cannot and does not lead directly to a checkmate or king capture situation, nor does it prevent a king from escaping from a check situation. This rule prevails over any other. If a played card contradicts this rule, it is void, but still considered played, and therefore discarded.";
-    rules[1] = "It is forbidden to use more than one card per move. A player can therefore use one card, and only one, during his opponent's move.";
-    rules[2] = "The effect of a card can complete, replace, or modify the move played. Some effects are only superimposed on this move. This is specified on each card. A move can be played without any cards being used.";
-    rules[3] = "Some cards may become ineffective due to the disappearance of the pieces involved.";
+    rules[0] = "Le jeu d'une carte ne peut pas conduire et ne conduit pas directement à une situation d'échec et mat ou de capture du roi, pas plus qu'il n'empêche un roi de s'échapper d'une situation d'échec. Cette règle prévaut sur toute autre. Si une carte jouée contredit cette règle, elle est nulle, mais toujours considérée comme jouée, et donc défaussée.";
+    rules[1] = "Il est interdit d'utiliser plus d'une carte par coup. Un joueur peut donc utiliser une carte, et une seule, lors du déplacement de son adversaire.";
+    rules[2] = "L'effet d'une carte peut compléter, remplacer ou modifier le coup joué. Certains effets ne sont que superposés à ce coup. Ceci est précisé sur chaque carte. Un coup peut être joué sans qu'aucune carte ne soit utilisée.";
+    rules[3] = "Certaines cartes peuvent devenir inefficaces en raison de la disparition des pièces concernées.";
 
     gf::Text paragraph;
     paragraph.setColor(gf::Color::fromRgba32(200-m_index*40,100+m_index*30,200-m_index*40,255-30*m_index));

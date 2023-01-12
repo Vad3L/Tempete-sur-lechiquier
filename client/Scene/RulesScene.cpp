@@ -1,7 +1,4 @@
 #include "RulesScene.hpp"
-
-#include <gf/Log.h>
-#include <gf/Coordinates.h>
 #include "../GameHub.hpp"
 
 

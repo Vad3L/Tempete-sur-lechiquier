@@ -1,4 +1,5 @@
 #include "Plateau.hpp"
+
 Plateau::Plateau()
 : coordCaseSelected(-1, -1)
 , coordPrisePassant(-1, -1)
@@ -61,10 +62,11 @@ std::string Plateau::getSymbol(ChessColor c, ChessPiece p) {
 }
 
 void Plateau::prettyPrint() {
+	gf::Log::debug("prettyPrint\n");
 	for  (Case &c : this->state) {
 		std::cout << " " << getSymbol(c.piece.getColor(), c.piece.getType());
 		if(c.position.x == 7) {
-			std::cout << "\n";
+			std::cout << ("\n");
 		}
 	}
 }
@@ -205,7 +207,7 @@ std::vector<gf::Vector2i> Plateau::filterMoveAuthorized_Pawn(gf::Vector2i coordC
 	if(coordCaseStart.x-1 >= 0) {
 		Piece pL = state[(coordCaseStart.y-add) * 8 + coordCaseStart.x-1].piece;
 		if(pL.getType() != ChessPiece::NONE && pL.getColor() != piece.getColor()) {
-			std::cout <<"pion peut manger diago gauche"<<std::endl;
+			gf::Log::debug("pion peut manger diago gauche\n");
 			v.push_back(gf::Vector2i(coordCaseStart.x-1, coordCaseStart.y-add));
 		}
 	}
@@ -214,7 +216,7 @@ std::vector<gf::Vector2i> Plateau::filterMoveAuthorized_Pawn(gf::Vector2i coordC
 		Piece pR = state[(coordCaseStart.y-add) * 8 + coordCaseStart.x+1].piece;
 		if(pR.getType() != ChessPiece::NONE && pR.getColor() != piece.getColor()) {
 			v.push_back(gf::Vector2i(coordCaseStart.x+1, coordCaseStart.y-add));
-			std::cout <<"pion peut manger diago droite"<<std::endl;
+			gf::Log::debug("pion peut manger diago droite\n");
 		}
 	}		
 
@@ -226,7 +228,7 @@ std::vector<gf::Vector2i> Plateau::filterMoveAuthorized_Pawn(gf::Vector2i coordC
 			if(coordCaseStart.x-1 >= 0 && lastCoup.back().x == coordCaseStart.x-1) {
 				Piece pL = state[coordCaseStart.y * 8 + coordCaseStart.x-1].piece;
 				if(pL.getType()==ChessPiece::PAWN && pL.getColor() != piece.getColor()) {
-					std::cout << "prise en passant a gauche possible" << std::endl;
+					gf::Log::debug("prise en passant a gauche possible\n");
 					v.push_back(gf::Vector2i(coordCaseStart.x-1, coordCaseStart.y-add));
 					coordPrisePassant = gf::Vector2i(coordCaseStart.x-1, coordCaseStart.y);
 				}
@@ -235,7 +237,7 @@ std::vector<gf::Vector2i> Plateau::filterMoveAuthorized_Pawn(gf::Vector2i coordC
 			if(coordCaseStart.x+1 < 8 && lastCoup.back().x == coordCaseStart.x+1) {
 				Piece pR = state[coordCaseStart.y * 8 + coordCaseStart.x+1].piece;
 				if(pR.getType()==ChessPiece::PAWN && pR.getColor() != piece.getColor()) {
-					std::cout << "prise en passant a droite possible" << std::endl;
+					gf::Log::debug("prise en passant a droite possible\n");
 					v.push_back(gf::Vector2i(coordCaseStart.x+1, coordCaseStart.y-add));
 					coordPrisePassant = gf::Vector2i(coordCaseStart.x+1, coordCaseStart.y);
 				}
@@ -295,7 +297,7 @@ std::vector<gf::Vector2i> Plateau::addMoveBigSmallCastling(gf::Vector2i coordCas
 	Piece rookG = state[coordCaseStart.y * 8 + coordCaseStart.x-4].piece;
 	
 	if(p.isMoved) {
-		std::cout << "le roi a bouge" << std::endl;
+		gf::Log::debug("le roi a bouge\n");
 		return mAvailable;
 	}
 
@@ -320,7 +322,7 @@ std::vector<gf::Vector2i> Plateau::addMoveBigSmallCastling(gf::Vector2i coordCas
 				}
 
 				if(!inEchec) {
-					std::cout << "petit roque possible" << std::endl;
+					gf::Log::debug("petit roque possible\n");
 					mAvailable.push_back(gf::Vector2i(coordCaseStart.x+2, coordCaseStart.y));
 				}
 			}
@@ -352,7 +354,7 @@ std::vector<gf::Vector2i> Plateau::addMoveBigSmallCastling(gf::Vector2i coordCas
 
 
 				if(!inEchec) {
-					std::cout << "grand roque possible" << std::endl;
+					gf::Log::debug("grand roque possible\n");
 					mAvailable.push_back(gf::Vector2i(coordCaseStart.x-2, coordCaseStart.y));
 				}
 			}
@@ -384,10 +386,10 @@ void Plateau::movePieces(gf::Vector2i coord1, gf::Vector2i coord2) {
 		
 		std::swap(state[coord1.y * 8 + coord1.x].piece, state[coord2.y * 8 + coord2.x].piece);
 		if(coord1.x - coord2.x < 0) {
-			std::cout << "on fait un petit roque" << std::endl;
+			gf::Log::debug("on fait un petit roque\n");
 			std::swap(state[coord1.y * 8 + 7].piece, state[coord2.y * 8 + coord2.x-1].piece);
 		}else {
-			std::cout << "on fait un grand roque" << std::endl;
+			gf::Log::debug("on fait un grand roque\n");
 			std::swap(state[coord1.y * 8].piece, state[coord2.y * 8 + coord2.x+1].piece);
 		}
 		return;
@@ -403,7 +405,7 @@ void Plateau::movePieces(gf::Vector2i coord1, gf::Vector2i coord2) {
 
 	// prise en passant
 	if(p1.getType() == ChessPiece::PAWN && p2.getType() == ChessPiece::NONE && coord1.x != coord2.x) {
-		std::cout << "on fait une prise en passant" << std::endl;
+		gf::Log::debug("on fait une prise en passant\n");
 		assert(state[coord1.y*8+coord2.x].piece.getType()==ChessPiece::PAWN);
 		bin.push_back(state[coord1.y*8+coord2.x].piece);
 		state[coord1.y*8+coord2.x].piece = Piece(ChessColor::NONE, ChessPiece::NONE);
@@ -428,7 +430,7 @@ void Plateau::deMovePieces(gf::Vector2i coord1, gf::Vector2i coord2, bool inBin)
 	std::swap(state[coord1.y * 8 + coord1.x].piece, state[coord2.y * 8 + coord2.x].piece);
 	
 	if(p2.getType() == ChessPiece::PAWN  && p1.getType() == ChessPiece::NONE && inBin && coord1.x != coord2.x && coordPrisePassant.y == coord1.y && coordPrisePassant.x == coord2.x) {
-		std::cout << "on demove une prise en passant" << std::endl;
+		gf::Log::debug("on demove une prise en passant\n");
 		Piece pBin = bin.back();
 		assert(pBin.getType() == ChessPiece::PAWN);
 		state[coord1.y*8+coord2.x].piece = pBin;
@@ -530,7 +532,7 @@ ChessStatus Plateau::isGameOver (ChessColor col) {
 			moves = c.piece.getMoves(c.position);
 			moves = filterMoveAuthorized(c.position, moves); 
 			if (!moves.empty()) {
-				//std::cout << "has move\n";
+				//gf::Log::debug("has move\n";
 				has_move = true;
 				break;
 			}
@@ -557,12 +559,12 @@ ChessStatus Plateau::isGameOver (ChessColor col) {
 	}
 
 	for (size_t i = 0; i < allPositions.size(); i++) {
-		std::cout << "-" <<allPositions[i] << std::endl;
+		gf::Log::debug("-%s",allPositions[i]);
 		size_t count = 0;
 		for (size_t j = i; j < allPositions.size(); j++) {
 			
 			if (allPositions[i] == allPositions[j] && i != j) {
-				std::cout << "equalité entre le tour " << i << " et le tour " << j << std::endl;
+				gf::Log::debug("equalité entre le tour %i et le tour %i\n",i,j);
 				count++;
 			}
 		}
@@ -579,6 +581,6 @@ void Plateau::promotionPiece(gf::Vector2i coord, ChessPiece p) {
 	assert(coord.y >= 0);
 	assert(coord.y < 8);
 	ChessColor c = state[coord.y * 8 + coord.x].piece.getColor();
-	std::cout << "choix " << (int)p << "\n";
+	gf::Log::debug("choix %i\n", (int)p);
 	state[coord.y * 8 + coord.x].piece = Piece(c, p);
 }

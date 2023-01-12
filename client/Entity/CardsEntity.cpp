@@ -1,13 +1,6 @@
 #include "CardsEntity.hpp"
 
-#include <gf/Coordinates.h>
-#include <gf/Log.h>
-#include <gf/RenderTarget.h>
-#include <gf/Sprite.h>
-#include <gf/Text.h>
-#include <gf/Shapes.h>
 
-#include <iostream>
 
 
 CardsEntity::CardsEntity(gf::ResourceManager& resources,GameData &gameData)
@@ -36,7 +29,7 @@ void CardsEntity::render(gf::RenderTarget &target, const gf::RenderStates &state
     gf::Coordinates coords(target);
     unsigned instructionsCharacterSize = coords.getRelativeCharacterSize(0.01f);
 
-    gf::Text cardName("Camel", m_font, instructionsCharacterSize);
+    gf::Text cardName("Chameau", m_font, instructionsCharacterSize);
     cardName.setColor(gf::Color::White);
     cardName.setOutlineColor(gf::Color::White);
     cardName.setPosition(coordsCard.getRelativePoint({ 0.5f, 0.1f }));

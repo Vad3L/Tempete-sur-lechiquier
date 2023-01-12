@@ -5,6 +5,10 @@
 #include <gf/Font.h>
 #include <gf/ResourceManager.h>
 #include <gf/Text.h>
+#include <gf/Coordinates.h>
+#include <gf/Log.h>
+#include <gf/RenderTarget.h>
+#include <gf/Sprite.h>
 
 class PlayTitleEntity : public gf::Entity {
     public:

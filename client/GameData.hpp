@@ -1,7 +1,11 @@
 #ifndef GAME_DATA_H
 #define GAME_DATA_H
 
-#include "../model/chess.hpp"
+#include <gf/Log.h>
+#include <gf/Direction.h>
+
+#include <cassert>
+#include "../model/Chess.hpp"
 #include "../model/Plateau.hpp"
 
 #define GAME_DATADIR "../data/"

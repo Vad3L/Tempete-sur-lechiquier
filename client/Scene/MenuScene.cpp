@@ -1,9 +1,4 @@
 #include "MenuScene.hpp"
-
-#include <gf/Coordinates.h>
-#include <gf/Log.h>
-#include <gf/Sprite.h>
-
 #include "../GameHub.hpp"
 
 
@@ -112,7 +107,7 @@ void MenuScene::doRender(gf::RenderTarget& target, const gf::RenderStates &state
 
 	unsigned titleCharacterSize = coords.getRelativeCharacterSize(0.1f);
 
-	gf::Text title("Storm on Chess", m_game.resources.getFont("../data/fonts/Trajan-Color-Concept.otf"), titleCharacterSize);
+	gf::Text title("Tempete sur l echiquier", m_game.resources.getFont("../data/fonts/Trajan-Color-Concept.otf"), titleCharacterSize);
 	title.setColor(gf::Color::White);
 	title.setPosition(coords.getRelativePoint({ 0.5f, 0.1f }));
 	title.setAnchor(gf::Anchor::TopCenter);

@@ -4,7 +4,13 @@
 #include <gf/Entity.h>
 #include <gf/Font.h>
 #include <gf/ResourceManager.h>
+#include <gf/Coordinates.h>
+#include <gf/Log.h>
+#include <gf/RenderTarget.h>
+#include <gf/Sprite.h>
+#include <gf/Text.h>
 
+#include <iostream>
 
 
 class TitleEntity : public gf::Entity {

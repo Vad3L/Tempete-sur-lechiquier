@@ -1,12 +1,20 @@
 #ifndef TABLE_BOARD_ENTITY_H
 #define TABLE_BOARD_ENTITY_H
 
+#include<iostream>
+
 #include <gf/Entity.h>
 #include <gf/Font.h>
 #include <gf/ResourceManager.h>
+#include <gf/Coordinates.h>
+#include <gf/Log.h>
+#include <gf/RenderTarget.h>
+#include <gf/Sprite.h>
+#include <gf/Text.h>
+#include <gf/Shapes.h>
 
 #include "../../model/Plateau.hpp"
-#include "../../model/chess.hpp"
+#include "../../model/Chess.hpp"
 #include "../GameData.hpp"
 
 struct GameDate;

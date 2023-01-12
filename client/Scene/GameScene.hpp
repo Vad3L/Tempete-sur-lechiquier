@@ -9,9 +9,13 @@
 #include <gf/Text.h>
 #include <gf/Sleep.h>
 #include <gf/Color.h>
+#include <gf/Log.h>
+
+#include <iostream>
+
 
 #include "../../model/Plateau.hpp"
-#include "../../protocole/protocole.hpp"
+#include "../../protocole/Protocole.hpp"
 
 #include "../Entity/BoardEntity.hpp"
 #include "../Entity/TableBoardEntity.hpp"

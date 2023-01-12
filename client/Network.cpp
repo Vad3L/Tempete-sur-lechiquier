@@ -1,10 +1,3 @@
-#include <cstring>
-#include <stdexcept>
-#include <thread>
-
-#include <gf/Log.h>
-#include <gf/SerializationOps.h>
-
 #include "Network.hpp"
 
 Network::Network() {
@@ -49,10 +42,10 @@ void Network::run(std::string hostname, std::string port) {
             m_queue.push(std::move(packet));
             break;
         case gf::SocketStatus::Error:
-            gf::Log::error("Error while receiving a packet from server\n");
+            gf::Log::error("Lors de la réception du paquet venant du serveur\n");
             return;
         case gf::SocketStatus::Close:
-            gf::Log::info("End of connection to the server\n");
+            gf::Log::info("Fin de connection au serveur\n");
             return;
         case gf::SocketStatus::Block:
             assert(false);
