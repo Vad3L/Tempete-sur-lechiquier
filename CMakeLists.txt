@@ -54,7 +54,7 @@ add_executable(server
 	model/Deck.cpp
 	model/Piece.cpp
 	server/AnnexFctServer.cpp
-	)
+)
 
 target_link_libraries(client
 	PRIVATE
