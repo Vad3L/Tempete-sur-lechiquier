@@ -1,10 +1,15 @@
 #include "AnnexFctServer.hpp"
+#include <csignal>
 #include <cstring>
 
-int main (int argc, char* argv[]) {
+void sigpipe (int i) {
+	return;
+}
 
+int main (int argc, char* argv[]) {
     int port = 43771;
 
+    signal(SIGPIPE, sigpipe);
     gf::TcpListener listener(std::to_string(port));
     
     gf::TcpSocket client1 = listener.accept();
@@ -20,7 +25,6 @@ int main (int argc, char* argv[]) {
         if (gf::SocketStatus::Data != client1.sendPacket(packetC1)) {
             std::cerr << "erreur lors de l'envoie du packet au client 1";
         }
-
         
         gf::TcpSocket client2 = listener.accept();
         if (client2) {
