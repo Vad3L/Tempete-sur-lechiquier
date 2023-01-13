@@ -51,10 +51,10 @@ void RulesEntity::render(gf::RenderTarget &target, const gf::RenderStates &state
     rules[3] = "Certaines cartes peuvent devenir inefficaces en raison de la disparition des pièces concernées.";
 
     gf::Text paragraph;
-    paragraph.setColor(gf::Color::fromRgba32(200-m_index*40,100+m_index*30,200-m_index*40,255-30*m_index));
+    paragraph.setColor(gf::Color::White);
     paragraph.setLineSpacing(1.5f);
     paragraph.setFont(m_rulesFont);
-    paragraph.setCharacterSize(height/100+width/100);
+    paragraph.setCharacterSize((height/100+width/100)*2);
     paragraph.setParagraphWidth(width);
     paragraph.setAlignment(gf::Alignment::Justify);
     paragraph.setString(rules[m_index]);
