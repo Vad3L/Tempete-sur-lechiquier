@@ -7,6 +7,10 @@
 #include <gf/Widgets.h>
 #include <gf/Event.h>
 #include <gf/Text.h>
+#include <gf/Coordinates.h>
+#include <gf/Log.h>
+#include <gf/Sprite.h>
+
 
 
 struct GameHub;

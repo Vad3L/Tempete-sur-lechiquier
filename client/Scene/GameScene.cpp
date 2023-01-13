@@ -1,8 +1,4 @@
 #include "GameScene.hpp"
-
-#include <gf/Log.h>
-#include <iostream>
-
 #include "../GameHub.hpp"
 
 GameScene::GameScene(GameHub& game)
@@ -94,7 +90,7 @@ void GameScene::doProcessEvent(gf::Event& event) {
 
             ChessPiece choice = m_boardEntity.getChoice(m_boardView.getSize(),v);
             promo.choice = choice;
-            std::cout << "envoie au serveur la promotion du pion en " << v.y << "," << v.x << "avec comme choice "<< (int)promo.choice<< std::endl;
+            gf::Log::debug("envoie au serveur la promotion du pion en %i,%i avec comme choice %i\n",v.y,v.x,(int)promo.choice);
             m_game.m_network.send(promo);
            
         }else {
@@ -135,15 +131,15 @@ void GameScene::doUpdate(gf::Time time) {
 	}
 	
 	if (m_packet.getType() == PartieRep::type) {
-		std::cout << "recu serveur partueeeeeeeeeeeeeeeee\n";
+		gf::Log::debug("recu serveur partie\n");
         auto repPartie = m_packet.as<PartieRep>();
 		if (repPartie.err == CodeRep::GAME_START) {
-			gf::Log::debug("Game start\n");
+			gf::Log::debug("Jeux commence\n");
             m_gameData.m_gameStatus = ChessStatus::ON_GOING;
             
 			return;
 		} else if (repPartie.err == CodeRep::GAME_END) {
-            gf::Log::debug("Game end\n");
+            gf::Log::debug("Jeux Fini\n");
 
             if(repPartie.status == ChessStatus::WIN && repPartie.colorPion != m_gameData.m_myColor) {
                 m_gameData.m_gameStatus = ChessStatus::LOOSE;    
@@ -163,7 +159,7 @@ void GameScene::doUpdate(gf::Time time) {
                 m_gameData.m_myTurn = false;
             }
 
-            std::cout << "Vous jouez la couleur : " << (int)m_gameData.m_myColor << std::endl;
+            gf::Log::debug("Vous jouez la couleur : %i", (int)m_gameData.m_myColor);
 
             if(m_gameData.m_myColor == ChessColor::BLACK) {
                 m_boardView.setRotation(gf::Pi);

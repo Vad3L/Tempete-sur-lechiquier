@@ -1,15 +1,22 @@
 #ifndef NETWORK_H
 #define NETWORK_H
 
-#include <atomic>
-#include <mutex>
-#include <string>
-
 #include <gf/Packet.h>
 #include <gf/Queue.h>
 #include <gf/TcpSocket.h>
+#include <gf/Log.h>
+#include <gf/SerializationOps.h>
+
+#include <atomic>
+#include <mutex>
+#include <string>
+#include <stdexcept>
+#include <thread>
 
 class Network {
+    public:
+        gf::Queue<gf::Packet> m_queue;
+
     public:
         Network();
 
@@ -24,13 +31,12 @@ class Network {
             m_socket.sendPacket(packet);
         }
 
-        gf::Queue<gf::Packet> m_queue;
-
     private:
         gf::TcpSocket m_socket;
         std::mutex m_mutex;
         std::atomic_bool m_connecting;
 
+    private:
         void run(std::string hostname, std::string port);
 };
 

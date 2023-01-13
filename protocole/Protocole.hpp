@@ -5,7 +5,7 @@
 #include <gf/SerializationOps.h>
 #include <gf/Vector.h>
 
-#include "../model/chess.hpp"
+#include "../model/Chess.hpp"
 
 using namespace gf::literals;
 

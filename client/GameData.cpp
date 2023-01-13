@@ -1,10 +1,5 @@
 #include "GameData.hpp"
 
-#include <cassert>
-
-#include <gf/Log.h>
-#include <gf/Direction.h>
-
 GameData::GameData()
 : m_myColor(ChessColor::NONE)
 , m_myTurn(false)

@@ -13,9 +13,9 @@
 #include <gf/VectorOps.h>
 #include <gf/Log.h>
 
-#include "../model/chess.hpp"
+#include "../model/Chess.hpp"
 #include "../model/Plateau.hpp"
-#include "../protocole/protocole.hpp"
+#include "../protocole/Protocole.hpp"
 
 void performPromotion (Plateau& plateau, PromotionRep& p);
 bool performCoup (Plateau& plateau, CoupRep& c);

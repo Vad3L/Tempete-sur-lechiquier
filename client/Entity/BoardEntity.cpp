@@ -1,14 +1,5 @@
 #include "BoardEntity.hpp"
 
-#include<iostream>
-
-#include <gf/Coordinates.h>
-#include <gf/Log.h>
-#include <gf/RenderTarget.h>
-#include <gf/Sprite.h>
-#include <gf/Text.h>
-#include <gf/Shapes.h>
-
 BoardEntity::BoardEntity(gf::ResourceManager& resources, GameData &gameData)
 : m_backgroundTexture(resources.getTexture("images/ChessSheet.png"))
 , m_backgroundTexture2(resources.getTexture("images/ChessSheet2.png"))
@@ -163,14 +154,14 @@ gf::Vector2i BoardEntity::getTransformCaseSelected(gf::Vector2i sizeWindows, gf:
     float min = std::min(sizeWindows.height, sizeWindows.width);
     
     if(mouseCoord.y + min/2.f<0 || mouseCoord.x + min/2.f<0 || mouseCoord.y + min/2.f>min || mouseCoord.x + min/2.f>min ) {
-        std::cout << "caseSelectionne: [ligne/col] " << v.y << "," << v.x << std::endl;
+        gf::Log::debug("caseSelectionne: [ligne/col] %i , %i \n",v.y,v.x);
         return v;
     }
 
     v.y = (int)((8.f/min) * (mouseCoord.y + min/2.f)); //+min/2 pour ramener les coordonées dans le positif 
     v.x = (int)((8.f/min) * (mouseCoord.x + min/2.f));
     
-    std::cout << "caseSelectionne: [ligne/col] " << v.y << "," << v.x << std::endl;
+    gf::Log::debug("caseSelectionne: [ligne/col] %i , %i \n",v.y,v.x);
     return v;
 }
 

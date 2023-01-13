@@ -6,24 +6,20 @@
 
 #include <gf/Vector.h>
 #include <gf/VectorOps.h>
-#include <iostream>
 #include <gf/Sleep.h>
+#include <gf/Log.h>
+
+#include <iostream>
 #include <vector>
 #include <cassert>
 #include <string>
 
-class Plateau {
-	public:
-		std::vector<gf::Vector2i> moveAvailable;
-		gf::Vector2i coordCaseSelected;
-		std::vector<Piece> bin;
-		std::vector<Case> state;
-		bool playerInEchec;
-		gf::Vector2i coordPrisePassant;
-		std::vector<gf::Vector2i> lastCoup;
-		std::vector<std::string> allPositions;
 
+class Plateau {
+
+	public:
 		Plateau();
+		
 		std::string getSymbol (ChessColor c, ChessPiece p);
 		std::string getFen ();
 		void prettyPrint();
@@ -45,6 +41,17 @@ class Plateau {
 		ChessStatus isGameOver (ChessColor c);
 
 		void tmp(std::vector<gf::Vector2i> t);
+
+	public:
+		std::vector<gf::Vector2i> moveAvailable;
+		gf::Vector2i coordCaseSelected;
+		std::vector<Piece> bin;
+		std::vector<Case> state;
+		bool playerInEchec;
+		gf::Vector2i coordPrisePassant;
+		std::vector<gf::Vector2i> lastCoup;
+		std::vector<std::string> allPositions;
+
 };
 
 #endif // PLATEAU_H
