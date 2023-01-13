@@ -1,9 +1,5 @@
 #include "StartScene.hpp"
-
-#include <gf/Color.h>
-
 #include "../GameHub.hpp"
-
 
 StartScene::StartScene(GameHub& game)
 : gf::Scene(game.getRenderer().getSize())

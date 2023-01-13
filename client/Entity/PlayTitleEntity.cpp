@@ -1,9 +1,5 @@
 #include "PlayTitleEntity.hpp"
 
-#include <gf/Coordinates.h>
-#include <gf/Log.h>
-#include <gf/RenderTarget.h>
-#include <gf/Sprite.h>
 
   PlayTitleEntity::PlayTitleEntity(gf::ResourceManager& resources)
 : m_font(resources.getFont("fonts/Trajan-Color-Concept.otf"))
@@ -31,7 +27,7 @@ void PlayTitleEntity::render(gf::RenderTarget &target, const gf::RenderStates &s
 
   unsigned titleCharacterSize = coords.getRelativeCharacterSize(0.1f);
 
-  gf::Text title("Play", m_font, titleCharacterSize);
+  gf::Text title("Jouer", m_font, titleCharacterSize);
   title.setColor(gf::Color::White);
   title.setPosition(coords.getRelativePoint({ 0.5f, 0.1f }));
   title.setAnchor(gf::Anchor::TopCenter);
@@ -39,7 +35,7 @@ void PlayTitleEntity::render(gf::RenderTarget &target, const gf::RenderStates &s
 
   unsigned subtitleCharacterSize = coords.getRelativeCharacterSize(0.05f);
 
-  gf::Text subtitle("Join a game", m_font, subtitleCharacterSize);
+  gf::Text subtitle("Rejoindre une partie", m_font, subtitleCharacterSize);
   subtitle.setColor(gf::Color::White);
   subtitle.setPosition(coords.getRelativePoint({ 0.5f, 0.25f }));
   subtitle.setAnchor(gf::Anchor::Center);

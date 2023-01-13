@@ -9,13 +9,15 @@
 #include <gf/Widgets.h>
 #include <gf/Event.h>
 #include <gf/Text.h>
+#include <gf/Log.h>
+#include <gf/Coordinates.h>
 
 
 struct GameHub;
 
 class RulesScene : public gf::Scene {
-public:
-    RulesScene(GameHub& game);
+    public:
+        RulesScene(GameHub& game);
 
     private:
         void doProcessEvent(gf::Event& event) override;
@@ -24,6 +26,7 @@ public:
         void doShow() override;
         void changeRightLeft(bool value);
         void onActivityChange(bool active)  override;
+   
     private:
         GameHub& m_game;
 

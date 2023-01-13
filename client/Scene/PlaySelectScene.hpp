@@ -6,7 +6,12 @@
 #include <gf/WidgetContainer.h>
 #include <gf/Widgets.h>
 #include <gf/Event.h>
+#include <gf/Log.h>
+#include <gf/Coordinates.h>
 
+#include <iostream>
+#include <fstream>
+#include <string>
 #include <regex>
 #include <vector>
 

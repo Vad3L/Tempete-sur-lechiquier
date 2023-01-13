@@ -17,7 +17,7 @@ endif ()
 # set(GAME_DATADIR "${CMAKE_INSTALL_PREFIX}/share/games/${GAME}" CACHE PATH "Game Data Dir")
 # configure_file(${CMAKE_CURRENT_SOURCE_DIR}/code/config.h.in ${CMAKE_CURRENT_BINARY_DIR}/config.h @ONLY)
 
-add_executable(client
+add_executable(client_tsl
 	client/client.cpp
 	client/Network.cpp
 	
@@ -46,7 +46,7 @@ add_executable(client
 
 	)
 
-add_executable(server
+add_executable(server_tsl
 	server/server.cpp
 	model/Plateau.cpp
 	model/Case.cpp
@@ -54,21 +54,21 @@ add_executable(server
 	model/Deck.cpp
 	model/Piece.cpp
 	server/AnnexFctServer.cpp
-	)
+)
 
-target_link_libraries(client
+target_link_libraries(client_tsl
 	PRIVATE
 		gf::graphics
 		gf::net
 )
 
-target_link_libraries(server
+target_link_libraries(server_tsl
 	PRIVATE
 		gf::net
 )
 
 install(
-  TARGETS server client
+  TARGETS server_tsl client_tsl
   RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}"
 )
 

@@ -4,11 +4,18 @@
 #include <gf/Entity.h>
 #include <gf/Font.h>
 #include <gf/ResourceManager.h>
+#include <gf/Coordinates.h>
+#include <gf/Log.h>
+#include <gf/RenderTarget.h>
+#include <gf/Sprite.h>
+#include <gf/Text.h>
+#include <gf/Shapes.h>
+
+#include<iostream>
 
 #include "../../model/Plateau.hpp"
-#include "../../model/chess.hpp"
+#include "../../model/Chess.hpp"
 #include "../GameData.hpp"
-
 
 struct GameData;
 

@@ -1,11 +1,5 @@
 #include "TitleEntity.hpp"
 
-#include <gf/Coordinates.h>
-#include <gf/Log.h>
-#include <gf/RenderTarget.h>
-#include <gf/Sprite.h>
-#include <gf/Text.h>
-#include <iostream>
 
 TitleEntity::TitleEntity(gf::ResourceManager& resources)
 : m_font(resources.getFont("fonts/DejaVuSans.ttf"))
@@ -31,7 +25,7 @@ void TitleEntity::render(gf::RenderTarget &target, const gf::RenderStates &state
 
     unsigned instructionsCharacterSize = coords.getRelativeCharacterSize(0.03f);
 
-    gf::Text instructions("Press a button to start", m_font, instructionsCharacterSize);
+    gf::Text instructions("Appuie sur un bouton pour démarrer", m_font, instructionsCharacterSize);
     instructions.setColor(gf::Color::White);
     instructions.setOutlineColor(gf::Color::Black);
     instructions.setOutlineThickness(instructionsCharacterSize * 0.05f);

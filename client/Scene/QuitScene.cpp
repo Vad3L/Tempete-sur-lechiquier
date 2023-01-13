@@ -1,9 +1,4 @@
 #include "QuitScene.hpp"
-
-#include <gf/Coordinates.h>
-#include <gf/Log.h>
-#include <gf/RenderTarget.h>
-
 #include "../GameHub.hpp"
 
 QuitScene::QuitScene(GameHub& game)
@@ -45,12 +40,14 @@ QuitScene::QuitScene(GameHub& game)
         m_widgets.addWidget(button);
     };
 
-    setupButton(m_resumeButton, [&] () {gf::Log::debug("Resume button pressed!\n"); m_game.popScene(); });
+    setupButton(m_resumeButton, [&] () {
+        gf::Log::debug("Resume button pressed!\n");
+        m_game.popScene(); 
+    });
 
     setupButton(m_quitButton, [&] () {
         gf::Log::debug("Quit button pressed!\n");
         m_game.replaceAllScenes(m_game.menu);
-        
     });
 }
 

@@ -1,15 +1,6 @@
 #include "MenuScene.hpp"
 #include "../GameHub.hpp"
 
-#include <iostream>
-#include <fstream>
-#include <string>
-
-#include <gf/Log.h>
-#include <gf/Coordinates.h>
-
-
-
 
 PlaySelectScene::PlaySelectScene(GameHub& game)
 : gf::Scene(game.getRenderer().getSize())
@@ -61,19 +52,19 @@ PlaySelectScene::PlaySelectScene(GameHub& game)
     };
 
     setupButton(m_ipWidget, [&] () {
-
-		m_game.m_network.connect(std::string(m_ipWidget.getString()),"43771");
-        std::cout << std::string(m_ipWidget.getString()) << std::endl;
-        gf::Log::debug("Try connexion \n");
+        std::string ip = std::string(m_ipWidget.getString());
+		m_game.m_network.connect(ip,"43771");
+        gf::Log::debug("Tentative de connexion :");
+        std::cout << ip << std::endl;
         gf::sleep(gf::milliseconds(500));
 
         
         if(m_game.m_network.isConnected()){
-            gf::Log::debug("Succeful connexion\n");
+            gf::Log::debug("Connexion réussie\n");
             m_game.replaceAllScenes(m_game.game);
         }else{
-            gf::Log::debug("Failed connexion\n");
-            m_PlayTitleEntity.m_errorText.setString("Connection to server failed");
+            gf::Log::debug("Connexions échoué\n");
+            m_PlayTitleEntity.m_errorText.setString("Connexion au serveur a échoué");
         }
         
     });
@@ -208,11 +199,11 @@ void PlaySelectScene::onActivityChange(bool active){
     if(active){
         m_PlayTitleEntity.m_errorText.setString(" ");
         m_index = 0;
-        gf::Log::debug("active scene\n");
+        gf::Log::debug("Scene active\n");
         std::ifstream file(std::string(GAME_CONFIGDIR)+"IpList.txt");
 
         if (!file) {
-            std::cerr << "Error: Unable to open file." << std::endl;
+            gf::Log::error("Impossible d'ouvrir le fichier.\n");
         }else{
             std::string line;
             m_listIp.clear();
