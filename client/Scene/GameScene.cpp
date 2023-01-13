@@ -135,13 +135,11 @@ void GameScene::doUpdate(gf::Time time) {
 	}
 	
 	if (m_packet.getType() == PartieRep::type) {
-		std::cout << "recu serveur partueeeeeeeeeeeeeeeee\n";
         auto repPartie = m_packet.as<PartieRep>();
 		if (repPartie.err == CodeRep::GAME_START) {
 			gf::Log::debug("Game start\n");
             m_gameData.m_gameStatus = ChessStatus::ON_GOING;
             
-			return;
 		} else if (repPartie.err == CodeRep::GAME_END) {
             gf::Log::debug("Game end\n");
 

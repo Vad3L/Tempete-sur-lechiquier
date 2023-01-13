@@ -36,7 +36,7 @@ int recvPacket (gf::TcpSocket& s, gf::Packet &p) {
 	}
 
 	if (gf::SocketStatus::Data != s.recvPacket(p)) {
-        std::cerr << "erreur lors de la réception du packet qui contient le coup du client";
+        std::cerr << "erreur lors de la réception du packet qui contient le coup du client\n";
         return -1;
 	}
 
@@ -50,7 +50,7 @@ int sendPacket (gf::TcpSocket& s, gf::Packet& p) {
 	}
 
 	if (gf::SocketStatus::Data != s.sendPacket(p)) {
-        std::cerr<<"erreur lors de l'envoie du packet coupRep au client";
+        std::cerr<<"erreur lors de l'envoie du packet coupRep au client\n";
         return -1;
     }
 
@@ -251,6 +251,6 @@ int sendStartOrEnd (gf::TcpSocket& a, gf::TcpSocket& b, CodeRep code, ChessStatu
         ret = -1;
 	}
 
-    return 0;
+    return ret;
 }
 
