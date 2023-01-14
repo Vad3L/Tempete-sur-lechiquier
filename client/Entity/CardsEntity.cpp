@@ -53,7 +53,8 @@ void CardsEntity::render(gf::RenderTarget &target, const gf::RenderStates &state
     target.draw(card1Name,states);
     target.draw(card1Description,states);
 
+}
 
-
-
+int CardsEntity::getCardSelected(gf::Vector2i sizeWindows, gf::Vector2i mouseCoord) {
+    return 0;
 }

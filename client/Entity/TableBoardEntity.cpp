@@ -26,7 +26,7 @@ void TableBoardEntity::render(gf::RenderTarget &target, const gf::RenderStates &
     target.draw(tableCloth,states);
 
     
-    std::string indication = (m_gameData.m_myTurn) ? std::string("À vous de jouer !") : std::string("Au tour de l'adversaire");
+    std::string indication = (m_gameData.m_phase != Phase::PASMONTOUR) ? std::string("À vous de jouer !") : std::string("Au tour de l'adversaire");
     
     switch (m_gameData.m_gameStatus) {
         case ChessStatus::WIN:

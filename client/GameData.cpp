@@ -2,19 +2,21 @@
 
 GameData::GameData()
 : m_myColor(ChessColor::NONE)
-, m_myTurn(false)
+, m_phase(Phase::PASMONTOUR)
 , m_plateau()
 , m_style(0)
 , m_gameStatus(ChessStatus::NO_STARTED)
+, m_main()
 {
     
 }
 
 void GameData::reset() {
     m_myColor = ChessColor::NONE;
-    m_myTurn = false;
+    m_phase = Phase::PASMONTOUR;
     m_plateau = Plateau();
     m_style = 0;
-    m_gameStatus = ChessStatus::NO_STARTED;   
+    m_gameStatus = ChessStatus::NO_STARTED;
+    m_main.fill(Card()); 
 }
 

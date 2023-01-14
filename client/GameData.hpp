@@ -7,6 +7,7 @@
 #include <cassert>
 #include "../model/Chess.hpp"
 #include "../model/Plateau.hpp"
+#include "../model/GamePhase.hpp"
 
 #define GAME_DATADIR "../data/"
 #define GAME_CONFIGDIR "../config/"
@@ -17,10 +18,11 @@ struct GameData {
     void reset();
 
     ChessColor m_myColor;
-    bool m_myTurn;
+    Phase m_phase;
     Plateau m_plateau;
     ChessStatus m_gameStatus;
     int m_style;
+    std::array<Card, 5> m_main;
 };
 
 

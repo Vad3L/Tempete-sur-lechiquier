@@ -21,7 +21,7 @@ void BoardEntity::render(gf::RenderTarget &target, const gf::RenderStates &state
 
     float sizeSquare = coords.getRelativeSize(gf::vec(0.0f, 1.f/8.f)).height;
     float sizeLine = 2.5f;
-    bool myTurn = m_gameData.m_myTurn;
+    bool myTurn = (m_gameData.m_phase == Phase::PASMONTOUR) ? false : true;
 
     gf::Texture &texture = (m_gameData.m_style == 0) ? m_backgroundTexture : m_backgroundTexture2;
     bool promotion = false;
@@ -148,7 +148,7 @@ void BoardEntity::render(gf::RenderTarget &target, const gf::RenderStates &state
     }
 }
 
-gf::Vector2i BoardEntity::getTransformCaseSelected(gf::Vector2i sizeWindows, gf::Vector2i mouseCoord) {
+gf::Vector2i BoardEntity::getCaseSelected(gf::Vector2i sizeWindows, gf::Vector2i mouseCoord) {
     
     gf::Vector2i v(-1,-1); 
     float min = std::min(sizeWindows.height, sizeWindows.width);

@@ -9,7 +9,7 @@ GameScene::GameScene(GameHub& game)
 , m_texture1Action("Texture1")
 , m_texture2Action("Texture2")
 , m_boardEntity(game.resources, m_gameData)
-, m_CardsEntity(game.resources, m_gameData)
+, m_cardsEntity(game.resources, m_gameData)
 , m_tableBoardEntity(game.resources, m_gameData)
 , m_promotion(false)
 {
@@ -79,8 +79,12 @@ void GameScene::doProcessEvent(gf::Event& event) {
         break;
     }
     
-    if(m_gameData.m_myTurn && click) { 
-        gf::Vector2i v = m_boardEntity.getTransformCaseSelected(m_boardView.getSize(), m_game.getRenderer().mapPixelToCoords(event.mouseButton.coords, m_boardView));
+    int numCarte = m_cardsEntity.getCardSelected(m_cardsView.getSize(), m_game.getRenderer().mapPixelToCoords(event.mouseButton.coords, m_cardsView));
+    bool playable = m_gameData.m_main[numCarte].m_isplayable(m_gameData.plateau, m_gameData.m_phase);
+    
+
+    if(m_gameData.m_phase==Phase::COUP && click) { 
+        gf::Vector2i v = m_boardEntity.getCaseSelected(m_boardView.getSize(), m_game.getRenderer().mapPixelToCoords(event.mouseButton.coords, m_boardView));
         if(v.x == -1 || v.y == -1) {
 		    return;
 	    }
@@ -126,7 +130,7 @@ void GameScene::doRender(gf::RenderTarget& target, const gf::RenderStates &state
     m_boardEntity.render(target, states);
 
     target.setView(m_cardsView);
-    m_CardsEntity.render(target, states);
+    m_cardsEntity.render(target, states);
     
     target.setView(getHudView());
 }
@@ -160,10 +164,10 @@ void GameScene::doUpdate(gf::Time time) {
             m_gameData.m_myColor = repPartie.colorPion;
 
             if (m_gameData.m_myColor == ChessColor::WHITE) {
-                m_gameData.m_myTurn = true;
+                m_gameData.m_phase = Phase::AVANTCOUP;
             }
             else {
-                m_gameData.m_myTurn = false;
+                m_gameData.m_phase = Phase::PASMONTOUR;
             }
 
             gf::Log::debug("Vous jouez la couleur : %i", (int)m_gameData.m_myColor);
@@ -188,7 +192,7 @@ void GameScene::doUpdate(gf::Time time) {
             m_gameData.m_plateau.movePieces(gf::Vector2i(coupRep.posStart.x, coupRep.posStart.y), gf::Vector2i(coupRep.posEnd.x, coupRep.posEnd.y));
 
             ChessColor c = !m_gameData.m_myColor;
-            if (m_gameData.m_myTurn) {
+            if (m_gameData.m_phase != Phase::PASMONTOUR) {
                 m_gameData.m_plateau.playerInEchec = m_gameData.m_plateau.isInEchec(c);
             } else {
                 m_gameData.m_plateau.playerInEchec = m_gameData.m_plateau.isInEchec(m_gameData.m_myColor);
@@ -202,7 +206,7 @@ void GameScene::doUpdate(gf::Time time) {
             if(pieceStart.getType() == ChessPiece::PAWN &&( coupRep.posEnd.y == 0 || coupRep.posEnd.y == 7)) {
                 m_promotion = true;
             }else {
-                m_gameData.m_myTurn = !m_gameData.m_myTurn;
+                //m_gameData.m_myTurn = !m_gameData.m_myTurn;
                 m_promotion = false;
             }
             
@@ -222,14 +226,14 @@ void GameScene::doUpdate(gf::Time time) {
             m_gameData.m_plateau.promotionPiece(gf::Vector2i(promoRep.pos.x, promoRep.pos.y), promoRep.choice);
 
             ChessColor c = !m_gameData.m_myColor;
-            if (m_gameData.m_myTurn) {
+            if (m_gameData.m_phase != Phase::PASMONTOUR) {
                 m_gameData.m_plateau.playerInEchec = m_gameData.m_plateau.isInEchec(c);
             } else {
                 m_gameData.m_plateau.playerInEchec = m_gameData.m_plateau.isInEchec(m_gameData.m_myColor);
             }
 
             m_gameData.m_plateau.prettyPrint();
-            m_gameData.m_myTurn = !m_gameData.m_myTurn;
+            //m_gameData.m_myTurn = !m_gameData.m_myTurn;
             m_promotion = false;
         }else {
             gf::Log::debug("------PROMOTION INVALIDE------\n");

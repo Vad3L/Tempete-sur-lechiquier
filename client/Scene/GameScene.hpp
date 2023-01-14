@@ -63,7 +63,7 @@ class GameScene : public gf::Scene {
         BoardEntity m_boardEntity;    
         TableBoardEntity m_tableBoardEntity;
         //MODIFIER
-        CardsEntity m_CardsEntity;
+        CardsEntity m_cardsEntity;
 };  
 
 

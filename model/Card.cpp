@@ -9,6 +9,10 @@ Card::Card(std::string name,std::string description,Turn turn, Effect effect){
 
 }
 
+Card::Card() {
+    
+}
+
 Turn Card::getTurn() const{
     return m_turn;
 }

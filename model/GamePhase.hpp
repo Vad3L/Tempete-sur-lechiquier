@@ -4,18 +4,17 @@
 #include "Card.hpp"
 
 enum class Phase{
-    CARTEAVANTCOUP,
+    AVANTCOUP,
     COUP,
-    CARTEAPRESCOUP,
-    ATTENTE,
+    APRESCOUP,
+    PASMONTOUR,
     CLIQUERUNECASE
 };    //ATTENTEANNULATION,
 
 class GamePhase{
     public:
         GamePhase();
-        void applyCard(Card carte);
-        void applyMove();
+        void traiterCard(Card carte);
     private:
         Phase currentPhase;
         
