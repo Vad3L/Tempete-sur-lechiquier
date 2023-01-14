@@ -2,14 +2,10 @@
 #include <csignal>
 #include <cstring>
 
-void sigpipe (int i) {
-	return;
-}
-
 int main (int argc, char* argv[]) {
     int port = 43771;
 
-    signal(SIGPIPE, sigpipe);
+    signal(SIGPIPE, SIG_IGN);
     gf::TcpListener listener(std::to_string(port));
     
     gf::TcpSocket client1 = listener.accept();
@@ -45,7 +41,7 @@ int main (int argc, char* argv[]) {
             };
             
             Plateau plateau;
-	        ChessStatus gameStatus = ChessStatus::ON_GOING;
+	    ChessStatus gameStatus = ChessStatus::ON_GOING;
             bool turnPlayer1 = true;
             bool promotion = false;
             while (true) {

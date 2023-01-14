@@ -1,6 +1,5 @@
 #include "Card.hpp"
 
-
 Card::Card(std::string name,std::string description,Turn turn, Effect effect){
 
     m_name=name;

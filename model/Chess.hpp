@@ -38,4 +38,11 @@ inline ChessColor operator! (const ChessColor& c) {
 	return ChessColor::WHITE;
 }
 
+inline void inBoard(gf::Vector2i pos) {
+	assert(pos.x >= 0);
+	assert(pos.x < 8);
+	assert(pos.y >= 0);
+	assert(pos.y < 8);
+}
+
 #endif // ECHEC_H

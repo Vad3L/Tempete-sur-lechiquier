@@ -4,9 +4,7 @@
 #include <vector>
 
 #include "Card.hpp"
-
-
-
+#include "CardFunction.hpp"
 
 class Deck{
     public:
