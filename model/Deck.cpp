@@ -17,7 +17,9 @@ Deck::Deck(){
     Card c12("Exil","Vous remettez sur la case, ou sur l'une des cases où elle pouvait se trouver en début de partie, une pièce adverse de votre choix.",Turn::AFTER,Effect::CHOOSECASE);
 
     c1.m_execute = Chameau;
+    c1.m_isPlayable = ChameauIsPlayable;
     c11.m_execute = QuatreCoin;
+    c11.m_isPlayable = QuatreCoinIsPlayable;
     //We add cards in deck
     m_deck.push_back(c1);
     m_deck.push_back(c2);
