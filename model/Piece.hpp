@@ -19,7 +19,7 @@ class Piece  {
         ChessColor getColor();
         ChessPiece getType();    
 
-	    std::vector<gf::Vector2i> getMoves (gf::Vector2i pos);
+        std::vector<gf::Vector2i> getMoves (gf::Vector2i pos);
 
         std::vector<gf::Vector2i> getMovePawn (gf::Vector2i pos);
         std::vector<gf::Vector2i> getMoveKnight (gf::Vector2i pos);

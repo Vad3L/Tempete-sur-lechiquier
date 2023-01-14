@@ -1,6 +1,5 @@
 #include "Deck.hpp"
 
-
 Deck::Deck(){
 
     //Create cards
@@ -17,6 +16,8 @@ Deck::Deck(){
     Card c11("Quatre coins","Si trois des quatres coins de l'échiquier sont occupés, vous pouvez amener une de vos pièces, de votre choix, dans le quatrième coin",Turn::REPLACE,Effect::NONE);
     Card c12("Exil","Vous remettez sur la case, ou sur l'une des cases où elle pouvait e trouver en début de partie, une pièce adverse de votre choix.",Turn::AFTER,Effect::NONE);
 
+    c1.m_execute = Chameau;
+    c11.m_execute = QuatreCoin;
     //We add cards in deck
     m_deck.push_back(c1);
     m_deck.push_back(c2);
