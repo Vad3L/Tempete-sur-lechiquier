@@ -33,9 +33,13 @@ GameScene::GameScene(GameHub& game)
     m_tableBoardView = gf::ExtendView({ 0, 0 }, { 500, 500 });
 	m_tableBoardView.setViewport(gf::RectF::fromPositionSize({ 0.f, 0.f}, { 0.6f, 0.6f }));
 
+    m_cardsView = gf::ExtendView({ 0, 0 }, { 1000, 1000 });
+	m_cardsView.setViewport(gf::RectF::fromPositionSize({ 0.f, 0.f}, { 0.9f, 0.9f }));
+
 
 	m_views.addView(m_boardView);
     m_views.addView(m_tableBoardView);
+    m_views.addView(m_cardsView);
     
 	m_views.setInitialFramebufferSize({game.getRenderer().getSize()});
 }
@@ -80,7 +84,7 @@ void GameScene::doProcessEvent(gf::Event& event) {
         if(v.x == -1 || v.y == -1) {
 		    return;
 	    }
-        
+
         if(m_promotion) {
 
             PromotionRep promo;
@@ -120,6 +124,9 @@ void GameScene::doRender(gf::RenderTarget& target, const gf::RenderStates &state
 
     target.setView(m_boardView);
     m_boardEntity.render(target, states);
+
+    target.setView(m_cardsView);
+    m_CardsEntity.render(target, states);
     
     target.setView(getHudView());
 }

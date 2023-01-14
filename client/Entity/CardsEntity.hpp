@@ -26,6 +26,7 @@ class CardsEntity : public gf::Entity {
     private:
         gf::Font& m_font;
         gf::Font& m_CardsFont;
+        gf::Texture& m_chameau;
 
 
 };

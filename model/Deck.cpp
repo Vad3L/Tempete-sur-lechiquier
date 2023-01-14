@@ -4,10 +4,10 @@
 Deck::Deck(){
 
     //Create cards
-    Card c1("Chameau","Vous transformez l'un dee vos Cavaliers en Chameau, et cela définitivement. Le Chameau, et cela définitivement. Le Chameau, comme le Cavalier, peut se déplacer en sautant par-dessus les cases occupées. Mais alors que le Cavalier saute dans l'angle opposé d'un rectangle 3-2, le Chameau saute dans l'angle opposé d'un rectangle 4-3. Schéma : déplacements du Chameau.",Turn::AFTER,Effect::NONE);
-    Card c2("Coup d'etat","Votre Roi devient un simple Prince. Il continue à se déplacer comme auparavant, mais n'est désormais qu'une pièece ordinaire,pouvant être prise. Une autre pièce (sauf Dame ou Tour !), qui conserve également toutes ses capacités de déplacement, s'empare du pouvoir. C'est cette nouvelle pièce <<Royale>> que votre adversaire devra mater",Turn::AFTER,Effect::NONE);
-    Card c3("Pas question !","Cette carte annule toute autre carte.",Turn::BEFORE,Effect::CANCELCARD);
-    Card c4("Niet.","Cette carte annule toute autre carte.",Turn::BEFORE,Effect::CANCELCARD);
+    Card c1("Chameau","Vous transformez l'un de vos Cavaliers en Chameau, et cela définitivement. Le Chameau, comme le Cavalier, peut se déplacer en sautant par-dessus les cases occupées. Mais alors que le Cavalier saute dans l'angle opposé d'un rectangle 3-2, le Chameau saute dans l'angle opposé d'un rectangle 4-3. Schéma : déplacements du Chameau.",Turn::AFTER,Effect::NONE);
+    Card c2("Coup d'etat","Votre Roi devient un simple Prince. Il continue à se déplacer comme auparavant, mais n'est désormais qu'une pièce ordinaire,pouvant être prise. Une autre pièce (sauf Dame ou Tour !), qui conserve également toutes ses capacités de déplacement, s'empare du pouvoir. C'est cette nouvelle pièce <<Royale>> que votre adversaire devra mater",Turn::AFTER,Effect::NONE);
+    Card c3("Pas question !","Cette carte annule toute autre carte.",Turn::DURING,Effect::CANCELCARD);
+    Card c4("Niet.","Cette carte annule toute autre carte.",Turn::DURING,Effect::CANCELCARD);
     Card c5("Charge","Avancez tous ceux de vos Pions que vous voulez et qui le peuvent d'une case.",Turn::REPLACE,Effect::NONE);
     Card c6("Banzai","Vous avancez un de vos Pions de 3 cases (aucune prise en passant ne sera possible).",Turn::REPLACE,Effect::NONE);
     Card c7("Amphetamines","Le fou que vous venez de déplacer peut rejouer à nouveau, tout de suite, s'il ne vient pas de prendre une pièce adverse.", Turn::AFTER,Effect::NONE);

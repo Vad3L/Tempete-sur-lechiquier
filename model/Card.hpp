@@ -9,7 +9,9 @@
 enum class Turn{
     BEFORE,
     AFTER,
-    REPLACE
+    REPLACE,
+    BOTH,
+    DURING
 };
 
 enum class Effect{
