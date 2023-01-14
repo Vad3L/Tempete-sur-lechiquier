@@ -17,6 +17,7 @@ enum class Turn{
 enum class Effect{
     CANCELCARD,
     CANCELMOVE,
+    CHOOSECASE,
     NONE
 };
 
