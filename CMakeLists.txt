@@ -27,6 +27,7 @@ add_executable(client_tsl
 	model/Card.cpp
 	model/Deck.cpp
 	model/CardFunction.cpp
+	model/GamePhase.cpp
 
 	client/GameHub.cpp
 	client/GameData.cpp
@@ -55,6 +56,7 @@ add_executable(server_tsl
 	model/Deck.cpp
 	model/Piece.cpp
 	model/CardFunction.cpp
+	model/GamePhase.cpp
 	server/AnnexFctServer.cpp
 )
 
