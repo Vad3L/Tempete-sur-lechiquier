@@ -5,7 +5,9 @@
 #include <set>
 #include <algorithm>
 #include <functional>
+
 #include "Plateau.hpp"
+#include "CardFunction.hpp"
 
 enum class Turn{
     BEFORE,
@@ -29,7 +31,9 @@ class Card{
         Turn m_turn;
         Effect m_effect;
     public:
-	std::function<bool(Plateau&, gf::Vector2i, gf::Vector2i)> m_execute;
+	    std::function<void(Plateau&, gf::Vector2i, gf::Vector2i)> m_execute;
+	    std::function<bool(Plateau&, Phase)> m_isPlayable;
+	
         Card(std::string name,std::string m_description,Turn turn, Effect effect);
         Card();
         Turn getTurn() const; //return when we can use the card b for beforeTurn, a for after

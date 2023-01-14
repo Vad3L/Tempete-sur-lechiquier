@@ -3,7 +3,13 @@
 
 #include "Plateau.hpp"
 
-bool Chameau (Plateau& p, gf::Vector2i s, gf::Vector2i e);
-bool QuatreCoin (Plateau& p, gf::Vector2i s, gf::Vector2i e);
+void NoCard (Plateau& p, gf::Vector2i s, gf::Vector2i e);
+bool NoCardPlayable (Plateau& p, Phase f);
+
+void Chameau (Plateau& p, gf::Vector2i s, gf::Vector2i e);
+void QuatreCoin (Plateau& p, gf::Vector2i s, gf::Vector2i e);
+
+bool ChameauIsPlayable (Plateau& p, Phase f);
+bool QuatreCoinIsPlayable (Plateau& p, Phase f);
 
 #endif

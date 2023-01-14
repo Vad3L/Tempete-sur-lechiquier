@@ -2,7 +2,7 @@
 
 GameData::GameData()
 : m_myColor(ChessColor::NONE)
-, m_phase(Phase::PASMONTOUR)
+, m_phase(Phase::PAS_MON_TOUR)
 , m_plateau()
 , m_style(0)
 , m_gameStatus(ChessStatus::NO_STARTED)
@@ -13,7 +13,7 @@ GameData::GameData()
 
 void GameData::reset() {
     m_myColor = ChessColor::NONE;
-    m_phase = Phase::PASMONTOUR;
+    m_phase = Phase::PAS_MON_TOUR;
     m_plateau = Plateau();
     m_style = 0;
     m_gameStatus = ChessStatus::NO_STARTED;

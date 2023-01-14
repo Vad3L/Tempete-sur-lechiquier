@@ -80,7 +80,7 @@ void GameScene::doProcessEvent(gf::Event& event) {
     }
     
     int numCarte = m_cardsEntity.getCardSelected(m_cardsView.getSize(), m_game.getRenderer().mapPixelToCoords(event.mouseButton.coords, m_cardsView));
-    bool playable = m_gameData.m_main[numCarte].m_isplayable(m_gameData.plateau, m_gameData.m_phase);
+    bool playable = m_gameData.m_main[numCarte].m_isPlayable(m_gameData.m_plateau, m_gameData.m_phase);
     
 
     if(m_gameData.m_phase==Phase::COUP && click) { 
@@ -164,10 +164,10 @@ void GameScene::doUpdate(gf::Time time) {
             m_gameData.m_myColor = repPartie.colorPion;
 
             if (m_gameData.m_myColor == ChessColor::WHITE) {
-                m_gameData.m_phase = Phase::AVANTCOUP;
+                m_gameData.m_phase = Phase::AVANT_COUP;
             }
             else {
-                m_gameData.m_phase = Phase::PASMONTOUR;
+                m_gameData.m_phase = Phase::PAS_MON_TOUR;
             }
 
             gf::Log::debug("Vous jouez la couleur : %i", (int)m_gameData.m_myColor);
@@ -192,7 +192,7 @@ void GameScene::doUpdate(gf::Time time) {
             m_gameData.m_plateau.movePieces(gf::Vector2i(coupRep.posStart.x, coupRep.posStart.y), gf::Vector2i(coupRep.posEnd.x, coupRep.posEnd.y));
 
             ChessColor c = !m_gameData.m_myColor;
-            if (m_gameData.m_phase != Phase::PASMONTOUR) {
+            if (m_gameData.m_phase != Phase::PAS_MON_TOUR) {
                 m_gameData.m_plateau.playerInEchec = m_gameData.m_plateau.isInEchec(c);
             } else {
                 m_gameData.m_plateau.playerInEchec = m_gameData.m_plateau.isInEchec(m_gameData.m_myColor);
@@ -226,7 +226,7 @@ void GameScene::doUpdate(gf::Time time) {
             m_gameData.m_plateau.promotionPiece(gf::Vector2i(promoRep.pos.x, promoRep.pos.y), promoRep.choice);
 
             ChessColor c = !m_gameData.m_myColor;
-            if (m_gameData.m_phase != Phase::PASMONTOUR) {
+            if (m_gameData.m_phase != Phase::PAS_MON_TOUR) {
                 m_gameData.m_plateau.playerInEchec = m_gameData.m_plateau.isInEchec(c);
             } else {
                 m_gameData.m_plateau.playerInEchec = m_gameData.m_plateau.isInEchec(m_gameData.m_myColor);

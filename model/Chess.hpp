@@ -1,6 +1,14 @@
 #ifndef ECHEC_H
 #define ECHEC_H
 
+enum class Phase {
+    AVANT_COUP,
+    COUP,
+    APRES_COUP,
+    PAS_MON_TOUR,
+    CLIQUER_UNE_CASE
+}; 
+
 enum class ChessStatus {
 	NO_STARTED,
 	ON_GOING,

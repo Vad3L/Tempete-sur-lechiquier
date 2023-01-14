@@ -2,7 +2,7 @@
 
 
 GamePhase::GamePhase(){
-    currentPhase=Phase::AVANTCOUP;
+    currentPhase=Phase::AVANT_COUP;
 }
 
 void GamePhase::traiterCard(Card carte){
@@ -10,27 +10,44 @@ void GamePhase::traiterCard(Card carte){
     Effect effet = carte.getEffect();
 
     switch (currentPhase){
-        case Phase::AVANTCOUP:
-            if(tour != Turn::BEFORE){
-                return;
-            }
-            if(effet==Effect::CHOOSECASE){
-                currentPhase=Phase::CLIQUERUNECASE;
-            }
-            if(tour==Turn::REPLACE){
-                currentPhase=Phase::PASMONTOUR;
-            }
-            currentPhase=Phase::COUP;
-            break;
 
-        case Phase::APRESCOUP:
+        case Phase::AVANT_COUP:
+           if(tour != Turn::BEFORE){
+                return;
+           }
+           if(effet==Effect::CHOOSECASE){
+            currentPhase=Phase::CLIQUER_UNE_CASE;
+           }
+           if(tour==Turn::REPLACE){
+            currentPhase=Phase::PAS_MON_TOUR;
+           }
+           currentPhase=Phase::COUP;
+           //Jouer la carte
+           //carte.m_execute(plateau,);
+        break;
+
+        case Phase::APRES_COUP:
             if(tour != Turn::AFTER){
                 return;
             }
             if(effet==Effect::CHOOSECASE){
-                currentPhase=Phase::CLIQUERUNECASE;
+                currentPhase=Phase::CLIQUER_UNE_CASE;
             }
-            currentPhase=Phase::PASMONTOUR;
-            break;
-    } 
+
+            currentPhase=Phase::PAS_MON_TOUR;
+            //Jouer la carte
+            //carte.m_execute(plateau,);
+        break;
+
+        case Phase::PAS_MON_TOUR:
+            if(tour!= Turn::DURING){
+               return;
+            }
+            currentPhase=Phase::AVANT_COUP;
+            //Jouer la carte
+            //carte.m_execute(plateau,);
+        break;
+
+    }
+   
 }

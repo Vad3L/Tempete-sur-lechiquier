@@ -2,14 +2,7 @@
 #define GAMEPHASE_H
 
 #include "Card.hpp"
-
-enum class Phase{
-    AVANTCOUP,
-    COUP,
-    APRESCOUP,
-    PASMONTOUR,
-    CLIQUERUNECASE
-};    //ATTENTEANNULATION,
+#include "Chess.hpp"
 
 class GamePhase{
     public:
@@ -17,11 +10,6 @@ class GamePhase{
         void traiterCard(Card carte);
     private:
         Phase currentPhase;
-        
-
-     
-
-
 };
 
 #endif // GAMEPHASE_H
