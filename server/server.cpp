@@ -36,7 +36,8 @@ int main (int argc, char* argv[]) {
             }
 
 	        if(sendStartOrEnd(client1, client2, CodeRep::GAME_START) == -1) {
-            	return -1;
+            	sendStartOrEnd(client1, client2, CodeRep::GAME_END, ChessStatus::SURRENDER); 
+                return -1;
             };
             
             Plateau plateau;
@@ -80,9 +81,6 @@ int main (int argc, char* argv[]) {
                 gf::Log::debug("############forfait############\n");
                 sendStartOrEnd(client1, client2, CodeRep::GAME_END, ChessStatus::SURRENDER); 
             }
-
-            //TODO pensez a venir ici si le premier client de deco avant que le client 2 se co 
-            //voir ligne  39 de ce fichier
         }
 
         client2.~TcpSocket();
