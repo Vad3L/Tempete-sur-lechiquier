@@ -6,6 +6,7 @@
 #include <gf/Vector.h>
 
 #include "../model/Chess.hpp"
+#include "../model/Card.hpp"
 
 using namespace gf::literals;
 
@@ -63,5 +64,25 @@ struct PromotionRep {
 template<typename Archive>
 Archive operator|(Archive& ar, PromotionRep& data) {
     return ar | data.err | data.pos | data.choice;
+}
+
+
+/***********************
+**********DISTRIB CARD**********
+***********************/
+struct DistribRep {
+    static constexpr gf::Id type = "DistribRep"_id;
+    CodeRep err;                   /* Code de retour */
+    std::vector<Card> hand;
+};
+
+template<typename Archive>
+Archive operator|(Archive& ar, DistribRep& data) {
+    return ar | data.err | data.hand;
+}
+
+template<typename Archive>
+Archive operator|(Archive& ar, Card& data) {
+    return ar | data.getName();
 }
 #endif // PROTOCOLE_H

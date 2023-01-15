@@ -11,10 +11,11 @@
 #include <gf/Text.h>
 #include <gf/Shapes.h>
 
+#include <vector>
 #include <iostream>
 
 #include "../GameData.hpp"
-
+#include "../../model/Deck.hpp"
 
 class CardsEntity : public gf::Entity {
     public:
@@ -27,7 +28,10 @@ class CardsEntity : public gf::Entity {
     private:
         gf::Font& m_font;
         gf::Font& m_CardsFont;
-        gf::Texture& m_chameau;
+        gf::Texture& m_ilustrationSheet;
+
+        Deck m_deck;
+        std::vector<Card> m_hand;
 
 
 };

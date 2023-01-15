@@ -1,6 +1,7 @@
 #include "AnnexFctServer.hpp"
+#include "../model/Deck.hpp"
+
 #include <csignal>
-#include <cstring>
 
 int main (int argc, char* argv[]) {
     int port = 43771;
@@ -9,7 +10,10 @@ int main (int argc, char* argv[]) {
     gf::TcpListener listener(std::to_string(port));
     
     gf::TcpSocket client1 = listener.accept();
-
+    Deck deck;
+    int nbCard = deck.getNbCardInDeck();
+    auto TwoHand = deck.distribute();
+    assert(nbCard-10 == deck.getNbCardInDeck());
     if (client1) {
         gf::Packet packetC1;
         
@@ -21,7 +25,14 @@ int main (int argc, char* argv[]) {
         if (gf::SocketStatus::Data != client1.sendPacket(packetC1)) {
             gf::Log::error("Lors de l'envoie du packet au client 1\n");
         }
-        
+
+        DistribRep distrib1;
+        distrib1.err = NONE;
+        distrib1.hand = TwoHand.first;
+        packetC1.is(distrib1);
+        client1.sendPacket(packetC1);
+
+
         gf::TcpSocket client2 = listener.accept();
         if (client2) {
             gf::Packet packetC2;
@@ -35,13 +46,19 @@ int main (int argc, char* argv[]) {
                 gf::Log::error("Lors de l'envoie du packet au client 2\n");
             }
 
+            DistribRep distrib2;
+            distrib2.err = NONE;
+            distrib2.hand = TwoHand.second;
+            packetC2.is(distrib2);
+            client2.sendPacket(packetC2);
+
 	        if(sendStartOrEnd(client1, client2, CodeRep::GAME_START) == -1) {
             	sendStartOrEnd(client1, client2, CodeRep::GAME_END, ChessStatus::SURRENDER); 
                 return -1;
             };
             
             Plateau plateau;
-	    ChessStatus gameStatus = ChessStatus::ON_GOING;
+	        ChessStatus gameStatus = ChessStatus::ON_GOING;
             bool turnPlayer1 = true;
             bool promotion = false;
             while (true) {

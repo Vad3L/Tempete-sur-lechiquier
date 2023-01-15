@@ -5,11 +5,12 @@ Card::Card () {
 	m_isPlayable = NoCardPlayable;
 }
 
-Card::Card(std::string name,std::string description,Turn turn, Effect effect){
-    m_name=name;
-    m_description=description;
-    m_turn=turn;
-    m_effect=effect;
+Card::Card(std::string name,std::string description,Turn turn, Effect effect,float id){
+    m_id = id;
+    m_name = name;
+    m_description = description;
+    m_turn = turn;
+    m_effect = effect;
     m_execute = NoCard;
     m_isPlayable = NoCardPlayable;
 }
@@ -28,3 +29,6 @@ std::string Card::getName() const{
     return m_name;
 }
 
+float Card::getId() const{
+    return m_id;
+}
