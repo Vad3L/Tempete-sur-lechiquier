@@ -154,15 +154,15 @@ void GameScene::doUpdate(gf::Time time) {
 	}
 	
 	if (m_packet.getType() == PartieRep::type) {
-		gf::Log::debug("recu serveur partie\n");
+		gf::Log::info("recu serveur partie\n");
 
         auto repPartie = m_packet.as<PartieRep>();
 		if (repPartie.err == CodeRep::GAME_START) {
-			gf::Log::debug("Jeux commence\n");
+			gf::Log::info("Jeux commence\n");
             m_gameData.m_gameStatus = ChessStatus::ON_GOING;
             
 		} else if (repPartie.err == CodeRep::GAME_END) {
-            gf::Log::debug("Jeux Fini\n");
+            gf::Log::info("Jeux Fini\n");
 
             if(repPartie.status == ChessStatus::WIN && repPartie.colorPion != m_gameData.m_myColor) {
                 m_gameData.m_gameStatus = ChessStatus::LOOSE;    
@@ -182,7 +182,7 @@ void GameScene::doUpdate(gf::Time time) {
                 m_gameData.m_phase = Phase::PAS_MON_TOUR;
             }
 
-            gf::Log::debug("Vous jouez la couleur : %i", (int)m_gameData.m_myColor);
+            gf::Log::info("Vous jouez la couleur : %i", (int)m_gameData.m_myColor);
 
             if(m_gameData.m_myColor == ChessColor::BLACK) {
                 m_boardView.setRotation(gf::Pi);
@@ -191,7 +191,7 @@ void GameScene::doUpdate(gf::Time time) {
 	}     
 
     if(m_packet.getType() == CoupRep::type) {
-        gf::Log::debug("coup recu serveur\n");
+        gf::Log::info("coup recu serveur\n");
         auto coupRep = m_packet.as<CoupRep>();
 	
         // move piece
@@ -218,8 +218,9 @@ void GameScene::doUpdate(gf::Time time) {
             if(pieceStart.getType() == ChessPiece::PAWN &&( coupRep.posEnd.y == 0 || coupRep.posEnd.y == 7)) {
                 m_promotion = true;
             }else {
-                // surement a changer
+                // a changer
                 m_gameData.m_phase = Phase::APRES_COUP;
+                
                 m_promotion = false;
             }
             
@@ -229,7 +230,7 @@ void GameScene::doUpdate(gf::Time time) {
     }
 
     if(m_packet.getType() == PromotionRep::type) {
-        gf::Log::debug("promo recu serveur\n");
+        gf::Log::info("promo recu serveur\n");
         assert(m_promotion);
 
         auto promoRep = m_packet.as<PromotionRep>();
@@ -246,11 +247,23 @@ void GameScene::doUpdate(gf::Time time) {
             }
 
             m_gameData.m_plateau.prettyPrint();
-            // surement a changer
+            // a changer
             m_gameData.m_phase = Phase::APRES_COUP;
+            
             m_promotion = false;
         }else {
             gf::Log::debug("------PROMOTION INVALIDE------\n");
+        }
+    }
+
+    if(m_packet.getType() == DistribRep::type) {
+        gf::Log::info("deck recu serveur\n");
+        
+        auto deckRep = m_packet.as<DistribRep>();
+        if(deckRep.err == CodeRep::NONE) {
+            for(int i=0; i< deckRep.hand.size(); i++) {
+                m_gameData.m_main[i] = deckRep.hand[i];
+            }
         }
     }
 }

@@ -32,20 +32,22 @@ class Card{
     private:
         std::string m_name;
         std::string m_description;
-        int m_num = 29;
+        
         Turn m_turn;
         Effect m_effect;
 
     public:
+        int m_num = 29;
 	    std::function<void(Plateau&, gf::Vector2i, gf::Vector2i)> m_execute;
 	    std::function<bool(Plateau&, Phase)> m_isPlayable;
 	
-        Card(std::string name,std::string m_description,Turn turn, Effect effect);
+        Card(std::string name,std::string m_description,Turn turn, Effect effect,int num);
         Card();
+
         Turn getTurn(); //return when we can use the card b for beforeTurn, a for after
         Effect getEffect();
         std::string getName(); // return the name of the card
-        int getNum();
+
 };
 
 #endif // CARD_H

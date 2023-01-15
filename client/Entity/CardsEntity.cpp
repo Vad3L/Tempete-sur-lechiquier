@@ -20,21 +20,31 @@ void CardsEntity::render(gf::RenderTarget &target, const gf::RenderStates &state
     // tmp
     int numberImageW = 10;
     int numberImageH = 14;
-    
+    gf::Coordinates coordsCard({1000,1000});
     gf::Vector2i sizeCard = gf::Vector2i(200,300);
     constexpr float instructionsCharacterSize = 0.075f;
-    constexpr float spaceBetweenCard = 5.f;
+    constexpr float spaceBetweenCard = 0.22f;
 
+    m_gameData.m_main[0] = Card("Chameau","Vous transformez l'un de vos Cavaliers en Chameau, et cela définitivement. Le Chameau, comme le Cavalier, peut se déplacer en sautant par-dessus les cases occupées. Mais alors que le Cavalier saute dans l'angle opposé d'un rectangle 3-2, le Chameau saute dans l'angle opposé d'un rectangle 4-3. Schéma : déplacements du Chameau.",Turn::AFTER,Effect::NONE,29);
+    m_gameData.m_main[1] = Card("Chameau","Vous transformez l'un de vos Cavaliers en Chameau, et cela définitivement. Le Chameau, comme le Cavalier, peut se déplacer en sautant par-dessus les cases occupées. Mais alors que le Cavalier saute dans l'angle opposé d'un rectangle 3-2, le Chameau saute dans l'angle opposé d'un rectangle 4-3. Schéma : déplacements du Chameau.",Turn::AFTER,Effect::NONE,29);
+    m_gameData.m_main[2] = Card("Chameau","Vous transformez l'un de vos Cavaliers en Chameau, et cela définitivement. Le Chameau, comme le Cavalier, peut se déplacer en sautant par-dessus les cases occupées. Mais alors que le Cavalier saute dans l'angle opposé d'un rectangle 3-2, le Chameau saute dans l'angle opposé d'un rectangle 4-3. Schéma : déplacements du Chameau.",Turn::AFTER,Effect::NONE,29);
+    m_gameData.m_main[3] = Card("Chameau","Vous transformez l'un de vos Cavaliers en Chameau, et cela définitivement. Le Chameau, comme le Cavalier, peut se déplacer en sautant par-dessus les cases occupées. Mais alors que le Cavalier saute dans l'angle opposé d'un rectangle 3-2, le Chameau saute dans l'angle opposé d'un rectangle 4-3. Schéma : déplacements du Chameau.",Turn::AFTER,Effect::NONE,29);
+    m_gameData.m_main[4] = Card("Chameau","Vous transformez l'un de vos Cavaliers en Chameau, et cela définitivement. Le Chameau, comme le Cavalier, peut se déplacer en sautant par-dessus les cases occupées. Mais alors que le Cavalier saute dans l'angle opposé d'un rectangle 3-2, le Chameau saute dans l'angle opposé d'un rectangle 4-3. Schéma : déplacements du Chameau.",Turn::AFTER,Effect::NONE,29);
+    
+    int cpt = 0;
     for (Card &c : m_gameData.m_main) {
-        int i = c.getNum()%numberImageW;
-        int j = c.getNum()/numberImageW;
+        if(c.m_num == -1) {
+            continue;
+        }
+        
+        int i = c.m_num%numberImageW;
+        int j = c.m_num/numberImageW;
+       
+        gf::Vector2f position = coordsCard.getRelativePoint({ -0.53f+ spaceBetweenCard*cpt, 0.3f });
 
-        gf::Coordinates coordsCard({1000,1000});
-        gf::Vector2f position = coordsCard.getRelativePoint({ -0.4f, 0.3f });
-
-        gf::RectangleShape illustration1({100.f,100.f});
+        gf::RectangleShape illustration1({sizeCard.x/1.5f, sizeCard.x/1.5f});
         illustration1.setTexture(m_cardsIllustration,gf::RectF::fromPositionSize({ (1.f / numberImageW) * i , (1.f/numberImageH) * j }, { 1.f / numberImageW, 1.f/numberImageH }));
-        illustration1.setPosition({position.x+spaceBetweenCard,position.y});
+        illustration1.setPosition({position.x+sizeCard.x/2.f,position.y+sizeCard.y/5.f});
         illustration1.setAnchor(gf::Anchor::Center);
 
 
@@ -60,6 +70,8 @@ void CardsEntity::render(gf::RenderTarget &target, const gf::RenderStates &state
         target.draw(illustration1,states);
         target.draw(cardName,states);
         target.draw(cardDescription,states);
+
+        cpt++;
     }
 }
 

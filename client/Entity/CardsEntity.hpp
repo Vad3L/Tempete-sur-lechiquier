@@ -11,11 +11,14 @@
 #include <gf/Text.h>
 #include <gf/Shapes.h>
 
+#include <vector>
 #include <iostream>
 
 #include "../GameData.hpp"
 
 struct GameData;
+
+#include "../../model/Deck.hpp"
 
 class CardsEntity : public gf::Entity {
     public:
@@ -28,6 +31,8 @@ class CardsEntity : public gf::Entity {
     private:
         gf::Font& m_cardsFont;
         gf::Texture& m_cardsIllustration;
+
+
 
         GameData m_gameData;
 
