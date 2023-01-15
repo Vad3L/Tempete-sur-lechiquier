@@ -18,7 +18,6 @@ class Deck{
 
         std::pair<std::vector<Card>,std::vector<Card>> distribute();
 
-    private:
         std::vector<Card> m_deck;
         std::vector<Card> m_discard;
 

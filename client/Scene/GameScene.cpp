@@ -42,6 +42,7 @@ GameScene::GameScene(GameHub& game)
     m_views.addView(m_cardsView);
     
 	m_views.setInitialFramebufferSize({game.getRenderer().getSize()});
+
 }
 
 void GameScene::doHandleActions([[maybe_unused]] gf::Window& window) {
@@ -154,7 +155,6 @@ void GameScene::doUpdate(gf::Time time) {
 	}
 	
 	if (m_packet.getType() == PartieRep::type) {
-		gf::Log::info("recu serveur partie\n");
 
         auto repPartie = m_packet.as<PartieRep>();
 		if (repPartie.err == CodeRep::GAME_START) {
@@ -182,7 +182,7 @@ void GameScene::doUpdate(gf::Time time) {
                 m_gameData.m_phase = Phase::PAS_MON_TOUR;
             }
 
-            gf::Log::info("Vous jouez la couleur : %i", (int)m_gameData.m_myColor);
+            gf::Log::info("Vous jouez la couleur : %i\n", (int)m_gameData.m_myColor);
 
             if(m_gameData.m_myColor == ChessColor::BLACK) {
                 m_boardView.setRotation(gf::Pi);
@@ -260,9 +260,10 @@ void GameScene::doUpdate(gf::Time time) {
         gf::Log::info("deck recu serveur\n");
         
         auto deckRep = m_packet.as<DistribRep>();
-        if(deckRep.err == CodeRep::NONE) {
-            for(int i=0; i< deckRep.hand.size(); i++) {
-                m_gameData.m_main[i] = deckRep.hand[i];
+        
+        if(deckRep.err == CodeRep::NONE) {    
+            for(int i=0; i< deckRep.hand.size(); i++) {    
+                m_gameData.m_main[i] = m_gameData.m_cards[deckRep.hand[i].m_num];
             }
         }
     }

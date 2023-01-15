@@ -1,11 +1,5 @@
 #include "Card.hpp"
 
-Card::Card () {
-	m_execute = NoCard;
-	m_isPlayable = NoCardPlayable;
-    m_num = -1;
-}
-
 Card::Card(std::string name,std::string description,Turn turn, Effect effect,int num){
     m_num = num;
     m_name = name;
@@ -16,17 +10,9 @@ Card::Card(std::string name,std::string description,Turn turn, Effect effect,int
     m_isPlayable = NoCardPlayable;
 }
 
-Turn Card::getTurn() {
-    return m_turn;
+Card::Card () {
+	gf::Log::info("jappelle\n");
+    m_execute = NoCard;
+	m_isPlayable = NoCardPlayable;
+    m_num = -1;
 }
-
-Effect Card::getEffect() {
-
-    return m_effect;
-
-}
-
-std::string Card::getName() {
-    return m_name;
-}
-

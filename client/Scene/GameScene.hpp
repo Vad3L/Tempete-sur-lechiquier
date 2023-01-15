@@ -12,7 +12,7 @@
 #include <gf/Log.h>
 
 #include <iostream>
-
+#include <map>
 
 #include "../../model/Plateau.hpp"
 #include "../../protocole/Protocole.hpp"

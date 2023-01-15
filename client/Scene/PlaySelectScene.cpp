@@ -55,8 +55,8 @@ PlaySelectScene::PlaySelectScene(GameHub& game)
     setupButton(m_ipWidget, [&] () {
         std::string ip = std::string(m_listIp[m_index].first);
 		m_game.m_network.connect(ip,"43771");
-        gf::Log::debug("Tentative de connexion  à ");
-        std::cout << ip << std::endl;
+        gf::Log::debug("Tentative de connexion  à %s\n", ip.c_str());
+
         gf::sleep(gf::milliseconds(500));
         
         if(m_game.m_network.isConnected()){

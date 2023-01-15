@@ -8,10 +8,10 @@
 #include "../model/Chess.hpp"
 #include "../model/Plateau.hpp"
 #include "../model/GamePhase.hpp"
+#include "../model/Deck.hpp"
 
 #define GAME_DATADIR "../data/"
 #define GAME_CONFIGDIR "../config/"
-
 
 struct GameData {
     GameData();
@@ -23,6 +23,7 @@ struct GameData {
     ChessStatus m_gameStatus;
     int m_style;
     std::array<Card, 5> m_main;
+    std::map<int , Card> m_cards;
 };
 
 

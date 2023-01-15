@@ -29,24 +29,18 @@ enum class Effect{ // emum pour determiner dans quelle phase allons nous nous tr
 };
 
 class Card{
-    private:
+    public:
         std::string m_name;
         std::string m_description;
         
         Turn m_turn;
         Effect m_effect;
-
-    public:
-        int m_num = 29;
+        int m_num;
 	    std::function<void(Plateau&, gf::Vector2i, gf::Vector2i)> m_execute;
 	    std::function<bool(Plateau&, Phase)> m_isPlayable;
-	
+
         Card(std::string name,std::string m_description,Turn turn, Effect effect,int num);
         Card();
-
-        Turn getTurn(); //return when we can use the card b for beforeTurn, a for after
-        Effect getEffect();
-        std::string getName(); // return the name of the card
 
 };
 

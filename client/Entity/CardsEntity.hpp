@@ -34,7 +34,7 @@ class CardsEntity : public gf::Entity {
 
 
 
-        GameData m_gameData;
+        GameData &m_gameData;
 
 };
 

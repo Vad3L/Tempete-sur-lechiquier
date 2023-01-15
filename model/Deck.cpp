@@ -2,9 +2,16 @@
 
 Deck::Deck(){
 
-    Card c1("Chameau","Vous transformez l'un de vos Cavaliers en Chameau, et cela définitivement. Le Chameau, comme le Cavalier, peut se déplacer en sautant par-dessus les cases occupées. Mais alors que le Cavalier saute dans l'angle opposé d'un rectangle 3-2, le Chameau saute dans l'angle opposé d'un rectangle 4-3. Schéma : déplacements du Chameau.",Turn::AFTER,Effect::NONE,29);
-    c1.m_execute = Chameau;
-    c1.m_isPlayable = ChameauIsPlayable;
+    for(int i=0; i<10; i++) {
+        Card c1("Chameau","Vous transformez l'un de vos Cavaliers en Chameau, et cela définitivement. Le Chameau, comme le Cavalier, peut se déplacer en sautant par-dessus les cases occupées. Mais alors que le Cavalier saute dans l'angle opposé d'un rectangle 3-2, le Chameau saute dans l'angle opposé d'un rectangle 4-3. Schéma : déplacements du Chameau.",Turn::AFTER,Effect::NONE,29);
+        c1.m_execute = Chameau;
+        c1.m_isPlayable = ChameauIsPlayable;
+        Card c11("Quatre coins","Si trois des quatres coins de l'échiquier sont occupés, vous pouvez amener une de vos pièces, de votre choix, dans le quatrième coin",Turn::BEFORE,Effect::REPLACE_COUP,0);
+        c11.m_execute = QuatreCoin;
+        c11.m_isPlayable = QuatreCoinIsPlayable;
+        m_deck.push_back(c1);
+        m_deck.push_back(c11);
+    }
 
     //Card c2("Coup d'etat","Votre Roi devient un simple Prince. Il continue à se déplacer comme auparavant, mais n'est désormais qu'une pièce ordinaire,pouvant être prise. Une autre pièce (sauf Dame ou Tour !), qui conserve également toutes ses capacités de déplacement, s'empare du pouvoir. C'est cette nouvelle pièce <<Royale>> que votre adversaire devra mater",Turn::AFTER,Effect::NONE,0.f);
     //Card c3("Pas question !","Cette carte annule toute autre carte.",Turn::DURING,Effect::CANCELCARD,0.f);
@@ -15,16 +22,12 @@ Deck::Deck(){
     //Card c8("Favori","Vous pouvez à ce coup déplacer n'importe laquelle de vos pièces (sauf un pion) à la manière d'une Dame, mais vous ne pouvez pas ainsi prendre une pièce adverse.",Turn::REPLACE,Effect::NONE,0.f);
     //Card c9("Bombe Atomique","Si la pièce (ou le Pion) que vous venez de déplacer n'a pas pris une pièce adverse, vous pouvez faire \"exploser\" cette pièce. Elle est alors retirée du jeu, ainsi que toutes les autres pièces, quelles que soient leur couleur, qui se trouvent sur les huit case adjacentes. Les Rois ne sont pas affectés par les explosions nucléaires.",Turn::AFTER,Effect::NONE,16.f);
     //Card c10("Piège","En jouant cette carte, vous séléctionnez une case sur l'échiquier vide ou occupée par une de vos pièces. Dès qu'une pièce adverse s'arrête sur cette case, elle tombe dans une trappe et est retirée du jeu (s'il s'agit du Roi, la trappe est actionnée, mais le Roi reste sur la case).",Turn::AFTER,Effect::CHOOSECASE,0.f);
-    Card c11("Quatre coins","Si trois des quatres coins de l'échiquier sont occupés, vous pouvez amener une de vos pièces, de votre choix, dans le quatrième coin",Turn::BEFORE,Effect::REPLACE_COUP,0);
-    c11.m_execute = QuatreCoin;
-    c11.m_isPlayable = QuatreCoinIsPlayable;
-    
     //Card c12("Exil","Vous remettez sur la case, ou sur l'une des cases où elle pouvait se trouver en début de partie, une pièce adverse de votre choix.",Turn::AFTER,Effect::CHOOSECASE,0.f);
 
     
     
     //We add cards in deck
-    m_deck.push_back(c1);
+    //m_deck.push_back(c1);
     //m_deck.push_back(c2);
     //m_deck.push_back(c5);
     //m_deck.push_back(c6);
@@ -70,7 +73,7 @@ void Deck::shuffle(){
 void Deck::displayDeck() {
 
     for(Card &card : m_deck){
-        std::cout << card.getName() << std::endl;
+        std::cout << card.m_name << std::endl;
     }
 }
 
