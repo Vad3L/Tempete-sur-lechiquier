@@ -63,7 +63,7 @@ void TableBoardEntity::render(gf::RenderTarget &target, const gf::RenderStates &
         gf::Text text(letters[7 - incr], m_font);
         
         text.setScale(0.5f);
-        text.setPosition({coords.getRelativePoint({-0.305f + (i-1) * 0.084f, 0.37f})});
+        text.setPosition({coords.getRelativePoint({-0.29f + (i-1) * 0.08f, 0.37f})});
         
         if(m_gameData.m_style == 0) {
             text.setColor(gf::Color::fromRgba32(238,198,108));
@@ -75,7 +75,7 @@ void TableBoardEntity::render(gf::RenderTarget &target, const gf::RenderStates &
 
         // number   
         text.setString(std::to_string(incr+1));
-        text.setPosition(coords.getRelativePoint({-0.37f, -0.285f + (i-1) * 0.084f}));
+        text.setPosition(coords.getRelativePoint({-0.37f, -0.27f + (i-1) * 0.08f}));
         
         target.draw(text, states);
         (m_gameData.m_myColor == ChessColor::WHITE) ? incr-- : incr++; 

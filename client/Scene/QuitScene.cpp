@@ -7,8 +7,8 @@ QuitScene::QuitScene(GameHub& game)
 , m_upAction("UpAction")
 , m_downAction("DownAction")
 , m_triggerAction("TriggerAction")
-, m_resumeButton("Resume game", game.resources.getFont("fonts/Trajan-Color-Concept.otf"))
-, m_quitButton("Main menu", game.resources.getFont("fonts/Trajan-Color-Concept.otf"))
+, m_resumeButton("Reprendre", game.resources.getFont("fonts/Trajan-Color-Concept.otf"))
+, m_quitButton("Menu", game.resources.getFont("fonts/Trajan-Color-Concept.otf"))
 {
     setClearColor(gf::Color::Black);
 

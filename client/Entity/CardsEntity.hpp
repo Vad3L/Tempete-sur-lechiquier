@@ -15,6 +15,7 @@
 
 #include "../GameData.hpp"
 
+struct GameData;
 
 class CardsEntity : public gf::Entity {
     public:
@@ -25,10 +26,10 @@ class CardsEntity : public gf::Entity {
 
         int getCardSelected(gf::Vector2i sizeWindows, gf::Vector2i mouseCoord);
     private:
-        gf::Font& m_font;
-        gf::Font& m_CardsFont;
-        gf::Texture& m_chameau;
+        gf::Font& m_cardsFont;
+        gf::Texture& m_cardsIllustration;
 
+        GameData m_gameData;
 
 };
 

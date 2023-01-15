@@ -14,17 +14,20 @@ Card::Card(std::string name,std::string description,Turn turn, Effect effect){
     m_isPlayable = NoCardPlayable;
 }
 
-Turn Card::getTurn() const{
+Turn Card::getTurn() {
     return m_turn;
 }
 
-Effect Card::getEffect() const{
+Effect Card::getEffect() {
 
     return m_effect;
 
 }
 
-std::string Card::getName() const{
+std::string Card::getName() {
     return m_name;
 }
 
+int Card::getNum() {
+    return m_num;
+}

@@ -11,11 +11,12 @@ PlaySelectScene::PlaySelectScene(GameHub& game)
 , m_quitAction("QuitAction")
 , m_fullscreenAction("FullscreenAction")
 , m_PlayTitleEntity(game.resources)
-, m_ipWidget("127.0.0.1", game.resources.getFont("fonts/Trajan-Color-Concept.otf"))
+, m_ipWidget("pas de serveur", game.resources.getFont("fonts/Trajan-Color-Concept.otf"))
 , m_connectAction("ConnectAction")
 , m_index(0)
 , m_leftWidget("<", game.resources.getFont("fonts/DejaVuSans.ttf"))
 , m_rightWidget(">", game.resources.getFont("fonts/DejaVuSans.ttf"))
+, m_listIp()
 {
     setClearColor(gf::Color::Black);
     addHudEntity(m_PlayTitleEntity);
@@ -52,12 +53,11 @@ PlaySelectScene::PlaySelectScene(GameHub& game)
     };
 
     setupButton(m_ipWidget, [&] () {
-        std::string ip = std::string(m_ipWidget.getString());
+        std::string ip = std::string(m_listIp[m_index].first);
 		m_game.m_network.connect(ip,"43771");
-        gf::Log::debug("Tentative de connexion :");
+        gf::Log::debug("Tentative de connexion  à ");
         std::cout << ip << std::endl;
         gf::sleep(gf::milliseconds(500));
-
         
         if(m_game.m_network.isConnected()){
             gf::Log::debug("Connexion réussie\n");
@@ -183,16 +183,16 @@ void PlaySelectScene::changeRightLeft(bool value) {
     m_PlayTitleEntity.m_errorText.setString(" ");
     if(value){
         if(m_index+1 < m_listIp.size()){
-            m_ipWidget.setString(m_listIp[m_index+1]);
+            m_ipWidget.setString(m_listIp[m_index+1].second);
             m_index++;
         }
     }else{
         if(m_index-1 >= 0){
-            m_ipWidget.setString(m_listIp[m_index-1]);
+            m_ipWidget.setString(m_listIp[m_index-1].second);
             m_index--;
         }
     }
-
+    
 }
 
 void PlaySelectScene::onActivityChange(bool active){
@@ -202,19 +202,31 @@ void PlaySelectScene::onActivityChange(bool active){
         gf::Log::debug("Scene active\n");
         std::ifstream file(std::string(GAME_CONFIGDIR)+"IpList.txt");
 
+        std::string delimiter = ";";
+
         if (!file) {
             gf::Log::error("Impossible d'ouvrir le fichier.\n");
         }else{
             std::string line;
             m_listIp.clear();
+        
             std::regex pattern(R"(^((25[0-5]|(2[0-4]|1\d|[1-9]|)\d).?\b){4}$)");
+            std::size_t i = 0;
+            
             while (std::getline(file, line)) {
-                if(std::regex_search(line, pattern)){
-                    m_listIp.push_back(line);
+                std::size_t index = line.find(delimiter);
+                std::string nameServer = line.substr(0, index);
+                std::string ip = line.substr(index+1);
+                if(std::regex_search(ip, pattern)) {
+                    m_listIp.insert({i, std::make_pair(ip, nameServer)});
+                    i++;
                 }
             }
-            m_ipWidget.setString(m_listIp[0]);
-
+            
+            if(m_listIp.size()>0) {
+                m_ipWidget.setString(m_listIp[0].second);
+            }
+            
             file.close();
         }
     }

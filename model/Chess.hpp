@@ -6,7 +6,7 @@ enum class Phase {
     COUP,
     APRES_COUP,
     PAS_MON_TOUR,
-    CLIQUER_UNE_CASE
+    CLIQUER_CASES // plateau ou pioche // phase de chosir case pcq on a jouer une carte qui' nous l'inmpose
 }; 
 
 enum class ChessStatus {

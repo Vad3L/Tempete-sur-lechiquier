@@ -49,7 +49,7 @@ class PlaySelectScene : public gf::Scene {
 
         gf::WidgetContainer m_widgets;
         gf::TextButtonWidget m_ipWidget;
-        std::vector<std::string> m_listIp;
+        std::map<int, std::pair<std::string, std::string>> m_listIp; // IP et nameServer (adreese est unique)
         int m_index;
         
 };

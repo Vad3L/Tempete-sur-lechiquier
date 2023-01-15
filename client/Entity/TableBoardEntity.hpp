@@ -17,7 +17,7 @@
 #include "../../model/Chess.hpp"
 #include "../GameData.hpp"
 
-struct GameDate;
+struct GameData;
 
 class TableBoardEntity: public gf::Entity {
     public:

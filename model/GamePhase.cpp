@@ -5,8 +5,9 @@ GamePhase::GamePhase(){
     currentPhase=Phase::AVANT_COUP;
 }
 
+// next phase plutot ?????
 void GamePhase::traiterCard(Card carte){
-    Turn tour = carte.getTurn();
+    /*Turn tour = carte.getTurn();
     Effect effet = carte.getEffect();
 
     switch (currentPhase){
@@ -49,5 +50,5 @@ void GamePhase::traiterCard(Card carte){
         break;
 
     }
-   
+   */
 }

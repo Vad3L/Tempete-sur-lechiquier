@@ -1,12 +1,10 @@
 #include "Deck.hpp"
 
 Deck::Deck(){
-
+    /*
     //Create cards
     Card c1("Chameau","Vous transformez l'un de vos Cavaliers en Chameau, et cela définitivement. Le Chameau, comme le Cavalier, peut se déplacer en sautant par-dessus les cases occupées. Mais alors que le Cavalier saute dans l'angle opposé d'un rectangle 3-2, le Chameau saute dans l'angle opposé d'un rectangle 4-3. Schéma : déplacements du Chameau.",Turn::AFTER,Effect::CHOOSECASE);
     Card c2("Coup d'etat","Votre Roi devient un simple Prince. Il continue à se déplacer comme auparavant, mais n'est désormais qu'une pièce ordinaire,pouvant être prise. Une autre pièce (sauf Dame ou Tour !), qui conserve également toutes ses capacités de déplacement, s'empare du pouvoir. C'est cette nouvelle pièce <<Royale>> que votre adversaire devra mater",Turn::AFTER,Effect::NONE);
-    Card c3("Pas question !","Cette carte annule toute autre carte.",Turn::DURING,Effect::CANCELCARD);
-    Card c4("Niet.","Cette carte annule toute autre carte.",Turn::DURING,Effect::CANCELCARD);
     Card c5("Charge","Avancez tous ceux de vos Pions que vous voulez et qui le peuvent d'une case.",Turn::REPLACE,Effect::NONE);
     Card c6("Banzai","Vous avancez un de vos Pions de 3 cases (aucune prise en passant ne sera possible).",Turn::REPLACE,Effect::NONE);
     Card c7("Amphetamines","Le fou que vous venez de déplacer peut rejouer à nouveau, tout de suite, s'il ne vient pas de prendre une pièce adverse.", Turn::AFTER,Effect::NONE);
@@ -23,8 +21,6 @@ Deck::Deck(){
     //We add cards in deck
     m_deck.push_back(c1);
     m_deck.push_back(c2);
-    m_deck.push_back(c3);
-    m_deck.push_back(c4);
     m_deck.push_back(c5);
     m_deck.push_back(c6);
     m_deck.push_back(c7);
@@ -33,7 +29,7 @@ Deck::Deck(){
     m_deck.push_back(c10);
     m_deck.push_back(c11);
     m_deck.push_back(c12);
-
+    */
     shuffle();
     displayDeck();
 }
@@ -50,9 +46,7 @@ void Deck::drop(Card m_card){
 }
 
 void Deck::swap(Card &a, Card &b){
-    Card tmp=a;
-    a=b;
-    b=tmp;
+    std::swap(a, b);
 }
 
 void Deck::shuffle(){
@@ -68,11 +62,9 @@ void Deck::shuffle(){
     }
 }
 
-void Deck::displayDeck() const{
+void Deck::displayDeck() {
 
-    for(const Card &card : m_deck){
+    for(Card &card : m_deck){
         std::cout << card.getName() << std::endl;
     }
-        
-    
 }

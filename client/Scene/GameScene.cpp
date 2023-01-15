@@ -28,13 +28,13 @@ GameScene::GameScene(GameHub& game)
   	addAction(m_texture2Action);
 
 	m_boardView = gf::ExtendView({ 0, 0 }, { 403, 403 });
-	m_boardView.setViewport(gf::RectF::fromPositionSize({ 0.1f, 0.1f}, { 0.4f, 0.4f }));
+	m_boardView.setViewport(gf::RectF::fromPositionSize({ 0.275f, 0.125f}, { 0.45f, 0.45f }));
 
     m_tableBoardView = gf::ExtendView({ 0, 0 }, { 500, 500 });
-	m_tableBoardView.setViewport(gf::RectF::fromPositionSize({ 0.f, 0.f}, { 0.6f, 0.6f }));
+	m_tableBoardView.setViewport(gf::RectF::fromPositionSize({ 0.15f, 0.0f}, { 0.7f, 0.7f }));
 
     m_cardsView = gf::ExtendView({ 0, 0 }, { 1000, 1000 });
-	m_cardsView.setViewport(gf::RectF::fromPositionSize({ 0.f, 0.f}, { 0.9f, 0.9f }));
+	m_cardsView.setViewport(gf::RectF::fromPositionSize({ 0.f, 0.f}, { 0.99f, 0.99f }));
 
 
 	m_views.addView(m_boardView);
@@ -79,11 +79,23 @@ void GameScene::doProcessEvent(gf::Event& event) {
         break;
     }
     
-    int numCarte = m_cardsEntity.getCardSelected(m_cardsView.getSize(), m_game.getRenderer().mapPixelToCoords(event.mouseButton.coords, m_cardsView));
-    bool playable = m_gameData.m_main[numCarte].m_isPlayable(m_gameData.m_plateau, m_gameData.m_phase);
+    if(!click) {
+        return;
+    }
+
+    if(m_gameData.m_phase == Phase::APRES_COUP) {
+        int numCarte = m_cardsEntity.getCardSelected(m_cardsView.getSize(), m_game.getRenderer().mapPixelToCoords(event.mouseButton.coords, m_cardsView));
+        bool playable = m_gameData.m_main[numCarte].m_isPlayable(m_gameData.m_plateau, m_gameData.m_phase);
+        
+        gf::Log::info("carte %i iest jouable %i \n", numCarte, playable);
+        if(playable) {
+            m_gameData.m_main[numCarte].m_execute(m_gameData.m_plateau, gf::Vector2i(1), gf::Vector2i(1));
+            m_gameData.m_phase = Phase::PAS_MON_TOUR;
+        }
+    }
     
 
-    if(m_gameData.m_phase==Phase::COUP && click) { 
+    if(m_gameData.m_phase==Phase::COUP || m_gameData.m_phase==Phase::AVANT_COUP) { 
         gf::Vector2i v = m_boardEntity.getCaseSelected(m_boardView.getSize(), m_game.getRenderer().mapPixelToCoords(event.mouseButton.coords, m_boardView));
         if(v.x == -1 || v.y == -1) {
 		    return;
@@ -206,7 +218,8 @@ void GameScene::doUpdate(gf::Time time) {
             if(pieceStart.getType() == ChessPiece::PAWN &&( coupRep.posEnd.y == 0 || coupRep.posEnd.y == 7)) {
                 m_promotion = true;
             }else {
-                //m_gameData.m_myTurn = !m_gameData.m_myTurn;
+                // surement a changer
+                m_gameData.m_phase = Phase::APRES_COUP;
                 m_promotion = false;
             }
             
@@ -233,7 +246,8 @@ void GameScene::doUpdate(gf::Time time) {
             }
 
             m_gameData.m_plateau.prettyPrint();
-            //m_gameData.m_myTurn = !m_gameData.m_myTurn;
+            // surement a changer
+            m_gameData.m_phase = Phase::APRES_COUP;
             m_promotion = false;
         }else {
             gf::Log::debug("------PROMOTION INVALIDE------\n");
@@ -246,6 +260,7 @@ void GameScene::onActivityChange(bool active) {
     if(active && !isPaused()){
         gf::Log::debug("scene game active\n");
         m_views.setInitialFramebufferSize(m_game.getRenderer().getSize());
+        
     }else if(!active && isPaused()){
         gf::Log::debug("scene game desactive\n");
         m_game.m_network.deconnect();

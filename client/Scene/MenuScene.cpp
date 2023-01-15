@@ -11,9 +11,9 @@ MenuScene::MenuScene(GameHub& game)
 , m_triggerAction("TriggerAction")
 , m_quitAction("Quit")
 , m_fullscreenAction("Fullscreen")
-, m_play("Play", game.resources.getFont("fonts/Trajan-Color-Concept.otf"))
-, m_rules("Rules", game.resources.getFont("fonts/Trajan-Color-Concept.otf"))
-, m_quit("Quit", game.resources.getFont("fonts/Trajan-Color-Concept.otf"))
+, m_play("Jouer", game.resources.getFont("fonts/Trajan-Color-Concept.otf"))
+, m_rules("Regles", game.resources.getFont("fonts/Trajan-Color-Concept.otf"))
+, m_quit("Quitter", game.resources.getFont("fonts/Trajan-Color-Concept.otf"))
 {
 	setClearColor(gf::Color::Black);
 
@@ -122,7 +122,7 @@ void MenuScene::doRender(gf::RenderTarget& target, const gf::RenderStates &state
 	const unsigned resumeCharacterSize = coords.getRelativeCharacterSize(characterSize);
 
 	m_play.setCharacterSize(resumeCharacterSize);
-	m_play.setPosition(coords.getRelativePoint({0.275f, 0.425f}));
+	m_play.setPosition(coords.getRelativePoint({0.275f, 0.41f}));
 	m_play.setParagraphWidth(paragraphWidth);
 	m_play.setPadding(paddingSize);
 

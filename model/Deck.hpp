@@ -2,13 +2,17 @@
 #define DECK_H
 
 #include <vector>
+#include <fstream>
+#include <string>
 
 #include "Card.hpp"
+
+#define CARDS_DESCRIPTIONDIR "../model"
 
 class Deck{
     public:
         Deck();
-        void displayDeck() const;
+        void displayDeck();
     private:
         std::vector<Card> m_deck;
         std::vector<Card> m_discard;

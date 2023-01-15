@@ -4,9 +4,9 @@
 
 
 CardsEntity::CardsEntity(gf::ResourceManager& resources,GameData &gameData)
-: m_font(resources.getFont("fonts/Trajan-Color-Concept.otf"))
-, m_CardsFont(resources.getFont("fonts/DejaVuSans.ttf"))
-,m_chameau(resources.getTexture("images/chameau.png"))
+: m_cardsFont(resources.getFont("fonts/DejaVuSans.ttf"))
+,m_cardsIllustration(resources.getTexture("images/CardIlustrationSheet.png"))
+,m_gameData(gameData)
 {
 
 }
@@ -17,42 +17,50 @@ void CardsEntity::update([[maybe_unused]] gf::Time time) {
 
 
 void CardsEntity::render(gf::RenderTarget &target, const gf::RenderStates &states){
+    // tmp
+    int numberImageW = 10;
+    int numberImageH = 14;
+    
+    gf::Vector2i sizeCard = gf::Vector2i(200,300);
+    constexpr float instructionsCharacterSize = 0.075f;
+    constexpr float spaceBetweenCard = 5.f;
 
-    gf::Coordinates coordsCard(target);
-    gf::Vector2f position = coordsCard.getRelativePoint({ -0.2f, 0.15f });
+    for (Card &c : m_gameData.m_main) {
+        int i = c.getNum()%numberImageW;
+        int j = c.getNum()/numberImageW;
 
-    gf::RectangleShape illustration1({100.f,100.f});
-    illustration1.setTexture(m_chameau,gf::RectF::fromPositionSize({0.f,0.f},{1.f,1.f}));
-    illustration1.setPosition({position.x+100,position.y+50});
-    illustration1.setAnchor(gf::Anchor::Center);
+        gf::Coordinates coordsCard({1000,1000});
+        gf::Vector2f position = coordsCard.getRelativePoint({ -0.4f, 0.3f });
 
-
-
-    gf::RoundedRectangleShape card1({ 200.f , 300.f});
-    card1.setColor(gf::Color::White);
-    card1.setRadius(10);
-    card1.setOutlineColor(gf::Color::Black);
-    card1.setPosition(position);
+        gf::RectangleShape illustration1({100.f,100.f});
+        illustration1.setTexture(m_cardsIllustration,gf::RectF::fromPositionSize({ (1.f / numberImageW) * i , (1.f/numberImageH) * j }, { 1.f / numberImageW, 1.f/numberImageH }));
+        illustration1.setPosition({position.x+spaceBetweenCard,position.y});
+        illustration1.setAnchor(gf::Anchor::Center);
 
 
-    unsigned instructionsCharacterSize = coordsCard.getRelativeCharacterSize(0.01f)*2;
+        gf::RoundedRectangleShape card(sizeCard);
+        card.setColor(gf::Color::White);
+        card.setRadius(22);
+        card.setOutlineColor(gf::Color::Black);
+        card.setPosition(position);
 
-    gf::Text card1Name("Chameau", m_CardsFont, instructionsCharacterSize);
-    card1Name.setColor(gf::Color::Black);
-    card1Name.setPosition({position.x+100, position.y+110});
-    card1Name.setAnchor(gf::Anchor::Center);
 
-    gf::Text card1Description("Vous transformez l'un de vos Cavaliers en Chameau, et cela définitivement.", m_CardsFont, instructionsCharacterSize/1.5);
-    card1Description.setColor(gf::Color::Black);
-    card1Description.setPosition({position.x+10, position.y+150});
-    card1Description.setParagraphWidth(200-20);
-    card1Description.setAlignment(gf::Alignment::Center);
+        gf::Text cardName("Chameau", m_cardsFont, instructionsCharacterSize);
+        cardName.setColor(gf::Color::Black);
+        cardName.setPosition({position.x, position.y});
+        cardName.setAnchor(gf::Anchor::Center);
 
-    target.draw(card1,states);
-    target.draw(illustration1,states);
-    target.draw(card1Name,states);
-    target.draw(card1Description,states);
+        gf::Text cardDescription("Vous transformez l'un de vos Cavaliers en Chameau, et cela définitivement.", m_cardsFont, instructionsCharacterSize/1.5);
+        cardDescription.setColor(gf::Color::Black);
+        cardDescription.setPosition({position.x, position.y});
+        cardDescription.setParagraphWidth(200-20);
+        cardDescription.setAlignment(gf::Alignment::Center);
 
+        target.draw(card,states);
+        target.draw(illustration1,states);
+        target.draw(cardName,states);
+        target.draw(cardDescription,states);
+    }
 }
 
 int CardsEntity::getCardSelected(gf::Vector2i sizeWindows, gf::Vector2i mouseCoord) {

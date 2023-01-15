@@ -5,7 +5,9 @@ bool NoCardPlayable (Plateau& p, Phase f) { return false; }
 
 void Chameau (Plateau& p, gf::Vector2i s, gf::Vector2i e) {
 	inBoard(s);
-	Case c = p.state[s.y * 8 + s.x];
+	gf::Vector2i pos = p.lastCoup[p.lastCoup.size() - 1];
+
+	Case &c = p.state[pos.y * 8 + pos.x];
 	ChessColor clr = c.piece.getColor();
 	c.piece = Piece(clr, ChessPiece::CAMEL);
 }
@@ -14,7 +16,7 @@ bool ChameauIsPlayable (Plateau& p, Phase f) {
 	if (f != Phase::APRES_COUP) {
 		return false;
 	}
-
+	
 	gf::Vector2i pos = p.lastCoup[p.lastCoup.size() - 1];
 	Case c = p.state[pos.y * 8 + pos.x];
 	if (c.piece.getType() == ChessPiece::KNIGHT) {
@@ -26,8 +28,8 @@ bool ChameauIsPlayable (Plateau& p, Phase f) {
 void QuatreCoin (Plateau& p, gf::Vector2i s, gf::Vector2i e) {
 	inBoard(s);
 	inBoard(e);
-	Case c = p.state[s.y * 8 + s.x];
-	Case d = p.state[e.y * 8 + e.x];
+	Case &c = p.state[s.y * 8 + s.x];
+	Case &d = p.state[e.y * 8 + e.x];
 	d.piece = c.piece;
 	c.piece = Piece(ChessColor::NONE, ChessPiece::NONE);
 }
