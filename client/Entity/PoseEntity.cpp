@@ -22,7 +22,25 @@ void PoseEntity::render(gf::RenderTarget &target, const gf::RenderStates &states
     
     gf::RoundedRectangleShape contour(sizeCard);
     contour.setColor(gf::Color::fromRgba32(0.f, 0.f, 0.f, 0.f));
-    contour.setOutlineColor(gf::Color::Yellow);
+    
+    switch (m_gameData.m_phase.getCurrentPhase()) {
+        case Phase::AVANT_COUP :
+            contour.setOutlineColor(gf::Color::Violet);
+            break;
+        case Phase::APRES_COUP :
+            contour.setOutlineColor(gf::Color::Yellow);
+            break;
+        case Phase::PAS_MON_TOUR:
+            contour.setOutlineColor(gf::Color::Cyan);
+            break;
+        default :
+            contour.setOutlineColor(gf::Color::White);
+            break;
+    }
+    if(m_gameData.m_gameStatus != ChessStatus::ON_GOING) {
+        contour.setOutlineColor(gf::Color::White);
+    }
+    
     contour.setOutlineThickness(6.f);
     contour.setRadius(22);
     contour.setPosition(position);

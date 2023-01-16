@@ -31,6 +31,7 @@ class PoseEntity : public gf::Entity {
         gf::Font& m_poseNameFont;
 
         GameData &m_gameData;
+        Card m_cardPose;
 };
 
 

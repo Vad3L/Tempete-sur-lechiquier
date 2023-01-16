@@ -2,10 +2,11 @@
 #define DECK_H
 
 #include <vector>
+#include <fstream>
 
 #include "Card.hpp"
 
-#define CARDS_DESCRIPTIONDIR "../model"
+#define CARDS_DESCRIPTIONDIR "../data/"
 
 class Deck{
     public:

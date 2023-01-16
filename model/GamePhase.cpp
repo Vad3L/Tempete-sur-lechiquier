@@ -36,13 +36,8 @@ void GamePhase::nextPhaseBtn() {
     if(m_currentPhase == Phase::PAS_MON_TOUR) {
         return;
     }
-    
+     
     if(m_currentPhase == Phase::APRES_COUP) { // tour suivant on vaut pas jouer de carte
         m_currentPhase = Phase::PAS_MON_TOUR;
     } 
-
-    if(m_currentPhase == Phase::CLIQUER_CASES) { 
-        //
-    } 
-
 }

@@ -54,16 +54,16 @@ void MainEntity::render(gf::RenderTarget &target, const gf::RenderStates &states
         rect.setAnchor(gf::Anchor::Center);
         switch (c.m_turn) {
             case Turn::BEFORE:
-                rect.setColor(gf::Color::Chartreuse);
+                rect.setColor(gf::Color::Violet);
                 break;
             case Turn::AFTER:
                 rect.setColor(gf::Color::Yellow);
                 break;
             case Turn::BOTH:
-                rect.setColor(gf::Color::Green  );
+                rect.setColor(gf::Color::Green);
                 break;
             case Turn::DURING_TOUR_ADVERSE:
-                rect.setColor(gf::Color::Blue);
+                rect.setColor(gf::Color::Cyan);
                 break;
         }
 
