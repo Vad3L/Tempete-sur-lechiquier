@@ -70,7 +70,9 @@ int main (int argc, char* argv[]) {
                     if ((gameStatus = plateau.isGameOver(ChessColor::WHITE)) != ChessStatus::ON_GOING) {
                         break;
                     }
-
+                    if(sendStartTurn(client1) == -1){
+                        break;
+                    }
                     if(performAction(plateau, client1, client2, turnPlayer1, promotion) == -1) {
                         break;
                     }
@@ -79,7 +81,9 @@ int main (int argc, char* argv[]) {
                     if ((gameStatus = plateau.isGameOver(ChessColor::BLACK)) != ChessStatus::ON_GOING) {
                         break;
                     }
-
+                    if(sendStartTurn(client2) == -1){
+                        break;
+                    }
                     if(performAction(plateau, client1, client2, turnPlayer1, promotion) == -1) {
                         break;
                     }

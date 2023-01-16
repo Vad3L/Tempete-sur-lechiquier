@@ -257,3 +257,15 @@ int sendStartOrEnd (gf::TcpSocket& a, gf::TcpSocket& b, CodeRep code, ChessStatu
     return ret;
 }
 
+void sendStartTurn (gf::TcpSocket& a){
+    gf::Packet packet;
+
+    PartieRep debut;
+    debut.err = TURN_START;
+    packet.is(debut);
+
+    if (gf::SocketStatus::Data != a.sendPacket(packet)) {
+		gf::Log::error("Lors de l'envoie du packet de debut de tour\n");
+        ret = -1;
+	}
+}
