@@ -65,7 +65,7 @@ GameScene::GameScene(GameHub& game)
     };
     setupButton(m_endTurn, [&] () {
 		gf::Log::debug("EndTurn pressed!\n");
-		
+		m_gameData.m_phase.nextPhaseBtn();
 	});
 
 
@@ -133,7 +133,7 @@ void GameScene::doProcessEvent(gf::Event& event) {
             gf::Log::info("carte %i iest jouable %i \n", numCarte, playable);
             if(playable) {
                 m_gameData.m_main[numCarte].m_execute(m_gameData.m_plateau, gf::Vector2i(1), gf::Vector2i(1));
-                m_gameData.m_phase.setCurrentPhase(Phase::PAS_MON_TOUR);
+                //m_gameData.m_phase.setCurrentPhase(Phase::PAS_MON_TOUR);
             }
         }
     }
@@ -235,6 +235,9 @@ void GameScene::doUpdate(gf::Time time) {
             if(m_gameData.m_myColor == ChessColor::BLACK) {
                 m_boardView.setRotation(gf::Pi);
             }
+        }else if(repPartie.err == CodeRep::TURN_START) {
+            gf::Log::info("mon tour commence\n");
+            m_gameData.m_phase.setCurrentPhase(Phase::AVANT_COUP);
         }
 	}     
 

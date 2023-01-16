@@ -15,7 +15,8 @@ typedef enum {
     COLOR,    
     COUP_NO_VALIDE,      
     GAME_START,
-    GAME_END
+    GAME_END,
+    TURN_START
 } CodeRep;
 
 /* struct pos d'une pièce*/
