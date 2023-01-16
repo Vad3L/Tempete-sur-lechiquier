@@ -10,6 +10,8 @@
 #include <gf/Sleep.h>
 #include <gf/Color.h>
 #include <gf/Log.h>
+#include <gf/WidgetContainer.h>
+#include <gf/Widgets.h>
 
 #include <iostream>
 #include <map>
@@ -37,6 +39,7 @@ class GameScene : public gf::Scene {
         void doProcessEvent(gf::Event& event) override;
         void doRender(gf::RenderTarget& target, const gf::RenderStates &states) override;
         void doUpdate(gf::Time time) override;
+        void doShow() override;
 
         void onActivityChange(bool active)  override;
     private:
@@ -63,7 +66,14 @@ class GameScene : public gf::Scene {
         BoardEntity m_boardEntity;    
         TableBoardEntity m_tableBoardEntity;
         MainEntity m_mainEntity;
-        
+
+
+        gf::TextButtonWidget m_endTurn;
+
+        gf::WidgetContainer m_widgets;
+
+        gf::Action m_triggerAction;
+
 };  
 
 

@@ -13,6 +13,8 @@ GameScene::GameScene(GameHub& game)
 , m_tableBoardEntity(game.resources, m_gameData)
 , m_poseEntity(game.resources, m_gameData)
 , m_promotion(false)
+, m_endTurn("Fin du Tour", game.resources.getFont("fonts/Trajan-Color-Concept.otf"))
+, m_triggerAction("TriggerAction")
 {
     setClearColor(gf::Color::Black);
     
@@ -42,7 +44,33 @@ GameScene::GameScene(GameHub& game)
     m_views.addView(m_cardsView);
 
 	m_views.setInitialFramebufferSize({game.getRenderer().getSize()});
-    
+
+    //Bouton de fin de tour
+	m_triggerAction.addMouseButtonControl(gf::MouseButton::Left);
+	addAction(m_triggerAction);
+
+    gf::Coordinates coordsWidget({500,500});
+    auto setupButton = [&] (gf::TextButtonWidget& button, auto callback) {
+    	m_endTurn.setDefaultTextColor(gf::Color::Black);
+		m_endTurn.setDefaultBackgroundColor(gf::Color::Gray(0.7f));
+		m_endTurn.setSelectedTextColor(gf::Color::Black);
+		m_endTurn.setSelectedBackgroundColor(gf::Color::fromRgba32(212,30,27,255));
+		m_endTurn.setDisabledTextColor(gf::Color::Black);
+		m_endTurn.setDisabledBackgroundColor(gf::Color::Red);
+        m_endTurn.setPosition( coordsWidget.getRelativePoint({ 0.6f, 0.f }));
+		m_endTurn.setAnchor(gf::Anchor::TopLeft);
+		m_endTurn.setAlignment(gf::Alignment::Center);
+		m_endTurn.setCallback(callback);
+        m_widgets.addWidget(m_endTurn);
+    };
+    setupButton(m_endTurn, [&] () {
+		gf::Log::debug("EndTurn pressed!\n");
+		
+	});
+
+
+
+
 }
 
 void GameScene::doHandleActions([[maybe_unused]] gf::Window& window) {
@@ -66,6 +94,10 @@ void GameScene::doHandleActions([[maybe_unused]] gf::Window& window) {
     if(m_texture2Action.isActive()) {
         m_gameData.m_style = 1;
     }
+
+    if (m_triggerAction.isActive()) {
+		m_widgets.triggerAction();
+	}
 }
 
 void GameScene::doProcessEvent(gf::Event& event) {
@@ -75,11 +107,16 @@ void GameScene::doProcessEvent(gf::Event& event) {
 	if (m_gameData.m_gameStatus != ChessStatus::ON_GOING) { return; }
     
     switch (event.type) {
+        case gf::EventType::MouseMoved:
+			m_widgets.pointTo(m_game.computeWindowToGameCoordinates(event.mouseCursor.coords, getHudView()));
+			break;
+
         case gf::EventType::MouseButtonPressed:
-        click = true;
-        break;
-    }
-    
+            click = true;
+            break;
+
+        }
+
     if(!click) {
         return;
     }
@@ -154,6 +191,7 @@ void GameScene::doRender(gf::RenderTarget& target, const gf::RenderStates &state
     m_poseEntity.render(target, states);
 
     target.setView(getHudView());
+    m_widgets.render(target, states);
 }
 
 void GameScene::doUpdate(gf::Time time) {
@@ -291,4 +329,11 @@ void GameScene::onActivityChange(bool active) {
         m_boardView.setRotation(0);
         m_gameData.reset();
     }
+}
+
+void GameScene::doShow() {
+	m_widgets.clear();
+
+	m_endTurn.setDefault();
+	m_widgets.addWidget(m_endTurn);
 }

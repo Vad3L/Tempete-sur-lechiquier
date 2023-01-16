@@ -91,8 +91,8 @@ void MenuScene::doHandleActions([[maybe_unused]] gf::Window& window) {
 void MenuScene::doProcessEvent(gf::Event& event) {
 	switch (event.type) {
 		case gf::EventType::MouseMoved:
-		m_widgets.pointTo(m_game.computeWindowToGameCoordinates(event.mouseCursor.coords, getHudView()));
-		break;
+			m_widgets.pointTo(m_game.computeWindowToGameCoordinates(event.mouseCursor.coords, getHudView()));
+			break;
 	}
 }
 
