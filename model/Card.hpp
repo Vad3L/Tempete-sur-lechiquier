@@ -17,15 +17,15 @@ enum class Turn{
 };
 
 enum class Action{
-    CHOOSE_CASES, //plateau et/ou pioche
-    NONE //en general ca depend d'un mouvement precendent par exemple bombe atomique)
+    NONE, //en general ca depend d'un mouvement precendent par exemple bombe atomique)
+    CHOOSE_CASES //plateau et/ou pioche
 };
 
 enum class Effect{ // emum pour determiner dans quelle phase allons nous nous trouver une fois qu'on l'aura jouer
+    NONE, // phase suivante(soit fin ou coup normal)
     REPLACE_COUP, // remplace ton coup normal 
     REGAME_COUP, // par exmeple en cas d'annultion 
-    REGAME_OTHER_CARTE, // par exemple en cas d'annulation ou la carte qui permet de jouer une carte supplémentaire(rebelote dix de der)
-    NONE // phase suivante(soit fin ou coup normal)
+    REGAME_OTHER_CARTE // par exemple en cas d'annulation ou la carte qui permet de jouer une carte supplémentaire(rebelote dix de der)
 };
 
 class Card{
@@ -34,12 +34,13 @@ class Card{
         std::string m_description;
         
         Turn m_turn;
+        Action m_action;
         Effect m_effect;
         int m_num;
 	    std::function<void(Plateau&, gf::Vector2i, gf::Vector2i)> m_execute;
 	    std::function<bool(Plateau&, Phase)> m_isPlayable;
 
-        Card(std::string name,std::string m_description,Turn turn, Effect effect,int num);
+        Card(int num, std::string name,std::string m_description,Turn turn, Action action, Effect effect);
         Card();
 
 };
