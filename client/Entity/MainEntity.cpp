@@ -88,7 +88,7 @@ void MainEntity::render(gf::RenderTarget &target, const gf::RenderStates &states
 int MainEntity::getCardSelected(gf::Vector2i sizeWindows, gf::Vector2i mouseCoord) { //sizeWindows = CardsView
 
     gf::Vector2i v(-1,-1); 
-    std::cout << mouseCoord.x << " " << mouseCoord.y << std::endl;
+    
     if(mouseCoord.y < -60){
         return -1;
     }
