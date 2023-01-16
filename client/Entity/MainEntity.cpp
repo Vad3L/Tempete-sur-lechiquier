@@ -20,10 +20,9 @@ void MainEntity::render(gf::RenderTarget &target, const gf::RenderStates &states
     gf::Vector2i sizeCard = gf::Vector2i(200,300);
     constexpr float titleCharacterSize = 16.f;
     constexpr float instructionsCharacterSize = 14.f;
-    constexpr float spaceBetweenCard = 0.20f;
+    constexpr float spaceBetweenCard = 0.208f;
 
     int cpt = 0;
-
     for (auto &c : m_gameData.m_main) {
         
         if(c.m_num == -1) {
@@ -32,8 +31,7 @@ void MainEntity::render(gf::RenderTarget &target, const gf::RenderStates &states
         
         int i = c.m_num%numberImageW;
         int j = c.m_num/numberImageW;       
-        gf::Vector2f position = coordsCard.getRelativePoint({ -0.5f+spaceBetweenCard*cpt, -0.2f });
-
+        gf::Vector2f position = coordsCard.getRelativePoint({ -0.5f+spaceBetweenCard*cpt, -0.4f });
         gf::RoundedRectangleShape card(sizeCard);
         card.setColor(gf::Color::White);
         card.setRadius(22);
@@ -69,12 +67,12 @@ void MainEntity::render(gf::RenderTarget &target, const gf::RenderStates &states
                 break;
         }
 
-        gf::Text cardDescription(c.m_description.substr(0, 50), m_cardsFont, instructionsCharacterSize);
+        gf::Text cardDescription(c.m_description.substr(0, 60)+"...", m_cardsFont, instructionsCharacterSize);
         cardDescription.setColor(gf::Color::Black);
         cardDescription.setPosition({position.x+10, position.y+sizeCard.y/1.3f});
         cardDescription.setParagraphWidth(200-20);
         cardDescription.setAlignment(gf::Alignment::Center);
-
+         
         target.draw(card, states);
         target.draw(illustration, states);
         target.draw(rect, states);
@@ -87,25 +85,29 @@ void MainEntity::render(gf::RenderTarget &target, const gf::RenderStates &states
 
 int MainEntity::getCardSelected(gf::Vector2i sizeWindows, gf::Vector2i mouseCoord) { //sizeWindows = CardsView
 
-    gf::Vector2i v(-1,-1); 
+    int cardSelected = -1;
     
     if(mouseCoord.y < -60){
+        gf::Log::debug("clique en dehors des cartes \n");
         return -1;
     }
     if(mouseCoord.x >= -600 && mouseCoord.x <= -400 ){
-        return 0;
+        cardSelected = 0;
     }
     if(mouseCoord.x >= -360 && mouseCoord.x <= -160){
-        return 1;
+        cardSelected = 1;
     }
     if(mouseCoord.x >= -120 && mouseCoord.x <= 80){
-        return 2;
+        cardSelected =  2;
     }
     if(mouseCoord.x >= 120 && mouseCoord.x <= 320){
-        return 3;
+        cardSelected  = 3;
     }
     if(mouseCoord.x >= 360 && mouseCoord.x <= 560){
-        return 4;
+        cardSelected = 4;
     }
-    return -1;
+
+    gf::Log::debug("carte selectionnée %i\n",cardSelected);
+    return cardSelected;
+
 }

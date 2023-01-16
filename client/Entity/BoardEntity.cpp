@@ -21,7 +21,7 @@ void BoardEntity::render(gf::RenderTarget &target, const gf::RenderStates &state
 
     float sizeSquare = coords.getRelativeSize(gf::vec(0.0f, 1.f/8.f)).height;
     float sizeLine = 2.5f;
-    bool myTurn = (m_gameData.m_phase == Phase::PAS_MON_TOUR) ? false : true;
+    bool myTurn = (m_gameData.m_phase.getCurrentPhase() == Phase::PAS_MON_TOUR) ? false : true;
 
     gf::Texture &texture = (m_gameData.m_style == 0) ? m_backgroundTexture : m_backgroundTexture2;
     bool promotion = false;

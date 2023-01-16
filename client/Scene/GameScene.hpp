@@ -67,11 +67,13 @@ class GameScene : public gf::Scene {
         TableBoardEntity m_tableBoardEntity;
         MainEntity m_mainEntity;
 
+
         gf::TextButtonWidget m_endTurn;
 
         gf::WidgetContainer m_widgets;
 
         gf::Action m_triggerAction;
+
 };  
 
 
