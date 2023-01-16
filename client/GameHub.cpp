@@ -10,7 +10,10 @@ GameHub::GameHub()
 , rules(*this)
 , quit(*this)
 {
-pushScene(start);
+    pushScene(start);
+    this->getWindow().setResizable(false);  
+    this->getWindow().setSize(gf::Vector2i(640,420));
+    this->getWindow().setFullscreen();
 }
 
 

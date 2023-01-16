@@ -20,10 +20,9 @@ void MainEntity::render(gf::RenderTarget &target, const gf::RenderStates &states
     gf::Vector2i sizeCard = gf::Vector2i(200,300);
     constexpr float titleCharacterSize = 16.f;
     constexpr float instructionsCharacterSize = 14.f;
-    constexpr float spaceBetweenCard = 0.20f;
+    constexpr float spaceBetweenCard = 0.208f;
 
     int cpt = 0;
-
     for (auto &c : m_gameData.m_main) {
         
         if(c.m_num == -1) {
@@ -32,8 +31,7 @@ void MainEntity::render(gf::RenderTarget &target, const gf::RenderStates &states
         
         int i = c.m_num%numberImageW;
         int j = c.m_num/numberImageW;       
-        gf::Vector2f position = coordsCard.getRelativePoint({ -0.5f+spaceBetweenCard*cpt, -0.2f });
-
+        gf::Vector2f position = coordsCard.getRelativePoint({ -0.5f+spaceBetweenCard*cpt, -0.4f });
         gf::RoundedRectangleShape card(sizeCard);
         card.setColor(gf::Color::White);
         card.setRadius(22);
@@ -69,12 +67,12 @@ void MainEntity::render(gf::RenderTarget &target, const gf::RenderStates &states
                 break;
         }
 
-        gf::Text cardDescription(c.m_description.substr(0, 50), m_cardsFont, instructionsCharacterSize);
+        gf::Text cardDescription(c.m_description.substr(0, 60)+"...", m_cardsFont, instructionsCharacterSize);
         cardDescription.setColor(gf::Color::Black);
         cardDescription.setPosition({position.x+10, position.y+sizeCard.y/1.3f});
         cardDescription.setParagraphWidth(200-20);
         cardDescription.setAlignment(gf::Alignment::Center);
-
+         
         target.draw(card, states);
         target.draw(illustration, states);
         target.draw(rect, states);
@@ -86,5 +84,22 @@ void MainEntity::render(gf::RenderTarget &target, const gf::RenderStates &states
 }
 
 int MainEntity::getCardSelected(gf::Vector2i sizeWindows, gf::Vector2i mouseCoord) {
-    return 0;
+    gf::Coordinates coords({1200,300});
+    int num = -1;
+    
+    gf::Log::info("size : %i et %i\n", sizeWindows.x, sizeWindows.y);
+    gf::Log::info("mousecoord : %i et %i\n", mouseCoord.x, mouseCoord.y);
+
+    int y = mouseCoord.y+coords.getCenter().y;
+    int x = mouseCoord.x+coords.getCenter().x;
+
+    gf::Log::info("coord calcule = : %i et %i\n", x, y);
+    if(y < 0 || x <0 || y > 300|| x > 1200) {
+        gf::Log::info("tu as clique en dehors d'une carte\n");
+        return num;
+    }
+    
+    num = x/(200);
+    gf::Log::info("carte n° %iest clique\n", num);
+    return num;
 }

@@ -18,7 +18,7 @@ struct GameData {
     void reset();
 
     ChessColor m_myColor;
-    Phase m_phase;
+    GamePhase m_phase;
     Plateau m_plateau;
     ChessStatus m_gameStatus;
     int m_style;

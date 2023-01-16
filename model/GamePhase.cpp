@@ -2,53 +2,26 @@
 
 
 GamePhase::GamePhase(){
-    currentPhase=Phase::AVANT_COUP;
+    m_currentPhase = Phase::PAS_MON_TOUR;
+    m_nbCarteJoue = 0;
 }
 
-// next phase plutot ?????
-void GamePhase::traiterCard(Card carte){
-    /*Turn tour = carte.getTurn();
-    Effect effet = carte.getEffect();
-
-    switch (currentPhase){
-
-        case Phase::AVANT_COUP:
-           if(tour != Turn::BEFORE){
-                return;
-           }
-           if(effet==Effect::CHOOSECASE){
-            currentPhase=Phase::CLIQUER_UNE_CASE;
-           }
-           if(tour==Turn::REPLACE){
-            currentPhase=Phase::PAS_MON_TOUR;
-           }
-           currentPhase=Phase::COUP;
-           //Jouer la carte
-           //carte.m_execute(plateau,);
-        break;
-
-        case Phase::APRES_COUP:
-            if(tour != Turn::AFTER){
-                return;
-            }
-            if(effet==Effect::CHOOSECASE){
-                currentPhase=Phase::CLIQUER_UNE_CASE;
-            }
-
-            currentPhase=Phase::PAS_MON_TOUR;
-            //Jouer la carte
-            //carte.m_execute(plateau,);
-        break;
-
-        case Phase::PAS_MON_TOUR:
-            if(tour!= Turn::DURING){
-               return;
-            }
-            currentPhase=Phase::AVANT_COUP;
-            //Jouer la carte
-            //carte.m_execute(plateau,);
-        break;
-
+void GamePhase::nextPhaseCoupNormal(){
+    
+    if(m_currentPhase == Phase::COUP && m_nbCarteJoue!=0) {
+        m_currentPhase = Phase::PAS_MON_TOUR;
+    }else {
+        m_currentPhase = Phase::APRES_COUP;
     }
-   */
+}
+
+Phase GamePhase::getCurrentPhase() {
+    return m_currentPhase;
+}
+
+void GamePhase::setCurrentPhase(Phase phase) {
+    if(phase == Phase::PAS_MON_TOUR || phase == Phase::AVANT_COUP) { // tour suivant
+        m_nbCarteJoue = 0;
+    }   
+    m_currentPhase = phase;
 }

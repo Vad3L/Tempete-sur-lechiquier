@@ -26,8 +26,23 @@ void TableBoardEntity::render(gf::RenderTarget &target, const gf::RenderStates &
     target.draw(tableCloth,states);
 
     
-    std::string indication = (m_gameData.m_phase != Phase::PAS_MON_TOUR) ? std::string("À vous de jouer !") : std::string("Au tour de l'adversaire");
+    std::string indication = "pas d'indication";
     
+    switch (m_gameData.m_phase.getCurrentPhase()){
+        case Phase::AVANT_COUP :
+            indication = "Jouer une carte ou un coup normal";
+            break;
+        case Phase::APRES_COUP :
+            indication = "Jouer une carte";
+            break;
+        case Phase::COUP :
+            indication = "Jouer un coup normal" ;
+            break;
+        case Phase::PAS_MON_TOUR :
+            indication = "Au tour de l'adversaire de jouer" ;
+            break;
+    }
+
     switch (m_gameData.m_gameStatus) {
         case ChessStatus::WIN:
             indication = "Vous avez GAGNEZ";
@@ -39,17 +54,17 @@ void TableBoardEntity::render(gf::RenderTarget &target, const gf::RenderStates &
             indication = "Il y a égalité";
             break;
         case ChessStatus::NO_STARTED:
-            indication = "Le jeu n'a pas commencé";
+            indication = "La partie n'a pas commencé";
             break;
         case ChessStatus::SURRENDER:
-            indication = "Vous gagnez Abandon";
+            indication = "Vous gagnez par abandon";
             break;
     }
     
 
     gf::Text text(indication, m_font);
     text.setScale(0.5f);
-    text.setPosition(gf::Vector2f(coords.getRelativePoint({0.f, -0.37f})));
+    text.setPosition(gf::Vector2f(coords.getRelativePoint({0.f, -0.36f})));
     text.setAnchor(gf::Anchor::Center);
     (m_gameData.m_style==0) ? text.setColor(gf::Color::Black) : text.setColor(gf::Color::Gray(0.8f)) ;
     target.draw(text, states);
