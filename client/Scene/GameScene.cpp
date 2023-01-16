@@ -88,6 +88,7 @@ void GameScene::doProcessEvent(gf::Event& event) {
 
     if(currentPhase == Phase::APRES_COUP) {
         int numCarte = m_mainEntity.getCardSelected(m_cardsView.getSize(), m_game.getRenderer().mapPixelToCoords(event.mouseButton.coords, m_cardsView));
+
         if(numCarte!=-1) {
         
             bool playable = m_gameData.m_main[numCarte].m_isPlayable(m_gameData.m_plateau, currentPhase);

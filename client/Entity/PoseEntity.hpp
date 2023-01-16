@@ -28,6 +28,7 @@ class PoseEntity : public gf::Entity {
     private:
         gf::Texture& m_cardsIllustration;
         gf::Texture& m_accessories;
+        gf::Font& m_poseNameFont;
 
         GameData &m_gameData;
 };

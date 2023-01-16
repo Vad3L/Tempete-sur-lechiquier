@@ -83,23 +83,30 @@ void MainEntity::render(gf::RenderTarget &target, const gf::RenderStates &states
     }
 }
 
-int MainEntity::getCardSelected(gf::Vector2i sizeWindows, gf::Vector2i mouseCoord) {
-    gf::Coordinates coords({1200,300});
-    int num = -1;
+int MainEntity::getCardSelected(gf::Vector2i sizeWindows, gf::Vector2i mouseCoord) { //sizeWindows = CardsView
+    int cardSelected = -1;
     
-    gf::Log::info("size : %i et %i\n", sizeWindows.x, sizeWindows.y);
-    gf::Log::info("mousecoord : %i et %i\n", mouseCoord.x, mouseCoord.y);
-
-    int y = mouseCoord.y+coords.getCenter().y;
-    int x = mouseCoord.x+coords.getCenter().x;
-
-    gf::Log::info("coord calcule = : %i et %i\n", x, y);
-    if(y < 0 || x <0 || y > 300|| x > 1200) {
-        gf::Log::info("tu as clique en dehors d'une carte\n");
-        return num;
+    if(mouseCoord.y < -60){
+        gf::Log::debug("clique en dehors des cartes \n");
+        return -1;
     }
-    
-    num = x/(200);
-    gf::Log::info("carte n° %iest clique\n", num);
-    return num;
+    if(mouseCoord.x >= -600 && mouseCoord.x <= -400 ){
+        cardSelected = 0;
+    }
+    if(mouseCoord.x >= -360 && mouseCoord.x <= -160){
+        cardSelected = 1;
+    }
+    if(mouseCoord.x >= -120 && mouseCoord.x <= 80){
+        cardSelected =  2;
+    }
+    if(mouseCoord.x >= 120 && mouseCoord.x <= 320){
+        cardSelected  = 3;
+    }
+    if(mouseCoord.x >= 360 && mouseCoord.x <= 560){
+        cardSelected = 4;
+    }
+
+    gf::Log::debug("carte selectionnée %i\n",cardSelected);
+    return cardSelected;
+
 }
