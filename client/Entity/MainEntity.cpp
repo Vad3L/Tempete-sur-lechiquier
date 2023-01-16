@@ -85,6 +85,27 @@ void MainEntity::render(gf::RenderTarget &target, const gf::RenderStates &states
     }
 }
 
-int MainEntity::getCardSelected(gf::Vector2i sizeWindows, gf::Vector2i mouseCoord) {
-    return 0;
+int MainEntity::getCardSelected(gf::Vector2i sizeWindows, gf::Vector2i mouseCoord) { //sizeWindows = CardsView
+
+    gf::Vector2i v(-1,-1); 
+    std::cout << mouseCoord.x << " " << mouseCoord.y << std::endl;
+    if(mouseCoord.y < -60){
+        return -1;
+    }
+    if(mouseCoord.x >= -600 && mouseCoord.x <= -400 ){
+        return 0;
+    }
+    if(mouseCoord.x >= -360 && mouseCoord.x <= -160){
+        return 1;
+    }
+    if(mouseCoord.x >= -120 && mouseCoord.x <= 80){
+        return 2;
+    }
+    if(mouseCoord.x >= 120 && mouseCoord.x <= 320){
+        return 3;
+    }
+    if(mouseCoord.x >= 360 && mouseCoord.x <= 560){
+        return 4;
+    }
+    return -1;
 }

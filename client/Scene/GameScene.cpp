@@ -86,9 +86,13 @@ void GameScene::doProcessEvent(gf::Event& event) {
 
     if(m_gameData.m_phase == Phase::APRES_COUP) {
         int numCarte = m_mainEntity.getCardSelected(m_cardsView.getSize(), m_game.getRenderer().mapPixelToCoords(event.mouseButton.coords, m_cardsView));
-        bool playable = m_gameData.m_main[numCarte].m_isPlayable(m_gameData.m_plateau, m_gameData.m_phase);
+        bool playable;
+        if(numCarte!=-1){
+            playable = m_gameData.m_main[numCarte].m_isPlayable(m_gameData.m_plateau, m_gameData.m_phase);
+        }
         
-        gf::Log::info("carte %i iest jouable %i \n", numCarte, playable);
+        
+        gf::Log::info("carte %i est jouable %i \n", numCarte, playable);
         if(playable) {
             m_gameData.m_main[numCarte].m_execute(m_gameData.m_plateau, gf::Vector2i(1), gf::Vector2i(1));
             m_gameData.m_phase = Phase::PAS_MON_TOUR;
