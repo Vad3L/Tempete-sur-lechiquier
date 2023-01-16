@@ -28,5 +28,5 @@ void checkPromotionValidity (Plateau& plateau, PromotionRep& r);
 void checkCoupPacketValidity (Plateau& plateau, CoupRep& c);
 bool checkCoupValide(Plateau& plateau, gf::Vector2i coordStart, gf::Vector2i coordEnd);
 int sendStartOrEnd (gf::TcpSocket& a, gf::TcpSocket& b, CodeRep code, ChessStatus s = ChessStatus::ON_GOING, ChessColor c = ChessColor::NONE);
-void sendStartTurn (gf::TcpSocket& a);
+int sendStartTurn (gf::TcpSocket& a);
 #endif // ANNEXFCTSERVER_H
