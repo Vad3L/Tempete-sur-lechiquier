@@ -1,12 +1,9 @@
 #include "AnnexFctServer.hpp"
 #include "../model/Deck.hpp"
 
-#include <csignal>
-
 int main (int argc, char* argv[]) {
     int port = 43771;
 
-    signal(SIGPIPE, SIG_IGN);
     gf::TcpListener listener(std::to_string(port));
     
     gf::TcpSocket client1 = listener.accept();
@@ -14,58 +11,24 @@ int main (int argc, char* argv[]) {
     auto TwoHand = deck.distribute();
     
     if (client1) {
-        gf::Packet packetC1;
-        
-        PartieRep rep1;
-        rep1.err = COLOR;
-        rep1.colorPion = ChessColor::WHITE;
-
-        packetC1.is(rep1);
-        if (gf::SocketStatus::Data != client1.sendPacket(packetC1)) {
-            gf::Log::error("Lors de l'envoie du packet contenant la couleur au client 1\n");
-        }
-
-        DistribRep distrib1;
-        distrib1.err = NONE;
-        distrib1.hand = TwoHand.first;
-        packetC1.is(distrib1);
-        if (gf::SocketStatus::Data != client1.sendPacket(packetC1)) {
-            gf::Log::error("Lors de l'envoie du packet contenant la main au client 1\n");
-        }
+	sendInit(client1, ChessColor::WHITE, TwoHand.first);
         
         gf::TcpSocket client2 = listener.accept();
         if (client2) {
-            gf::Packet packetC2;
-
-            PartieRep rep2;
-            rep2.err = COLOR;
-            rep2.colorPion = ChessColor::BLACK;
-            
-            packetC2.is(rep2);
-            if (gf::SocketStatus::Data != client2.sendPacket(packetC2)) {
-                gf::Log::error("Lors de l'envoie du packet contenant la couleur au client 2\n");
-            }
-
-            DistribRep distrib2;
-            distrib2.err = NONE;
-            distrib2.hand = TwoHand.second;
-            packetC2.is(distrib2);
-            if (gf::SocketStatus::Data != client2.sendPacket(packetC2)) {
-                gf::Log::error("Lors de l'envoie du packet contenant la main au client 2\n");
-            }
-
-	        if(sendStartOrEnd(client1, client2, CodeRep::GAME_START) == -1) {
+	    sendInit(client2, ChessColor::BLACK, TwoHand.second);
+	    
+	    if(sendStartOrEnd(client1, client2, CodeRep::GAME_START) == -1) {
             	sendStartOrEnd(client1, client2, CodeRep::GAME_END, ChessStatus::SURRENDER); 
-                return -1;
+               	return -1;
             }
             
             Plateau plateau;
-	        ChessStatus gameStatus = ChessStatus::ON_GOING;
-            bool turnPlayer1 = true;
+	    ChessStatus gameStatus = ChessStatus::ON_GOING;
+            bool player = true;
             bool promotion = false;
             while (true) {
                 plateau.moveAvailable.clear();
-                if (turnPlayer1) {
+                if (player) {
                     gf::Log::debug("------TOUR J1------\n");
                     if ((gameStatus = plateau.isGameOver(ChessColor::WHITE)) != ChessStatus::ON_GOING) {
                         break;
@@ -73,9 +36,10 @@ int main (int argc, char* argv[]) {
                     if(sendStartTurn(client1) == -1){
                         break;
                     }
-                    if(performAction(plateau, client1, client2, turnPlayer1, promotion) == -1) {
+		    int ret = performAction(plateau, client1, client2, promotion);
+                    if(ret == -1) {
                         break;
-                    }
+                    } else if (ret == 0) { player = false; }
                 } else {
                     gf::Log::debug("------TOUR J2------\n");
                     if ((gameStatus = plateau.isGameOver(ChessColor::BLACK)) != ChessStatus::ON_GOING) {
@@ -84,14 +48,15 @@ int main (int argc, char* argv[]) {
                     if(sendStartTurn(client2) == -1){
                         break;
                     }
-                    if(performAction(plateau, client1, client2, turnPlayer1, promotion) == -1) {
+		    int ret = performAction(plateau, client2, client1, promotion);
+                    if(ret == -1) {
                         break;
-                    }
+                    } else if (ret == 0) { player = true; }
                 }
             }
 
             gf::Log::debug("------GAME END------\n");
-            if (turnPlayer1 && gameStatus == ChessStatus::WIN) {
+            if (player && gameStatus == ChessStatus::WIN) {
                 sendStartOrEnd(client1, client2, CodeRep::GAME_END, gameStatus, ChessColor::BLACK );
                 gf::Log::debug("############noir gagne############\n");
             } else if (gameStatus == ChessStatus::WIN) {
@@ -100,7 +65,7 @@ int main (int argc, char* argv[]) {
             } else if(gameStatus == ChessStatus::EQUALITY) {
                 gf::Log::debug("############nulle############\n");
                 sendStartOrEnd(client1, client2, CodeRep::GAME_END, gameStatus);
-            }else {
+            } else {
                 gf::Log::debug("############forfait############\n");
                 sendStartOrEnd(client1, client2, CodeRep::GAME_END, ChessStatus::SURRENDER); 
             }

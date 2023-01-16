@@ -13,7 +13,8 @@ using namespace gf::literals;
 typedef enum {
     NONE, 
     COLOR,    
-    COUP_NO_VALIDE,      
+    COUP_NO_VALIDE,
+    CARD_NO_VALIDE,      
     GAME_START,
     GAME_END,
     TURN_START
@@ -50,7 +51,6 @@ Archive operator|(Archive& ar, CoupRep& data) {
     return ar | data.err | data.posStart | data.posEnd;
 }
 
-
 /***********************
 **********PROMOTION**********
 ***********************/
@@ -66,6 +66,23 @@ Archive operator|(Archive& ar, PromotionRep& data) {
     return ar | data.err | data.pos | data.choice;
 }
 
+struct CardRep {
+	static constexpr gf::Id type = "CardRep"_id;
+	CodeRep err;
+	size_t card;
+	Pos a;
+	Pos b;
+};
+
+template<typename Archive>
+Archive operator|(Archive& ar, CardRep& data) {
+	return ar | data.card | data.a | data.b;
+}
+
+template<typename Archive>
+Archive operator|(Archive& ar, Card& data) {
+    return ar | data.m_num;
+}
 
 /***********************
 **********DISTRIB CARD**********
@@ -81,8 +98,4 @@ Archive operator|(Archive& ar, DistribRep& data) {
     return ar | data.err | data.hand;
 }
 
-template<typename Archive>
-Archive operator|(Archive& ar, Card& data) {
-    return ar | data.m_num;
-}
 #endif // PROTOCOLE_H
