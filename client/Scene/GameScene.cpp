@@ -9,8 +9,9 @@ GameScene::GameScene(GameHub& game)
 , m_texture1Action("Texture1")
 , m_texture2Action("Texture2")
 , m_boardEntity(game.resources, m_gameData)
-, m_cardsEntity(game.resources, m_gameData)
+, m_mainEntity(game.resources, m_gameData)
 , m_tableBoardEntity(game.resources, m_gameData)
+, m_poseEntity(game.resources, m_gameData)
 , m_promotion(false)
 {
     setClearColor(gf::Color::Black);
@@ -33,14 +34,13 @@ GameScene::GameScene(GameHub& game)
     m_tableBoardView = gf::ExtendView({ 0, 0 }, { 500, 500 });
 	m_tableBoardView.setViewport(gf::RectF::fromPositionSize({ 0.15f, 0.0f}, { 0.7f, 0.7f }));
 
-    m_cardsView = gf::ExtendView({ 0, 0 }, { 1000, 1000 });
-	m_cardsView.setViewport(gf::RectF::fromPositionSize({ 0.f, 0.f}, { 0.99f, 0.99f }));
-
+    m_cardsView = gf::ExtendView({ 0, 0 }, { 1200, 300 });
+	m_cardsView.setViewport(gf::RectF::fromPositionSize({ 0.125f, 0.7f}, { 0.75, 0.3f }));
 
 	m_views.addView(m_boardView);
     m_views.addView(m_tableBoardView);
     m_views.addView(m_cardsView);
-    
+
 	m_views.setInitialFramebufferSize({game.getRenderer().getSize()});
 
 }
@@ -85,7 +85,7 @@ void GameScene::doProcessEvent(gf::Event& event) {
     }
 
     if(m_gameData.m_phase == Phase::APRES_COUP) {
-        int numCarte = m_cardsEntity.getCardSelected(m_cardsView.getSize(), m_game.getRenderer().mapPixelToCoords(event.mouseButton.coords, m_cardsView));
+        int numCarte = m_mainEntity.getCardSelected(m_cardsView.getSize(), m_game.getRenderer().mapPixelToCoords(event.mouseButton.coords, m_cardsView));
         bool playable = m_gameData.m_main[numCarte].m_isPlayable(m_gameData.m_plateau, m_gameData.m_phase);
         
         gf::Log::info("carte %i iest jouable %i \n", numCarte, playable);
@@ -95,7 +95,6 @@ void GameScene::doProcessEvent(gf::Event& event) {
         }
     }
     
-
     if(m_gameData.m_phase==Phase::COUP || m_gameData.m_phase==Phase::AVANT_COUP) { 
         gf::Vector2i v = m_boardEntity.getCaseSelected(m_boardView.getSize(), m_game.getRenderer().mapPixelToCoords(event.mouseButton.coords, m_boardView));
         if(v.x == -1 || v.y == -1) {
@@ -143,8 +142,11 @@ void GameScene::doRender(gf::RenderTarget& target, const gf::RenderStates &state
     m_boardEntity.render(target, states);
 
     target.setView(m_cardsView);
-    m_cardsEntity.render(target, states);
-    
+    m_mainEntity.render(target, states);
+
+    target.setView(m_tableBoardView);    
+    m_poseEntity.render(target, states);
+
     target.setView(getHudView());
 }
 

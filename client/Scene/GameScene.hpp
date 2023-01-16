@@ -19,9 +19,8 @@
 
 #include "../Entity/BoardEntity.hpp"
 #include "../Entity/TableBoardEntity.hpp"
-
-//A CHANGER
-#include "../Entity/CardsEntity.hpp"
+#include "../Entity/MainEntity.hpp"
+#include "../Entity/PoseEntity.hpp"
 
 #include "../GameData.hpp"
 #include "../Network.hpp"
@@ -60,10 +59,10 @@ class GameScene : public gf::Scene {
         gf::ExtendView m_cardsView;        
         gf::ViewContainer m_views;
 
+        PoseEntity m_poseEntity;
         BoardEntity m_boardEntity;    
         TableBoardEntity m_tableBoardEntity;
-        //MODIFIER
-        CardsEntity m_cardsEntity;
+        MainEntity m_mainEntity;
 };  
 
 

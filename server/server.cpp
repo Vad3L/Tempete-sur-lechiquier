@@ -11,7 +11,6 @@ int main (int argc, char* argv[]) {
     
     gf::TcpSocket client1 = listener.accept();
     Deck deck;
-    int nbCard = deck.getNbCardInDeck();
     auto TwoHand = deck.distribute();
     
     if (client1) {

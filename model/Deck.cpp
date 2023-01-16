@@ -3,10 +3,10 @@
 Deck::Deck(){
 
     for(int i=0; i<10; i++) {
-        Card c1("Chameau","Vous transformez l'un de vos Cavaliers en Chameau, et cela définitivement. Le Chameau, comme le Cavalier, peut se déplacer en sautant par-dessus les cases occupées. Mais alors que le Cavalier saute dans l'angle opposé d'un rectangle 3-2, le Chameau saute dans l'angle opposé d'un rectangle 4-3. Schéma : déplacements du Chameau.",Turn::AFTER,Effect::NONE,29);
+        Card c1("CHAMEAU","Vous transformez l'un de vos Cavaliers en Chameau, et cela définitivement. Le Chameau, comme le Cavalier, peut se déplacer en sautant par-dessus les cases occupées. Mais alors que le Cavalier saute dans l'angle opposé d'un rectangle 3-2, le Chameau saute dans l'angle opposé d'un rectangle 4-3. Schéma : déplacements du Chameau.",Turn::AFTER,Effect::NONE,29);
         c1.m_execute = Chameau;
         c1.m_isPlayable = ChameauIsPlayable;
-        Card c11("Quatre coins","Si trois des quatres coins de l'échiquier sont occupés, vous pouvez amener une de vos pièces, de votre choix, dans le quatrième coin",Turn::BEFORE,Effect::REPLACE_COUP,0);
+        Card c11("QUATRE COINS","Si trois des quatres coins de l'échiquier sont occupés, vous pouvez amener une de vos pièces, de votre choix, dans le quatrième coin",Turn::BEFORE,Effect::REPLACE_COUP,0);
         c11.m_execute = QuatreCoin;
         c11.m_isPlayable = QuatreCoinIsPlayable;
         m_deck.push_back(c1);
@@ -39,7 +39,7 @@ Deck::Deck(){
     //m_deck.push_back(c12);
 
     shuffle();
-    displayDeck();
+    //displayDeck();
 }
 
 

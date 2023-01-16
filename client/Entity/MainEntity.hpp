@@ -15,14 +15,13 @@
 #include <iostream>
 
 #include "../GameData.hpp"
+#include "../../model/Deck.hpp"
 
 struct GameData;
 
-#include "../../model/Deck.hpp"
-
-class CardsEntity : public gf::Entity {
+class MainEntity : public gf::Entity {
     public:
-        CardsEntity(gf::ResourceManager& resources,GameData &gameData);
+        MainEntity(gf::ResourceManager& resources,GameData &gameData);
         
         void update(gf::Time time) override;
         void render(gf::RenderTarget &target, const gf::RenderStates &states) override ;
@@ -31,11 +30,9 @@ class CardsEntity : public gf::Entity {
     private:
         gf::Font& m_cardsFont;
         gf::Texture& m_cardsIllustration;
-
-
+        gf::Texture& m_accessories;
 
         GameData &m_gameData;
-
 };
 
 

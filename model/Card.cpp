@@ -11,7 +11,6 @@ Card::Card(std::string name,std::string description,Turn turn, Effect effect,int
 }
 
 Card::Card () {
-	gf::Log::info("jappelle\n");
     m_execute = NoCard;
 	m_isPlayable = NoCardPlayable;
     m_num = -1;
