@@ -16,29 +16,29 @@ void PoseEntity::render(gf::RenderTarget &target, const gf::RenderStates &states
 
     gf::Coordinates coords(target);
     
-    gf::Vector2i sizeCard = gf::Vector2i(200,300);
+    gf::Vector2i sizeCard = gf::Vector2i(200+10,300+10);
 
-    gf::Vector2f position = coords.getRelativePoint({ -1.f, -0.25f });
+    gf::Vector2f position = coords.getRelativePoint({ 0.2f, 0.4f });
     
-    gf::RoundedRectangleShape contour(sizeCard+10.f);
+    gf::RoundedRectangleShape contour(sizeCard);
     contour.setColor(gf::Color::fromRgba32(0.f, 0.f, 0.f, 0.f));
     contour.setOutlineColor(gf::Color::Yellow);
     contour.setOutlineThickness(6.f);
     contour.setRadius(22);
-    contour.setAnchor(gf::Anchor::Center);
     contour.setPosition(position);
+    contour.setAnchor(gf::Anchor::Center);
 
     gf::RectangleShape placementTexte;
     placementTexte.setSize({90.0f,1.0f});
     placementTexte.setColor(gf::Color::Black);
     placementTexte.setOutlineThickness(6.f);
     placementTexte.setOutlineColor(gf::Color::Black);
-    placementTexte.setPosition({position.x+110.f,position.y-4.f});
+    placementTexte.setPosition({position.x,position.y-sizeCard.y/2.f});
     placementTexte.setAnchor(gf::Anchor::Center);
 
-    gf::Text poseName("Carte joué", m_poseNameFont, 16.f);
+    gf::Text poseName("Carte jouée", m_poseNameFont, 16.f);
     poseName.setColor(gf::Color::White);
-    poseName.setPosition({position.x+110.f,position.y-3.f});
+    poseName.setPosition({position.x,position.y-sizeCard.y/2.f});
     poseName.setAnchor(gf::Anchor::Center);
 
     target.draw(contour, states);

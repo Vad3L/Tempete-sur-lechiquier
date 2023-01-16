@@ -42,7 +42,7 @@ GameScene::GameScene(GameHub& game)
     m_views.addView(m_cardsView);
 
 	m_views.setInitialFramebufferSize({game.getRenderer().getSize()});
-
+    
 }
 
 void GameScene::doHandleActions([[maybe_unused]] gf::Window& window) {

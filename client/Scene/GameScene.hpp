@@ -63,6 +63,7 @@ class GameScene : public gf::Scene {
         BoardEntity m_boardEntity;    
         TableBoardEntity m_tableBoardEntity;
         MainEntity m_mainEntity;
+        
 };  
 
 
