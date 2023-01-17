@@ -1,6 +1,8 @@
 #include "Deck.hpp"
 
 Deck::Deck(){
+    //format du fichier
+    //NUM;NAME;DESCRIPTION;TURN;ACTION;EFFECT (3 dernières valeurs sont des entier correspondant à la la valeur dans leur énum)
     for(int k =0 ;k<5;k++) {
         std::ifstream file(std::string(CARDS_DESCRIPTIONDIR)+"descriptionCards.txt");
 
@@ -21,7 +23,10 @@ Deck::Deck(){
                     line = line.substr(index+1);
                 }
 
-                gf::Log::info("card /%s/,/%s/,/%s/,/%s/,/%s/,/%s/\n", tab[0].c_str(), tab[1].c_str(), tab[2].c_str(), tab[3].c_str(), tab[4].c_str(), tab[5].c_str());
+                gf::Log::info("card /%s/,/%s/,/%s/,/%s/,/%s/,/%s/\n", tab[0].c_str(), tab[1].c_str(), tab[2].substr(0,50).c_str(), tab[3].c_str(), tab[4].c_str(), tab[5].c_str());
+                //tab[0] num
+                //tab[1] name
+                //tab[2] description
                 //tab[3] num turn
                 //tab[4] num action
                 //tab[5] num effect

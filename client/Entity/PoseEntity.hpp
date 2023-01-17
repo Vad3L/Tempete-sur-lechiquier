@@ -24,14 +24,14 @@ class PoseEntity : public gf::Entity {
         
         void update(gf::Time time) override;
         void render(gf::RenderTarget &target, const gf::RenderStates &states) override ;
-
+        Card m_cardPose;
+        
     private:
         gf::Texture& m_cardsIllustration;
         gf::Texture& m_accessories;
         gf::Font& m_poseNameFont;
 
         GameData &m_gameData;
-        Card m_cardPose;
 };
 
 

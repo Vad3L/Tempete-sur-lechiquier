@@ -6,7 +6,8 @@ MainEntity::MainEntity(gf::ResourceManager& resources,GameData &gameData)
 ,m_accessories(resources.getTexture("images/AccesoriesCards.png"))
 ,m_gameData(gameData)
 {
-
+    m_cardsIllustration.setSmooth(true);
+    m_accessories.setSmooth(true);
 }
 
 void MainEntity::update([[maybe_unused]] gf::Time time) {
@@ -45,28 +46,36 @@ void MainEntity::render(gf::RenderTarget &target, const gf::RenderStates &states
 
         gf::Text cardName(c.m_name, m_cardsFont, titleCharacterSize);
         cardName.setColor(gf::Color::Black);
-        cardName.setPosition({position.x+sizeCard.x/2.f, position.y+sizeCard.y/1.58f});
-        cardName.setAnchor(gf::Anchor::Center);
+        if(c.m_name.size()>12) {
+            cardName.setPosition({position.x+25, position.y+sizeCard.y/1.62f});
+        }else {
+            cardName.setPosition({position.x+25, position.y+sizeCard.y/1.55f});
+        }
+        cardName.setAlignment(gf::Alignment::Center);
+        cardName.setParagraphWidth(200-50);
 
-        gf::RectangleShape rect({sizeCard.x/1.1f, sizeCard.x/4.5f});
+        gf::RectangleShape rect({sizeCard.x/1.1f, sizeCard.x/4.3f});
         rect.setTexture(m_accessories,gf::RectF::fromPositionSize({ 0.f  , 0.f }, { 1.f , 1.f }));
         rect.setPosition({position.x+sizeCard.x/2.f, position.y+sizeCard.y/1.6f});
         rect.setAnchor(gf::Anchor::Center);
         switch (c.m_turn) {
             case Turn::BEFORE:
-                rect.setColor(gf::Color::Violet);
-                break;
-            case Turn::AFTER:
                 rect.setColor(gf::Color::Yellow);
                 break;
-            case Turn::BOTH:
+            case Turn::AFTER:
                 rect.setColor(gf::Color::Green);
+                break;
+            case Turn::BOTH:
+                rect.setColor(gf::Color::fromRgba32(212,234,45));
                 break;
             case Turn::DURING_TOUR_ADVERSE:
                 rect.setColor(gf::Color::Cyan);
                 break;
         }
-
+        if(m_gameData.m_phase.getCurrentPhase()==Phase::COUP) {
+            rect.setColor(gf::Color::White);
+        }
+        
         gf::Text cardDescription(c.m_description.substr(0, 60)+"...", m_cardsFont, instructionsCharacterSize);
         cardDescription.setColor(gf::Color::Black);
         cardDescription.setPosition({position.x+10, position.y+sizeCard.y/1.3f});

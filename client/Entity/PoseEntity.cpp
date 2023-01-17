@@ -6,7 +6,9 @@ PoseEntity::PoseEntity(gf::ResourceManager& resources,GameData &gameData)
 , m_gameData(gameData)
 , m_poseNameFont(resources.getFont("fonts/DejaVuSans.ttf"))
 {
-
+    m_cardsIllustration.setSmooth(true);
+    m_accessories.setSmooth(true);
+    m_cardPose = Card();
 }
 
 void PoseEntity::update([[maybe_unused]] gf::Time time) {
@@ -25,10 +27,10 @@ void PoseEntity::render(gf::RenderTarget &target, const gf::RenderStates &states
     
     switch (m_gameData.m_phase.getCurrentPhase()) {
         case Phase::AVANT_COUP :
-            contour.setOutlineColor(gf::Color::Violet);
+            contour.setOutlineColor(gf::Color::Yellow);
             break;
         case Phase::APRES_COUP :
-            contour.setOutlineColor(gf::Color::Yellow);
+            contour.setOutlineColor(gf::Color::Green);
             break;
         case Phase::PAS_MON_TOUR:
             contour.setOutlineColor(gf::Color::Cyan);
@@ -59,9 +61,12 @@ void PoseEntity::render(gf::RenderTarget &target, const gf::RenderStates &states
     poseName.setPosition({position.x,position.y-sizeCard.y/2.f});
     poseName.setAnchor(gf::Anchor::Center);
 
+    // TODO DESSINER LA CARTE si il ya en a une
+    if(m_cardPose.m_num!=-1) {
+        gf::Log::debug("je dessine une carte\n");
+    }
+    
     target.draw(contour, states);
-
     target.draw(placementTexte,states);
     target.draw(poseName,states);
-
 }

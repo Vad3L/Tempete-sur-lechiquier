@@ -13,7 +13,7 @@ GameScene::GameScene(GameHub& game)
 , m_tableBoardEntity(game.resources, m_gameData)
 , m_poseEntity(game.resources, m_gameData)
 , m_promotion(false)
-, m_endTurn("Fin du Tour", game.resources.getFont("fonts/Trajan-Color-Concept.otf"))
+, m_endTurn("Fin Tour", game.resources.getFont("fonts/Trajan-Color-Concept.otf"))
 , m_triggerAction("TriggerAction")
 {
     setClearColor(gf::Color::Black);
@@ -54,10 +54,10 @@ GameScene::GameScene(GameHub& game)
     	m_endTurn.setDefaultTextColor(gf::Color::Black);
 		m_endTurn.setDefaultBackgroundColor(gf::Color::Gray(0.7f));
 		m_endTurn.setSelectedTextColor(gf::Color::Black);
-		m_endTurn.setSelectedBackgroundColor(gf::Color::fromRgba32(212,30,27,255));
+		m_endTurn.setSelectedBackgroundColor(gf::Color::Green);
 		m_endTurn.setDisabledTextColor(gf::Color::Black);
-		m_endTurn.setDisabledBackgroundColor(gf::Color::Red);
-        m_endTurn.setPosition( coordsWidget.getRelativePoint({ 0.6f, 0.f }));
+		m_endTurn.setDisabledBackgroundColor(gf::Color::Green);
+        m_endTurn.setPosition( coordsWidget.getRelativePoint({ 0.6f, 0.25f }));
 		m_endTurn.setAnchor(gf::Anchor::TopLeft);
 		m_endTurn.setAlignment(gf::Alignment::Center);
 		m_endTurn.setCallback(callback);
@@ -65,11 +65,10 @@ GameScene::GameScene(GameHub& game)
     };
     setupButton(m_endTurn, [&] () {
 		gf::Log::debug("EndTurn pressed!\n");
-		m_gameData.m_phase.nextPhaseBtn();
+		if(m_gameData.m_phase.getCurrentPhase()==Phase::APRES_COUP) {
+            m_gameData.m_phase.nextPhaseBtn();
+        }
 	});
-
-
-
 
 }
 
@@ -123,7 +122,7 @@ void GameScene::doProcessEvent(gf::Event& event) {
 
     Phase currentPhase = m_gameData.m_phase.getCurrentPhase();
 
-    if(currentPhase == Phase::APRES_COUP) {
+    if(currentPhase == Phase::APRES_COUP || currentPhase == Phase::AVANT_COUP) {
         int numCarte = m_mainEntity.getCardSelected(m_cardsView.getSize(), m_game.getRenderer().mapPixelToCoords(event.mouseButton.coords, m_cardsView));
 
         if(numCarte!=-1) {
@@ -131,9 +130,8 @@ void GameScene::doProcessEvent(gf::Event& event) {
             bool playable = m_gameData.m_main[numCarte].m_isPlayable(m_gameData.m_plateau, currentPhase);
         
             gf::Log::info("carte %i iest jouable %i \n", numCarte, playable);
-            if(playable) {
-                m_gameData.m_main[numCarte].m_execute(m_gameData.m_plateau, gf::Vector2i(1), gf::Vector2i(1));
-                //m_gameData.m_phase.setCurrentPhase(Phase::PAS_MON_TOUR);
+            if(true){//playable) {
+                std::swap(m_poseEntity.m_cardPose, m_gameData.m_main[numCarte]);      
             }
         }
     }

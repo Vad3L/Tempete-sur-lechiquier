@@ -1,9 +1,12 @@
 #include "AnnexFctServer.hpp"
 #include "../model/Deck.hpp"
 
+#include <csignal>
+
 int main (int argc, char* argv[]) {
     int port = 43771;
 
+    signal(SIGPIPE, SIG_IGN);
     gf::TcpListener listener(std::to_string(port));
     
     gf::TcpSocket client1 = listener.accept();
@@ -11,18 +14,18 @@ int main (int argc, char* argv[]) {
     auto TwoHand = deck.distribute();
     
     if (client1) {
-	sendInit(client1, ChessColor::WHITE, TwoHand.first);
+	    sendInit(client1, ChessColor::WHITE, TwoHand.first);
         
         gf::TcpSocket client2 = listener.accept();
         if (client2) {
 	    sendInit(client2, ChessColor::BLACK, TwoHand.second);
 	    
 	    if(sendStartOrEnd(client1, client2, CodeRep::GAME_START) == -1) {
-            	sendStartOrEnd(client1, client2, CodeRep::GAME_END, ChessStatus::SURRENDER); 
-               	return -1;
-            }
-            
-            Plateau plateau;
+            sendStartOrEnd(client1, client2, CodeRep::GAME_END, ChessStatus::SURRENDER); 
+            return -1;
+        }
+        
+        Plateau plateau;
 	    ChessStatus gameStatus = ChessStatus::ON_GOING;
             bool player = true;
             bool promotion = false;
@@ -36,10 +39,10 @@ int main (int argc, char* argv[]) {
                     if(sendStartTurn(client1) == -1){
                         break;
                     }
-		    int ret = performAction(plateau, client1, client2, promotion);
+		             int ret = performAction(plateau, client1, client2, promotion);
                     if(ret == -1) {
                         break;
-                    } else if (ret == 0) { player = false; }
+                    } else if (!promotion && ret==0) { player = false; }
                 } else {
                     gf::Log::debug("------TOUR J2------\n");
                     if ((gameStatus = plateau.isGameOver(ChessColor::BLACK)) != ChessStatus::ON_GOING) {
@@ -48,10 +51,10 @@ int main (int argc, char* argv[]) {
                     if(sendStartTurn(client2) == -1){
                         break;
                     }
-		    int ret = performAction(plateau, client2, client1, promotion);
+		            int ret = performAction(plateau, client2, client1, promotion);
                     if(ret == -1) {
                         break;
-                    } else if (ret == 0) { player = true; }
+                    } else if (!promotion && ret == 0) { player = true; }
                 }
             }
 
