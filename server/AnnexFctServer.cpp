@@ -85,6 +85,9 @@ void checkCardPacketValidity (Plateau& p, CardRep& r, std::vector<Card>& hand, P
 	if (!hand[r.card].m_isPlayable(p, f)) {
 		valide = false;
 	}
+	if (r.err == CodeRep::NO_CARD) {
+		valide = false;
+	}
 
 	if (valide) {
 		r.err = CodeRep::NONE;
@@ -166,27 +169,57 @@ int performTurn (Plateau& plateau, gf::TcpSocket& player, gf::TcpSocket& other, 
 		gf::Log::error("Erreur lors du reçu de la carte avant le coup");
 		return -1;
 	}
-	assert(pack.getType() == CardRep::type);
-	CardRep card = pack.as<CardRep>();
-	checkCardPacketValidity(plateau, card, hand, Phase::AVANT_COUP);
 
-	if (card.err == CodeRep::NONE) {
-		performCard(plateau, card, hand);
-		if (hand[card.card].m_effect == Effect::REPLACE_COUP) {
-			// envoi fin du tour
-			return 0;
+	if (pack.getType() == CardRep::type) {
+		CardRep card = pack.as<CardRep>();
+		checkCardPacketValidity(plateau, card, hand, Phase::AVANT_COUP);
+		if (card.err == CodeRep::NONE) {
+			performCard(plateau, card, hand);
+			if (hand[card.card].m_effect == Effect::REPLACE_COUP) {
+				return 0;
+			}
 		}
+		pack.is(card);
+		// send to both
+		if (sendingPacket(player, pack) == -1) { return -1; }
+		if (sendingPacket(other, pack) == -1) { return -1; }
 	}
 
-	// coup normal
-	performAction(plateau, player, other, promotion);
+	if (pack.getType() == CoupRep::type && !promotion) {
+		CoupRep coup = pack.as<CoupRep>();
+		checkCoupPacketValidity(plateau, coup);
+		if (coup.err != CodeRep::NONE) {
+			return 2;
+		}
+		promotion = performCoup(plateau, coup);
+		if (!promotion) {
+			plateau.allPositions.push_back(plateau.getFen());
+		}
+		pack.is(coup);
+		// send to both
+		if (sendingPacket(player, pack) == -1) { return -1; }
+		if (sendingPacket(other, pack) == -1) { return -1; }
+	} else if (pack.getType() == PromotionRep::type) {
+		PromotionRep promo = pack.as<PromotionRep>();
+		checkPromotionValidity(plateau, promo);
+		if (promo.err != CodeRep::NONE) {
+			return 2;
+		}
+		performPromotion(plateau, promo);
+		promotion = false;
+		pack.is(promo);
+		// send to both
+		if (sendingPacket(player, pack) == -1) { return -1; }
+		if (sendingPacket(other, pack) == -1) { return -1; }
+	}
 
 	if (receivingPacket(player, pack) == -1) {
 		gf::Log::error("Erreur lors du reçu de la carte après le coup");
 		return -1;
 	}
+
 	assert(pack.getType() == CardRep::type);
-	card = pack.as<CardRep>();
+	CardRep card = pack.as<CardRep>();
 	checkCardPacketValidity(plateau, card, hand, Phase::APRES_COUP);
 
 	if (card.err == CodeRep::NONE) {
@@ -289,7 +322,7 @@ int sendStartTurn (gf::TcpSocket& a){
     if (gf::SocketStatus::Data != a.sendPacket(packet)) {
 		gf::Log::error("Lors de l'envoie du packet de debut de tour\n");
         ret = -1;
-	}
+    }
 
     return ret;
 }
