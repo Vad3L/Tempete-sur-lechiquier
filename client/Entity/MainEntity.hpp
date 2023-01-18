@@ -20,19 +20,19 @@
 struct GameData;
 
 class MainEntity : public gf::Entity {
-    public:
-        MainEntity(gf::ResourceManager& resources,GameData &gameData);
-        
-        void update(gf::Time time) override;
-        void render(gf::RenderTarget &target, const gf::RenderStates &states) override ;
+	public:
+		MainEntity(gf::ResourceManager& resources,GameData &gameData);
+		
+		void update(gf::Time time) override;
+		void render(gf::RenderTarget &target, const gf::RenderStates &states) override ;
 
-        int getCardSelected(gf::Vector2i sizeWindows, gf::Vector2i mouseCoord);
-    private:
-        gf::Font& m_cardsFont;
-        gf::Texture& m_cardsIllustration;
-        gf::Texture& m_accessories;
+		int getCardSelected(gf::Vector2i sizeWindows, gf::Vector2i mouseCoord);
+	private:
+		gf::Font& m_cardsFont;
+		gf::Texture& m_cardsIllustration;
+		gf::Texture& m_accessories;
 
-        GameData &m_gameData;
+		GameData &m_gameData;
 };
 
 

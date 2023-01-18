@@ -8,18 +8,18 @@ struct GameHub;
 
 class DownloadScene : public gf::Scene {
 
-    public :
-        DownloadScene(GameHub& game);
+	public :
+		DownloadScene(GameHub& game);
 
-    private :
-        void loadAnimation();
-        void doHandleActions(gf::Window& window) override;
-        void doUpdate(gf::Time time) override;
+	private :
+		void loadAnimation();
+		void doHandleActions(gf::Window& window) override;
+		void doUpdate(gf::Time time) override;
 
-        gf::Action m_escapeAction;
+		gf::Action m_escapeAction;
 
-        GameHub& m_game;
-    
+		GameHub& m_game;
+	
 };
 
 #endif // DOWNLOAD_SCENE_H

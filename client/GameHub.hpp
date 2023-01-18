@@ -16,24 +16,24 @@
 #include "Network.hpp"
 
 struct GameHub : gf::GameManager {
-    GameHub();
+	GameHub();
 
-//    std::unique_ptr<DownloadScene> download;
-    std::unique_ptr<StartScene> start;
-    std::unique_ptr<MenuScene> menu;
-    std::unique_ptr<PlaySelectScene> play;
-    std::unique_ptr<GameScene> game;
-    std::unique_ptr<RulesScene> rules;
-    std::unique_ptr<QuitScene> quit;
+//	std::unique_ptr<DownloadScene> download;
+	std::unique_ptr<StartScene> start;
+	std::unique_ptr<MenuScene> menu;
+	std::unique_ptr<PlaySelectScene> play;
+	std::unique_ptr<GameScene> game;
+	std::unique_ptr<RulesScene> rules;
+	std::unique_ptr<QuitScene> quit;
 
-    Network m_network;
+	Network m_network;
 
-    gf::BlackoutSegueEffect blackoutEffect;
-    bool m_loadingFinish = false;
+	gf::BlackoutSegueEffect blackoutEffect;
+	bool m_loadingFinish = false;
 
-    void loadingDownloadAssets();
-    void loadingAssets();
-    bool loadingFinish();
+	void loadingDownloadAssets();
+	void loadingAssets();
+	bool loadingFinish();
 };
 
 

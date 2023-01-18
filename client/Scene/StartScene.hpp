@@ -10,19 +10,19 @@
 struct GameHub;
 
 class StartScene : public gf::Scene {
-    public:
-        StartScene(GameHub& game);
+	public:
+		StartScene(GameHub& game);
 
-    private:
-        void doHandleActions(gf::Window& window) override;
+	private:
+		void doHandleActions(gf::Window& window) override;
 
-    private:
-        GameHub& m_game;
+	private:
+		GameHub& m_game;
 
-        gf::Action m_startAction;
-        gf::Action m_fullscreenAction;
+		gf::Action m_startAction;
+		gf::Action m_fullscreenAction;
 
-        TitleEntity m_titleEntity;
+		TitleEntity m_titleEntity;
 
 };
 

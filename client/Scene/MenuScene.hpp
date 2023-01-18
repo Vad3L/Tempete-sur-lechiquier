@@ -14,31 +14,31 @@
 struct GameHub;
 
 class MenuScene : public gf::Scene {
-    public:
-        MenuScene(GameHub& game);
+	public:
+		MenuScene(GameHub& game);
 
-    private:
-        void doProcessEvent(gf::Event& event) override;
-        void doHandleActions(gf::Window& window) override;
-        void doRender(gf::RenderTarget& target, const gf::RenderStates &states) override;
-        void doShow() override;
+	private:
+		void doProcessEvent(gf::Event& event) override;
+		void doHandleActions(gf::Window& window) override;
+		void doRender(gf::RenderTarget& target, const gf::RenderStates &states) override;
+		void doShow() override;
 
-    private:
-        GameHub& m_game;
-        gf::Texture& m_backgroundTexture;
+	private:
+		GameHub& m_game;
+		gf::Texture& m_backgroundTexture;
 
-        gf::Action m_quitAction;
+		gf::Action m_quitAction;
 
-        gf::Action m_upAction;
-        gf::Action m_downAction;
-        gf::Action m_triggerAction;
-        gf::Action m_fullscreenAction;
-        
-        gf::TextButtonWidget m_play;
-        gf::TextButtonWidget m_rules;
-        gf::TextButtonWidget m_quit;
+		gf::Action m_upAction;
+		gf::Action m_downAction;
+		gf::Action m_triggerAction;
+		gf::Action m_fullscreenAction;
+		
+		gf::TextButtonWidget m_play;
+		gf::TextButtonWidget m_rules;
+		gf::TextButtonWidget m_quit;
 
-        gf::WidgetContainer m_widgets;
+		gf::WidgetContainer m_widgets;
 };
 
 

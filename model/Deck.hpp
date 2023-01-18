@@ -9,24 +9,24 @@
 #define CARDS_DESCRIPTIONDIR "../data/"
 
 class Deck{
-    public:
-        Deck();
+	public:
+		Deck();
 
-        void displayDeck();
+		void displayDeck();
 
-        Card getFirst();
-        int getNbCardInDeck();
+		Card getFirst();
+		int getNbCardInDeck();
 
-        std::pair<std::vector<Card>,std::vector<Card>> distribute();
+		std::pair<std::vector<Card>,std::vector<Card>> distribute();
 
-        std::vector<Card> m_deck;
-        std::vector<Card> m_discard;
+		std::vector<Card> m_deck;
+		std::vector<Card> m_discard;
 
-    private:
-        void swap(Card &a, Card &b);
-        void shuffle();
-        
-        void drop(Card m_card);
+	private:
+		void swap(Card &a, Card &b);
+		void shuffle();
+		
+		void drop(Card m_card);
 
 
 };

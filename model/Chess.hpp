@@ -2,11 +2,11 @@
 #define ECHEC_H
 
 enum class Phase {
-    AVANT_COUP,
-    COUP,
-    APRES_COUP,
-    PAS_MON_TOUR,
-    CLIQUER_CASES // plateau ou pioche // phase de chosir case pcq on a jouer une carte qui' nous l'inmpose
+	AVANT_COUP,
+	COUP,
+	APRES_COUP,
+	PAS_MON_TOUR,
+	CLIQUER_CASES // plateau ou pioche // phase de chosir case pcq on a jouer une carte qui' nous l'inmpose
 }; 
 
 enum class ChessStatus {
@@ -31,7 +31,7 @@ enum class ChessPiece {
 	PRINCE = 7,
 	MAX = PRINCE
 };
-    
+	
 enum class ChessColor { 
 	NONE = -1,
 	WHITE = 0,

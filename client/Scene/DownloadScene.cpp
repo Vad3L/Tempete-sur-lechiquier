@@ -5,7 +5,7 @@ DownloadScene::DownloadScene(GameHub& game)
 , m_game(game)
 , m_escapeAction("Escape")
 {
-    setClearColor(gf::Color::Red);    
+	setClearColor(gf::Color::Red);
 }
 
 void DownloadScene::loadAnimation() {
@@ -13,18 +13,18 @@ void DownloadScene::loadAnimation() {
 }
 
 void DownloadScene::doHandleActions([[maybe_unused]] gf::Window& window) {
-    if (m_escapeAction.isActive()) {
-        m_game.popScene();
-    }
+	if (m_escapeAction.isActive()) {
+		m_game.popScene();
+	}
 }
 
 void DownloadScene::doUpdate([[maybe_unused]] gf::Time time) {
 if (!isActive()) {
-    return;
+	return;
 }
 
-    if (m_game.loadingFinish()) {
-        m_game.replaceScene(*m_game.start, m_game.blackoutEffect, gf::seconds(2.0f));
-        return;
-    }
+	if (m_game.loadingFinish()) {
+		m_game.replaceScene(*m_game.start, m_game.blackoutEffect, gf::seconds(2.0f));
+		return;
+	}
 }
