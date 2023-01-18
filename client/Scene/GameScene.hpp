@@ -31,48 +31,50 @@ struct GameHub;
 struct GameData;
 
 class GameScene : public gf::Scene {
-    public:
-        GameScene(GameHub& game, Network &network);
-    private:
-        void doHandleActions(gf::Window& window) override;
-        void doProcessEvent(gf::Event& event) override;
-        void doRender(gf::RenderTarget& target, const gf::RenderStates &states) override;
-        void doUpdate(gf::Time time) override;
-        void doShow() override;
+	public:
+		GameScene(GameHub& game, Network &network);
+	private:
+		void doHandleActions(gf::Window& window) override;
+		void doProcessEvent(gf::Event& event) override;
+		void doRender(gf::RenderTarget& target, const gf::RenderStates &states) override;
+		void doUpdate(gf::Time time) override;
+		void doShow() override;
 
-        void onActivityChange(bool active)  override;
-    private:
-        std::string m_ip;
+		void onActivityChange(bool active)  override;
+	private:
+		std::string m_ip;
 
-        GameHub& m_game;
-        GameData m_gameData;
-        Network& m_network;
-        
-        gf::Action m_quitAction;
-        gf::Action m_fullscreenAction;
-        gf::Action m_texture1Action;
-        gf::Action m_texture2Action;
+		GameHub& m_game;
+		GameData m_gameData;
+		Network& m_network;
+		
+		gf::Action m_quitAction;
+		gf::Action m_fullscreenAction;
+		gf::Action m_texture1Action;
+		gf::Action m_texture2Action;
+		gf::Action m_endTurnAction;
+		gf::Action m_triggerAction;
+	
+		bool m_promotion;
 
-        bool m_promotion;
+		gf::Packet m_packet;
 
-        gf::Packet m_packet;
+		gf::ExtendView m_boardView;
+		gf::ExtendView m_tableBoardView;
+		gf::ExtendView m_cardsView;
+		gf::ViewContainer m_views;
 
-        gf::ExtendView m_boardView;
-        gf::ExtendView m_tableBoardView;
-        gf::ExtendView m_cardsView;        
-        gf::ViewContainer m_views;
-
-        PoseEntity m_poseEntity;
-        BoardEntity m_boardEntity;    
-        TableBoardEntity m_tableBoardEntity;
-        MainEntity m_mainEntity;
+		PoseEntity m_poseEntity;
+		BoardEntity m_boardEntity;
+		TableBoardEntity m_tableBoardEntity;
+		MainEntity m_mainEntity;
 
 
-        gf::TextButtonWidget m_endTurn;
+		gf::TextButtonWidget m_endTurn;
 
-        gf::WidgetContainer m_widgets;
+		gf::WidgetContainer m_widgets;
 
-        gf::Action m_triggerAction;
+		
 
 };  
 

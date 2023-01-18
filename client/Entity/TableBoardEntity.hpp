@@ -20,18 +20,18 @@
 struct GameData;
 
 class TableBoardEntity: public gf::Entity {
-    public:
-        TableBoardEntity(gf::ResourceManager& resources, GameData &gameData);
-        void update(gf::Time time) override;
-        void render(gf::RenderTarget &target, const gf::RenderStates &states) override;
-        
-    private:
+	public:
+		TableBoardEntity(gf::ResourceManager& resources, GameData &gameData);
+		void update(gf::Time time) override;
+		void render(gf::RenderTarget &target, const gf::RenderStates &states) override;
+		
+	private:
 
-        gf::Font& m_font;
-        gf::Texture& m_backgroundTexture;
-        gf::Texture& m_backgroundTexture2;
+		gf::Font& m_font;
+		gf::Texture& m_backgroundTexture;
+		gf::Texture& m_backgroundTexture2;
 
-        GameData &m_gameData;
+		GameData &m_gameData;
 };
 
 

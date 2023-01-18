@@ -20,20 +20,20 @@
 struct GameData;
 
 class BoardEntity : public gf::Entity {
-    public:
-        BoardEntity(gf::ResourceManager& resources, GameData &gameData);
-        void update(gf::Time time) override;
-        void render(gf::RenderTarget &target, const gf::RenderStates &states) override;
+	public:
+		BoardEntity(gf::ResourceManager& resources, GameData &gameData);
+		void update(gf::Time time) override;
+		void render(gf::RenderTarget &target, const gf::RenderStates &states) override;
 
-        gf::Vector2i getCaseSelected(gf::Vector2i sizeWindows, gf::Vector2i mouseCoord);
-        ChessPiece getChoice(gf::Vector2i sizeWindows,gf::Vector2i clickCoord);
+		gf::Vector2i getCaseSelected(gf::Vector2i sizeWindows, gf::Vector2i mouseCoord);
+		ChessPiece getChoice(gf::Vector2i sizeWindows,gf::Vector2i clickCoord);
 
-    private:
-        
-        gf::Texture& m_backgroundTexture;
-        gf::Texture& m_backgroundTexture2;
+	private:
+		
+		gf::Texture& m_backgroundTexture;
+		gf::Texture& m_backgroundTexture2;
 
-        GameData &m_gameData;
+		GameData &m_gameData;
 };
 
 

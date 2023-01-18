@@ -16,33 +16,33 @@
 struct GameHub;
 
 class RulesScene : public gf::Scene {
-    public:
-        RulesScene(GameHub& game);
+	public:
+		RulesScene(GameHub& game);
 
-    private:
-        void doProcessEvent(gf::Event& event) override;
-        void doHandleActions(gf::Window& window) override;
-        void doRender(gf::RenderTarget& target, const gf::RenderStates &states) override;
-        void doShow() override;
-        void changeRightLeft(bool value);
-        void onActivityChange(bool active)  override;
+	private:
+		void doProcessEvent(gf::Event& event) override;
+		void doHandleActions(gf::Window& window) override;
+		void doRender(gf::RenderTarget& target, const gf::RenderStates &states) override;
+		void doShow() override;
+		void changeRightLeft(bool value);
+		void onActivityChange(bool active)  override;
    
-    private:
-        GameHub& m_game;
+	private:
+		GameHub& m_game;
 
-        gf::TextButtonWidget m_quitButton;
-        gf::TextButtonWidget m_pageLeft;
-        gf::TextButtonWidget m_pageRight;
-        gf::WidgetContainer m_widgets;
+		gf::TextButtonWidget m_quitButton;
+		gf::TextButtonWidget m_pageLeft;
+		gf::TextButtonWidget m_pageRight;
+		gf::WidgetContainer m_widgets;
 
-        gf::Action m_quitAction;
-        gf::Action m_triggerAction;
-        gf::Action m_leftAction;
-        gf::Action m_rightAction;
-        gf::Action m_downAction;
-        gf::Action m_fullscreenAction;
-        
-        RulesEntity m_rulesEntity;
+		gf::Action m_quitAction;
+		gf::Action m_triggerAction;
+		gf::Action m_leftAction;
+		gf::Action m_rightAction;
+		gf::Action m_downAction;
+		gf::Action m_fullscreenAction;
+		
+		RulesEntity m_rulesEntity;
 };
 
 #endif // RULES_SCENE_H

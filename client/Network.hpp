@@ -14,30 +14,30 @@
 #include <thread>
 
 class Network {
-    public:
-        gf::Queue<gf::Packet> m_queue;
+	public:
+		gf::Queue<gf::Packet> m_queue;
 
-    public:
-        Network();
+	public:
+		Network();
 
-        bool isConnected();
-        void connect(const std::string& hostname, const std::string& port);
-        void deconnect();
+		bool isConnected();
+		void connect(const std::string& hostname, const std::string& port);
+		void deconnect();
 
-        template<typename T>
-        void send(const T& data) {
-            gf::Packet packet;
-            packet.is(data);
-            m_socket.sendPacket(packet);
-        }
+		template<typename T>
+		void send(const T& data) {
+			gf::Packet packet;
+			packet.is(data);
+			m_socket.sendPacket(packet);
+		}
 
-    private:
-        gf::TcpSocket m_socket;
-        std::mutex m_mutex;
-        std::atomic_bool m_connecting;
+	private:
+		gf::TcpSocket m_socket;
+		std::mutex m_mutex;
+		std::atomic_bool m_connecting;
 
-    private:
-        void run(std::string hostname, std::string port);
+	private:
+		void run(std::string hostname, std::string port);
 };
 
 #endif // NETWORK_H

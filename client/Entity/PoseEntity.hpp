@@ -19,19 +19,19 @@
 struct GameData;
 
 class PoseEntity : public gf::Entity {
-    public:
-        PoseEntity(gf::ResourceManager& resources,GameData &gameData);
-        
-        void update(gf::Time time) override;
-        void render(gf::RenderTarget &target, const gf::RenderStates &states) override ;
-        Card m_cardPose;
-        
-    private:
-        gf::Texture& m_cardsIllustration;
-        gf::Texture& m_accessories;
-        gf::Font& m_poseNameFont;
+	public:
+		PoseEntity(gf::ResourceManager& resources,GameData &gameData);
+		
+		void update(gf::Time time) override;
+		void render(gf::RenderTarget &target, const gf::RenderStates &states) override ;
+		Card m_cardPose;
+		
+	private:
+		gf::Texture& m_cardsIllustration;
+		gf::Texture& m_accessories;
+		gf::Font& m_poseNameFont;
 
-        GameData &m_gameData;
+		GameData &m_gameData;
 };
 
 

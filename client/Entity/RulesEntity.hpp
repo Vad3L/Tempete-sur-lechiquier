@@ -14,16 +14,16 @@
 #include <iostream>
 
 class RulesEntity : public gf::Entity {
-    public:
-        RulesEntity(gf::ResourceManager& resources);
-        void update(gf::Time time) override;
-        void render(gf::RenderTarget &target, const gf::RenderStates &states) override;
-        int m_index;
+	public:
+		RulesEntity(gf::ResourceManager& resources);
+		void update(gf::Time time) override;
+		void render(gf::RenderTarget &target, const gf::RenderStates &states) override;
+		int m_index;
 
-    private:
-        gf::Font& m_font;
-        gf::Texture& m_backgroundTexture;
-        gf::Font& m_rulesFont;
+	private:
+		gf::Font& m_font;
+		gf::Texture& m_backgroundTexture;
+		gf::Font& m_rulesFont;
 
 
 };

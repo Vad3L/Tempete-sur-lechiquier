@@ -32,10 +32,10 @@ RulesScene::RulesScene(GameHub& game)
 	addAction(m_triggerAction);
 
 	m_leftAction.addScancodeKeyControl(gf::Scancode::Left);
-    addAction(m_leftAction);
+	addAction(m_leftAction);
 
-    m_rightAction.addScancodeKeyControl(gf::Scancode::Right);
-    addAction(m_rightAction);
+	m_rightAction.addScancodeKeyControl(gf::Scancode::Right);
+	addAction(m_rightAction);
 
 	auto setupButton = [&] (gf::TextButtonWidget& button, auto callback) {
 		button.setDefaultTextColor(gf::Color::Black);
@@ -78,8 +78,8 @@ void RulesScene::doHandleActions([[maybe_unused]] gf::Window& window) {
 
 	if (m_downAction.isActive()) {
 		while(m_quitButton.isDefault()){
-            m_widgets.selectPreviousWidget();
-        }
+			m_widgets.selectPreviousWidget();
+		}
 	}
 
 	if (m_triggerAction.isActive()) {
@@ -93,16 +93,16 @@ void RulesScene::doHandleActions([[maybe_unused]] gf::Window& window) {
 	if(m_leftAction.isActive()) {
 		changeRightLeft(false);
 		while(m_pageLeft.isDefault()){
-            m_widgets.selectPreviousWidget();
-        }
-    }
+			m_widgets.selectPreviousWidget();
+		}
+	}
 
-    if(m_rightAction.isActive()) {
+	if(m_rightAction.isActive()) {
 		changeRightLeft(true);
 		while(m_pageRight.isDefault()){
-            m_widgets.selectPreviousWidget();
-        }
-    }
+			m_widgets.selectPreviousWidget();
+		}
+	}
 
 }
 
@@ -172,18 +172,18 @@ void RulesScene::doShow() {
 
 void RulesScene::changeRightLeft(bool value) {
 	if(value){
-        if(m_rulesEntity.m_index < 3){
+		if(m_rulesEntity.m_index < 3){
 			m_rulesEntity.m_index++;
-        }
-    }else{
-        if(m_rulesEntity.m_index > 0){
-            m_rulesEntity.m_index--;
-        }
-    }
+		}
+	}else{
+		if(m_rulesEntity.m_index > 0){
+			m_rulesEntity.m_index--;
+		}
+	}
 }
 
 void RulesScene::onActivityChange(bool active){
-    if(active){
-        m_rulesEntity.m_index = 0;
+	if(active){
+		m_rulesEntity.m_index = 0;
 	}
 }

@@ -10,38 +10,38 @@
 #include "CardFunction.hpp"
 
 enum class Turn{
-    BEFORE,
-    AFTER,
-    BOTH,
-    DURING_TOUR_ADVERSE
+	BEFORE,
+	AFTER,
+	BOTH,
+	DURING_TOUR_ADVERSE
 };
 
 enum class Action{
-    NONE, //en general ca depend d'un mouvement precendent par exemple bombe atomique)
-    CHOOSE_CASES //plateau et/ou pioche
+	NONE, //en general ca depend d'un mouvement precendent par exemple bombe atomique)
+	CHOOSE_CASES //plateau et/ou pioche
 };
 
 enum class Effect{ // emum pour determiner dans quelle phase allons nous nous trouver une fois qu'on l'aura jouer
-    NONE, // phase suivante(soit fin ou coup normal)
-    REPLACE_COUP, // remplace ton coup normal 
-    REGAME_COUP, // par exmeple en cas d'annultion 
-    REGAME_OTHER_CARTE // par exemple en cas d'annulation ou la carte qui permet de jouer une carte supplémentaire(rebelote dix de der)
+	NONE, // phase suivante(soit fin ou coup normal)
+	REPLACE_COUP, // remplace ton coup normal 
+	REGAME_COUP, // par exmeple en cas d'annultion 
+	REGAME_OTHER_CARTE // par exemple en cas d'annulation ou la carte qui permet de jouer une carte supplémentaire(rebelote dix de der)
 };
 
 class Card{
-    public:
-        std::string m_name;
-        std::string m_description;
-        
-        Turn m_turn;
-        Action m_action;
-        Effect m_effect;
-        int m_num;
-	    std::function<void(Plateau&, gf::Vector2i, gf::Vector2i)> m_execute;
-	    std::function<bool(Plateau&, Phase)> m_isPlayable;
+	public:
+		std::string m_name;
+		std::string m_description;
+		
+		Turn m_turn;
+		Action m_action;
+		Effect m_effect;
+		int m_num;
+		std::function<void(Plateau&, gf::Vector2i, gf::Vector2i)> m_execute;
+		std::function<bool(Plateau&, Phase)> m_isPlayable;
 
-        Card(int num, std::string name,std::string m_description,Turn turn, Action action, Effect effect);
-        Card();
+		Card(int num, std::string name,std::string m_description,Turn turn, Action action, Effect effect);
+		Card();
 
 };
 

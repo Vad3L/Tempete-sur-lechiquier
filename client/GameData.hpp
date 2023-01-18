@@ -14,16 +14,16 @@
 #define GAME_CONFIGDIR "../config/"
 
 struct GameData {
-    GameData();
-    void reset();
+	GameData();
+	void reset();
 
-    ChessColor m_myColor;
-    GamePhase m_phase;
-    Plateau m_plateau;
-    ChessStatus m_gameStatus;
-    int m_style;
-    std::array<Card, 5> m_main;
-    std::map<int , Card> m_cards;
+	ChessColor m_myColor;
+	GamePhase m_phase;
+	Plateau m_plateau;
+	ChessStatus m_gameStatus;
+	int m_style;
+	std::array<Card, 5> m_main;
+	std::map<int , Card> m_cards;
 };
 
 
