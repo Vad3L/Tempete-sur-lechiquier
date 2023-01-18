@@ -173,7 +173,7 @@ int performTurn (Plateau& plateau, gf::TcpSocket& player, gf::TcpSocket& other, 
 		return -1;
 	}
 
-	if (pack.getType() == CardRep::type) {
+	if (pack.getType() == CardRep::type && !promotion) {
 		CardRep card = pack.as<CardRep>();
 		checkCardPacketValidity(plateau, card, hand, Phase::AVANT_COUP);
 		if (card.err == CodeRep::NONE) {
@@ -202,6 +202,9 @@ int performTurn (Plateau& plateau, gf::TcpSocket& player, gf::TcpSocket& other, 
 		// send to both
 		if (sendingPacket(player, pack) == -1) { return -1; }
 		if (sendingPacket(other, pack) == -1) { return -1; }
+		if (promotion) {
+			return 2;
+		}
 	} else if (pack.getType() == PromotionRep::type) {
 		PromotionRep promo = pack.as<PromotionRep>();
 		checkPromotionValidity(plateau, promo);

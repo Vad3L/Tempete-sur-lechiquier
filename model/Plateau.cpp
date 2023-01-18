@@ -35,6 +35,8 @@ Plateau::Plateau()
 			}
 		}
 	}
+
+	state[1 * 8 + 0].piece = Piece(ChessColor::WHITE, ChessPiece::PAWN);
 	allPositions.push_back(getFen());
 	prettyPrint();
 }

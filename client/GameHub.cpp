@@ -5,7 +5,7 @@ GameHub::GameHub()
 : GameManager("Tempête sur l'échiquier", { GAME_DATADIR })
 {
     getWindow().setResizable(false);  
-    //getWindow().setSize(gf::Vector2i(640,420));
+    getWindow().setSize(gf::Vector2i(640,420));
     getWindow().setFullscreen();
 }
 
