@@ -45,18 +45,18 @@ void RulesEntity::render(gf::RenderTarget &target, const gf::RenderStates &state
     gameRules.setOutlineThickness(titleCharacterSize/4.f);
 
     std::string rules[4];
-    rules[0] = "Le jeu d'une carte ne peut pas conduire et ne conduit pas directement à une situation d'échec et mat ou de capture du roi, pas plus qu'il n'empêche un roi de s'échapper d'une situation d'échec. Cette règle prévaut sur toute autre. Si une carte jouée contredit cette règle, elle est nulle, mais toujours considérée comme jouée, et donc défaussée.";
-    rules[1] = "Il est interdit d'utiliser plus d'une carte par coup. Un joueur peut donc utiliser une carte, et une seule, lors du déplacement de son adversaire.";
-    rules[2] = "L'effet d'une carte peut compléter, remplacer ou modifier le coup joué. Certains effets ne sont que superposés à ce coup. Ceci est précisé sur chaque carte. Un coup peut être joué sans qu'aucune carte ne soit utilisée.";
-    rules[3] = "Certaines cartes peuvent devenir inefficaces en raison de la disparition des pièces concernées.";
+    rules[0] = "Ce jeu de cartes propose une variation simple et amusante du jeu d'échecs. Les joueurs utilisent un jeu d'échecs normal et complet, disposé de la manière habituelle.\n .\n Mise en Place \n .\nLe Premier joueur mélange des cartes, puis en distribue 5 à son adversaire et 5 à lui-même, une par une et faces cachées. Les cartes restantes, faces cachées, constituent la pioche. Chaque joueur examine ses cartes, et la partie commence. Le but du jeu reste de mettre le Roi adverse <mat>, mais les cartes permettent d'y parvenir par des moyens inhabituels. Chaque carte décrit un événement modifiant la structure ou le cours du jeu.";
+    rules[1] = "Utilisation des Cartes \n . \n Le joueur qui joue une carte l'annonce clairement en rejetant celle-ci, face visible, sur la pile de carte jouer. L'effet décrit est aussitôt appliqué.\n Chaque joueur peut utiliser une carte, et une seule, à chaque coup (au sien et à celui de son adversaire).\n Chaque carte ne peut être utilisée qu'au moment précis indiqué en par la couleur du bandeau en dessous du titre de la carte.\n .\nJaune : carte Avant coup\n Vert : Après coup\n Cyan : Pendant tour adversaire\n.\n Un coup peut être joué sans qu'aucune carte ne soit utilisée.\nL'orqu'un joueur vient d'abattre une carte, il en reprend aussitôt une sur le dessus de la pioche, de façon à avoir en permanence 5 cartes en main. ";
+    rules[2] = "Après son coup, et à conditionqu'il n'ait pas joué de carte à ce coup, un joueur peut se défausser d'une carte de sa main si cette carte ne peut pas être utilisée dans les conditions actuelles de la partie (par exemple Urbanisme si l'un des joueurs n'a plus de Tour sur l'échiquier ). Il prend aussitôt la première carte de la pioche pour la remplacer. \nLorsque la pioche est épuisée, les cartes de l'écart sont mélangées pour constituer une nouvelle pioche.";
+    rules[3] = "Régle Fondamentale \n . \n Quelles que soient les situations bizarres créées par les cartes, la victoire ne peut être obtenue que par une position réelle de mat, et jamais par une simple <Prise du Roi>. Le déplacement créant la situation de mat peut très bien avoir été permis par le jeu d'une carte, mais la position elle-même doit être un mat. (Rappel : un Roi est mat lorsque la position est telle que le joueur ne peut empêcher qu'il soit capturé par l'adversaire au coup suivant.\n . \n Quelques précisions \n . \nLorsque le terme <Pièce> est utilisé dans le texte d'une carte, il désigne, l'ensemble des pièces du jeu, Dames, Rois et Pions inclus. Si l'effet d'une carte exclut certaines pièces, cela est précisé dans le texte de la carte.";
 
     gf::Text paragraph;
     paragraph.setColor(gf::Color::White);
     paragraph.setLineSpacing(1.5f);
     paragraph.setFont(m_rulesFont);
-    paragraph.setCharacterSize((height/100+width/100)*2);
-    paragraph.setParagraphWidth(width);
-    paragraph.setAlignment(gf::Alignment::Justify);
+    paragraph.setCharacterSize((height/100+width/100));
+    paragraph.setParagraphWidth(width-50);
+    paragraph.setAlignment(gf::Alignment::Center);
     paragraph.setString(rules[m_index]);
     paragraph.setPosition(coords.getRelativePoint({ 0.5f, 0.45f}));
     paragraph.setAnchor(gf::Anchor::Center);
