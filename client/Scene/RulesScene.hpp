@@ -12,8 +12,7 @@
 #include <gf/Log.h>
 #include <gf/Coordinates.h>
 
-
-struct GameHub;
+struct GameHub;	
 
 class RulesScene : public gf::Scene {
 	public:

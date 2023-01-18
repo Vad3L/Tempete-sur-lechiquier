@@ -107,7 +107,8 @@ void GameScene::doHandleActions([[maybe_unused]] gf::Window& window) {
 
 	if (m_endTurnAction.isActive()){
 		gf::Log::debug("pushed\n");
-
+		m_widgets.selectNextWidget();
+		m_widgets.triggerAction();
 	}
 }
 
