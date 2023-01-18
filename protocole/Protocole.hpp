@@ -13,7 +13,6 @@ using namespace gf::literals;
 typedef enum {
     NONE, 
     COLOR,    
-    NO_CARD,
     COUP_NO_VALIDE,
     CARD_NO_VALIDE,      
     GAME_START,
@@ -78,7 +77,7 @@ struct CardRep {
 
 template<typename Archive>
 Archive operator|(Archive& ar, CardRep& data) {
-	return ar | data.card | data.a | data.b;
+	return ar | data.err | data.card | data.a | data.b;
 }
 
 template<typename Archive>

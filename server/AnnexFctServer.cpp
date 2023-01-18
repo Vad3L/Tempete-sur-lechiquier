@@ -79,16 +79,19 @@ void checkCoupPacketValidity (Plateau& plateau, CoupRep& r) {
 }
 
 void checkCardPacketValidity (Plateau& p, CardRep& r, std::vector<Card>& hand, Phase f) {
+	gf::Log::debug("debut fonction card validity %i\n", r.err);
+	if (r.err == CodeRep::NO_CARD) {
+		return;
+	}
+
+	assert(r.err != CodeRep::NO_CARD);
 	assert(r.card > 4);
 
 	bool valide = true;
 	if (!hand[r.card].m_isPlayable(p, f)) {
 		valide = false;
 	}
-	if (r.err == CodeRep::NO_CARD) {
-		valide = false;
-	}
-
+	
 	if (valide) {
 		r.err = CodeRep::NONE;
 	} else {
@@ -213,13 +216,20 @@ int performTurn (Plateau& plateau, gf::TcpSocket& player, gf::TcpSocket& other, 
 		if (sendingPacket(other, pack) == -1) { return -1; }
 	}
 
-	if (receivingPacket(player, pack) == -1) {
+	gf::Packet pack2;
+	if (receivingPacket(player, pack2) == -1) {
 		gf::Log::error("Erreur lors du reçu de la carte après le coup");
 		return -1;
 	}
 
-	assert(pack.getType() == CardRep::type);
-	CardRep card = pack.as<CardRep>();
+	gf::Log::debug("type partie : %lu\n", PartieRep::type);
+	gf::Log::debug("type promotion : %lu\n", PromotionRep::type);
+	gf::Log::debug("type coup : %lu\n", CoupRep::type);
+	gf::Log::debug("type card : %lu\n", CardRep::type);
+	gf::Log::debug("type: %lu\n", pack2.getType());
+	assert(pack2.getType() == CardRep::type);
+	
+	CardRep card = pack2.as<CardRep>();
 	checkCardPacketValidity(plateau, card, hand, Phase::APRES_COUP);
 
 	if (card.err == CodeRep::NONE) {
