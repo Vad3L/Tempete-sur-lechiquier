@@ -1,9 +1,10 @@
 #include "GameScene.hpp"
 #include "../GameHub.hpp"
 
-GameScene::GameScene(GameHub& game)
+GameScene::GameScene(GameHub& game, Network &network)
 : gf::Scene(game.getRenderer().getSize())
 , m_game(game)
+, m_network(network)
 , m_quitAction("quit")
 , m_fullscreenAction("Fullscreen")
 , m_texture1Action("Texture1")
@@ -69,7 +70,7 @@ GameScene::GameScene(GameHub& game)
             m_gameData.m_phase.setCurrentPhase(Phase::PAS_MON_TOUR);
             CardRep cardRep;
             cardRep.err = CodeRep::NO_CARD;
-            m_game.m_network.send(cardRep);
+            m_network.send(cardRep);
         }
 	});
 
@@ -155,7 +156,7 @@ void GameScene::doProcessEvent(gf::Event& event) {
             ChessPiece choice = m_boardEntity.getChoice(m_boardView.getSize(),v);
             promo.choice = choice;
             gf::Log::debug("envoie au serveur la promotion du pion en %i,%i avec comme choice %i\n",v.y,v.x,(int)promo.choice);
-            m_game.m_network.send(promo);
+            m_network.send(promo);
            
         }else {
 
@@ -171,7 +172,7 @@ void GameScene::doProcessEvent(gf::Event& event) {
                 m_gameData.m_plateau.coordCaseSelected = gf::Vector2i(-1,-1);
                 m_gameData.m_plateau.moveAvailable.clear();	
                     
-                m_game.m_network.send(coup);
+                m_network.send(coup);
             }
         }
     }
@@ -197,7 +198,7 @@ void GameScene::doRender(gf::RenderTarget& target, const gf::RenderStates &state
 
 void GameScene::doUpdate(gf::Time time) {
     
-    if(!m_game.m_network.m_queue.poll(m_packet)) {
+    if(!m_network.m_queue.poll(m_packet)) {
 		return;
 	}
 	
@@ -329,7 +330,7 @@ void GameScene::onActivityChange(bool active) {
         
     }else if(!active && isPaused()){
         gf::Log::debug("scene game desactive\n");
-        m_game.m_network.deconnect();
+        m_network.deconnect();
         m_boardView.setRotation(0);
         m_gameData.reset();
     }
