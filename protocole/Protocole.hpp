@@ -13,6 +13,7 @@ using namespace gf::literals;
 typedef enum {
     NONE, 
     COLOR,    
+    NO_CARD,
     COUP_NO_VALIDE,
     CARD_NO_VALIDE,      
     GAME_START,

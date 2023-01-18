@@ -26,10 +26,10 @@ int main (int argc, char* argv[]) {
         }
         
         Plateau plateau;
-	    ChessStatus gameStatus = ChessStatus::ON_GOING;
-            bool player = true;
-            bool promotion = false;
-            while (true) {
+	ChessStatus gameStatus = ChessStatus::ON_GOING;
+        bool player = true;
+        bool promotion = false;
+        while (true) {
                 plateau.moveAvailable.clear();
                 if (player) {
                     gf::Log::debug("------TOUR J1------\n");
@@ -39,7 +39,8 @@ int main (int argc, char* argv[]) {
                     if(sendStartTurn(client1) == -1){
                         break;
                     }
-		             int ret = performAction(plateau, client1, client2, promotion);
+
+		    int ret = performTurn(plateau, client1, client2, TwoHand.first, promotion);
                     if(ret == -1) {
                         break;
                     } else if (!promotion && ret==0) { player = false; }
@@ -51,7 +52,8 @@ int main (int argc, char* argv[]) {
                     if(sendStartTurn(client2) == -1){
                         break;
                     }
-		            int ret = performAction(plateau, client2, client1, promotion);
+
+		    int ret = performTurn(plateau, client2, client1, TwoHand.second, promotion);
                     if(ret == -1) {
                         break;
                     } else if (!promotion && ret == 0) { player = true; }
