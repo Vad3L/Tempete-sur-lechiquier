@@ -25,22 +25,31 @@ void PoseEntity::render(gf::RenderTarget &target, const gf::RenderStates &states
     gf::RoundedRectangleShape contour(sizeCard);
     contour.setColor(gf::Color::fromRgba32(0.f, 0.f, 0.f, 0.f));
     
+    gf::Text poseName("Carte jouée", m_poseNameFont, 16.f);
+    poseName.setPosition({position.x,position.y-sizeCard.y/2.f-2.5f});
+    poseName.setAnchor(gf::Anchor::Center);
+
     switch (m_gameData.m_phase.getCurrentPhase()) {
         case Phase::AVANT_COUP :
             contour.setOutlineColor(gf::Color::Yellow);
+            poseName.setColor(gf::Color::Yellow);
             break;
         case Phase::APRES_COUP :
             contour.setOutlineColor(gf::Color::Green);
+            poseName.setColor(gf::Color::Green);
             break;
         case Phase::PAS_MON_TOUR:
             contour.setOutlineColor(gf::Color::Cyan);
+            poseName.setColor(gf::Color::Cyan);
             break;
         default :
             contour.setOutlineColor(gf::Color::White);
+            poseName.setColor(gf::Color::White);
             break;
     }
     if(m_gameData.m_gameStatus != ChessStatus::ON_GOING) {
         contour.setOutlineColor(gf::Color::White);
+        poseName.setColor(gf::Color::White);
     }
     
     contour.setOutlineThickness(6.f);
@@ -49,17 +58,10 @@ void PoseEntity::render(gf::RenderTarget &target, const gf::RenderStates &states
     contour.setAnchor(gf::Anchor::Center);
 
     gf::RectangleShape placementTexte;
-    placementTexte.setSize({90.0f,1.0f});
+    placementTexte.setSize({130.f,14.0f});
     placementTexte.setColor(gf::Color::Black);
-    placementTexte.setOutlineThickness(6.f);
-    placementTexte.setOutlineColor(gf::Color::Black);
-    placementTexte.setPosition({position.x,position.y-sizeCard.y/2.f});
+    placementTexte.setPosition({position.x,position.y-sizeCard.y/2.f-5.f});
     placementTexte.setAnchor(gf::Anchor::Center);
-
-    gf::Text poseName("Carte jouée", m_poseNameFont, 16.f);
-    poseName.setColor(gf::Color::White);
-    poseName.setPosition({position.x,position.y-sizeCard.y/2.f});
-    poseName.setAnchor(gf::Anchor::Center);
 
     // TODO DESSINER LA CARTE si il ya en a une
     if(m_cardPose.m_num!=-1) {

@@ -6,22 +6,22 @@
 
 int main(int argc, char* argv[]) {
 
-    GameHub hub;
+  GameHub hub;
 
-    auto loading = std::thread([&hub]() {
-      gf::SharedGraphics glContext(hub.getWindow());
-      hub.loadingDownloadAssets();
-      hub.loadingAssets();
-    });
+  auto loading = std::thread([&hub]() {
+    gf::SharedGraphics glContext(hub.getWindow());
+    hub.loadingDownloadAssets();
+    hub.loadingAssets();
+  });
 
-    loading.detach();
+  loading.detach();
 
-    while(!hub.loadingFinish()) {
-        
-    }
-    hub.pushScene(*hub.start);
-    hub.run();
-    
-
-    return EXIT_SUCCESS;
+  while (!hub.loadingFinish())
+  {
+    /* code */
+  }
+  
+  hub.pushScene(*hub.start);
+  hub.run();
+  return EXIT_SUCCESS;
 }

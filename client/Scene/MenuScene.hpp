@@ -11,8 +11,6 @@
 #include <gf/Log.h>
 #include <gf/Sprite.h>
 
-
-
 struct GameHub;
 
 class MenuScene : public gf::Scene {
