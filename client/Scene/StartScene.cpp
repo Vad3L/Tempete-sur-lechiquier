@@ -31,7 +31,7 @@ void StartScene::doHandleActions([[maybe_unused]] gf::Window& window) {
     }
 
     if (m_startAction.isActive()) {
-        m_game.replaceScene(m_game.menu);
+        m_game.replaceScene(*m_game.menu);
     }
 }
 

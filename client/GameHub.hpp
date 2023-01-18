@@ -3,6 +3,7 @@
 
 #include <gf/GameManager.h>
 #include <gf/Packet.h>
+#include <gf/SegueEffects.h>
 
 #include "Scene/StartScene.hpp"
 #include "Scene/MenuScene.hpp"
@@ -17,15 +18,21 @@ struct GameHub : gf::GameManager {
     GameHub();
 
 
-    StartScene start;
-    MenuScene menu;
-    PlaySelectScene play;
-    GameScene game;
-    RulesScene rules;
-    QuitScene quit;
+    std::unique_ptr<StartScene> start;
+    std::unique_ptr<MenuScene> menu;
+    std::unique_ptr<PlaySelectScene> play;
+    std::unique_ptr<GameScene> game;
+    std::unique_ptr<RulesScene> rules;
+    std::unique_ptr<QuitScene> quit;
     
     Network m_network;
-    
+
+    gf::BlackoutSegueEffect blackoutEffect;
+    bool m_loadingFinish = false;
+
+    void loadingDownloadAssets();
+    void loadingAssets();
+    bool loadingFinish();
 };
 
 

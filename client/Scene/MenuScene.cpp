@@ -48,12 +48,12 @@ MenuScene::MenuScene(GameHub& game)
 
 	setupButton(m_play, [&] () {
 		gf::Log::debug("Play pressed!\n");
-		m_game.replaceAllScenes(m_game.play);
+		m_game.replaceAllScenes(*m_game.play);
 	});
 
 	setupButton(m_rules, [&] () {
 		gf::Log::debug("Rules pressed!\n");
-		m_game.replaceAllScenes(m_game.rules);
+		m_game.replaceAllScenes(*m_game.rules);
 	});
 
 	setupButton(m_quit, [&] () {

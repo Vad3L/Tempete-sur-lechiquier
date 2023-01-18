@@ -29,15 +29,3 @@ void GamePhase::nextPhaseCoupNormal(){
         m_currentPhase = Phase::APRES_COUP;
     }
 }
-
-void GamePhase::nextPhaseBtn() {
-    // btn active que si c'est mon tour
-    
-    if(m_currentPhase == Phase::PAS_MON_TOUR) {
-        return;
-    }
-     
-    if(m_currentPhase == Phase::APRES_COUP) { // tour suivant on vaut pas jouer de carte
-        m_currentPhase = Phase::PAS_MON_TOUR;
-    } 
-}

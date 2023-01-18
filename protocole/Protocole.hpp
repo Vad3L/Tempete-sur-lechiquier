@@ -17,7 +17,8 @@ typedef enum {
     CARD_NO_VALIDE,      
     GAME_START,
     GAME_END,
-    TURN_START
+    TURN_START, 
+    NO_CARD
 } CodeRep;
 
 /* struct pos d'une pièce*/

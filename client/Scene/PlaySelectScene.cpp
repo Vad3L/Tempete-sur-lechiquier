@@ -61,7 +61,7 @@ PlaySelectScene::PlaySelectScene(GameHub& game)
         
         if(m_game.m_network.isConnected()){
             gf::Log::debug("Connexion réussie\n");
-            m_game.replaceAllScenes(m_game.game);
+            m_game.replaceAllScenes(*m_game.game);
         }else{
             gf::Log::debug("Connexions échoué\n");
             m_PlayTitleEntity.m_errorText.setString("Connexion au serveur a échoué");
@@ -112,7 +112,7 @@ void PlaySelectScene::doHandleActions([[maybe_unused]] gf::Window& window) {
     }
 
     if (m_quitAction.isActive()) {
-        m_game.replaceScene(m_game.start);
+        m_game.replaceScene(*m_game.start);
     }
 }
 

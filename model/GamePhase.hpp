@@ -8,7 +8,6 @@ class GamePhase{
     public:
         GamePhase();
         void nextPhaseCoupNormal();
-        void nextPhaseBtn();
 
         Phase getCurrentPhase();
         void setCurrentPhase(Phase phase);

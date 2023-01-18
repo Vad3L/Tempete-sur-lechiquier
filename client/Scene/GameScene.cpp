@@ -64,9 +64,12 @@ GameScene::GameScene(GameHub& game)
         m_widgets.addWidget(m_endTurn);
     };
     setupButton(m_endTurn, [&] () {
-		gf::Log::debug("EndTurn pressed!\n");
 		if(m_gameData.m_phase.getCurrentPhase()==Phase::APRES_COUP) {
-            m_gameData.m_phase.nextPhaseBtn();
+            gf::Log::debug("EndTurn pressed!\n");
+            m_gameData.m_phase.setCurrentPhase(Phase::PAS_MON_TOUR);
+            CardRep cardRep;
+            cardRep.err = CodeRep::NO_CARD;
+            m_game.m_network.send(cardRep);
         }
 	});
 
@@ -78,7 +81,7 @@ void GameScene::doHandleActions([[maybe_unused]] gf::Window& window) {
     }
 
     if (m_quitAction.isActive()) {
-        m_game.pushScene(m_game.quit);
+        m_game.pushScene(*m_game.quit);
         pause();
     }
 

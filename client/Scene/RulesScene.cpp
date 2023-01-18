@@ -52,7 +52,7 @@ RulesScene::RulesScene(GameHub& game)
 
 	setupButton(m_quitButton, [&] () {
 		gf::Log::debug("Quit pressed!\n");
-		m_game.replaceAllScenes(m_game.menu);
+		m_game.replaceAllScenes(*m_game.menu);
 	});
 
 	setupButton(m_pageRight, [&] () {
@@ -87,7 +87,7 @@ void RulesScene::doHandleActions([[maybe_unused]] gf::Window& window) {
 	}
 
 	if (m_quitAction.isActive()) {
-		m_game.replaceScene(m_game.start);
+		m_game.replaceScene(*m_game.start);
 	}
 
 	if(m_leftAction.isActive()) {

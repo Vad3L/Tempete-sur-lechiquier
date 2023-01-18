@@ -47,7 +47,7 @@ QuitScene::QuitScene(GameHub& game)
 
     setupButton(m_quitButton, [&] () {
         gf::Log::debug("Quit button pressed!\n");
-        m_game.replaceAllScenes(m_game.menu);
+        m_game.replaceAllScenes(*m_game.menu);
     });
 }
 

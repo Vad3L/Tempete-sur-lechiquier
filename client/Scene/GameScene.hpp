@@ -33,7 +33,6 @@ struct GameData;
 class GameScene : public gf::Scene {
     public:
         GameScene(GameHub& game);
-        void setIp(std::string ip);
     private:
         void doHandleActions(gf::Window& window) override;
         void doProcessEvent(gf::Event& event) override;
