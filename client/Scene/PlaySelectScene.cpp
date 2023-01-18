@@ -2,8 +2,9 @@
 #include "../GameHub.hpp"
 
 
-PlaySelectScene::PlaySelectScene(GameHub& game)
+PlaySelectScene::PlaySelectScene(GameHub& game, Network &network)
 : gf::Scene(game.getRenderer().getSize())
+, m_network(network)
 , m_game(game)
 , m_rightAction("RightAction")
 , m_leftAction("LeftAction")
@@ -54,12 +55,12 @@ PlaySelectScene::PlaySelectScene(GameHub& game)
 
 	setupButton(m_ipWidget, [&] () {
 		std::string ip = std::string(m_listIp[m_index].first);
-		m_game.m_network.connect(ip,"43771");
+		m_network.connect(ip,"43771");
 		gf::Log::debug("Tentative de connexion  à %s\n", ip.c_str());
 
 		gf::sleep(gf::milliseconds(500));
 		
-		if(m_game.m_network.isConnected()){
+		if(m_network.isConnected()){
 			gf::Log::debug("Connexion réussie\n");
 			m_game.replaceAllScenes(*m_game.game);
 		}else{

@@ -1,11 +1,16 @@
 #include "DownloadScene.hpp"
 
+#include "../GameHub.hpp"
+
 DownloadScene::DownloadScene(GameHub& game)
 : gf::Scene(game.getRenderer().getSize())
 , m_game(game)
 , m_escapeAction("Escape")
 {
-	setClearColor(gf::Color::Red);
+	setClearColor(gf::Color::Red);	
+	m_escapeAction.addKeycodeKeyControl(gf::Keycode::Escape);
+	addAction(m_escapeAction);
+
 }
 
 void DownloadScene::loadAnimation() {

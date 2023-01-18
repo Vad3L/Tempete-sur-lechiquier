@@ -38,7 +38,7 @@ add_executable(client_tsl
 	client/Scene/GameScene.cpp
 	client/Scene/RulesScene.cpp
 	client/Scene/QuitScene.cpp
-#	client/Scene/DownloadScene.cpp
+	client/Scene/DownloadScene.cpp
 
 	client/Entity/BoardEntity.cpp
 	client/Entity/TableBoardEntity.cpp

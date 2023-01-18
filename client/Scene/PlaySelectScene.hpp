@@ -16,12 +16,13 @@
 #include <vector>
 
 #include "../Entity/PlayTitleEntity.hpp"
+#include "../Network.hpp"
 
 struct GameHub;
 
 class PlaySelectScene : public gf::Scene {
 	public:
-		PlaySelectScene(GameHub& game);
+		PlaySelectScene(GameHub& game, Network &network);
 
 	private:
 		void doProcessEvent(gf::Event& event) override;
@@ -32,6 +33,7 @@ class PlaySelectScene : public gf::Scene {
 		void onActivityChange(bool active) override;
 	private:
 		GameHub& m_game;
+		Network& m_network;
 		
 		gf::Action m_quitAction;
 
