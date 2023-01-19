@@ -9,7 +9,7 @@ Plateau::Plateau()
 			state.push_back(Case(gf::Vector2i(coordPass, i)));
 			if (i == 1 || i == 6) {
 				ChessColor c = (i == 1) ? ChessColor::BLACK : ChessColor::WHITE;
-				state[i * 8 + coordPass].piece = Piece(c, ChessPiece::PAWN);
+				//state[i * 8 + coordPass].piece = Piece(c, ChessPiece::PAWN);
 			} else if (i == 0 || i == 7) {
 				ChessColor c = (i == 0) ? ChessColor::BLACK : ChessColor::WHITE;
 				switch (coordPass) {
@@ -19,7 +19,7 @@ Plateau::Plateau()
 						break;
 					case 1:
 					case 6:
-						state[i * 8 + coordPass].piece = Piece(c, ChessPiece::KNIGHT);
+						//state[i * 8 + coordPass].piece = Piece(c, ChessPiece::KNIGHT);
 						break;
 					case 2:
 					case 5:
@@ -29,7 +29,7 @@ Plateau::Plateau()
 						state[i * 8 + coordPass].piece = Piece(c, ChessPiece::QUEEN);
 						break;
 					case 4:
-						state[i * 8 + coordPass].piece = Piece(c, ChessPiece::KING);
+						//state[i * 8 + coordPass].piece = Piece(c, ChessPiece::KING);
 						break;
 				}
 			}
@@ -39,14 +39,14 @@ Plateau::Plateau()
 	state[5 * 8 + 3].piece = Piece(ChessColor::WHITE, ChessPiece::PRINCESS);
 	state[2 * 8 + 3].piece = Piece(ChessColor::BLACK, ChessPiece::PRINCESS);
 
-	state[5 * 8 + 4].piece = Piece(ChessColor::WHITE, ChessPiece::PRINCE);
+	/*state[5 * 8 + 4].piece = Piece(ChessColor::WHITE, ChessPiece::PRINCE);
 	state[2 * 8 + 4].piece = Piece(ChessColor::BLACK, ChessPiece::PRINCE);
 
 	state[5 * 8 + 5].piece = Piece(ChessColor::WHITE, ChessPiece::CAMEL);
 	state[2 * 8 + 5].piece = Piece(ChessColor::BLACK, ChessPiece::CAMEL);
 
 	state[1 * 8 + 0].piece = Piece(ChessColor::WHITE, ChessPiece::PAWN);
-	state[6 * 8 + 0].piece = Piece(ChessColor::BLACK, ChessPiece::PAWN);
+	state[6 * 8 + 0].piece = Piece(ChessColor::BLACK, ChessPiece::PAWN);*/
 	allPositions.push_back(getFen());
 	prettyPrint();
 }

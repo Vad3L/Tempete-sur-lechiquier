@@ -1,5 +1,7 @@
 #include "Piece.hpp"
 
+#include <gf/Log.h>
+
 Piece::Piece(ChessColor c, ChessPiece t){
 	color = c;
 	type = t;
@@ -122,14 +124,20 @@ std::vector<gf::Vector2i> Piece::getMoveRook (gf::Vector2i pos, int nb) {
 	int col = pos.x;
 
 	for (int i = 0 ; i < 8 ; ++i) {
-	/*	if(i < col-nb || i > col+nb || i < ligne-nb || i > ligne-nb){
-			continue;
-		}*/
-		if(col != i) {
-			newpos.push_back(gf::Vector2i(i, ligne));
+		gf::Log::error("i %i , ligne %i , col %i\n",i, ligne, col );
+		if(i >= col-nb && i <= col+nb ){	
+			gf::Log::error("1er if\n");
+			if(col != i) {
+				gf::Log::error("1st insert %i , %i\n", i, ligne);
+				newpos.push_back(gf::Vector2i(i, ligne));
+			}	
 		}
-		if(ligne != i) {
-			newpos.push_back(gf::Vector2i(col, i));
+		if(i >= ligne-nb && i <= ligne+nb ){	
+			gf::Log::error("2nd if\n");
+			if(ligne != i) {
+				gf::Log::error("2nd insert %i , %i\n", col, i	);
+				newpos.push_back(gf::Vector2i(col, i));
+			}
 		}
 	}  
 	return newpos;
