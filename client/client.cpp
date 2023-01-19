@@ -11,8 +11,6 @@ int main(int argc, char* argv[]) {
 
 	GameHub hub;
 	Network network;
-	//hub.getWindow().setResizable(false);  
-	//hub.getWindow().setSize(gf::Vector2i(640,420));
 	hub.getWindow().toggleFullscreen();
 
 	auto loading = std::thread([&hub, &network]() {
@@ -23,11 +21,7 @@ int main(int argc, char* argv[]) {
 
 	loading.detach();
 
-	//while (!hub.loadingFinish())
-	//{
-	/* code */
-	//}
-
+	gf::sleep(gf::milliseconds(1000));
 	hub.pushScene(*hub.download);
 	hub.run();
 	return EXIT_SUCCESS;
