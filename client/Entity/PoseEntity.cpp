@@ -60,7 +60,7 @@ void PoseEntity::render(gf::RenderTarget &target, const gf::RenderStates &states
 	gf::RectangleShape placementTexte;
 	placementTexte.setSize({130.f,14.0f});
 	placementTexte.setColor(gf::Color::Black);
-	placementTexte.setPosition({position.x,position.y-sizeCard.y/2.f-5.f});
+	placementTexte.setPosition({position.x,position.y-sizeCard.y/2.f-2.5f});
 	placementTexte.setAnchor(gf::Anchor::Center);
 
 	// TODO DESSINER LA CARTE si il ya en a une

@@ -21,7 +21,15 @@ void BoardEntity::render(gf::RenderTarget &target, const gf::RenderStates &state
 
 	float sizeSquare = coords.getRelativeSize(gf::vec(0.0f, 1.f/8.f)).height;
 	float sizeLine = 2.5f;
-	bool myTurn = (m_gameData.m_phase.getCurrentPhase() == Phase::PAS_MON_TOUR) ? false : true;
+	Phase currentPhase = m_gameData.m_phase.getCurrentPhase();
+
+	bool myTurn = false;
+	ChessColor lastColor = ChessColor::WHITE;
+	
+	if(m_gameData.m_plateau.lastCoup.size() >= 2) {
+		lastColor = m_gameData.m_plateau.state[m_gameData.m_plateau.lastCoup.back().y *8 +m_gameData.m_plateau.lastCoup.back().x].piece.getColor();
+	}
+	myTurn = (lastColor != m_gameData.m_myColor);
 
 	gf::Texture &texture = (m_gameData.m_style == 0) ? m_backgroundTexture : m_backgroundTexture2;
 	bool promotion = false;
@@ -84,7 +92,7 @@ void BoardEntity::render(gf::RenderTarget &target, const gf::RenderStates &state
 			float j = ((int)c.piece.getColor())/4.f;
 			
 
-			if(c.piece.getType() == ChessPiece::PAWN && (y == 0 || y == 7) && myTurn) {
+			if(c.piece.getType() == ChessPiece::PAWN && (y == 0 || y == 7) && !myTurn) {
 				promotion = true;
 				pieceToPromuteCoords.x = x;
 				pieceToPromuteCoords.y = y;

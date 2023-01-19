@@ -54,7 +54,7 @@ void TableBoardEntity::render(gf::RenderTarget &target, const gf::RenderStates &
 			indication = "Il y a égalité";
 			break;
 		case ChessStatus::NO_STARTED:
-			indication = "La partie n'a pas commencé";
+			indication = "La partie n'a pas commencée";
 			break;
 		case ChessStatus::SURRENDER:
 			indication = "Vous gagnez par abandon";
