@@ -1,5 +1,5 @@
-#ifndef CARDS_ENTITY_H
-#define CARDS_ENTITY_H
+#ifndef MAIN_ENTITY_H
+#define MAIN_ENTITY_H
 
 #include <gf/Entity.h>
 #include <gf/Font.h>
@@ -16,6 +16,7 @@
 
 #include "../GameData.hpp"
 #include "../../model/Deck.hpp"
+#include "./CardsEntity.hpp"
 
 struct GameData;
 
@@ -28,12 +29,10 @@ class MainEntity : public gf::Entity {
 
 		int getCardSelected(gf::Vector2i sizeWindows, gf::Vector2i mouseCoord);
 	private:
-		gf::Font& m_cardsFont;
-		gf::Texture& m_cardsIllustration;
-		gf::Texture& m_accessories;
 
 		GameData &m_gameData;
+		CardsEntity m_card;
 };
 
 
-#endif // CARDS_ENTITY_H
+#endif // MAIN_ENTITY_H
