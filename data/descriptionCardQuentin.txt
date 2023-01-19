@@ -31,7 +31,6 @@
 30;CHANGEZ VOS CAVALIERS;Sur l'échiquier, permutez l'un de vos Cavalier adverse.;1;0;0
 31;CHARGE;Avancez tous ceux de vos pions que vous voulez, et qui le peuvent, d'une case.;0;0;1
 32;CHASSE NEIGE;Déplacez une Tour, une Dame ou un Fou sur l'une de ses lignes de déplacement en prenant toutes les pièces adverses qui se trouvent sur son chemin. Votre pièce ne s'arrête que lorsqu'elle rencontre une pièce amie, ou le bord de l'échiquier.;0;0;1
-33;CHEVAL FOU;Sur l'échiquier, permuttez l'un de vos Fous avec l'un de vos Cavaliers.;1;0;0
 34;CHRONO;Votre adversaire a 15 secondes, montre en main, pour jouer son prochain coup. passé ce temps. il perd son tour de jeu.;1;0;0
 35;COHABITATION; Déplacez l'une de vos pièces pour l'amener sur une case où se trouve déjà une autre de vos pièces. Vous pourrez par la suite déplacer normalement l'une ou l'autre, mais pas les deux à la fois. Si votre adversaire amène une pièce sur cette case, Il prend vos deux pièces.;0;0;1
 36;CONTRORDRE;Le déplacement de votre adversaire est annulé. il doit rejouer un autre coup, avec la même pièce ou une autre.;3;0;3

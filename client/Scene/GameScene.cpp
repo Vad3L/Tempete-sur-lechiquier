@@ -148,14 +148,16 @@ void GameScene::doProcessEvent(gf::Event& event) {
 
 		if(numCarte!=-1) {
 			
-			//bool playable = m_gameData.m_main[numCarte].m_isPlayable(m_gameData.m_plateau, currentPhase);
+			bool playable = m_gameData.m_main[numCarte].m_isPlayable(m_gameData.m_plateau, currentPhase);
 		
 			//gf::Log::info("carte %i i est jouable %i \n", numCarte, playable);
 			if(m_gameData.m_main[numCarte].m_turn == Turn::AVANT_COUP && currentPhase == Phase::AVANT_COUP) {
-				std::swap(m_poseEntity.m_cardPose, m_gameData.m_main[numCarte]);
+				//std::swap(m_poseEntity.m_cardPose, m_gameData.m_main[numCarte]);
+				m_gameData.m_main[numCarte].m_execute(m_gameData.m_plateau, gf::Vector2i(-1), gf::Vector2i(-1));
 				m_gameData.m_phase.nextPhaseCard(m_gameData.m_main[numCarte]);
 			}else if(m_gameData.m_main[numCarte].m_turn == Turn::APRES_COUP && currentPhase == Phase::APRES_COUP) {
-				std::swap(m_poseEntity.m_cardPose, m_gameData.m_main[numCarte]);
+				//std::swap(m_poseEntity.m_cardPose, m_gameData.m_main[numCarte]);
+				m_gameData.m_main[numCarte].m_execute(m_gameData.m_plateau, gf::Vector2i(-1), gf::Vector2i(-1));
 				m_gameData.m_phase.nextPhaseCard(m_gameData.m_main[numCarte]);
 			}
 			if(m_gameData.m_phase.getCurrentPhase() == Phase::PAS_MON_TOUR) {

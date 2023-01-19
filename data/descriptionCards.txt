@@ -1,4 +1,6 @@
 29;CHAMEAU;Transformez un Cavalier, en Chameau, et cela définitivement. Le chameau, comme le cavalier, peut se déplacer en sautant par dessus les cases occupées. Mais alors que le cavalier saute dans l'angle opposé d'un rectangle 3x2, le Chameau saute dans l'angle opposé d'un rectangle 4x3.;1;1;0
 15;BOMBE ATOMIQUE;Si la pièce que vous venez de déplacer n'as pas pris une pièce adverse, vous pouvez l afaire "exploser". Elle est alors retirée du jeu, ainsi que toutes les autres pièces, quelles que soient leur couleur, qui se trouvent sur les huit cases adjacentes. Les Rois ne sont pas affectés par l'explosion.;1;0;0
-47;DONNE-MOI TA MAIN...;Échanger votre jeu de cartes avec celui de votre adversaire(il pioche immédiatement une carte pour remplacee celle-ci);0;0;0
 104;PRINCESSE;Si vous n'avez plus de Dame et si la case de départ de celle-ci est libre, faites-y apparaître une Princesse. La Princesse se déplace dans les huit directions, comme la Dame, mais d'une ou deux cases seulement.;1;1;0
+110;QUATRE COINS;Si trois des quatre coins de l'échiquier sont occupés, placez l'une de vos pièces, de votre choix, dans le quatrième coins.;0;1;1
+33;CHEVAL FOU;Sur l'échiquier, permuttez l'un de vos Fous avec l'un de vos Cavaliers.;1;0;0
+59;EXIL;Replacez sur la case, où sur l'une des cases, où elle pouvait se trouver en début de partie, une pièce adverse de votre choix. La case d'arrivé doit être libre.;1;1;0
