@@ -74,6 +74,9 @@ void BombeAtomique (Plateau& p, gf::Vector2i s, gf::Vector2i e) {
 
 bool BombeAtomiqueIsPlayable (Plateau& p, Phase f) {
 	size_t len = p.allPositions.size();
+	if (len - 2 < 0) {
+		return false;
+	}
 	std::string before = p.allPositions[len - 2];
 	std::string now = p.allPositions[len - 1];
 	std::string not_piece = "1234567890/";
