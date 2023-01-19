@@ -23,12 +23,13 @@ class Piece  {
 
 		std::vector<gf::Vector2i> getMovePawn (gf::Vector2i pos);
 		std::vector<gf::Vector2i> getMoveKnight (gf::Vector2i pos);
-		std::vector<gf::Vector2i> getMoveBishop (gf::Vector2i pos);
+		std::vector<gf::Vector2i> getMoveBishop (gf::Vector2i pos,int nb = 8);
 		std::vector<gf::Vector2i> getMoveQueen (gf::Vector2i pos);
-		std::vector<gf::Vector2i> getMoveRook (gf::Vector2i pos);
+		std::vector<gf::Vector2i> getMoveRook (gf::Vector2i pos,int nb = 8);
 		std::vector<gf::Vector2i> getMoveKing (gf::Vector2i pos);
 		std::vector<gf::Vector2i> getMoveCamel (gf::Vector2i pos);
 		std::vector<gf::Vector2i> getMovePrince (gf::Vector2i pos);
+		std::vector<gf::Vector2i> getMovePrincess (gf::Vector2i pos);
 
 		std::vector<gf::Vector2i> getCasesPass (gf::Vector2i posStart, gf::Vector2i posEnd);
 
@@ -40,6 +41,7 @@ class Piece  {
 		std::vector<gf::Vector2i> getCasesPassKing (gf::Vector2i posStart, gf::Vector2i posEnd);
 		std::vector<gf::Vector2i> getCasesPassCamel (gf::Vector2i posStart, gf::Vector2i posEnd);
 		std::vector<gf::Vector2i> getCasesPassPrince (gf::Vector2i posStart, gf::Vector2i posEnd);
+		std::vector<gf::Vector2i> getCasesPassPrincess (gf::Vector2i posStart, gf::Vector2i posEnd);
 
 	protected:
 		ChessColor color;

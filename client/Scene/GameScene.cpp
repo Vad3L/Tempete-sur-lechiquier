@@ -56,14 +56,21 @@ GameScene::GameScene(GameHub& game, Network &network)
 
 	gf::Coordinates coordsWidget({500,500});
 	auto setupButton = [&] (gf::TextButtonWidget& button, auto callback) {
-		m_endTurn.setDefaultTextColor(gf::Color::Black);
+		m_endTurn.setDefaultTextColor(gf::Color::fromRgba32(212,30,27,255));
 		m_endTurn.setDefaultBackgroundColor(gf::Color::Gray(0.7f));
-		m_endTurn.setSelectedTextColor(gf::Color::Black);
-		m_endTurn.setSelectedBackgroundColor(gf::Color::Green);
+		m_endTurn.setDefaultBackgroundOutlineColor(gf::Color::Gray(0.7f)); 
+
+		m_endTurn.setSelectedTextColor(gf::Color::fromRgba32(212,30,27,255));
+		m_endTurn.setSelectedBackgroundColor(gf::Color::Gray(0.7f));
+		m_endTurn.setSelectedBackgroundOutlineColor(gf::Color::Gray(0.5f));
+		
 		m_endTurn.setDisabledTextColor(gf::Color::Black);
-		m_endTurn.setDisabledBackgroundColor(gf::Color::Green);
-		m_endTurn.setPosition( coordsWidget.getRelativePoint({ 0.6f, 0.25f }));
-		m_endTurn.setAnchor(gf::Anchor::TopLeft);
+		m_endTurn.setDisabledBackgroundColor(gf::Color::Gray(0.7f));
+		m_endTurn.setDisabledBackgroundOutlineColor(gf::Color::Red); 
+
+		m_endTurn.setRadius(5.f);
+		m_endTurn.setBackgroundOutlineThickness(4.f);
+		m_endTurn.setPosition( coordsWidget.getRelativePoint({ 0.755f, 0.25f }));
 		m_endTurn.setAlignment(gf::Alignment::Center);
 		m_endTurn.setCallback(callback);
 		m_widgets.addWidget(m_endTurn);
@@ -150,6 +157,11 @@ void GameScene::doProcessEvent(gf::Event& event) {
 			}else if(m_gameData.m_main[numCarte].m_turn == Turn::APRES_COUP && currentPhase == Phase::APRES_COUP) {
 				std::swap(m_poseEntity.m_cardPose, m_gameData.m_main[numCarte]);
 				m_gameData.m_phase.nextPhaseCard(m_gameData.m_main[numCarte]);
+			}
+			if(m_gameData.m_phase.getCurrentPhase() == Phase::PAS_MON_TOUR) {
+				CardRep cardRep;
+				cardRep.err = CodeRep::NO_CARD;
+				m_network.send(cardRep);
 			}
 		}
 	}
@@ -285,8 +297,13 @@ void GameScene::doUpdate(gf::Time time) {
 				m_promotion = true;
 			}else {
 				// a changer surement
-				m_gameData.m_phase.nextPhaseCoupNormal();
-				
+				if(m_gameData.m_phase.getCurrentPhase() != Phase::PAS_MON_TOUR) {
+					m_gameData.m_phase.setCurrentPhase(Phase::APRES_COUP);
+					if(m_gameData.m_phase.getNbCartePlay() !=0) {
+						gf::Log::debug("appelle du callback endturn\n");
+						m_endTurn.triggerCallback();
+					}
+				}
 				m_promotion = false;
 			}
 			
@@ -313,9 +330,13 @@ void GameScene::doUpdate(gf::Time time) {
 			}
 
 			m_gameData.m_plateau.prettyPrint();
-			// a changer surement
-			m_gameData.m_phase.nextPhaseCoupNormal();
-			
+			if(m_gameData.m_phase.getCurrentPhase() != Phase::PAS_MON_TOUR) {
+				m_gameData.m_phase.setCurrentPhase(Phase::APRES_COUP);
+				if(m_gameData.m_phase.getNbCartePlay() !=0) {
+					gf::Log::debug("appelle du callback endturn\n");
+					m_endTurn.triggerCallback();
+				}
+			}
 			m_promotion = false;
 		}else {
 			gf::Log::debug("------PROMOTION INVALIDE------\n");

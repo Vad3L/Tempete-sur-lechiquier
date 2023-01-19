@@ -29,7 +29,8 @@ enum class ChessPiece {
 	PAWN = 5,
 	CAMEL = 6 ,
 	PRINCE = 7,
-	MAX = PRINCE
+	PRINCESS = 8,
+	MAX = PRINCESS
 };
 	
 enum class ChessColor { 

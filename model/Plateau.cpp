@@ -9,7 +9,7 @@ Plateau::Plateau()
 			state.push_back(Case(gf::Vector2i(coordPass, i)));
 			if (i == 1 || i == 6) {
 				ChessColor c = (i == 1) ? ChessColor::BLACK : ChessColor::WHITE;
-				state[i * 8 + coordPass].piece = Piece(c, ChessPiece::PAWN);
+				//state[i * 8 + coordPass].piece = Piece(c, ChessPiece::PAWN);
 			} else if (i == 0 || i == 7) {
 				ChessColor c = (i == 0) ? ChessColor::BLACK : ChessColor::WHITE;
 				switch (coordPass) {
@@ -19,7 +19,7 @@ Plateau::Plateau()
 						break;
 					case 1:
 					case 6:
-						state[i * 8 + coordPass].piece = Piece(c, ChessPiece::KNIGHT);
+						//state[i * 8 + coordPass].piece = Piece(c, ChessPiece::KNIGHT);
 						break;
 					case 2:
 					case 5:
@@ -29,27 +29,37 @@ Plateau::Plateau()
 						state[i * 8 + coordPass].piece = Piece(c, ChessPiece::QUEEN);
 						break;
 					case 4:
-						state[i * 8 + coordPass].piece = Piece(c, ChessPiece::KING);
+						//state[i * 8 + coordPass].piece = Piece(c, ChessPiece::KING);
 						break;
 				}
 			}
 		}
 	}
 
+	state[5 * 8 + 3].piece = Piece(ChessColor::WHITE, ChessPiece::PRINCESS);
+	state[2 * 8 + 3].piece = Piece(ChessColor::BLACK, ChessPiece::PRINCESS);
+
+	/*state[5 * 8 + 4].piece = Piece(ChessColor::WHITE, ChessPiece::PRINCE);
+	state[2 * 8 + 4].piece = Piece(ChessColor::BLACK, ChessPiece::PRINCE);
+
+	state[5 * 8 + 5].piece = Piece(ChessColor::WHITE, ChessPiece::CAMEL);
+	state[2 * 8 + 5].piece = Piece(ChessColor::BLACK, ChessPiece::CAMEL);
+
 	state[1 * 8 + 0].piece = Piece(ChessColor::WHITE, ChessPiece::PAWN);
+	state[6 * 8 + 0].piece = Piece(ChessColor::BLACK, ChessPiece::PAWN);*/
 	allPositions.push_back(getFen());
 	prettyPrint();
 }
 
 std::string Plateau::getSymbol(ChessColor c, ChessPiece p) {
 	std::vector<std::string> blacks = {
-		"♚", "♛", "♝", "♞", "♜", "♟︎", "🨇", "🨏"
+		"♚", "♛", "♝", "♞", "♜", "♟︎", "🨇", "🨏", " "
 	};
 	std::vector<std::string> whites = {
-		"♔", "♕", "♗", "♘", "♖", "♙", "🨆", "🨉"
+		"♔", "♕", "♗", "♘", "♖", "♙", "🨆", "🨉", " "
 	};
 	std::vector<std::string> neutral = {
-		"🨀", "🨁", "🨃", "🨄", "🨂", "🨅", "🨈", "🨏"
+		"🨀", "🨁", "🨃", "🨄", "🨂", "🨅", "🨈", "🨏", " "
 	};
 
 	if (c == ChessColor::WHITE) {
@@ -489,9 +499,9 @@ void Plateau::tmp(std::vector<gf::Vector2i> a) {
 
 std::string Plateau::getFen () {
 	std::string fen = "";
-	std::vector<std::string> white = { "K", "Q", "B", "N", "R", "P", "C", "I" };
-	std::vector<std::string> black = { "k", "q", "b", "n", "r", "p", "c", "i" };
-	std::vector<std::string> neutral = { "Z", "E", "T", "Y", "U", "J", "V", "X" };
+	std::vector<std::string> white = { "K", "Q", "B", "N", "R", "P", "C", "I", "Ԁ" };
+	std::vector<std::string> black = { "k", "q", "b", "n", "r", "p", "c", "i", "d" };
+	std::vector<std::string> neutral = { "Z", "E", "T", "Y", "U", "J", "V", "X", "A" };
 
 	int empty_case = 0;
 	for (auto & c : state) {
