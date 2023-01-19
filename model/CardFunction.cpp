@@ -3,6 +3,21 @@
 void NoCard (Plateau& p, gf::Vector2i s, gf::Vector2i e) {}
 bool NoCardPlayable (Plateau& p, Phase f) { return false; }
 
+void Princess (Plateau& p, gf::Vector2i s, gf::Vector2i e) {
+	inBoard(s);
+	//todo
+}
+
+bool PrincessIsPlayable (Plateau& p, Phase f) {
+	if (f != Phase::APRES_COUP) {
+		return false;
+	}
+	//todo
+	
+	return false;
+}
+
+
 void Chameau (Plateau& p, gf::Vector2i s, gf::Vector2i e) {
 	inBoard(s);
 	gf::Vector2i pos = p.lastCoup[p.lastCoup.size() - 1];
