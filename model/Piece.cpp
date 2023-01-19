@@ -124,18 +124,13 @@ std::vector<gf::Vector2i> Piece::getMoveRook (gf::Vector2i pos, int nb) {
 	int col = pos.x;
 
 	for (int i = 0 ; i < 8 ; ++i) {
-		gf::Log::error("i %i , ligne %i , col %i\n",i, ligne, col );
 		if(i >= col-nb && i <= col+nb ){	
-			gf::Log::error("1er if\n");
 			if(col != i) {
-				gf::Log::error("1st insert %i , %i\n", i, ligne);
 				newpos.push_back(gf::Vector2i(i, ligne));
 			}	
 		}
 		if(i >= ligne-nb && i <= ligne+nb ){	
-			gf::Log::error("2nd if\n");
 			if(ligne != i) {
-				gf::Log::error("2nd insert %i , %i\n", col, i	);
 				newpos.push_back(gf::Vector2i(col, i));
 			}
 		}

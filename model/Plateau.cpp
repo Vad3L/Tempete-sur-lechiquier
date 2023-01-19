@@ -48,6 +48,7 @@ Plateau::Plateau()
 	state[1 * 8 + 0].piece = Piece(ChessColor::WHITE, ChessPiece::PAWN);
 	state[6 * 8 + 0].piece = Piece(ChessColor::BLACK, ChessPiece::PAWN);
 	allPositions.push_back(getFen());
+	turnTo = ChessColor::WHITE;
 	prettyPrint();
 }
 
