@@ -265,6 +265,7 @@ void GameScene::doUpdate(gf::Time time) {
 		}else if(repPartie.err == CodeRep::TURN_START) {
 			gf::Log::info("mon tour commence\n");
 			m_gameData.m_phase.setCurrentPhase(Phase::AVANT_COUP);
+			m_gameData.m_plateau.turnTo = !m_gameData.m_plateau.turnTo;
 		}
 	}	 
 
