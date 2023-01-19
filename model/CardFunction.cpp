@@ -17,6 +17,21 @@ bool PrincessIsPlayable (Plateau& p, Phase f) {
 	return false;
 }
 
+void ChevalFou (Plateau& p, gf::Vector2i s, gf::Vector2i e) {
+	inBoard(s);
+	inBoard(e);
+
+	Piece temp = p.state[s.y * 8 + s.x].piece;
+	p.state[s.y * 8 + s.x].piece = p.state[e.y * 8 + e.x].piece;
+	p.state[e.y * 8 + e.x].piece = temp;
+}
+
+bool ChevalFouIsPlayable (Plateau& p, Phase f) {
+	if (f != Phase::APRES_COUP) {
+		return false;
+	}
+	return true;
+}
 
 void Chameau (Plateau& p, gf::Vector2i s, gf::Vector2i e) {
 	inBoard(s);
@@ -117,9 +132,6 @@ bool QuatreCoinIsPlayable (Plateau& p, Phase f) {
 	return true;
 }
 
-
-
-
 void Exil(Plateau& p, gf::Vector2i s, gf::Vector2i e){
 	inBoard(s);
 	inBoard(e);
@@ -139,7 +151,6 @@ bool ExilIsPlayable(Plateau& p, Phase f){
 	Case c = p.state[pos.y * 8 + pos.x]; //get the type of the piece
 	ChessColor clr = c.piece.getColor();
 	switch(c.piece.getType()){
-
 		case ChessPiece::KING : //If the WHITE king is choose, check if his first emplacement is available else we check for the Black king
 			if(clr == ChessColor::WHITE){
 				if(p.state[0+4].piece.getType()!= ChessPiece::NONE){
@@ -151,7 +162,6 @@ bool ExilIsPlayable(Plateau& p, Phase f){
 				}
 			}
 		break;
-
 		case ChessPiece::QUEEN :
 			if(clr == ChessColor::WHITE){
 				if(p.state[0+3].piece.getType()!= ChessPiece::NONE){
@@ -163,7 +173,6 @@ bool ExilIsPlayable(Plateau& p, Phase f){
 				}
 			}
 		break;
-
 		case ChessPiece::BISHOP:
 			//Vérifier si la case est noir ou blanche pour savoir de quel fou il s'agit et savoir si la pièce est blanche ou noir
 		break;

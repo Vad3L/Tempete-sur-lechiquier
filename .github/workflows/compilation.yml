@@ -32,11 +32,11 @@ jobs:
         mkdir build
         cd build
         cmake ..
-        make
+        make -j
         sudo make install
     - name: build application
       run: |
         mkdir build
         cd build
         cmake ..
-        make
+        make -j
