@@ -7,14 +7,15 @@
 class GamePhase{
 	public:
 		GamePhase();
-		void nextPhaseCoupNormal();
 
 		Phase getCurrentPhase();
 		void setCurrentPhase(Phase phase);
+		void nextPhaseCard(Card cardPlay);
+		int getNbCartePlay();
 
 	private:
 		Phase m_currentPhase;
-		int m_nbCarteJoue;
+		int m_nbCartePlay;
 };
 
 #endif // GAMEPHASE_H
