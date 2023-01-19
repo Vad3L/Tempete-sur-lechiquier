@@ -25,6 +25,51 @@ bool ChameauIsPlayable (Plateau& p, Phase f) {
 	return false;
 }
 
+void BombeAtomique (Plateau& p, gf::Vector2i s, gf::Vector2i e) {
+	isBoard(s);
+	std::vector<gf::Vector2i> targets;
+
+	for (int i = -1; i <= 1; i++) {
+		for (int j = -1; j <= 1; j++) {
+			if (i >= 0 && i < 8 && j >= 0 && j < 8) {
+				targets.push_back(gf::Vector2i(i, j));
+			}
+		}
+	}
+
+	for (auto& v : targets) {
+		p.state[v.y * 8 + v.x] = Piece(ChessColor::NONE, ChessPiece::NONE);
+	}
+}
+
+bool BombeAtomiqueIsPlayable (Plateau& p, Phase f) {
+	size_t len = p.allPositions.size();
+	std::string before = p.allPositions[len - 2];
+	std::string now = p.allPositions[len - 1];
+	std::string not_pieces = "1234567890/";
+
+	size_t count_before = 0;
+	size_t count_after = 0;
+
+	for (auto& c : before) {
+		if (not_piece.find_first_of(c, 0) == std::string::npos) {
+			count_before++;
+		}
+	}
+
+	for (auto& c : now) {
+		if (not_piece.find_first_of(c, 0) == std::string::npos) {
+			count_after++;
+		}
+	}
+
+	if (count_before > count_after) {
+		return true;
+	}
+
+	return false;
+}
+
 void QuatreCoin (Plateau& p, gf::Vector2i s, gf::Vector2i e) {
 	inBoard(s);
 	inBoard(e);
@@ -184,4 +229,6 @@ bool ExilIsPlayable(Plateau& p, Phase f){
 	}
 	return true;
 }
+
+
 
