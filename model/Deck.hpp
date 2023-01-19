@@ -22,6 +22,8 @@ class Deck{
 
 		std::vector<Card> m_deck;
 		std::vector<Card> m_discard;
+		std::map<int, std::function<void(Plateau&, gf::Vector2i, gf::Vector2i)>> m_execsfuncs;
+		std::map<int, std::function<bool(Plateau&, Phase)>> m_isplayfuncs;
 
 	private:
 		void swap(Card &a, Card &b);
