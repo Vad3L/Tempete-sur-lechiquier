@@ -151,6 +151,11 @@ void GameScene::doProcessEvent(gf::Event& event) {
 				std::swap(m_poseEntity.m_cardPose, m_gameData.m_main[numCarte]);
 				m_gameData.m_phase.nextPhaseCard(m_gameData.m_main[numCarte]);
 			}
+			if(m_gameData.m_phase.getCurrentPhase() == Phase::PAS_MON_TOUR) {
+				CardRep cardRep;
+				cardRep.err = CodeRep::NO_CARD;
+				m_network.send(cardRep);
+			}
 		}
 	}
 	
@@ -285,8 +290,13 @@ void GameScene::doUpdate(gf::Time time) {
 				m_promotion = true;
 			}else {
 				// a changer surement
-				m_gameData.m_phase.nextPhaseCoupNormal();
-				
+				if(m_gameData.m_phase.getCurrentPhase() != Phase::PAS_MON_TOUR) {
+					m_gameData.m_phase.setCurrentPhase(Phase::APRES_COUP);
+					if(m_gameData.m_phase.getNbCartePlay() !=0) {
+						gf::Log::debug("appelle du callback endturn\n");
+						m_endTurn.triggerCallback();
+					}
+				}
 				m_promotion = false;
 			}
 			
@@ -313,9 +323,13 @@ void GameScene::doUpdate(gf::Time time) {
 			}
 
 			m_gameData.m_plateau.prettyPrint();
-			// a changer surement
-			m_gameData.m_phase.nextPhaseCoupNormal();
-			
+			if(m_gameData.m_phase.getCurrentPhase() != Phase::PAS_MON_TOUR) {
+				m_gameData.m_phase.setCurrentPhase(Phase::APRES_COUP);
+				if(m_gameData.m_phase.getNbCartePlay() !=0) {
+					gf::Log::debug("appelle du callback endturn\n");
+					m_endTurn.triggerCallback();
+				}
+			}
 			m_promotion = false;
 		}else {
 			gf::Log::debug("------PROMOTION INVALIDE------\n");
