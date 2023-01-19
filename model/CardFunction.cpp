@@ -41,7 +41,7 @@ bool ChameauIsPlayable (Plateau& p, Phase f) {
 }
 
 void BombeAtomique (Plateau& p, gf::Vector2i s, gf::Vector2i e) {
-	isBoard(s);
+	inBoard(s);
 	std::vector<gf::Vector2i> targets;
 
 	for (int i = -1; i <= 1; i++) {
@@ -53,7 +53,7 @@ void BombeAtomique (Plateau& p, gf::Vector2i s, gf::Vector2i e) {
 	}
 
 	for (auto& v : targets) {
-		p.state[v.y * 8 + v.x] = Piece(ChessColor::NONE, ChessPiece::NONE);
+		p.state[v.y * 8 + v.x].piece = Piece(ChessColor::NONE, ChessPiece::NONE);
 	}
 }
 
@@ -61,7 +61,7 @@ bool BombeAtomiqueIsPlayable (Plateau& p, Phase f) {
 	size_t len = p.allPositions.size();
 	std::string before = p.allPositions[len - 2];
 	std::string now = p.allPositions[len - 1];
-	std::string not_pieces = "1234567890/";
+	std::string not_piece = "1234567890/";
 
 	size_t count_before = 0;
 	size_t count_after = 0;
