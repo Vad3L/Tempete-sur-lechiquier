@@ -1,6 +1,25 @@
 #include "Deck.hpp"
 
 Deck::Deck(){
+	// 29 13 47 33
+	m_execsfuncs.insert({ 29, Chameau });	
+	m_isplayfuncs.insert({ 29, ChameauIsPlayable });
+
+	m_execsfuncs.insert({ 15, BombeAtomique });
+	m_isplayfuncs.insert({ 15, BombeAtomiqueIsPlayable });
+
+	m_execsfuncs.insert({ 33, ChevalFou });
+	m_isplayfuncs.insert({ 33, ChevalFouIsPlayable });
+
+	m_execsfuncs.insert({ 104, Princess });
+	m_isplayfuncs.insert({ 104, PrincessIsPlayable });
+	
+	m_execsfuncs.insert({ 59, Exil });
+	m_isplayfuncs.insert({ 59, ExilIsPlayable });
+	
+	m_execsfuncs.insert({ 110, QuatreCoin });
+	m_isplayfuncs.insert({ 110, QuatreCoinIsPlayable });
+	
 	//format du fichier
 	//NUM;NAME;DESCRIPTION;TURN;ACTION;EFFECT (3 dernières valeurs sont des entier correspondant à la la valeur dans leur énum)
 	for(int k =0 ;k<5;k++) {
@@ -10,7 +29,7 @@ Deck::Deck(){
 
 		if (!file) {
 			gf::Log::error("Impossible d'ouvrir le fichier.\n");
-		}else{
+		} else {
 			std::string line;
 		
 			while (std::getline(file, line)) {
@@ -39,6 +58,10 @@ Deck::Deck(){
 				Effect effect = (Effect)numEffect;
 
 				Card c(num, tab[1], tab[2], turn, action, effect);
+
+				c.m_isPlayable = m_isplayfuncs[num];
+				c.m_execute = m_execsfuncs[num];
+
 				m_deck.push_back(c);
 			}
 			file.close();
