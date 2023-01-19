@@ -500,7 +500,7 @@ void Plateau::tmp(std::vector<gf::Vector2i> a) {
 
 std::string Plateau::getFen () {
 	std::string fen = "";
-	std::vector<std::string> white = { "K", "Q", "B", "N", "R", "P", "C", "I", "Ԁ" };
+	std::vector<std::string> white = { "K", "Q", "B", "N", "R", "P", "C", "I", "D" };
 	std::vector<std::string> black = { "k", "q", "b", "n", "r", "p", "c", "i", "d" };
 	std::vector<std::string> neutral = { "Z", "E", "T", "Y", "U", "J", "V", "X", "A" };
 

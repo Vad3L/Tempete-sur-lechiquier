@@ -19,7 +19,8 @@ Deck::Deck(){
 	
 	m_execsfuncs.insert({ 110, QuatreCoin });
 	m_isplayfuncs.insert({ 110, QuatreCoinIsPlayable });
-	
+
+		
 	//format du fichier
 	//NUM;NAME;DESCRIPTION;TURN;ACTION;EFFECT (3 dernières valeurs sont des entier correspondant à la la valeur dans leur énum)
 	for(int k =0 ;k<5;k++) {
