@@ -5,6 +5,7 @@
 #include <fstream>
 
 #include "Card.hpp"
+#include "CardFunction.hpp"
 
 #define CARDS_DESCRIPTIONDIR "../data/"
 
@@ -26,8 +27,7 @@ class Deck{
 		void swap(Card &a, Card &b);
 		void shuffle();
 		
-		void drop(Card m_card);
-
+		void drop(Card m_card);		
 
 };
 

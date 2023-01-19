@@ -113,10 +113,10 @@ void TableBoardEntity::render(gf::RenderTarget &target, const gf::RenderStates &
 		sprite.setTexture(texture, gf::RectF::fromPositionSize({ (1.f / numberPiece) * i, j }, { (1.f / numberPiece), 0.25f }));
 		
 		if(pi.getColor() == ChessColor::WHITE) {
-			sprite.setPosition(coords.getRelativePoint({-0.43f - 0.027f * (tabW[(int)i]%4), -0.255f + (i-1) * 0.084f + 0.025f * (tabW[(int)i]/4)}));
+			sprite.setPosition(coords.getRelativePoint({-0.43f - 0.027f * (tabW[(int)i]%4), -0.255f + (i-2) * 0.084f + 0.025f * (tabW[(int)i]/4)}));
 			tabW[(int)i]+=1;
 		}else {
-			sprite.setPosition(coords.getRelativePoint({0.35f + 0.027f * (tabB[(int)i]%4), -0.255f + (i-1) * 0.084f + 0.025f * (tabB[(int)i]/4)}));
+			sprite.setPosition(coords.getRelativePoint({0.35f + 0.027f * (tabB[(int)i]%4), -0.255f + (i-2) * 0.084f + 0.025f * (tabB[(int)i]/4)}));
 			tabB[(int)i]+=1;
 		}
 		

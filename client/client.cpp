@@ -17,7 +17,7 @@ int main(int argc, char* argv[]) {
 		gf::SharedGraphics glContext(hub.getWindow());
 		hub.loadingDownloadAssets();
 		hub.loadingAssets(network);
-	});
+	});	
 
 	loading.detach();
 

@@ -56,14 +56,21 @@ GameScene::GameScene(GameHub& game, Network &network)
 
 	gf::Coordinates coordsWidget({500,500});
 	auto setupButton = [&] (gf::TextButtonWidget& button, auto callback) {
-		m_endTurn.setDefaultTextColor(gf::Color::Black);
+		m_endTurn.setDefaultTextColor(gf::Color::fromRgba32(212,30,27,255));
 		m_endTurn.setDefaultBackgroundColor(gf::Color::Gray(0.7f));
-		m_endTurn.setSelectedTextColor(gf::Color::Black);
-		m_endTurn.setSelectedBackgroundColor(gf::Color::Green);
+		m_endTurn.setDefaultBackgroundOutlineColor(gf::Color::Gray(0.7f)); 
+
+		m_endTurn.setSelectedTextColor(gf::Color::fromRgba32(212,30,27,255));
+		m_endTurn.setSelectedBackgroundColor(gf::Color::Gray(0.7f));
+		m_endTurn.setSelectedBackgroundOutlineColor(gf::Color::Gray(0.5f));
+		
 		m_endTurn.setDisabledTextColor(gf::Color::Black);
-		m_endTurn.setDisabledBackgroundColor(gf::Color::Green);
-		m_endTurn.setPosition( coordsWidget.getRelativePoint({ 0.6f, 0.25f }));
-		m_endTurn.setAnchor(gf::Anchor::TopLeft);
+		m_endTurn.setDisabledBackgroundColor(gf::Color::Gray(0.7f));
+		m_endTurn.setDisabledBackgroundOutlineColor(gf::Color::Red); 
+
+		m_endTurn.setRadius(5.f);
+		m_endTurn.setBackgroundOutlineThickness(4.f);
+		m_endTurn.setPosition( coordsWidget.getRelativePoint({ 0.755f, 0.25f }));
 		m_endTurn.setAlignment(gf::Alignment::Center);
 		m_endTurn.setCallback(callback);
 		m_widgets.addWidget(m_endTurn);
