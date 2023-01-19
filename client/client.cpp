@@ -13,15 +13,15 @@ int main(int argc, char* argv[]) {
 	Network network;
 	hub.getWindow().toggleFullscreen();
 
-	auto loading = std::thread([&hub, &network]() {
-		gf::SharedGraphics glContext(hub.getWindow());
+	//auto loading = std::thread([&hub, &network]() {
+		//gf::SharedGraphics glContext(hub.getWindow());
 		hub.loadingDownloadAssets();
 		hub.loadingAssets(network);
-	});
+	//});
 
-	loading.detach();
+	//loading.detach();
 
-	gf::sleep(gf::milliseconds(1000));
+	//gf::sleep(gf::milliseconds(1000));
 	hub.pushScene(*hub.download);
 	hub.run();
 	return EXIT_SUCCESS;

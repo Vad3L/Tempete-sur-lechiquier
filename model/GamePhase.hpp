@@ -11,6 +11,7 @@ class GamePhase{
 
 		Phase getCurrentPhase();
 		void setCurrentPhase(Phase phase);
+		void nextPhaseCard(Card cardPlay);
 
 	private:
 		Phase m_currentPhase;

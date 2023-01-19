@@ -41,6 +41,9 @@ void TableBoardEntity::render(gf::RenderTarget &target, const gf::RenderStates &
 		case Phase::PAS_MON_TOUR :
 			indication = "Au tour de l'adversaire de jouer" ;
 			break;
+		case:: Phase::CLIQUER_CASES :
+			indication = "Choisisez des cases sur le plateau";
+			break;
 	}
 
 	switch (m_gameData.m_gameStatus) {

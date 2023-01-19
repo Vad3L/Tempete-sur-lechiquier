@@ -59,10 +59,10 @@ void MainEntity::render(gf::RenderTarget &target, const gf::RenderStates &states
 		rect.setPosition({position.x+sizeCard.x/2.f, position.y+sizeCard.y/1.6f});
 		rect.setAnchor(gf::Anchor::Center);
 		switch (c.m_turn) {
-			case Turn::BEFORE:
+			case Turn::AVANT_COUP:
 				rect.setColor(gf::Color::Yellow);
 				break;
-			case Turn::AFTER:
+			case Turn::APRES_COUP:
 				rect.setColor(gf::Color::Green);
 				break;
 			case Turn::BOTH:

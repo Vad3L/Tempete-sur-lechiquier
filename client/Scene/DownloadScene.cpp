@@ -7,7 +7,7 @@ DownloadScene::DownloadScene(GameHub& game)
 , m_game(game)
 , m_escapeAction("Escape")
 {
-	setClearColor(gf::Color::Red);	
+	setClearColor(gf::Color::Black);	
 	m_escapeAction.addKeycodeKeyControl(gf::Keycode::Escape);
 	addAction(m_escapeAction);
 

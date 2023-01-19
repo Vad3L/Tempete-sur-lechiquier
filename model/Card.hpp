@@ -10,8 +10,8 @@
 #include "CardFunction.hpp"
 
 enum class Turn{
-	BEFORE,
-	AFTER,
+	AVANT_COUP,
+	APRES_COUP,
 	BOTH,
 	DURING_TOUR_ADVERSE
 };
