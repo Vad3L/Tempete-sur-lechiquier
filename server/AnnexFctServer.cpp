@@ -395,7 +395,7 @@ int sendInit(gf::TcpSocket& client, ChessColor c, std::vector<Card>& hand) {
 		pack.is(distrib);
 		if (gf::SocketStatus::Data != client.sendPacket(pack)) {
 			gf::Log::error("Lors de l'envoie du packet contenant la main au client\n");
-		exit(-1);
+			exit(-1);
 		}
 	return 0;
 }

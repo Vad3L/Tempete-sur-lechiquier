@@ -18,7 +18,6 @@ typedef enum {
 	GAME_START,
 	GAME_END,
 	TURN_START,
-	TURN_END, 
 	NO_CARD,
 	CARD
 } CodeRep;

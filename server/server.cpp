@@ -11,11 +11,13 @@ int main (int argc, char* argv[]) {
 	
 	std::vector<int> numCards;
 
+	bool debugActive = false;
 	if (argc > 2 && std::string(argv[1]) == "--debug") {
 		gf::Log::debug("(SERVEUR) est lancé en mode debug\n");
 		for (int i=2; i<argc; i++) {
 			numCards.push_back(atoi(argv[i]));
 		}
+		debugActive = true;
 	}
 
 	gf::TcpSocket client1 = listener.accept();
@@ -51,6 +53,7 @@ int main (int argc, char* argv[]) {
 						if(sendStartTurn(client1) == -1){
 							break;
 						}
+						plateau.turnTo = ChessColor::WHITE;
 					}
 
 					int ret = performTurn(phase, plateau, client1, client2, TwoHand.first, promotion);
@@ -70,6 +73,8 @@ int main (int argc, char* argv[]) {
 						if(sendStartTurn(client2) == -1){
 							break;
 						}
+						plateau.turnTo = ChessColor::BLACK;
+
 					}
 
 					int ret = performTurn(phase, plateau, client2, client1, TwoHand.second, promotion);
