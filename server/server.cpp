@@ -47,8 +47,10 @@ int main (int argc, char* argv[]) {
 					if ((gameStatus = plateau.isGameOver(ChessColor::WHITE)) != ChessStatus::ON_GOING) {
 						break;
 					}
-					if(sendStartTurn(client1) == -1){
-						break;
+					if (phase.getCurrentPhase() == Phase::AVANT_COUP) {
+						if(sendStartTurn(client1) == -1){
+							break;
+						}
 					}
 
 					int ret = performTurn(phase, plateau, client1, client2, TwoHand.first, promotion);
@@ -63,8 +65,10 @@ int main (int argc, char* argv[]) {
 					if ((gameStatus = plateau.isGameOver(ChessColor::BLACK)) != ChessStatus::ON_GOING) {
 						break;
 					}
-					if(sendStartTurn(client2) == -1){
-						break;
+					if (phase.getCurrentPhase() == Phase::AVANT_COUP) {
+						if(sendStartTurn(client2) == -1){
+							break;
+						}
 					}
 
 					int ret = performTurn(phase, plateau, client2, client1, TwoHand.second, promotion);
