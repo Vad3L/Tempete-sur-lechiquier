@@ -7,8 +7,7 @@ void Princess (Plateau& p, gf::Vector2i s, gf::Vector2i e) {
 	gf::Log::info("Princesse execute\n");
 	gf::Vector2i pos = (p.turnTo  == ChessColor::WHITE ? gf::Vector2i(3,7): gf::Vector2i(3,0)); 
 	Case &c = p.state[pos.y * 8 + pos.x];
-	ChessColor clr = c.piece.getColor();
-	c.piece = Piece(clr, ChessPiece::PRINCESS);
+	c.piece = Piece(p.turnTo, ChessPiece::PRINCESS);
 }
 
 bool PrincessIsPlayable (Plateau& p, Phase f) {
@@ -16,12 +15,13 @@ bool PrincessIsPlayable (Plateau& p, Phase f) {
 	if (f != Phase::APRES_COUP) {
 		return false;
 	}
-	
+
 	char to_find = (p.turnTo  == ChessColor::WHITE ? 'Q' : 'q');
 	gf::Vector2i pos = (p.turnTo  == ChessColor::WHITE ? gf::Vector2i(3,7): gf::Vector2i(3,0)); 
 	std::string lastBoard = p.getFen();
 
 	size_t res = lastBoard.find(to_find); 
+
 	if (res == std::string::npos) {
 		if (p.state[pos.y * 8 + pos.x].piece.getType() == ChessPiece::NONE){
 			return true;
@@ -31,6 +31,7 @@ bool PrincessIsPlayable (Plateau& p, Phase f) {
 }
 
 void ChevalFou (Plateau& p, gf::Vector2i s, gf::Vector2i e) {
+	gf::Log::info("ChevalFou execute\n");
 	inBoard(s);
 	inBoard(e);
 
@@ -40,6 +41,7 @@ void ChevalFou (Plateau& p, gf::Vector2i s, gf::Vector2i e) {
 }
 
 bool ChevalFouIsPlayable (Plateau& p, Phase f) {
+	gf::Log::info("ChevalFou est jouable\n");
 	if (f != Phase::APRES_COUP) {
 		return false;
 	}
@@ -113,7 +115,7 @@ bool BombeAtomiqueIsPlayable (Plateau& p, Phase f) {
 		}
 	}
 
-	if (count_before > count_after) {
+	if (count_before == count_after) {
 		return true;
 	}
 

@@ -26,7 +26,7 @@ int main (int argc, char* argv[]) {
 		}
 		
 		Plateau plateau;
-	ChessStatus gameStatus = ChessStatus::ON_GOING;
+		ChessStatus gameStatus = ChessStatus::ON_GOING;
 		bool player = true;
 		bool promotion = false;
 		while (true) {
