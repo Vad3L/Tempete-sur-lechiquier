@@ -91,13 +91,7 @@ GameScene::GameScene(GameHub& game, Network &network)
 	});
 
 	setupButton(m_playCard, { 0.9f, 0.25f }, [&] () {
-		
-		if(m_poseEntity.m_cardPose.m_num != -1) {
-			gf::Log::debug("playCard pressed!\n");
-			m_poseEntity.m_cardPose.m_execute(m_gameData.m_plateau, gf::Vector2i(-1), gf::Vector2i(-1));
-			m_gameData.m_phase.nextPhaseCard(m_poseEntity.m_cardPose);
-			m_poseEntity.m_cardPose = Card();
-		} else {
+		if(m_poseEntity.m_cardPose.m_num == -1) {
 			return;
 		}
 
@@ -113,9 +107,8 @@ GameScene::GameScene(GameHub& game, Network &network)
 		}
 		
 		// pour l'instant pas a et b car pas de case clique
-		gf::Log::debug("envoie au serveur la card %li,\n", cardRep.card);
+		gf::Log::debug("envoie au serveur la card %li\n", cardRep.card);
 		m_network.send(cardRep);
-	
 	});
 }
 
@@ -189,7 +182,7 @@ void GameScene::doProcessEvent(gf::Event& event) {
 
 			gf::Log::info("carte %i est jouable %i \n", numCarte, playable);
 
-			if(playable && m_poseEntity.m_cardPose.m_num == -1) {
+			if(true && m_poseEntity.m_cardPose.m_num == -1) {
 				m_poseEntity.m_cardPose = m_gameData.m_main[numCarte];
 				m_gameData.m_main[numCarte] = Card(); 
 			}
@@ -388,6 +381,26 @@ void GameScene::doUpdate(gf::Time time) {
 				m_gameData.m_main[i] = m_gameData.m_cards[deckRep.hand[i].m_num];
 			}
 		}
+	}
+
+	if(m_packet.getType() == CardRep::type) {
+		gf::Log::info("recu carte serveur\n");
+		
+		auto carteRep = m_packet.as<CardRep>();
+		
+		if(carteRep.err == CodeRep::NONE) {
+			gf::Log::debug("------CARTE VALIDE------ %i\n", carteRep.num);
+
+			m_gameData.m_plateau.allPositions.push_back(m_gameData.m_plateau.getFen());
+			m_gameData.m_cards[carteRep.num].m_execute(m_gameData.m_plateau, carteRep.a, carteRep.b);
+
+			if(m_gameData.m_phase.getCurrentPhase() != Phase::PAS_MON_TOUR) {
+				m_gameData.m_phase.nextPhaseCard(m_gameData.m_cards[carteRep.num]);
+				m_poseEntity.m_cardPose = Card();
+			}
+		}else {
+			gf::Log::debug("------CARTE INVALIDE------\n");
+		}	
 	}
 }
 

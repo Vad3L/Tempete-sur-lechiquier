@@ -79,7 +79,7 @@ struct CardRep {
 
 template<typename Archive>
 Archive operator|(Archive& ar, CardRep& data) {
-	return ar | data.err | data.card | data.a | data.b;
+	return ar | data.err | data.card | data.a | data.b | data.num;
 }
 
 template<typename Archive>

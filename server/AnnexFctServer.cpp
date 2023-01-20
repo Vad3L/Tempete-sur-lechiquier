@@ -83,6 +83,7 @@ void checkCardPacketValidity (Plateau& p, CardRep& r, std::vector<Card>& hand, P
 	if (r.err == CodeRep::NO_CARD) {
 		return;
 	}
+	gf::Log::debug("j'ai recu une carte %i\n", r.err);
 
 	assert(r.err != CodeRep::NO_CARD);
 	assert(r.card <= 4);
@@ -160,20 +161,20 @@ void performPromotion (Plateau& plateau, PromotionRep& promo) {
 	gf::Log::debug("------PROMO VALIDE------\n");
 	plateau.promotionPiece(gf::Vector2i(promo.pos.x, promo.pos.y), promo.choice);
 	plateau.allPositions.push_back(plateau.getFen());
-	gf::Log::debug("position : ");
-	std::cout << plateau.allPositions.back() << std::endl;
+	plateau.prettyPrint();
 }
 
 void performCard (Plateau& plateau, CardRep& c, std::vector<Card>& hand) {
 	gf::Log::debug("------CARD VALIDE------\n");
 	hand[c.card].m_execute(plateau, c.a, c.b);
-	gf::Log::debug("La carte %s est joué", hand[c.card].m_name.c_str());
+	gf::Log::debug("La carte %s est joué \n", hand[c.card].m_name.c_str());
+	plateau.prettyPrint();
 }
 
 int performTurn (Plateau& plateau, gf::TcpSocket& player, gf::TcpSocket& other, std::vector<Card>& hand,  bool& promotion) {
 	gf::Packet pack;
 	if (receivingPacket(player, pack) == -1) {
-		gf::Log::error("Erreur lors du reçu de la carte avant le coup");
+		gf::Log::error("Erreur lors du reçu de la carte avant le coup\n");
 		return -1;
 	}
 
@@ -185,6 +186,8 @@ int performTurn (Plateau& plateau, gf::TcpSocket& player, gf::TcpSocket& other, 
 			if (hand[card.card].m_effect == Effect::REPLACE_COUP) {
 				return 0;
 			}
+		}else {
+			return 2;
 		}
 		pack.is(card);
 		// send to both
@@ -229,11 +232,6 @@ int performTurn (Plateau& plateau, gf::TcpSocket& player, gf::TcpSocket& other, 
 		return -1;
 	}
 
-	gf::Log::debug("type partie : %lu\n", PartieRep::type);
-	gf::Log::debug("type promotion : %lu\n", PromotionRep::type);
-	gf::Log::debug("type coup : %lu\n", CoupRep::type);
-	gf::Log::debug("type card : %lu\n", CardRep::type);
-	gf::Log::debug("type: %lu\n", pack2.getType());
 	assert(pack2.getType() == CardRep::type);
 	
 	CardRep card = pack2.as<CardRep>();
@@ -242,69 +240,14 @@ int performTurn (Plateau& plateau, gf::TcpSocket& player, gf::TcpSocket& other, 
 	if (card.err == CodeRep::NONE) {
 		performCard(plateau, card, hand);
 	}
+	pack2.is(card);
 
 	if (sendingPacket(player, pack2) == -1) {
 		return -1;
 	}
-	if (sendingPacket(player, pack2) == -1) {
+	if (sendingPacket(other, pack2) == -1) {
 		return -1;
 	}
-	return 0;
-}
-
-int performAction (Plateau& plateau, gf::TcpSocket& player, gf::TcpSocket& other, bool& promotion) {
-	if (!promotion) {
-		gf::Packet pack;
-		if (receivingPacket(player, pack) == -1) {
-			return -1;
-		}
-
-		assert(pack.getType() == CoupRep::type);
-		CoupRep coup = pack.as<CoupRep>();
-		checkCoupPacketValidity(plateau, coup);
-
-		if (coup.err != CodeRep::NONE) {
-			return 2;
-		}
-
-		promotion = performCoup(plateau, coup);
-		if (!promotion) {
-			plateau.allPositions.push_back(plateau.getFen());
-			gf::Log::debug("position : ");
-			std::cout << plateau.allPositions.back() << std::endl;
-		}
-
-		pack.is(coup);
-		if (sendingPacket(player, pack) == -1) {
-			return -1;
-		}
-		if (sendingPacket(other, pack) == -1) {
-			return -1;
-		}
-	} else {
-		gf::Packet pack;
-		if (receivingPacket(player, pack) == -1) {
-			return -1;
-		}
-		assert(pack.getType() == PromotionRep::type);
-		PromotionRep promo = pack.as<PromotionRep>();
-
-		checkPromotionValidity(plateau, promo);
-		if (promo.err != CodeRep::NONE) {
-			return 2;
-		}
-
-		performPromotion(plateau, promo);
-		promotion = false;
-		pack.is(promo);
-		if (sendingPacket(player, pack) == -1) {
-			return -1;
-		}
-		if (sendingPacket(other, pack) == -1) {
-			return -1;
-		}
-	}
-
 	return 0;
 }
 
