@@ -85,7 +85,8 @@ void checkCardPacketValidity (Plateau& p, CardRep& r, std::vector<Card>& hand, P
 	}
 
 	assert(r.err != CodeRep::NO_CARD);
-	assert(r.card > 4);
+	assert(r.card <= 4);
+	assert(r.card >= 0);
 
 	bool valide = true;
 	if (!hand[r.card].m_isPlayable(p, f)) {
