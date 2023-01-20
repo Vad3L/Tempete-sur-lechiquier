@@ -151,19 +151,21 @@ void GameScene::doProcessEvent(gf::Event& event) {
 			gf::Log::debug("appelle function playable\n");	
 			bool playable = m_gameData.m_main[numCarte].m_isPlayable(m_gameData.m_plateau, currentPhase);
 
-			gf::Log::debug("fin appelle function playable\n");	
+			gf::Log::debug("fin appelle function playable %i\n", playable);	
 			//gf::Log::info("carte %i i est jouable %i \n", numCarte, playable);
 			if(m_gameData.m_main[numCarte].m_turn == Turn::AVANT_COUP && currentPhase == Phase::AVANT_COUP && playable) {
 				//std::swap(m_poseEntity.m_cardPose, m_gameData.m_main[numCarte]);
+				gf::Log::debug("on est dans le 1ere if\n");	
 				m_gameData.m_main[numCarte].m_execute(m_gameData.m_plateau, gf::Vector2i(-1), gf::Vector2i(-1));
 				m_gameData.m_phase.nextPhaseCard(m_gameData.m_main[numCarte]);
 			}else if(m_gameData.m_main[numCarte].m_turn == Turn::APRES_COUP && currentPhase == Phase::APRES_COUP && playable) {
 				//std::swap(m_poseEntity.m_cardPose, m_gameData.m_main[numCarte]);
+				gf::Log::debug("on est dans le 2nd if\n");	
 				m_gameData.m_main[numCarte].m_execute(m_gameData.m_plateau, gf::Vector2i(-1), gf::Vector2i(-1));
 				m_gameData.m_phase.nextPhaseCard(m_gameData.m_main[numCarte]);
 			}
 
-			gf::Log::debug("on a passe le if \n");	
+			gf::Log::debug("on a passé le if \n");	
 			
 			if(m_gameData.m_phase.getCurrentPhase() == Phase::PAS_MON_TOUR) {
 				CardRep cardRep;
@@ -256,6 +258,7 @@ void GameScene::doUpdate(gf::Time time) {
 			auto repPartie = m_packet.as<PartieRep>();
 
 			m_gameData.m_myColor = repPartie.colorPion;
+			m_gameData.m_plateau.turnTo = !repPartie.colorPion;
 
 			if (m_gameData.m_myColor == ChessColor::WHITE) {
 				m_gameData.m_phase.setCurrentPhase(Phase::AVANT_COUP);

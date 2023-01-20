@@ -26,7 +26,7 @@ Plateau::Plateau()
 						state[i * 8 + coordPass].piece = Piece(c, ChessPiece::BISHOP);
 						break;
 					case 3:
-						state[i * 8 + coordPass].piece = Piece(c, ChessPiece::QUEEN);
+						//state[i * 8 + coordPass].piece = Piece(c, ChessPiece::QUEEN);
 						break;
 					case 4:
 						state[i * 8 + coordPass].piece = Piece(c, ChessPiece::KING);
