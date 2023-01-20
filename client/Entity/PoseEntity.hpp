@@ -15,6 +15,7 @@
 #include <iostream>
 
 #include "../GameData.hpp"
+#include "CardEntity.hpp"
 
 struct GameData;
 
@@ -32,6 +33,7 @@ class PoseEntity : public gf::Entity {
 		gf::Font& m_poseNameFont;
 
 		GameData &m_gameData;
+		CardEntity m_cardEntity;
 };
 
 

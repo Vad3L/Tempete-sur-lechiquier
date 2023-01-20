@@ -53,6 +53,7 @@ class GameScene : public gf::Scene {
 		gf::Action m_texture1Action;
 		gf::Action m_texture2Action;
 		gf::Action m_endTurnAction;
+		gf::Action m_playCardAction;
 		gf::Action m_triggerAction;
 	
 		bool m_promotion;
@@ -71,6 +72,7 @@ class GameScene : public gf::Scene {
 
 
 		gf::TextButtonWidget m_endTurn;
+		gf::TextButtonWidget m_playCard;
 
 		gf::WidgetContainer m_widgets;
 

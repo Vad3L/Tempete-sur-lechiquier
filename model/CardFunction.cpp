@@ -41,7 +41,7 @@ void BombeAtomique (Plateau& p, gf::Vector2i s, gf::Vector2i e) {
 	for (int i = -1; i <= 1; i++) {
 		for (int j = -1; j <= 1; j++) {
 			if (inBoard({pos.x+i, pos.y+j})) {
-				gf::Log::info("la : i = %i et j = %i\n", i, j);
+				//gf::Log::info("la : i = %i et j = %i\n", i, j);
 				targets.push_back(gf::Vector2i(pos.x+i, pos.y+j));
 			}
 		}

@@ -5,6 +5,7 @@ PoseEntity::PoseEntity(gf::ResourceManager& resources,GameData &gameData)
 , m_accessories(resources.getTexture("images/AccesoriesCards.png"))
 , m_gameData(gameData)
 , m_poseNameFont(resources.getFont("fonts/DejaVuSans.ttf"))
+, m_cardEntity(resources, gameData)
 {
 	m_cardsIllustration.setSmooth(true);
 	m_accessories.setSmooth(true);
@@ -18,12 +19,12 @@ void PoseEntity::render(gf::RenderTarget &target, const gf::RenderStates &states
 
 	gf::Coordinates coords(target);
 	
-	gf::Vector2i sizeCard = gf::Vector2i(200+10,300+10);
+	gf::Vector2i sizeCard = gf::Vector2i(200+20,300+20);
 
 	gf::Vector2f position = coords.getRelativePoint({ 0.2f, 0.4f });
 	
 	gf::RoundedRectangleShape contour(sizeCard);
-	contour.setColor(gf::Color::fromRgba32(0.f, 0.f, 0.f, 0.f));
+	contour.setColor(gf::Color::Black);
 	
 	gf::Text poseName("Carte jouée", m_poseNameFont, 16.f);
 	poseName.setPosition({position.x,position.y-sizeCard.y/2.f-2.5f});
@@ -63,13 +64,12 @@ void PoseEntity::render(gf::RenderTarget &target, const gf::RenderStates &states
 	placementTexte.setPosition({position.x,position.y-sizeCard.y/2.f-2.5f});
 	placementTexte.setAnchor(gf::Anchor::Center);
 
-	// TODO DESSINER LA CARTE si il ya en a une
-	if(m_cardPose.m_num!=-1) {
-		//gf::Log::debug("je dessine une carte\n");
-		
-	}
-	
 	target.draw(contour, states);
 	target.draw(placementTexte,states);
 	target.draw(poseName,states);
+
+	if(m_cardPose.m_num!=-1) {
+		m_cardEntity.render(target, states, m_cardPose, 0.237f, 0.94f);
+	}
+	
 }

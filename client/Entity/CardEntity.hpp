@@ -18,9 +18,9 @@
 
 struct GameData;
 
-class CardsEntity : public gf::Entity {
+class CardEntity : public gf::Entity {
 	public:
-		CardsEntity(gf::ResourceManager& resources,GameData &gameData);
+		CardEntity(gf::ResourceManager& resources,GameData &gameData);
 		
 		void update(gf::Time time) override;
 		void render(gf::RenderTarget &target, const gf::RenderStates &states, Card c, float x, float y) ;

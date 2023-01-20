@@ -48,7 +48,7 @@ add_executable(client_tsl
 	client/Entity/RulesEntity.cpp
 	client/Entity/MainEntity.cpp
 	client/Entity/PoseEntity.cpp
-	client/Entity/CardsEntity.cpp
+	client/Entity/CardEntity.cpp
 	)
 
 add_executable(server_tsl

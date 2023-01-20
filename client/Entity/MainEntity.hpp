@@ -16,7 +16,7 @@
 
 #include "../GameData.hpp"
 #include "../../model/Deck.hpp"
-#include "./CardsEntity.hpp"
+#include "CardEntity.hpp"
 
 struct GameData;
 
@@ -31,7 +31,7 @@ class MainEntity : public gf::Entity {
 	private:
 
 		GameData &m_gameData;
-		CardsEntity m_card;
+		CardEntity m_card;
 };
 
 

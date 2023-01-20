@@ -1,5 +1,4 @@
 #include "MainEntity.hpp"
-#include "CardsEntity.hpp"
 
 MainEntity::MainEntity(gf::ResourceManager& resources,GameData &gameData)
 : m_gameData(gameData)

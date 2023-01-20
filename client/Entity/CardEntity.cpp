@@ -1,6 +1,6 @@
-#include "CardsEntity.hpp"
+#include "CardEntity.hpp"
 
-CardsEntity::CardsEntity(gf::ResourceManager& resources,GameData &gameData)
+CardEntity::CardEntity(gf::ResourceManager& resources,GameData &gameData)
 : m_cardsFont(resources.getFont("fonts/DejaVuSans.ttf"))
 ,m_cardsIllustration(resources.getTexture("images/CardIlustrationSheet.png"))
 ,m_accessories(resources.getTexture("images/AccesoriesCards.png"))
@@ -10,10 +10,10 @@ CardsEntity::CardsEntity(gf::ResourceManager& resources,GameData &gameData)
 	m_accessories.setSmooth(true);
 }
 
-void CardsEntity::update([[maybe_unused]] gf::Time time) {
+void CardEntity::update([[maybe_unused]] gf::Time time) {
 }
 
-void CardsEntity::render(gf::RenderTarget &target, const gf::RenderStates &states, Card c, float x, float y){
+void CardEntity::render(gf::RenderTarget &target, const gf::RenderStates &states, Card c, float x, float y){
 
 	int numberImageW = 10;
 	int numberImageH = 14;

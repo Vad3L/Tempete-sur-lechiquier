@@ -10,12 +10,14 @@ GameScene::GameScene(GameHub& game, Network &network)
 , m_texture1Action("Texture1")
 , m_texture2Action("Texture2")
 , m_endTurnAction("endTurnAction")
+, m_playCardAction("playCardAction")
 , m_boardEntity(game.resources, m_gameData)
 , m_mainEntity(game.resources, m_gameData)
 , m_tableBoardEntity(game.resources, m_gameData)
 , m_poseEntity(game.resources, m_gameData)
 , m_promotion(false)
-, m_endTurn("Fin Tour", game.resources.getFont("fonts/Trajan-Color-Concept.otf"))
+, m_endTurn("Fin tour", game.resources.getFont("fonts/Trajan-Color-Concept.otf"))
+, m_playCard("Activer carte", game.resources.getFont("fonts/Trajan-Color-Concept.otf"))
 , m_triggerAction("TriggerAction")
 {
 	setClearColor(gf::Color::Black);
@@ -35,6 +37,9 @@ GameScene::GameScene(GameHub& game, Network &network)
 	m_endTurnAction.addScancodeKeyControl(gf::Scancode::Return);
 	addAction(m_endTurnAction);
 
+	m_playCardAction.addScancodeKeyControl(gf::Scancode::P);
+	addAction(m_playCardAction);
+
 	m_boardView = gf::ExtendView({ 0, 0 }, { 403, 403 });
 	m_boardView.setViewport(gf::RectF::fromPositionSize({ 0.275f, 0.125f}, { 0.45f, 0.45f }));
 
@@ -50,32 +55,32 @@ GameScene::GameScene(GameHub& game, Network &network)
 
 	m_views.setInitialFramebufferSize({game.getRenderer().getSize()});
 
-	//Bouton de fin de tour
 	m_triggerAction.addMouseButtonControl(gf::MouseButton::Left);
 	addAction(m_triggerAction);
 
 	gf::Coordinates coordsWidget({500,500});
-	auto setupButton = [&] (gf::TextButtonWidget& button, auto callback) {
-		m_endTurn.setDefaultTextColor(gf::Color::fromRgba32(212,30,27,255));
-		m_endTurn.setDefaultBackgroundColor(gf::Color::Gray(0.7f));
-		m_endTurn.setDefaultBackgroundOutlineColor(gf::Color::Gray(0.7f)); 
+	auto setupButton = [&] (gf::TextButtonWidget& button, gf::Vector2f position,  auto callback) {
+		button.setDefaultTextColor(gf::Color::fromRgba32(212,30,27,255));
+		button.setDefaultBackgroundColor(gf::Color::Gray(0.7f));
+		button.setDefaultBackgroundOutlineColor(gf::Color::Gray(0.7f)); 
 
-		m_endTurn.setSelectedTextColor(gf::Color::fromRgba32(212,30,27,255));
-		m_endTurn.setSelectedBackgroundColor(gf::Color::Gray(0.7f));
-		m_endTurn.setSelectedBackgroundOutlineColor(gf::Color::Gray(0.5f));
+		button.setSelectedTextColor(gf::Color::fromRgba32(212,30,27,255));
+		button.setSelectedBackgroundColor(gf::Color::Gray(0.7f));
+		button.setSelectedBackgroundOutlineColor(gf::Color::Gray(0.5f));
 		
-		m_endTurn.setDisabledTextColor(gf::Color::Black);
-		m_endTurn.setDisabledBackgroundColor(gf::Color::Gray(0.7f));
-		m_endTurn.setDisabledBackgroundOutlineColor(gf::Color::Red); 
+		button.setDisabledTextColor(gf::Color::Black);
+		button.setDisabledBackgroundColor(gf::Color::Gray(0.7f));
+		button.setDisabledBackgroundOutlineColor(gf::Color::Red); 
 
-		m_endTurn.setRadius(5.f);
-		m_endTurn.setBackgroundOutlineThickness(4.f);
-		m_endTurn.setPosition( coordsWidget.getRelativePoint({ 0.755f, 0.25f }));
-		m_endTurn.setAlignment(gf::Alignment::Center);
-		m_endTurn.setCallback(callback);
-		m_widgets.addWidget(m_endTurn);
+		button.setRadius(5.f);
+		button.setBackgroundOutlineThickness(4.f);
+		button.setPosition( coordsWidget.getRelativePoint(position));
+		button.setAlignment(gf::Alignment::Center);
+		button.setCallback(callback);
+		m_widgets.addWidget(button);
 	};
-	setupButton(m_endTurn, [&] () {
+
+	setupButton(m_endTurn, { 0.6f, 0.25f }, [&] () {
 		if(m_gameData.m_phase.getCurrentPhase()==Phase::APRES_COUP) {
 			gf::Log::debug("EndTurn pressed!\n");
 			m_gameData.m_phase.setCurrentPhase(Phase::PAS_MON_TOUR);
@@ -85,6 +90,33 @@ GameScene::GameScene(GameHub& game, Network &network)
 		}
 	});
 
+	setupButton(m_playCard, { 0.9f, 0.25f }, [&] () {
+		
+		if(m_poseEntity.m_cardPose.m_num != -1) {
+			gf::Log::debug("playCard pressed!\n");
+			m_poseEntity.m_cardPose.m_execute(m_gameData.m_plateau, gf::Vector2i(-1), gf::Vector2i(-1));
+			m_gameData.m_phase.nextPhaseCard(m_poseEntity.m_cardPose);
+			m_poseEntity.m_cardPose = Card();
+		} else {
+			return;
+		}
+
+		CardRep cardRep;
+		cardRep.err = CodeRep::CARD;
+		cardRep.card = -1; 
+		
+		for(int i=0; i < m_gameData.m_main.size(); i++) {
+			if(m_gameData.m_main[i].m_num == -1) {
+				cardRep.card = i; 
+				break;
+			}
+		}
+		
+		// pour l'instant pas a et b car pas de case clique
+		gf::Log::debug("envoie au serveur la card %li,\n", cardRep.card);
+		m_network.send(cardRep);
+	
+	});
 }
 
 void GameScene::doHandleActions([[maybe_unused]] gf::Window& window) {
@@ -114,10 +146,15 @@ void GameScene::doHandleActions([[maybe_unused]] gf::Window& window) {
 	}
 
 	if (m_endTurnAction.isActive()){
-		gf::Log::debug("pushed\n");
-		m_widgets.selectNextWidget();
-		m_widgets.triggerAction();
+		gf::Log::debug("pushed endturn\n");
+		m_endTurn.triggerCallback();
 	}
+
+	if(m_playCardAction.isActive()) {
+		gf::Log::debug("pushed playCard\n");
+		m_playCard.triggerCallback();
+	}
+
 }
 
 void GameScene::doProcessEvent(gf::Event& event) {
@@ -148,26 +185,13 @@ void GameScene::doProcessEvent(gf::Event& event) {
 
 		if(numCarte!=-1) {
 
-			gf::Log::debug("appelle function playable\n");	
 			bool playable = m_gameData.m_main[numCarte].m_isPlayable(m_gameData.m_plateau, currentPhase);
 
-			gf::Log::debug("fin appelle function playable\n");	
 			gf::Log::info("carte %i est jouable %i \n", numCarte, playable);
 
-			if(playable) {
-				//std::swap(m_poseEntity.m_cardPose, m_gameData.m_main[numCarte]);
-				gf::Log::debug("on est dans le 1ere if\n");	
-				m_gameData.m_main[numCarte].m_execute(m_gameData.m_plateau, gf::Vector2i(-1), gf::Vector2i(-1));
-				m_gameData.m_phase.nextPhaseCard(m_gameData.m_main[numCarte]);
-				m_gameData.m_main[numCarte] = Card(); // a enlever une fois que j'aurasi recu les carte du serveur
-			}
-
-			gf::Log::debug("on a passé le if \n");	
-			
-			if(m_gameData.m_phase.getCurrentPhase() == Phase::PAS_MON_TOUR) {
-				CardRep cardRep;
-				cardRep.err = CodeRep::NO_CARD;
-				m_network.send(cardRep);
+			if(playable && m_poseEntity.m_cardPose.m_num == -1) {
+				m_poseEntity.m_cardPose = m_gameData.m_main[numCarte];
+				m_gameData.m_main[numCarte] = Card(); 
 			}
 		}
 	}
@@ -385,5 +409,8 @@ void GameScene::doShow() {
 	m_widgets.clear();
 
 	m_endTurn.setDefault();
+	m_playCard.setDefault();
+
 	m_widgets.addWidget(m_endTurn);
+	m_widgets.addWidget(m_playCard);
 }
