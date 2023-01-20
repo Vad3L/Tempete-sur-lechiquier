@@ -30,47 +30,13 @@ bool PrincessIsPlayable (Plateau& p, Phase f) {
 	return false;
 }
 
-void ChevalFou (Plateau& p, gf::Vector2i s, gf::Vector2i e) {
-	gf::Log::info("apelle ChevalFou execute\n");
-	inBoard(s);
-	inBoard(e);
-
-	Piece temp = p.state[s.y * 8 + s.x].piece;
-	p.state[s.y * 8 + s.x].piece = p.state[e.y * 8 + e.x].piece;
-	p.state[e.y * 8 + e.x].piece = temp;
-}
-
-bool ChevalFouIsPlayable (Plateau& p, Phase f) {
-	gf::Log::info("apelle ChevalFou jouable\n");
-	if (f != Phase::APRES_COUP) {
-		return false;
-	}
-	return true;
-}
-
-void Chameau (Plateau& p, gf::Vector2i s, gf::Vector2i e) {
-	gf::Log::info("apelle Chameau execute\n");
-	inBoard(s);
-	
-}
-
-bool ChameauIsPlayable (Plateau& p, Phase f) {
-	gf::Log::info("apelle chameau jouable\n");
-	if (f != Phase::APRES_COUP) {
-		return false;
-	}
-	
-	
-	return false;
-}
-
 void BombeAtomique (Plateau& p, gf::Vector2i s, gf::Vector2i e) {
 	gf::Log::info("appelle Bombe atomique execute\n");
 
 	std::vector<gf::Vector2i> targets;
 
 	assert(p.lastCoup.size()>1);
-	gf::Vector2i pos = p.lastCoup[p.lastCoup.size()-1];
+	gf::Vector2i pos = p.lastCoup.back();
 
 	for (int i = -1; i <= 1; i++) {
 		for (int j = -1; j <= 1; j++) {
@@ -82,7 +48,11 @@ void BombeAtomique (Plateau& p, gf::Vector2i s, gf::Vector2i e) {
 	}
 
 	for (auto& v : targets) {
-		p.state[v.y * 8 + v.x].piece = Piece(ChessColor::NONE, ChessPiece::NONE);
+		if(p.state[v.y * 8 + v.x].piece.getType() != ChessPiece::KING && p.state[v.y * 8 + v.x].piece.getType() != ChessPiece::NONE) {
+			Piece piece = p.state[v.y * 8 + v.x].piece;
+			p.bin.push_back(piece);
+			p.state[v.y * 8 + v.x].piece = Piece(ChessColor::NONE, ChessPiece::NONE);
+		}
 	}
 }
 
@@ -99,7 +69,7 @@ bool BombeAtomiqueIsPlayable (Plateau& p, Phase f) {
 	}
 	
 	std::string before = p.allPositions[len - 2];
-	std::string now = p.getFen();
+	std::string now = p.allPositions.back();
 	std::string not_piece = "1234567890/";
 
 	size_t count_before = 0;
@@ -123,164 +93,3 @@ bool BombeAtomiqueIsPlayable (Plateau& p, Phase f) {
 
 	return false;
 }
-
-void QuatreCoin (Plateau& p, gf::Vector2i s, gf::Vector2i e) {
-	gf::Log::info("apelle Quatre coin execute\n");
-	inBoard(s);
-	inBoard(e);
-	Case &c = p.state[s.y * 8 + s.x];
-	Case &d = p.state[e.y * 8 + e.x];
-	d.piece = c.piece;
-	c.piece = Piece(ChessColor::NONE, ChessPiece::NONE);
-}
-
-bool QuatreCoinIsPlayable (Plateau& p, Phase f) {
-	gf::Log::info("apelle Quatre coin jouable\n");
-	if (f != Phase::AVANT_COUP) {
-		return false;
-	}
-
-	int occupied = 0;
-	std::vector<gf::Vector2i> coins = { 	gf::Vector2i(0, 0),
-						gf::Vector2i(0, 7),
-						gf::Vector2i(7, 0),
-						gf::Vector2i(7, 7) };
-	for (auto c : coins) {
-		if (p.state[c.y * 8 + c.x].piece.getType() != ChessPiece::NONE) {
-			occupied++;
-		}
-	}
-
-	if (occupied != 3) {
-		return false;
-	}
-
-	return true;
-}
-
-void Exil(Plateau& p, gf::Vector2i s, gf::Vector2i e){
-	gf::Log::info("apelle Exil execute\n");
-	inBoard(s);
-	inBoard(e);
-	Case &c = p.state[s.y * 8 + s.x];
-	Case &d = p.state[e.y * 8 + e.x];
-	d.piece = c.piece;
-	c.piece = Piece(ChessColor::NONE, ChessPiece::NONE);
-}
-
-
-bool ExilIsPlayable(Plateau& p, Phase f){
-	gf::Log::info("apelle Exil jouable\n");
-	if(f!= Phase::APRES_COUP){
-		return false;
-	}
-
-	gf::Vector2i pos = p.lastCoup[p.lastCoup.size() - 1];
-	Case c = p.state[pos.y * 8 + pos.x]; //get the type of the piece
-	ChessColor clr = c.piece.getColor();
-	switch(c.piece.getType()){
-		case ChessPiece::KING : //If the WHITE king is choose, check if his first emplacement is available else we check for the Black king
-			if(clr == ChessColor::WHITE){
-				if(p.state[0+4].piece.getType()!= ChessPiece::NONE){
-					return false;
-				}else{
-					if(p.state[7*8+4].piece.getType()!= ChessPiece::NONE){
-						return false;
-					}
-				}
-			}
-		break;
-		case ChessPiece::QUEEN :
-			if(clr == ChessColor::WHITE){
-				if(p.state[0+3].piece.getType()!= ChessPiece::NONE){
-					return false;
-				}else{
-					if(p.state[7*8+3].piece.getType()!= ChessPiece::NONE){
-						return false;
-					}
-				}
-			}
-		break;
-		case ChessPiece::BISHOP:
-			//Vérifier si la case est noir ou blanche pour savoir de quel fou il s'agit et savoir si la pièce est blanche ou noir
-		break;
-
-		case ChessPiece::CAMEL:
-		case ChessPiece::KNIGHT:
-			if(clr == ChessColor::WHITE){
-
-				std::vector<gf::Vector2i> knightMovement = { 	gf::Vector2i(0, 1),
-					gf::Vector2i(2, 0),
-					gf::Vector2i(2, 2),
-					gf::Vector2i(0, 6),
-					gf::Vector2i(2, 7),
-					gf::Vector2i(2, 5)};
-
-				for (auto k : knightMovement) {
-					if (p.state[k.y * 8 + k.x].piece.getType() == ChessPiece::NONE) {
-						return true;
-					}
-				}
-			}else{
-				std::vector<gf::Vector2i> knightMovement = { 	gf::Vector2i(7, 1),
-					gf::Vector2i(5, 0),
-					gf::Vector2i(5, 2),
-					gf::Vector2i(7, 6),
-					gf::Vector2i(5, 7),
-					gf::Vector2i(5, 5)};
-
-				for (auto k : knightMovement) {
-					if (p.state[k.y * 8 + k.x].piece.getType() == ChessPiece::NONE) {
-						return true;
-					}
-				}
-
-			}
-		break;
-
-		case ChessPiece::ROOK:
-			if(clr == ChessColor::WHITE){
-				if(p.state[0+0].piece.getType()!= ChessPiece::NONE || p.state[0+7].piece.getType()!= ChessPiece::NONE){
-					return false;
-				}
-			}else{
-				if(p.state[7*8+0].piece.getType()!= ChessPiece::NONE || p.state[7*8+7].piece.getType()!= ChessPiece::NONE){
-					return false;
-				}	
-			}
-		break;
-
-		case ChessPiece::PAWN:
-			if(clr == ChessColor::WHITE){
-				std::vector<gf::Vector2i> pawnMovement;
-				for(auto i = 0; i<7;++i){
-					for(auto j = 1; i<3; ++j){
-						pawnMovement.push_back({i,j});
-					}
-				}
-				for (auto pawn : pawnMovement) {
-					if (p.state[pawn.y * 8 + pawn.x].piece.getType() == ChessPiece::NONE) {
-						return true;
-					}
-				}
-
-			}else{
-				std::vector<gf::Vector2i> pawnMovement;
-				for(auto i = 0; i<7;++i){
-					for(auto j = 6; i>4; --j){
-						pawnMovement.push_back({i,j});
-					}
-				}
-				for (auto pawn : pawnMovement) {
-					if (p.state[pawn.y * 8 + pawn.x].piece.getType() == ChessPiece::NONE) {
-						return true;
-					}
-				}
-			}
-		break;
-	}
-	return true;
-}
-
-
-

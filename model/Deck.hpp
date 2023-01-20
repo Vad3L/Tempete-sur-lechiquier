@@ -5,7 +5,6 @@
 #include <fstream>
 
 #include "Card.hpp"
-#include "CardFunction.hpp"
 
 #define CARDS_DESCRIPTIONDIR "../data/"
 

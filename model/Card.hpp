@@ -6,8 +6,8 @@
 #include <algorithm>
 #include <functional>
 
-#include "Plateau.hpp"
 #include "CardFunction.hpp"
+#include "CardFunctionChooseCases.hpp"
 
 enum class Turn{
 	AVANT_COUP,

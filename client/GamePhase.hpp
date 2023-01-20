@@ -1,8 +1,8 @@
 #ifndef GAMEPHASE_H
 #define GAMEPHASE_H
 
-#include "Card.hpp"
-#include "Chess.hpp"
+#include "../model/Card.hpp"
+#include "../model/Chess.hpp"
 
 class GamePhase{
 	public:

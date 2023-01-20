@@ -153,16 +153,13 @@ void GameScene::doProcessEvent(gf::Event& event) {
 
 			gf::Log::debug("fin appelle function playable\n");	
 			gf::Log::info("carte %i est jouable %i \n", numCarte, playable);
-			if(m_gameData.m_main[numCarte].m_turn == Turn::AVANT_COUP && currentPhase == Phase::AVANT_COUP && playable) {
+
+			if(playable) {
 				//std::swap(m_poseEntity.m_cardPose, m_gameData.m_main[numCarte]);
 				gf::Log::debug("on est dans le 1ere if\n");	
 				m_gameData.m_main[numCarte].m_execute(m_gameData.m_plateau, gf::Vector2i(-1), gf::Vector2i(-1));
 				m_gameData.m_phase.nextPhaseCard(m_gameData.m_main[numCarte]);
-			}else if(m_gameData.m_main[numCarte].m_turn == Turn::APRES_COUP && currentPhase == Phase::APRES_COUP && playable) {
-				//std::swap(m_poseEntity.m_cardPose, m_gameData.m_main[numCarte]);
-				gf::Log::debug("on est dans le 2nd if\n");	
-				m_gameData.m_main[numCarte].m_execute(m_gameData.m_plateau, gf::Vector2i(-1), gf::Vector2i(-1));
-				m_gameData.m_phase.nextPhaseCard(m_gameData.m_main[numCarte]);
+				m_gameData.m_main[numCarte] = Card(); // a enlever une fois que j'aurasi recu les carte du serveur
 			}
 
 			gf::Log::debug("on a passé le if \n");	
