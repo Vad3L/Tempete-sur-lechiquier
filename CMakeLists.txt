@@ -11,7 +11,7 @@ include(GNUInstallDirs)
 find_package(gf REQUIRED COMPONENTS graphics)
 
 if (UNIX)
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address -O3")
 endif ()
 
 # set(GAME_DATADIR "${CMAKE_INSTALL_PREFIX}/share/games/${GAME}" CACHE PATH "Game Data Dir")
@@ -27,11 +27,12 @@ add_executable(client_tsl
 	model/Card.cpp
 	model/Deck.cpp
 	model/CardFunction.cpp
-	model/GamePhase.cpp
+	model/CardFunctionChooseCases.cpp
 
 	client/GameHub.cpp
 	client/GameData.cpp
-
+	client/GamePhase.cpp
+	
 	client/Scene/StartScene.cpp		
 	client/Scene/MenuScene.cpp
 	client/Scene/PlaySelectScene.cpp
@@ -58,7 +59,7 @@ add_executable(server_tsl
 	model/Deck.cpp
 	model/Piece.cpp
 	model/CardFunction.cpp
-	model/GamePhase.cpp
+	model/CardFunctionChooseCases.cpp
 	server/AnnexFctServer.cpp
 )
 

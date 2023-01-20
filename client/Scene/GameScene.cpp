@@ -56,14 +56,21 @@ GameScene::GameScene(GameHub& game, Network &network)
 
 	gf::Coordinates coordsWidget({500,500});
 	auto setupButton = [&] (gf::TextButtonWidget& button, auto callback) {
-		m_endTurn.setDefaultTextColor(gf::Color::Black);
+		m_endTurn.setDefaultTextColor(gf::Color::fromRgba32(212,30,27,255));
 		m_endTurn.setDefaultBackgroundColor(gf::Color::Gray(0.7f));
-		m_endTurn.setSelectedTextColor(gf::Color::Black);
-		m_endTurn.setSelectedBackgroundColor(gf::Color::Green);
+		m_endTurn.setDefaultBackgroundOutlineColor(gf::Color::Gray(0.7f)); 
+
+		m_endTurn.setSelectedTextColor(gf::Color::fromRgba32(212,30,27,255));
+		m_endTurn.setSelectedBackgroundColor(gf::Color::Gray(0.7f));
+		m_endTurn.setSelectedBackgroundOutlineColor(gf::Color::Gray(0.5f));
+		
 		m_endTurn.setDisabledTextColor(gf::Color::Black);
-		m_endTurn.setDisabledBackgroundColor(gf::Color::Green);
-		m_endTurn.setPosition( coordsWidget.getRelativePoint({ 0.6f, 0.25f }));
-		m_endTurn.setAnchor(gf::Anchor::TopLeft);
+		m_endTurn.setDisabledBackgroundColor(gf::Color::Gray(0.7f));
+		m_endTurn.setDisabledBackgroundOutlineColor(gf::Color::Red); 
+
+		m_endTurn.setRadius(5.f);
+		m_endTurn.setBackgroundOutlineThickness(4.f);
+		m_endTurn.setPosition( coordsWidget.getRelativePoint({ 0.755f, 0.25f }));
 		m_endTurn.setAlignment(gf::Alignment::Center);
 		m_endTurn.setCallback(callback);
 		m_widgets.addWidget(m_endTurn);
@@ -140,16 +147,27 @@ void GameScene::doProcessEvent(gf::Event& event) {
 		int numCarte = m_mainEntity.getCardSelected(m_cardsView.getSize(), m_game.getRenderer().mapPixelToCoords(event.mouseButton.coords, m_cardsView));
 
 		if(numCarte!=-1) {
+
+			gf::Log::debug("appelle function playable\n");	
+			bool playable = m_gameData.m_main[numCarte].m_isPlayable(m_gameData.m_plateau, currentPhase);
+
+			gf::Log::debug("fin appelle function playable\n");	
+			gf::Log::info("carte %i est jouable %i \n", numCarte, playable);
+
+			if(playable) {
+				//std::swap(m_poseEntity.m_cardPose, m_gameData.m_main[numCarte]);
+				gf::Log::debug("on est dans le 1ere if\n");	
+				m_gameData.m_main[numCarte].m_execute(m_gameData.m_plateau, gf::Vector2i(-1), gf::Vector2i(-1));
+				m_gameData.m_phase.nextPhaseCard(m_gameData.m_main[numCarte]);
+				m_gameData.m_main[numCarte] = Card(); // a enlever une fois que j'aurasi recu les carte du serveur
+			}
+
+			gf::Log::debug("on a passé le if \n");	
 			
-			//bool playable = m_gameData.m_main[numCarte].m_isPlayable(m_gameData.m_plateau, currentPhase);
-		
-			//gf::Log::info("carte %i i est jouable %i \n", numCarte, playable);
-			if(m_gameData.m_main[numCarte].m_turn == Turn::AVANT_COUP && currentPhase == Phase::AVANT_COUP) {
-				std::swap(m_poseEntity.m_cardPose, m_gameData.m_main[numCarte]);
-				m_gameData.m_phase.nextPhaseCard(m_gameData.m_main[numCarte]);
-			}else if(m_gameData.m_main[numCarte].m_turn == Turn::APRES_COUP && currentPhase == Phase::APRES_COUP) {
-				std::swap(m_poseEntity.m_cardPose, m_gameData.m_main[numCarte]);
-				m_gameData.m_phase.nextPhaseCard(m_gameData.m_main[numCarte]);
+			if(m_gameData.m_phase.getCurrentPhase() == Phase::PAS_MON_TOUR) {
+				CardRep cardRep;
+				cardRep.err = CodeRep::NO_CARD;
+				m_network.send(cardRep);
 			}
 		}
 	}
@@ -237,6 +255,7 @@ void GameScene::doUpdate(gf::Time time) {
 			auto repPartie = m_packet.as<PartieRep>();
 
 			m_gameData.m_myColor = repPartie.colorPion;
+			m_gameData.m_plateau.turnTo = !repPartie.colorPion;
 
 			if (m_gameData.m_myColor == ChessColor::WHITE) {
 				m_gameData.m_phase.setCurrentPhase(Phase::AVANT_COUP);
@@ -253,6 +272,7 @@ void GameScene::doUpdate(gf::Time time) {
 		}else if(repPartie.err == CodeRep::TURN_START) {
 			gf::Log::info("mon tour commence\n");
 			m_gameData.m_phase.setCurrentPhase(Phase::AVANT_COUP);
+			m_gameData.m_plateau.turnTo = !m_gameData.m_plateau.turnTo;
 		}
 	}	 
 
@@ -280,13 +300,19 @@ void GameScene::doUpdate(gf::Time time) {
 			
 			m_gameData.m_plateau.lastCoup.push_back(gf::Vector2i(coupRep.posStart.x,coupRep.posStart.y));
 			m_gameData.m_plateau.lastCoup.push_back(gf::Vector2i(coupRep.posEnd.x,coupRep.posEnd.y));
-			
+			m_gameData.m_plateau.allPositions.push_back(m_gameData.m_plateau.getFen());
+
 			if(pieceStart.getType() == ChessPiece::PAWN &&( coupRep.posEnd.y == 0 || coupRep.posEnd.y == 7)) {
 				m_promotion = true;
 			}else {
 				// a changer surement
-				m_gameData.m_phase.nextPhaseCoupNormal();
-				
+				if(m_gameData.m_phase.getCurrentPhase() != Phase::PAS_MON_TOUR) {
+					m_gameData.m_phase.setCurrentPhase(Phase::APRES_COUP);
+					if(m_gameData.m_phase.getNbCartePlay() !=0) {
+						gf::Log::debug("appelle du callback endturn\n");
+						m_endTurn.triggerCallback();
+					}
+				}
 				m_promotion = false;
 			}
 			
@@ -311,11 +337,17 @@ void GameScene::doUpdate(gf::Time time) {
 			} else {
 				m_gameData.m_plateau.playerInEchec = m_gameData.m_plateau.isInEchec(m_gameData.m_myColor);
 			}
-
-			m_gameData.m_plateau.prettyPrint();
-			// a changer surement
-			m_gameData.m_phase.nextPhaseCoupNormal();
 			
+			m_gameData.m_plateau.allPositions.push_back(m_gameData.m_plateau.getFen());
+			
+			m_gameData.m_plateau.prettyPrint();
+			if(m_gameData.m_phase.getCurrentPhase() != Phase::PAS_MON_TOUR) {
+				m_gameData.m_phase.setCurrentPhase(Phase::APRES_COUP);
+				if(m_gameData.m_phase.getNbCartePlay() !=0) {
+					gf::Log::debug("appelle du callback endturn\n");
+					m_endTurn.triggerCallback();
+				}
+			}
 			m_promotion = false;
 		}else {
 			gf::Log::debug("------PROMOTION INVALIDE------\n");

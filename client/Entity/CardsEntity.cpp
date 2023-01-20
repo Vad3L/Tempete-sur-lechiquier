@@ -68,9 +68,9 @@ void CardsEntity::render(gf::RenderTarget &target, const gf::RenderStates &state
 			rect.setColor(gf::Color::Cyan);
 			break;
 	}
-	if(m_gameData.m_phase.getCurrentPhase()==Phase::COUP) {
+	/*if(m_gameData.m_phase.getCurrentPhase()==Phase::COUP) {
 		rect.setColor(gf::Color::White);
-	}
+	}*/
 	
 	gf::Text cardDescription(c.m_description.substr(0, 60)+"...", m_cardsFont, instructionsCharacterSize);
 	cardDescription.setColor(gf::Color::Black);

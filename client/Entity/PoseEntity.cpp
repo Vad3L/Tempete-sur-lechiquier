@@ -65,7 +65,8 @@ void PoseEntity::render(gf::RenderTarget &target, const gf::RenderStates &states
 
 	// TODO DESSINER LA CARTE si il ya en a une
 	if(m_cardPose.m_num!=-1) {
-		gf::Log::debug("je dessine une carte\n");
+		//gf::Log::debug("je dessine une carte\n");
+		
 	}
 	
 	target.draw(contour, states);

@@ -26,23 +26,23 @@ int MainEntity::getCardSelected(gf::Vector2i sizeWindows, gf::Vector2i mouseCoor
 
 	int cardSelected = -1;
 	
-	if(mouseCoord.y < -60){
+	if(mouseCoord.y < -120){
 		gf::Log::debug("clique en dehors des cartes \n");
 		return -1;
 	}
 	if(mouseCoord.x >= -600 && mouseCoord.x <= -400 ){
 		cardSelected = 0;
 	}
-	if(mouseCoord.x >= -360 && mouseCoord.x <= -160){
+	if(mouseCoord.x >= -350 && mouseCoord.x <= -150){
 		cardSelected = 1;
 	}
-	if(mouseCoord.x >= -120 && mouseCoord.x <= 80){
+	if(mouseCoord.x >= -100 && mouseCoord.x <= 100){
 		cardSelected =  2;
 	}
-	if(mouseCoord.x >= 120 && mouseCoord.x <= 320){
+	if(mouseCoord.x >= 150 && mouseCoord.x <= 350){
 		cardSelected  = 3;
 	}
-	if(mouseCoord.x >= 360 && mouseCoord.x <= 560){
+	if(mouseCoord.x >= 400 && mouseCoord.x <= 600){
 		cardSelected = 4;
 	}
 
