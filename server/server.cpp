@@ -1,5 +1,5 @@
 #include "AnnexFctServer.hpp"
-#include "../model/Deck.hpp"
+#include "../model/Deck.hpp"	
 
 #include <csignal>
 
@@ -9,8 +9,18 @@ int main (int argc, char* argv[]) {
 	signal(SIGPIPE, SIG_IGN);
 	gf::TcpListener listener(std::to_string(port));
 	
+	std::vector<int> numCards;
+
+	if (argc > 2 && std::string(argv[1]) == "--debug") {
+		gf::Log::debug("(SERVEUR) est lancé en mode debug\n");
+		for (int i=2; i<argc; i++) {
+			numCards.push_back(atoi(argv[i]));
+		}
+	}
+
 	gf::TcpSocket client1 = listener.accept();
-	Deck deck;
+	
+	Deck deck(numCards);
 	auto TwoHand = deck.distribute();
 	
 	if (client1) {

@@ -10,7 +10,7 @@
 
 class Deck{
 	public:
-		Deck();
+		Deck(std::vector<int> numCards = {});
 
 		void displayDeck();
 

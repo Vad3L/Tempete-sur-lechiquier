@@ -1,7 +1,7 @@
 #include "Deck.hpp"
 
-Deck::Deck(){
-	// 29 13 47 33
+Deck::Deck(std::vector<int> numCards){
+	
 	m_execsfuncs.insert({ 29, Chameau });	
 	m_isplayfuncs.insert({ 29, ChameauIsPlayable });
 
@@ -23,7 +23,7 @@ Deck::Deck(){
 		
 	//format du fichier
 	//NUM;NAME;DESCRIPTION;TURN;ACTION;EFFECT (3 dernières valeurs sont des entier correspondant à la la valeur dans leur énum)
-	for(int k =0 ;k<5;k++) {
+	for(int k =0 ;k<10;k++) {
 		std::ifstream file(std::string(CARDS_DESCRIPTIONDIR)+"descriptionCards.txt");
 
 		std::string delimiter = ";";
@@ -62,8 +62,14 @@ Deck::Deck(){
 
 				c.m_isPlayable = m_isplayfuncs[num];
 				c.m_execute = m_execsfuncs[num];
-
-				m_deck.push_back(c);
+				
+				if(!numCards.empty()) {
+					if(std::find(numCards.begin(), numCards.end(), num) != numCards.end()) {
+						m_deck.push_back(c);
+					}
+				}else {
+					m_deck.push_back(c);
+				}
 			}
 			file.close();
 		}
