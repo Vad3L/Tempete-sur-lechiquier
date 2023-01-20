@@ -152,7 +152,7 @@ void GameScene::doProcessEvent(gf::Event& event) {
 			bool playable = m_gameData.m_main[numCarte].m_isPlayable(m_gameData.m_plateau, currentPhase);
 
 			gf::Log::debug("fin appelle function playable\n");	
-			//gf::Log::info("carte %i i est jouable %i \n", numCarte, playable);
+			gf::Log::info("carte %i est jouable %i \n", numCarte, playable);
 			if(m_gameData.m_main[numCarte].m_turn == Turn::AVANT_COUP && currentPhase == Phase::AVANT_COUP && playable) {
 				//std::swap(m_poseEntity.m_cardPose, m_gameData.m_main[numCarte]);
 				m_gameData.m_main[numCarte].m_execute(m_gameData.m_plateau, gf::Vector2i(-1), gf::Vector2i(-1));
