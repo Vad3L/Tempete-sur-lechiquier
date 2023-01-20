@@ -28,11 +28,10 @@ add_executable(client_tsl
 	model/Deck.cpp
 	model/CardFunction.cpp
 	model/CardFunctionChooseCases.cpp
-
+	model/GamePhase.cpp
+	
 	client/GameHub.cpp
 	client/GameData.cpp
-	client/GamePhase.cpp
-	
 	client/Scene/StartScene.cpp		
 	client/Scene/MenuScene.cpp
 	client/Scene/PlaySelectScene.cpp
@@ -61,6 +60,8 @@ add_executable(server_tsl
 	model/CardFunction.cpp
 	model/CardFunctionChooseCases.cpp
 	server/AnnexFctServer.cpp
+	model/GamePhase.cpp
+	
 )
 
 target_link_libraries(client_tsl

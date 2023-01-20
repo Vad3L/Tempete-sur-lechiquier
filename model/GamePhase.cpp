@@ -2,7 +2,7 @@
 
 
 GamePhase::GamePhase(){
-	m_currentPhase = Phase::PAS_MON_TOUR;
+	m_currentPhase = Phase::AVANT_COUP;
 	m_nbCartePlay = 0;
 }
 
@@ -13,7 +13,6 @@ Phase GamePhase::getCurrentPhase() {
 int GamePhase::getNbCartePlay() {
 	return m_nbCartePlay;
 }
-
 
 void GamePhase::setCurrentPhase(Phase phase) {
 	if(phase == Phase::PAS_MON_TOUR || phase == Phase::AVANT_COUP) { // tour suivant

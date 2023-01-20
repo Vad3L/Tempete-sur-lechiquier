@@ -7,7 +7,7 @@
 #include <cassert>
 #include "../model/Chess.hpp"
 #include "../model/Plateau.hpp"
-#include "GamePhase.hpp"
+#include "../model/GamePhase.hpp"
 #include "../model/Deck.hpp"
 
 #define GAME_DATADIR "../data/"

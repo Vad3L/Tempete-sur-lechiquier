@@ -4,7 +4,7 @@
 #include "../model/Card.hpp"
 #include "../model/Chess.hpp"
 
-class GamePhase{
+class GamePhase {
 	public:
 		GamePhase();
 

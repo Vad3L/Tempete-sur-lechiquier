@@ -16,8 +16,9 @@
 #include "../model/Chess.hpp"
 #include "../model/Plateau.hpp"
 #include "../protocole/Protocole.hpp"
+#include "../model/GamePhase.hpp"
 
-int performTurn (Plateau& plateau, gf::TcpSocket& player, gf::TcpSocket& other, std::vector<Card>& hand, bool& promotion);
+int performTurn (GamePhase& gp, Plateau& plateau, gf::TcpSocket& player, gf::TcpSocket& other, std::vector<Card>& hand, bool& promotion);
 void performCard (Plateau& plateau, CardRep& c, std::vector<Card>& hand);
 void performPromotion (Plateau& plateau, PromotionRep& p);
 bool performCoup (Plateau& plateau, CoupRep& c);
