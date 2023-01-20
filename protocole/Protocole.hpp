@@ -72,6 +72,7 @@ struct CardRep {
 	static constexpr gf::Id type = "CardRep"_id;
 	CodeRep err;
 	size_t card;
+	int num;
 	Pos a;
 	Pos b;
 };

@@ -88,6 +88,7 @@ void checkCardPacketValidity (Plateau& p, CardRep& r, std::vector<Card>& hand, P
 	assert(r.card <= 4);
 	assert(r.card >= 0);
 
+	r.num = hand[r.card].m_num;
 	bool valide = true;
 	if (!hand[r.card].m_isPlayable(p, f)) {
 		valide = false;
@@ -240,6 +241,13 @@ int performTurn (Plateau& plateau, gf::TcpSocket& player, gf::TcpSocket& other, 
 
 	if (card.err == CodeRep::NONE) {
 		performCard(plateau, card, hand);
+	}
+
+	if (sendingPacket(player, pack2) == -1) {
+		return -1;
+	}
+	if (sendingPacket(player, pack2) == -1) {
+		return -1;
 	}
 	return 0;
 }
