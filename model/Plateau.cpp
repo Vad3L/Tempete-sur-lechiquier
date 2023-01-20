@@ -500,6 +500,10 @@ void Plateau::tmp(std::vector<gf::Vector2i> a) {
 
 std::string Plateau::getFen () {
 	std::string fen = "";
+	// 			Color |White|Black|Neutral|
+	// K k Z: king 	|	Q q E: Queen	|	B b T: Bishop  |
+	// N n Y: Knight|	R r U: Rook		|	P p J: Pawn    |
+	// C c V: Camel |	I i X: Prince	|	D d A: Princess|
 	std::vector<std::string> white = { "K", "Q", "B", "N", "R", "P", "C", "I", "D" };
 	std::vector<std::string> black = { "k", "q", "b", "n", "r", "p", "c", "i", "d" };
 	std::vector<std::string> neutral = { "Z", "E", "T", "Y", "U", "J", "V", "X", "A" };
