@@ -240,6 +240,8 @@ int performTurn (GamePhase& gp, Plateau& p, gf::TcpSocket& player, gf::TcpSocket
 		if (card.err == CodeRep::NONE) {
 			performCard(p, card, hand);
 			gp.nextPhaseCard(hand[card.card]);
+		} else if (card.err == CodeRep::NO_CARD) {
+			gp.setCurrentPhase(Phase::PAS_MON_TOUR);
 		}
 
 		pack.is(card);
