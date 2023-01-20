@@ -92,6 +92,7 @@ void checkCardPacketValidity (Plateau& p, CardRep& r, std::vector<Card>& hand, P
 	r.num = hand[r.card].m_num;
 	bool valide = true;
 	if (!hand[r.card].m_isPlayable(p, f)) {
+		gf::Log::debug("carte non jouable\n");
 		valide = false;
 	}
 	
@@ -149,6 +150,7 @@ bool performCoup (Plateau& plateau, CoupRep& coup) {
 	plateau.prettyPrint();
 	plateau.lastCoup.push_back(gf::Vector2i(coup.posStart.x,coup.posStart.y));
 	plateau.lastCoup.push_back(gf::Vector2i(coup.posEnd.x,coup.posEnd.y));   
+	gf::Log::debug("------COUP -----------------------------------------VALIDE------ %li\n", plateau.allPositions.size());
 	plateau.allPositions.push_back(plateau.getFen());
 	
 	if (p.getType() == ChessPiece::PAWN && (coup.posEnd.y == 0 || coup.posEnd.y == 7)) {
@@ -160,6 +162,7 @@ bool performCoup (Plateau& plateau, CoupRep& coup) {
 void performPromotion (Plateau& plateau, PromotionRep& promo) {
 	gf::Log::debug("------PROMO VALIDE------\n");
 	plateau.promotionPiece(gf::Vector2i(promo.pos.x, promo.pos.y), promo.choice);
+	gf::Log::debug("------PROMO -----------------------------------------VALIDE------%li\n", plateau.allPositions.size());
 	plateau.allPositions.push_back(plateau.getFen());
 	plateau.prettyPrint();
 }
@@ -202,9 +205,6 @@ int performTurn (Plateau& plateau, gf::TcpSocket& player, gf::TcpSocket& other, 
 			return 2;
 		}
 		promotion = performCoup(plateau, coup);
-		if (!promotion) {
-			plateau.allPositions.push_back(plateau.getFen());
-		}
 		pack.is(coup);
 		// send to both
 		if (sendingPacket(player, pack) == -1) { return -1; }

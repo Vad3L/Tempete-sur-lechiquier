@@ -182,7 +182,7 @@ void GameScene::doProcessEvent(gf::Event& event) {
 
 			gf::Log::info("carte %i est jouable %i \n", numCarte, playable);
 
-			if(true && m_poseEntity.m_cardPose.m_num == -1) {
+			if(playable && m_poseEntity.m_cardPose.m_num == -1) {
 				m_poseEntity.m_cardPose = m_gameData.m_main[numCarte];
 				m_gameData.m_main[numCarte] = Card(); 
 			}
@@ -272,7 +272,6 @@ void GameScene::doUpdate(gf::Time time) {
 			auto repPartie = m_packet.as<PartieRep>();
 
 			m_gameData.m_myColor = repPartie.colorPion;
-			m_gameData.m_plateau.turnTo = !repPartie.colorPion;
 
 			if (m_gameData.m_myColor == ChessColor::WHITE) {
 				m_gameData.m_phase.setCurrentPhase(Phase::AVANT_COUP);
@@ -288,8 +287,12 @@ void GameScene::doUpdate(gf::Time time) {
 			}
 		}else if(repPartie.err == CodeRep::TURN_START) {
 			gf::Log::info("mon tour commence\n");
+			assert(m_gameData.m_phase.getCurrentPhase()==Phase::PAS_MON_TOUR);
 			m_gameData.m_phase.setCurrentPhase(Phase::AVANT_COUP);
-			m_gameData.m_plateau.turnTo = !m_gameData.m_plateau.turnTo;
+			m_gameData.m_plateau.turnTo = m_gameData.m_myColor;
+		} else if(repPartie.err ==CodeRep::TURN_END) {
+			assert(m_gameData.m_phase.getCurrentPhase()==Phase::PAS_MON_TOUR);
+			m_gameData.m_plateau.turnTo = !m_gameData.m_myColor;;
 		}
 	}	 
 
@@ -391,9 +394,8 @@ void GameScene::doUpdate(gf::Time time) {
 		if(carteRep.err == CodeRep::NONE) {
 			gf::Log::debug("------CARTE VALIDE------ %i\n", carteRep.num);
 
-			m_gameData.m_plateau.allPositions.push_back(m_gameData.m_plateau.getFen());
 			m_gameData.m_cards[carteRep.num].m_execute(m_gameData.m_plateau, carteRep.a, carteRep.b);
-
+			
 			if(m_gameData.m_phase.getCurrentPhase() != Phase::PAS_MON_TOUR) {
 				m_gameData.m_phase.nextPhaseCard(m_gameData.m_cards[carteRep.num]);
 				m_poseEntity.m_cardPose = Card();

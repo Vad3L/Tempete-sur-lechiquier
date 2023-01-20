@@ -1,4 +1,5 @@
 #include "CardFunction.hpp"
+#include "cassert"
 
 //tools
 
@@ -103,6 +104,8 @@ bool BombeAtomiqueIsPlayable (Plateau& p, Phase f){
 
 void Vampirisme (Plateau& p, gf::Vector2i s, gf::Vector2i e){
 	gf::Log::info("Appelle Vampirisme execute\n");
+	gf::Log::debug("turn to : %i\n", p.turnTo);
+
 	gf::Vector2i pos = p.lastCoup.back();
 	p.state[pos.y * 8 + pos.x].piece = Piece(p.turnTo, p.bin.back().getType());
 }
@@ -114,8 +117,7 @@ bool VampirismeIsPlayable (Plateau& p, Phase f){
 	}
 
 	gf::Vector2i pos = p.lastCoup.back();
-	if (p.state[pos.y * 8 + pos.x].piece.getType() == ChessPiece::KING){
-		return false;
-	}
-	return true;
+	
+	return p.state[pos.y * 8 + pos.x].piece.getType() != ChessPiece::KING;
+	
 }

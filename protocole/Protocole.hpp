@@ -17,7 +17,8 @@ typedef enum {
 	CARD_NO_VALIDE,	  
 	GAME_START,
 	GAME_END,
-	TURN_START, 
+	TURN_START,
+	TURN_END, 
 	NO_CARD,
 	CARD
 } CodeRep;
@@ -71,8 +72,8 @@ Archive operator|(Archive& ar, PromotionRep& data) {
 struct CardRep {
 	static constexpr gf::Id type = "CardRep"_id;
 	CodeRep err;
-	size_t card;
-	int num;
+	size_t card; //num car dans mai
+	int num; // num carte jouée
 	Pos a;
 	Pos b;
 };

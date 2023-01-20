@@ -50,7 +50,7 @@ int main (int argc, char* argv[]) {
 						break;
 					}
 
-			int ret = performTurn(plateau, client1, client2, TwoHand.first, promotion);
+					int ret = performTurn(plateau, client1, client2, TwoHand.first, promotion);
 					if(ret == -1) {
 						break;
 					} else if (!promotion && ret==0) { player = false; }
