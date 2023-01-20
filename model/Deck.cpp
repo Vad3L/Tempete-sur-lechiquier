@@ -19,6 +19,9 @@ Deck::Deck(std::vector<int> numCards){
 	
 	m_execsfuncs.insert({ 110, QuatreCoin });
 	m_isplayfuncs.insert({ 110, QuatreCoinIsPlayable });
+	
+	m_execsfuncs.insert({ 132, Vampirisme });
+	m_isplayfuncs.insert({ 132, VampirismeIsPlayable });
 
 		
 	//format du fichier
