@@ -174,6 +174,86 @@ void performCard (Plateau& plateau, CardRep& c, std::vector<Card>& hand) {
 	plateau.prettyPrint();
 }
 
+int performTurn (GamePhase& gp, Plateau& p, gf::TcpSocket& player, gf::TcpSocket& other, std::vector<Card>& hand, bool& promotion) {
+	gf::Log::debug("début phase %i\n", gp.getCurrentPhase());
+	gf::Packet pack;
+	if (receivingPacket(player, pack) == -1) {
+		gf::Log::error("Erreur lors du reçu de la carte avant le coup\n");
+		return -1;
+	}
+
+	if (gp.getCurrentPhase() == Phase::AVANT_COUP && pack.getType() == CoupRep::type) {
+		gp.setCurrentPhase(Phase::COUP);
+	}
+
+	if (gp.getCurrentPhase() == Phase::AVANT_COUP) {
+		gf::Log::debug("Phase avant coup\n");
+		assert(pack.getType() == CardRep::type);
+		CardRep card = pack.as<CardRep>();
+		checkCardPacketValidity(p, card, hand, gp.getCurrentPhase());
+		if (card.err == CodeRep::NONE) {
+			performCard(p, card, hand);
+			gp.nextPhaseCard(hand[card.card]);
+		} else {
+			return 2;
+		}
+		pack.is(card);
+		if (sendingPacket(player, pack)) { return -1; }
+		if (sendingPacket(other, pack)) { return -1; }
+	} else if (gp.getCurrentPhase() == Phase::COUP) {
+		if (promotion) {
+			gf::Log::debug("Promotion\n");
+			assert(pack.getType() == PromotionRep::type);
+			PromotionRep promo = pack.as<PromotionRep>();
+			checkPromotionValidity(p, promo);
+			if (promo.err != CodeRep::NONE) {
+				return 2;
+			}
+			performPromotion(p, promo);
+			gp.setCurrentPhase(Phase::APRES_COUP);
+			promotion = false;
+			pack.is(promo);
+			if (sendingPacket(player, pack)) { return -1; }
+			if (sendingPacket(other, pack)) { return -1; }
+		} else {
+			assert(pack.getType() == CoupRep::type);
+			gf::Log::debug("Coup\n");
+			CoupRep coup = pack.as<CoupRep>();
+			checkCoupPacketValidity(p, coup);
+			if (coup.err != CodeRep::NONE) {
+				return 2;
+			}
+
+			promotion = performCoup(p, coup);
+			if (!promotion) {
+				gp.setCurrentPhase(Phase::APRES_COUP);
+			}
+			pack.is(coup);
+			if (sendingPacket(player, pack)) { return -1; }
+			if (sendingPacket(other, pack)) { return -1; }
+		}
+	} else if (gp.getCurrentPhase() == Phase::APRES_COUP) {
+		assert(pack.getType() == CardRep::type);
+		gf::Log::debug("Apres coup!\n");
+		CardRep card = pack.as<CardRep>();
+		checkCardPacketValidity(p, card, hand, gp.getCurrentPhase());
+		if (card.err == CodeRep::NONE) {
+			performCard(p, card, hand);
+			gp.nextPhaseCard(hand[card.card]);
+		}
+
+		pack.is(card);
+		if (sendingPacket(player, pack)) { return -1; }
+		if (sendingPacket(other, pack)) { return -1; }
+	}
+
+	if (gp.getCurrentPhase() == Phase::PAS_MON_TOUR) {
+		gf::Log::debug("tour finito\n");
+		return 0;
+	}
+	return 2;
+}
+/*
 int performTurn (Plateau& plateau, gf::TcpSocket& player, gf::TcpSocket& other, std::vector<Card>& hand,  bool& promotion) {
 	gf::Packet pack;
 	if (receivingPacket(player, pack) == -1) {
@@ -250,7 +330,7 @@ int performTurn (Plateau& plateau, gf::TcpSocket& player, gf::TcpSocket& other, 
 	}
 	return 0;
 }
-
+*/
 int sendStartOrEnd (gf::TcpSocket& a, gf::TcpSocket& b, CodeRep code, ChessStatus s, ChessColor c) {
 	int ret = 0;
 	gf::Packet packet;

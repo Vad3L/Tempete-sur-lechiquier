@@ -39,6 +39,7 @@ int main (int argc, char* argv[]) {
 		ChessStatus gameStatus = ChessStatus::ON_GOING;
 		bool player = true;
 		bool promotion = false;
+		GamePhase phase;
 		while (true) {
 				plateau.moveAvailable.clear();
 				if (player) {
@@ -50,10 +51,14 @@ int main (int argc, char* argv[]) {
 						break;
 					}
 
-					int ret = performTurn(plateau, client1, client2, TwoHand.first, promotion);
+					int ret = performTurn(phase, plateau, client1, client2, TwoHand.first, promotion);
+
 					if(ret == -1) {
 						break;
-					} else if (!promotion && ret==0) { player = false; }
+					} else if (ret==0) {
+						player = false;
+						phase.setCurrentPhase(Phase::AVANT_COUP);
+					}
 				} else {
 					gf::Log::debug("------TOUR J2------\n");
 					if ((gameStatus = plateau.isGameOver(ChessColor::BLACK)) != ChessStatus::ON_GOING) {
@@ -63,10 +68,13 @@ int main (int argc, char* argv[]) {
 						break;
 					}
 
-			int ret = performTurn(plateau, client2, client1, TwoHand.second, promotion);
+					int ret = performTurn(phase, plateau, client2, client1, TwoHand.second, promotion);
 					if(ret == -1) {
 						break;
-					} else if (!promotion && ret == 0) { player = true; }
+					} else if (ret == 0) {
+						player = true;
+						phase.setCurrentPhase(Phase::AVANT_COUP);
+					}
 				}
 			}
 
