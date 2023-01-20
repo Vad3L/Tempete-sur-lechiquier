@@ -303,7 +303,8 @@ void GameScene::doUpdate(gf::Time time) {
 			
 			m_gameData.m_plateau.lastCoup.push_back(gf::Vector2i(coupRep.posStart.x,coupRep.posStart.y));
 			m_gameData.m_plateau.lastCoup.push_back(gf::Vector2i(coupRep.posEnd.x,coupRep.posEnd.y));
-			
+			m_gameData.m_plateau.allPositions.push_back(m_gameData.m_plateau.getFen());
+
 			if(pieceStart.getType() == ChessPiece::PAWN &&( coupRep.posEnd.y == 0 || coupRep.posEnd.y == 7)) {
 				m_promotion = true;
 			}else {
@@ -339,7 +340,9 @@ void GameScene::doUpdate(gf::Time time) {
 			} else {
 				m_gameData.m_plateau.playerInEchec = m_gameData.m_plateau.isInEchec(m_gameData.m_myColor);
 			}
-
+			
+			m_gameData.m_plateau.allPositions.push_back(m_gameData.m_plateau.getFen());
+			
 			m_gameData.m_plateau.prettyPrint();
 			if(m_gameData.m_phase.getCurrentPhase() != Phase::PAS_MON_TOUR) {
 				m_gameData.m_phase.setCurrentPhase(Phase::APRES_COUP);

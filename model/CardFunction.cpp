@@ -4,14 +4,14 @@ void NoCard (Plateau& p, gf::Vector2i s, gf::Vector2i e) {}
 bool NoCardPlayable (Plateau& p, Phase f) { return false; }
 
 void Princess (Plateau& p, gf::Vector2i s, gf::Vector2i e) {
-	gf::Log::info("Princesse execute\n");
+	gf::Log::info("apelle Princesse execute\n");
 	gf::Vector2i pos = (p.turnTo  == ChessColor::WHITE ? gf::Vector2i(3,7): gf::Vector2i(3,0)); 
 	Case &c = p.state[pos.y * 8 + pos.x];
 	c.piece = Piece(p.turnTo, ChessPiece::PRINCESS);
 }
 
 bool PrincessIsPlayable (Plateau& p, Phase f) {
-	gf::Log::info("Princesse est jouable\n");
+	gf::Log::info("apellle Princesse jouable\n");
 	if (f != Phase::APRES_COUP) {
 		return false;
 	}
@@ -31,7 +31,7 @@ bool PrincessIsPlayable (Plateau& p, Phase f) {
 }
 
 void ChevalFou (Plateau& p, gf::Vector2i s, gf::Vector2i e) {
-	gf::Log::info("ChevalFou execute\n");
+	gf::Log::info("apelle ChevalFou execute\n");
 	inBoard(s);
 	inBoard(e);
 
@@ -41,7 +41,7 @@ void ChevalFou (Plateau& p, gf::Vector2i s, gf::Vector2i e) {
 }
 
 bool ChevalFouIsPlayable (Plateau& p, Phase f) {
-	gf::Log::info("ChevalFou est jouable\n");
+	gf::Log::info("apelle ChevalFou jouable\n");
 	if (f != Phase::APRES_COUP) {
 		return false;
 	}
@@ -49,35 +49,34 @@ bool ChevalFouIsPlayable (Plateau& p, Phase f) {
 }
 
 void Chameau (Plateau& p, gf::Vector2i s, gf::Vector2i e) {
+	gf::Log::info("apelle Chameau execute\n");
 	inBoard(s);
-	gf::Vector2i pos = p.lastCoup[p.lastCoup.size() - 1];
-
-	Case &c = p.state[pos.y * 8 + pos.x];
-	ChessColor clr = c.piece.getColor();
-	c.piece = Piece(clr, ChessPiece::CAMEL);
+	
 }
 
 bool ChameauIsPlayable (Plateau& p, Phase f) {
+	gf::Log::info("apelle chameau jouable\n");
 	if (f != Phase::APRES_COUP) {
 		return false;
 	}
 	
-	gf::Vector2i pos = p.lastCoup[p.lastCoup.size() - 1];
-	Case c = p.state[pos.y * 8 + pos.x];
-	if (c.piece.getType() == ChessPiece::KNIGHT) {
-		return true;
-	}
+	
 	return false;
 }
 
 void BombeAtomique (Plateau& p, gf::Vector2i s, gf::Vector2i e) {
-	inBoard(s);
+	gf::Log::info("appelle Bombe atomique execute\n");
+
 	std::vector<gf::Vector2i> targets;
+
+	assert(p.lastCoup.size()>1);
+	gf::Vector2i pos = p.lastCoup[p.lastCoup.size()-1];
 
 	for (int i = -1; i <= 1; i++) {
 		for (int j = -1; j <= 1; j++) {
-			if (i >= 0 && i < 8 && j >= 0 && j < 8) {
-				targets.push_back(gf::Vector2i(i, j));
+			if (inBoard({pos.x+i, pos.y+j})) {
+				gf::Log::info("la : i = %i et j = %i\n", i, j);
+				targets.push_back(gf::Vector2i(pos.x+i, pos.y+j));
 			}
 		}
 	}
@@ -88,14 +87,17 @@ void BombeAtomique (Plateau& p, gf::Vector2i s, gf::Vector2i e) {
 }
 
 bool BombeAtomiqueIsPlayable (Plateau& p, Phase f) {
+	gf::Log::info("appelle Bombe atomique jouable\n");
 	if (f != Phase::APRES_COUP) {
 		return false;
 	}
+	
 	int len = p.allPositions.size();
+	
 	if (len - 2 < 0) {
 		return false;
 	}
-
+	
 	std::string before = p.allPositions[len - 2];
 	std::string now = p.getFen();
 	std::string not_piece = "1234567890/";
@@ -123,6 +125,7 @@ bool BombeAtomiqueIsPlayable (Plateau& p, Phase f) {
 }
 
 void QuatreCoin (Plateau& p, gf::Vector2i s, gf::Vector2i e) {
+	gf::Log::info("apelle Quatre coin execute\n");
 	inBoard(s);
 	inBoard(e);
 	Case &c = p.state[s.y * 8 + s.x];
@@ -132,6 +135,7 @@ void QuatreCoin (Plateau& p, gf::Vector2i s, gf::Vector2i e) {
 }
 
 bool QuatreCoinIsPlayable (Plateau& p, Phase f) {
+	gf::Log::info("apelle Quatre coin jouable\n");
 	if (f != Phase::AVANT_COUP) {
 		return false;
 	}
@@ -155,6 +159,7 @@ bool QuatreCoinIsPlayable (Plateau& p, Phase f) {
 }
 
 void Exil(Plateau& p, gf::Vector2i s, gf::Vector2i e){
+	gf::Log::info("apelle Exil execute\n");
 	inBoard(s);
 	inBoard(e);
 	Case &c = p.state[s.y * 8 + s.x];
@@ -165,6 +170,7 @@ void Exil(Plateau& p, gf::Vector2i s, gf::Vector2i e){
 
 
 bool ExilIsPlayable(Plateau& p, Phase f){
+	gf::Log::info("apelle Exil jouable\n");
 	if(f!= Phase::APRES_COUP){
 		return false;
 	}
