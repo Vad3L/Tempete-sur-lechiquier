@@ -23,6 +23,9 @@ Deck::Deck(std::vector<int> numCards){
 	m_execsfuncs.insert({ 132, Vampirisme });
 	m_isplayfuncs.insert({ 132, VampirismeIsPlayable });
 
+	m_execsfuncs.insert({ 135, VisitesOfficielles });
+	m_isplayfuncs.insert({ 135, VisitesOfficiellesIsPlayable });
+
 		
 	//format du fichier
 	//NUM;NAME;DESCRIPTION;TURN;ACTION;EFFECT (3 dernières valeurs sont des entier correspondant à la la valeur dans leur énum)
