@@ -1,26 +1,40 @@
 #include "CardFunctionChooseCases.hpp"
 
-//TO DO inclure vérification echec de Léo
-bool isPossibleSwapPieces(Plateau &p,ChessPiece a, ChessColor x, ChessPiece b, ChessColor y){
+//Ne fonctionne que pour des pièces de même couleurs
+bool isPossibleSwapPieces(Plateau &p,ChessPiece a, ChessPiece b, ChessColor color){
 	for(auto caseEchiquier: p.state){
 		for(auto caseEchiquierbis: p.state){
-			if(caseEchiquier.piece.getType()==a && caseEchiquier.piece.getColor()== x){
-				if(caseEchiquierbis.piece.getType()==b && caseEchiquier.piece.getColor()== y){
-					return true;
-				}
+			if(checkGoodChoose(p,a,caseEchiquier.piece,b,caseEchiquierbis.piece,color)){
+				return true;
 			}
 		}
 	}
 	return false;
 }
-bool checkGoodChoose(ChessPiece typeOne,ChessPiece pieceChooseOne, ChessPiece typeTwo,ChessPiece pieceChooseTwo){
-	if(pieceChooseOne!= typeOne || pieceChooseOne!=typeTwo){
-		return false;
+bool checkGoodChoose(Plateau &p,ChessPiece typeOne,Piece pieceChooseOne, ChessPiece typeTwo,Piece pieceChooseTwo,ChessColor color){
+	bool res=true;
+	if(!(pieceChooseOne.getType()== typeOne && pieceChooseTwo.getType()==typeTwo) && pieceChooseOne.getColor()==color){
+		gf::Log::info("false 1, color %i\n",(int)(color));
+		res=false;
 	}
-	if(pieceChooseTwo!= typeOne ||pieceChooseTwo!= typeTwo){
-		return false;
+	if(!(pieceChooseOne.getType()== typeTwo && pieceChooseTwo.getType()== typeOne) && pieceChooseTwo.getColor()==color){
+		gf::Log::info("False 2, color %i\n",(int)(color));
+		res=false;
+	}else{
+		gf::Log::info("true 1\n");
+		res=true;
 	}
-	return true;
+	if(!res){
+		return res;
+	}
+	std::swap(pieceChooseOne,pieceChooseTwo);
+	if(p.isInEchec(ChessColor::WHITE) || p.isInEchec(ChessColor::BLACK)){
+			gf::Log::info("false 3, color %i\n",(int)(color));
+		res=false;
+	}
+
+	std::swap(pieceChooseTwo,pieceChooseOne);
+	return res;
 
 }
 
@@ -44,7 +58,7 @@ bool ChevalFouIsPlayable (Plateau& p, Phase f) {
 	return true;
 }
 
-void Chameau (Plateau& p, gf::Vector2i s) {
+void Chameau (Plateau& p, gf::Vector2i s,gf::Vector2i e) {
 	gf::Log::info("apelle Chameau execute\n");
 	inBoard(s);
 	Piece &piece=p.state[s.y*8+s.x].piece;
@@ -52,12 +66,13 @@ void Chameau (Plateau& p, gf::Vector2i s) {
 	
 }
 
-bool ChameauIsPlayable (Plateau& p, Phase f,gf::Vector2i c) {
+bool ChameauIsPlayable (Plateau& p, Phase f) {
 	gf::Log::info("apelle chameau jouable\n");
 	if (f != Phase::APRES_COUP) {
 		return false;
 	}
-	return p.state[c.y*8+c.x].piece.getType()==ChessPiece::KNIGHT;
+
+	return true;
 
 }
 void QuatreCoin (Plateau& p, gf::Vector2i s, gf::Vector2i e) {
@@ -96,14 +111,18 @@ bool QuatreCoinIsPlayable (Plateau& p, Phase f) {
 
 void Asile(Plateau& p, gf::Vector2i s, gf::Vector2i e){
 	gf::Log::info("apelle Asile execute\n");
+	/*s.x=0;
+	s.y=7;
+	e.x=5;
+	e.y=7;*/
 	inBoard(s);
 	inBoard(e);
 	Piece &c = p.state[s.y * 8 + s.x].piece;
 	Piece &d = p.state[e.y * 8 + e.x].piece;
-
-	if(checkGoodChoose(ChessPiece::ROOK,d.getType(),ChessPiece::BISHOP,c.getType())){
-		
+	if(checkGoodChoose(p,ChessPiece::ROOK,d,ChessPiece::BISHOP,c,p.turnTo)){
+		gf::Log::info("Check true\n");
 		std::swap(c,d);
+
 	}
 	
 
@@ -116,7 +135,7 @@ bool AsileIsPlayable(Plateau& p, Phase f){
 		return false;
 	}
 
-	return isPossibleSwapPieces(p,ChessPiece::ROOK,ChessPiece::BISHOP,p.turnTo,p.turnTo);
+	return isPossibleSwapPieces(p,ChessPiece::ROOK,ChessPiece::BISHOP,p.turnTo);
 
 	return true;
 }
