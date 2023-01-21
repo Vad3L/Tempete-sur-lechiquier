@@ -101,4 +101,18 @@ Archive operator|(Archive& ar, DistribRep& data) {
 	return ar | data.err | data.hand;
 }
 
+/***********************
+*****DEBUG PLATEAU******
+***********************/
+struct Debug {
+	static constexpr gf::Id type = "Debug"_id;
+	std::string plateau;
+};
+
+template<typename Archive>
+Archive operator|(Archive& ar, Debug& data) {
+	return ar | data.plateau;
+}
+
+
 #endif // PROTOCOLE_H

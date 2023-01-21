@@ -13,7 +13,6 @@
 #include <gf/VectorOps.h>
 #include <gf/Log.h>
 
-#include "../model/Chess.hpp"
 #include "../model/Plateau.hpp"
 #include "../protocole/Protocole.hpp"
 #include "../model/GamePhase.hpp"
@@ -22,12 +21,11 @@ int performTurn (GamePhase& gp, Plateau& plateau, gf::TcpSocket& player, gf::Tcp
 void performCard (Plateau& plateau, CardRep& c, std::vector<Card>& hand);
 void performPromotion (Plateau& plateau, PromotionRep& p);
 bool performCoup (Plateau& plateau, CoupRep& c);
-int performAction (Plateau& plateau, gf::TcpSocket& client1, gf::TcpSocket& client2, bool &promotion);
 
-int recvPacket (gf::TcpSocket& client, gf::Packet &p);
-int sendPacket (gf::TcpSocket& client);
+int receivingPacket (gf::TcpSocket& client, gf::Packet &p);
+int sendingPacket (gf::TcpSocket& client, gf::Packet &p);
 
-void checkCardValidity (Plateau& p, CardRep& r, std::vector<Card>& hand, Phase f);
+void checkCardPacketValidity (Plateau& p, CardRep& r, std::vector<Card>& hand, Phase f);
 void checkPromotionValidity (Plateau& plateau, PromotionRep& r);
 void checkCoupPacketValidity (Plateau& plateau, CoupRep& c);
 bool checkCoupValide(Plateau& plateau, gf::Vector2i coordStart, gf::Vector2i coordEnd);

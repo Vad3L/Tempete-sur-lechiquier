@@ -87,6 +87,7 @@ GameScene::GameScene(GameHub& game, Network &network)
 			CardRep cardRep;
 			cardRep.err = CodeRep::NO_CARD;
 			m_network.send(cardRep);
+			m_gameData.m_plateau.turnTo = !m_gameData.m_plateau.turnTo;
 		}
 	});
 
@@ -326,8 +327,9 @@ void GameScene::doUpdate(gf::Time time) {
 				if(m_gameData.m_phase.getCurrentPhase() != Phase::PAS_MON_TOUR) {
 					m_gameData.m_phase.setCurrentPhase(Phase::APRES_COUP);
 					if(m_gameData.m_phase.getNbCartePlay() !=0) {
-						gf::Log::debug("appelle du callback endturn\n");
-						m_endTurn.triggerCallback();
+						//gf::Log::debug("appelle du callback endturn\n");
+						//m_endTurn.triggerCallback();
+						m_gameData.m_phase.setCurrentPhase(Phase::PAS_MON_TOUR);
 					}
 				}
 				m_promotion = false;
@@ -361,8 +363,9 @@ void GameScene::doUpdate(gf::Time time) {
 			if(m_gameData.m_phase.getCurrentPhase() != Phase::PAS_MON_TOUR) {
 				m_gameData.m_phase.setCurrentPhase(Phase::APRES_COUP);
 				if(m_gameData.m_phase.getNbCartePlay() !=0) {
-					gf::Log::debug("appelle du callback endturn\n");
-					m_endTurn.triggerCallback();
+					//gf::Log::debug("appelle du callback endturn\n");
+					//m_endTurn.triggerCallback();
+					m_gameData.m_phase.setCurrentPhase(Phase::PAS_MON_TOUR);
 				}
 			}
 			m_promotion = false;
@@ -396,10 +399,21 @@ void GameScene::doUpdate(gf::Time time) {
 			if(m_gameData.m_phase.getCurrentPhase() != Phase::PAS_MON_TOUR) {
 				m_gameData.m_phase.nextPhaseCard(m_gameData.m_cards[carteRep.num]);
 				m_poseEntity.m_cardPose = Card();
+				if(m_gameData.m_phase.getCurrentPhase() == Phase::PAS_MON_TOUR) { //carte mais fin a mon tour
+					m_gameData.m_plateau.turnTo = !m_gameData.m_plateau.turnTo;	
+				}
 			}
 		}else {
 			gf::Log::debug("------CARTE INVALIDE------\n");
 		}	
+	}
+
+	//mode debug
+	if(m_packet.getType() == Debug::type) {
+		gf::Log::info("\n\nrecu plateau serveur mode debug \n\n");
+		auto p = m_packet.as<Debug>();
+		gf::Log::info("\n\nplateau moi: %s \n\nplateau serveur: %s \n\n",m_gameData.m_plateau.getFen().c_str(), p.plateau.c_str());
+		assert(p.plateau==m_gameData.m_plateau.getFen());
 	}
 }
 
