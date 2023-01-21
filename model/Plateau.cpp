@@ -489,6 +489,12 @@ bool Plateau::isInEchec(ChessColor color, gf::Vector2i coord) {
 	return false;
 }
 
+
+bool Plateau::isInEchecAfterCard(std::function<void(Plateau&, gf::Vector2i s, gf::Vector2i e)> execute){
+	execute(*this,gf::Vector2i(-1),gf::Vector2i(-1));
+	return isInEchec(ChessColor::WHITE) || isInEchec(ChessColor::BLACK);
+}
+
 void Plateau::tmp(std::vector<gf::Vector2i> a) {
 	for(const auto &it : a) {
 		assert(it.x >=0);

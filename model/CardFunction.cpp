@@ -2,7 +2,6 @@
 #include "cassert"
 
 //tools
-
 bool binNotChange(Plateau& p){
 
 	int len = p.allPositions.size();
@@ -52,6 +51,11 @@ bool PrincessIsPlayable (Plateau& p, Phase f){
 	if (f != Phase::APRES_COUP || p.playerInEchec) {
 		return false;
 	}
+	Plateau pp = p;
+	if (pp.isInEchecAfterCard(Princess)){
+		gf::Log::info("Cette carte met en Echec l'un des deux rois - donc invalide\n");
+		return false;
+	}
 
 	char to_find = (p.turnTo  == ChessColor::WHITE ? 'Q' : 'q');
 	gf::Vector2i pos = (p.turnTo  == ChessColor::WHITE ? gf::Vector2i(3,7): gf::Vector2i(3,0)); 
@@ -98,13 +102,18 @@ bool BombeAtomiqueIsPlayable (Plateau& p, Phase f){
 	if (f != Phase::APRES_COUP || p.playerInEchec) {
 		return false;
 	}
+
+	Plateau pp = p;
+	if (pp.isInEchecAfterCard(BombeAtomique)){
+		gf::Log::info("Cette carte met en Echec l'un des deux rois - donc invalide\n");
+		return false;
+	}
 	
 	return binNotChange(p);
 }
 
 void Vampirisme (Plateau& p, gf::Vector2i s, gf::Vector2i e){
 	gf::Log::info("Appelle Vampirisme execute\n");
-	gf::Log::debug("turn to : %i\n", p.turnTo);
 
 	gf::Vector2i pos = p.lastCoup.back();
 	p.state[pos.y * 8 + pos.x].piece = Piece(p.turnTo, p.bin.back().getType());
@@ -112,7 +121,13 @@ void Vampirisme (Plateau& p, gf::Vector2i s, gf::Vector2i e){
 
 bool VampirismeIsPlayable (Plateau& p, Phase f){
 	gf::Log::info("Appelle Vampirisme jouable\n");
-	if (f != Phase::APRES_COUP || binNotChange(p) || p.playerInEchec) {
+
+	if (f != Phase::APRES_COUP || binNotChange(p)) {
+		return false;
+	}
+	Plateau pp = p;
+	if (pp.isInEchecAfterCard(Vampirisme)){
+		gf::Log::info("Cette carte met en Echec l'un des deux rois - donc invalide\n");
 		return false;
 	}
 

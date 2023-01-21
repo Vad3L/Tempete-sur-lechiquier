@@ -13,6 +13,7 @@
 #include <vector>
 #include <cassert>
 #include <string>
+#include <functional>
 
 
 class Plateau {
@@ -33,7 +34,9 @@ class Plateau {
 		void movePieces(gf::Vector2i coord1, gf::Vector2i coord2);
 		void deMovePieces(gf::Vector2i coord1, gf::Vector2i coord2, bool inBin);
 		void promotionPiece(gf::Vector2i coordStart, ChessPiece p);
+
 		bool isInEchec(ChessColor color, gf::Vector2i coord = gf::Vector2i(-1));
+		bool isInEchecAfterCard(std::function<void(Plateau&, gf::Vector2i s , gf::Vector2i e )> execute);
 		ChessStatus isGameOver (ChessColor c);
 		void tmp(std::vector<gf::Vector2i> t);
 
