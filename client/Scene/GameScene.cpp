@@ -405,6 +405,7 @@ void GameScene::doUpdate(gf::Time time) {
 					m_gameData.m_plateau.turnTo = !m_gameData.m_plateau.turnTo;	
 				}
 			}
+			m_gameData.m_plateau.playerInEchec = m_gameData.m_plateau.isInEchec(m_gameData.m_plateau.turnTo);
 		}else {
 			gf::Log::debug("------CARTE INVALIDE------\n");
 		}	

@@ -36,7 +36,7 @@ class Plateau {
 		void promotionPiece(gf::Vector2i coordStart, ChessPiece p);
 
 		bool isInEchec(ChessColor color, gf::Vector2i coord = gf::Vector2i(-1));
-		bool isInEchecAfterCard(std::function<void(Plateau&, gf::Vector2i s , gf::Vector2i e )> execute);
+		
 		ChessStatus isGameOver (ChessColor c);
 		void tmp(std::vector<gf::Vector2i> t);
 
