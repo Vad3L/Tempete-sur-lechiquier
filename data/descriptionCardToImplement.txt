@@ -5,7 +5,7 @@
 4;ANNULATION;Le déplacement de votre adversaire est annulé. Il doit rejouer un autre coup, avec la même pièce ou une autre.;3;0;2
 5;ANTI-GANG;Jouez cette carte lorsque votre adversaire vous annonce un échec, même mat. Il doit alors remettre la pièce qu'il vient de jouer là où elle était avant, et ne peut rien jouer d'autre.;3;0;2
 6;APARTHEID;Retirez immédiatement de l'échiquier tous les pions noirs qui se trouvent sur des cases blanches, et tous les pions blancs qui se trouvent sur des cases noires;1;0;0
-7;ASILE;Sur l'échiquier, permutez l'un de vos Fous avec l'une de vos Tours.1;0;0
+7;ASILE;Sur l'échiquier, permutez l'un de vos Fous avec l'une de vos Tours.;1;0;0
 8;ATTENTAT;En jouant cette carte, notez sur un papier les coordonnées d'une case de l'échiquier, vide ou occupée par l'une de vos pièces. Dès qu'une pièce adverse s'arrête sur cette case, une bombe explose et la pièce est retirée du jeu. S'il s'agit du Roi, la bombe explose, mais le Roi reste en place.;1;1;0
 9;AUTODEFENSE;Votre adversaire veut prendre l'une de vos pièces, mais celle-ci se défend. La pièce attaquée reste en place, et c'est la pièce attaquante qui est éliminée.;3;0;0
 10;AVION PRIVE;Déplacez votre Roi pour l'amener sur n'importe quelle case libre de l'échiquier.;0;0;1
@@ -84,7 +84,7 @@
 84;NIET;Cette carte annule toute autre carte au moment où elle est jouée.;3;0;3
 85;NON;Cette Carte annule toute autre carte au moment où elle est jouée.;3;0;3
 86;NON VIOLENT;L'une de vos pièces, excepté le ROi, devient non violente jusqu'à la fin de la partie. Cette pièce ne peut plus prendre e pièce adverse, ni être prise. Jusqu'à la fin de la partie, mais elle peut toujours donner échec.;1;0;0
-87;OH, DARLING;Amenez directement votre ROi sur une case libre adjacente à votre Dame, ou votre Dame sur une case adjacente à votre Roi.;0;0;1
+87;OH, DARLING;Amenez directement votre Roi sur une case libre adjacente à votre Dame, ou votre Dame sur une case adjacente à votre Roi.;0;0;1
 88;OLE;Jouez cette carte lorsque votre adversaire veut prendre l'une de vos pièces avec un Fou, une Tour, ou une Dame. La pièce attaquée reste en place. La pièce attaquante passe au traver et doit poursuivre son déplacement jusqu'à ce qu'elle capture une autre de vos pièces,s'immobilise devant une autre pièce adverse, ou tombe au delà du bord de l'échiquier. Dans ce dernier cas, elle est retirée du jeu.;3;0;0
 89;OMERTA;Le prochain joueur à prononcer le nom d'une pièce, excepté le Roi, doit perdre une pièce de ce type. S'il ne possède plus la pièce correspondante, cette carte continue à faire effet. Cette carte est retirée du jeu dès quelle prend effet.;1;0;0
 90;ON NE VIT QUE DEUX FOIS;Récupérez l'une des pièces (sauf la Dame) que vous a prises votre adversaire, et placez-la sur une case libre où elle pouvait se trouver en début de partie.;1;0;0
@@ -111,7 +111,7 @@
 111;QUE NENNI !;Cette carte annule toute autre carte au moment où elle est jouée.;3;0;3
 112;RATON LAVEUR;Sur l'échiquier, permutez l'un de vos Pions avec l'un de vos Fous, ou l'un de vos Cavaliers, ou l'une de vos Tours.0;0;1
 113;REBELOTE ET DIX DE DER;Cette carte vous permet de joueur deux autres cartes à ce coup.0;0;3
-114;REGENCE;Vous faite disparaître votre Roi de l'échiquier pour un tour. Avant votre prochain, vous devrez le repalcer sur une case livre de votre choix, au bord de l'échiquier.;0;1;0
+114;REGENCE;Vous faite disparaître votre Roi de l'échiquier pour un tour. Avant votre prochain, vous devrez le replacer sur une case livre de votre choix, au bord de l'échiquier.;0;1;0
 115;REMORQUE;Le pion que vous déplacez(sans prise) "tire" la pièce qui se trouve juste derrière lui, de manière à ce qu'elle reste immédiatement derrière lui.;0;0;1
 116;REPRESAILLES;Jouez cette carte lorsque votre adversaire vient de vous prendre une pièce (pas un Pion). Vous vous vengez alors en retirant l'un de ses pions de l'échiquier.;3;0;0
 117;RIGOLO;L'un de vos Pions prend une pièce adverse en reculant, mais toujours en diagonale;0;0;1

@@ -2,7 +2,6 @@
 #include "cassert"
 
 //tools
-
 bool binNotChange(Plateau& p){
 
 	int len = p.allPositions.size();
@@ -49,7 +48,12 @@ void Princess (Plateau& p, gf::Vector2i s, gf::Vector2i e) {
 
 bool PrincessIsPlayable (Plateau& p, Phase f){
 	gf::Log::info("Apellle Princesse jouable\n");
-	if (f != Phase::APRES_COUP) {
+	if (f != Phase::APRES_COUP || p.playerInEchec) {
+		return false;
+	}
+	Plateau pp = p;
+	if (pp.isInEchecAfterCard(Princess)){
+		gf::Log::info("Cette carte met en Echec l'un des deux rois - donc invalide\n");
 		return false;
 	}
 
@@ -95,7 +99,13 @@ void BombeAtomique (Plateau& p, gf::Vector2i s, gf::Vector2i e) {
 
 bool BombeAtomiqueIsPlayable (Plateau& p, Phase f){
 	gf::Log::info("Appelle Bombe atomique jouable\n");
-	if (f != Phase::APRES_COUP) {
+	if (f != Phase::APRES_COUP || p.playerInEchec) {
+		return false;
+	}
+
+	Plateau pp = p;
+	if (pp.isInEchecAfterCard(BombeAtomique)){
+		gf::Log::info("Cette carte met en Echec l'un des deux rois - donc invalide\n");
 		return false;
 	}
 	
@@ -104,7 +114,6 @@ bool BombeAtomiqueIsPlayable (Plateau& p, Phase f){
 
 void Vampirisme (Plateau& p, gf::Vector2i s, gf::Vector2i e){
 	gf::Log::info("Appelle Vampirisme execute\n");
-	gf::Log::debug("turn to : %i\n", p.turnTo);
 
 	gf::Vector2i pos = p.lastCoup.back();
 	p.state[pos.y * 8 + pos.x].piece = Piece(p.turnTo, p.bin.back().getType());
@@ -112,7 +121,13 @@ void Vampirisme (Plateau& p, gf::Vector2i s, gf::Vector2i e){
 
 bool VampirismeIsPlayable (Plateau& p, Phase f){
 	gf::Log::info("Appelle Vampirisme jouable\n");
+
 	if (f != Phase::APRES_COUP || binNotChange(p)) {
+		return false;
+	}
+	Plateau pp = p;
+	if (pp.isInEchecAfterCard(Vampirisme)){
+		gf::Log::info("Cette carte met en Echec l'un des deux rois - donc invalide\n");
 		return false;
 	}
 
@@ -120,4 +135,31 @@ bool VampirismeIsPlayable (Plateau& p, Phase f){
 	
 	return p.state[pos.y * 8 + pos.x].piece.getType() != ChessPiece::KING;
 	
+}
+
+void VisitesOfficielles (Plateau& p, gf::Vector2i s, gf::Vector2i e){
+	gf::Log::info("Appelle Visites Officielles execute\n");
+	Case RoiB(gf::Vector2i (-1,-1));
+	Case RoiN(gf::Vector2i (-1,-1));
+
+	for(auto caseEchiquier: p.state){
+		if(caseEchiquier.piece.getType()==ChessPiece::KING && caseEchiquier.piece.getColor() == ChessColor::WHITE){
+			RoiB=caseEchiquier;
+		}
+		if(caseEchiquier.piece.getType()==ChessPiece::KING && caseEchiquier.piece.getColor() == ChessColor::BLACK){
+			RoiN=caseEchiquier;
+		}
+	}
+	p.state[RoiB.position.y*8 + RoiB.position.x].piece = Piece(ChessColor::BLACK,ChessPiece::KING);
+	p.state[RoiN.position.y*8 + RoiN.position.x].piece = Piece(ChessColor::WHITE,ChessPiece::KING);
+}
+
+bool VisitesOfficiellesIsPlayable (Plateau& p, Phase f){
+	gf::Log::info("Appelle Visites Officielles jouable\n");
+	if (f != Phase::APRES_COUP || p.playerInEchec){ //Si pas la bonne phase ou joueur en échec
+		return false;
+	}
+
+	return true;
+
 }

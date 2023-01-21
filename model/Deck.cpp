@@ -14,14 +14,17 @@ Deck::Deck(std::vector<int> numCards){
 	m_execsfuncs.insert({ 104, Princess });
 	m_isplayfuncs.insert({ 104, PrincessIsPlayable });
 	
-	m_execsfuncs.insert({ 59, Exil });
-	m_isplayfuncs.insert({ 59, ExilIsPlayable });
+	m_execsfuncs.insert({ 7, Asile });
+	m_isplayfuncs.insert({ 7, AsileIsPlayable });
 	
 	m_execsfuncs.insert({ 110, QuatreCoin });
 	m_isplayfuncs.insert({ 110, QuatreCoinIsPlayable });
 	
 	m_execsfuncs.insert({ 132, Vampirisme });
 	m_isplayfuncs.insert({ 132, VampirismeIsPlayable });
+
+	m_execsfuncs.insert({ 135, VisitesOfficielles });
+	m_isplayfuncs.insert({ 135, VisitesOfficiellesIsPlayable });
 
 		
 	//format du fichier

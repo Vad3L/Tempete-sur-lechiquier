@@ -176,7 +176,7 @@ void performCard (Plateau& plateau, CardRep& c, std::vector<Card>& hand) {
 }
 
 int performTurn (GamePhase& gp, Plateau& p, gf::TcpSocket& player, gf::TcpSocket& other, std::vector<Card>& hand, bool& promotion) {
-	gf::Log::debug("début phase %i\n", gp.getCurrentPhase());
+	gf::Log::debug("début phase %i\n", (int)(gp.getCurrentPhase()));
 	gf::Packet pack;
 	if (receivingPacket(player, pack) == -1) {
 		gf::Log::error("Erreur lors du reçu de la carte avant le coup\n");
