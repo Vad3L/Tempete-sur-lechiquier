@@ -330,6 +330,7 @@ void GameScene::doUpdate(gf::Time time) {
 						//gf::Log::debug("appelle du callback endturn\n");
 						//m_endTurn.triggerCallback();
 						m_gameData.m_phase.setCurrentPhase(Phase::PAS_MON_TOUR);
+						m_gameData.m_plateau.turnTo = !m_gameData.m_plateau.turnTo;	
 					}
 				}
 				m_promotion = false;
@@ -366,6 +367,7 @@ void GameScene::doUpdate(gf::Time time) {
 					//gf::Log::debug("appelle du callback endturn\n");
 					//m_endTurn.triggerCallback();
 					m_gameData.m_phase.setCurrentPhase(Phase::PAS_MON_TOUR);
+					m_gameData.m_plateau.turnTo = !m_gameData.m_plateau.turnTo;	
 				}
 			}
 			m_promotion = false;

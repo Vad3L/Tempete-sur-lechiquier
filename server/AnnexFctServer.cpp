@@ -88,6 +88,7 @@ void checkCardPacketValidity (Plateau& p, CardRep& r, std::vector<Card>& hand, P
 	assert(r.err != CodeRep::NO_CARD);
 	assert(r.card <= 4);
 	assert(r.card >= 0);
+	assert(r.err == CodeRep::CARD);
 
 	r.num = hand[r.card].m_num;
 	bool valide = true;
