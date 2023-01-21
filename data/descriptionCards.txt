@@ -5,3 +5,4 @@
 104;PRINCESSE;Si vous n'avez plus de Dame et si la case de départ de celle-ci est libre, faites-y apparaître une Princesse. La Princesse se déplace dans les huit directions, comme la Dame, mais d'une ou deux cases seulement.;1;0;0
 110;QUATRE COINS;Si trois des quatre coins de l'échiquier sont occupés, placez l'une de vos pièces, de votre choix, dans le quatrième coins.;0;1;1
 132;VAMPIRISME;L'une de vos pièces, qui vient de prendre une pièce adverse, se transforme en une pièce de même type que celle qu'elle vient de prendre. Ainsi, par exemple, si l'un de vos Pions a pris un Cavalier, il devient un Cavalier.;1;0;0
+135;VISITES OFFICIELLES;Permutez votre Roi avec celui de votre adversaire, à condition que cela ne mette aucun de vous deux en échec.;1;0;0
