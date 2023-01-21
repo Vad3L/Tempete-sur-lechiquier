@@ -137,10 +137,6 @@ void VisitesOfficielles (Plateau& p, gf::Vector2i s, gf::Vector2i e){
 	}
 	p.state[RoiB.position.y*8 + RoiB.position.x].piece = Piece(ChessColor::BLACK,ChessPiece::KING);
 	p.state[RoiN.position.y*8 + RoiN.position.x].piece = Piece(ChessColor::WHITE,ChessPiece::KING);
-	if(p.isInEchec(ChessColor::WHITE) || p.isInEchec(ChessColor::BLACK)){
-		p.state[RoiB.position.y*8 + RoiB.position.x].piece = Piece(ChessColor::WHITE,ChessPiece::KING);
-		p.state[RoiN.position.y*8 + RoiN.position.x].piece = Piece(ChessColor::BLACK,ChessPiece::KING);
-	}
 }
 
 bool VisitesOfficiellesIsPlayable (Plateau& p, Phase f){
