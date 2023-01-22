@@ -79,12 +79,13 @@ void PoseEntity::render(gf::RenderTarget &target, const gf::RenderStates &states
 	contour.setPosition(position2);
 	contour.setAnchor(gf::Anchor::Center);
 
+	placementTexte.setSize({100.f,14.0f});
 	placementTexte.setPosition({position2.x,position2.y-sizeCard.y/2.f-2.5f});
 	placementTexte.setAnchor(gf::Anchor::Center);
 
 	poseName.setString("Défausse");
 	poseName.setColor(gf::Color::White);
-	poseName.setPosition({position2.x,position2.y-sizeCard.y/2.f-2.5f});
+	poseName.setPosition({position2.x,position2.y-sizeCard.y/2.f-4.f});
 	poseName.setAnchor(gf::Anchor::Center);
 
 	target.draw(contour, states);
@@ -94,4 +95,31 @@ void PoseEntity::render(gf::RenderTarget &target, const gf::RenderStates &states
 	if(m_cardDiscard.m_num!=-1) {
 		m_cardEntity.render(target, states, m_cardDiscard, 1.197f, 0.94f);
 	}
+}
+
+void PoseEntity::returnCardHand() {
+	if(m_cardPose.m_num == -1) {
+		return;
+	}
+
+	for(auto &c : m_gameData.m_main ) {
+		if(c.m_num == -1) {
+			std::swap(m_cardPose, c);
+			break;
+		}
+	}
+}
+
+bool PoseEntity::clickIsInCardPose(gf::Vector2i sizeWindows, gf::Vector2i mouseCoord) {
+	gf::Log::info("coord case clicker carte pose %i et %i\n", mouseCoord.x,mouseCoord.y);
+	int x = mouseCoord.x;
+	int y = mouseCoord.y;
+	// 270 < x < 500
+	// 270 < y < 600
+	if(x>270 && x<500 && y>270 && y<600) {
+		gf::Log::info("on a pas clicker sur la carte posée\n");
+		return true;
+	}
+	gf::Log::info("on a pas clicker sur la carte posée\n");
+	return false;
 }

@@ -88,6 +88,7 @@ GameScene::GameScene(GameHub& game, Network &network)
 			cardRep.err = CodeRep::NO_CARD;
 			m_network.send(cardRep);
 			m_gameData.m_plateau.turnTo = !m_gameData.m_plateau.turnTo;
+			m_poseEntity.returnCardHand();
 		}
 	});
 
@@ -172,8 +173,13 @@ void GameScene::doProcessEvent(gf::Event& event) {
 		return;
 	}
 
-	Phase currentPhase = m_gameData.m_phase.getCurrentPhase();
+	if(m_poseEntity.clickIsInCardPose(getHudView().getSize(), m_game.getRenderer().mapPixelToCoords(event.mouseButton.coords, getHudView()))) {
+		m_poseEntity.returnCardHand();
+		return;
+	}
 
+	Phase currentPhase = m_gameData.m_phase.getCurrentPhase();
+	
 	if(currentPhase == Phase::APRES_COUP || currentPhase == Phase::AVANT_COUP) {
 		int numCarte = m_mainEntity.getCardSelected(m_cardsView.getSize(), m_game.getRenderer().mapPixelToCoords(event.mouseButton.coords, m_cardsView));
 
@@ -183,7 +189,7 @@ void GameScene::doProcessEvent(gf::Event& event) {
 
 			gf::Log::info("carte %i est jouable %i \n", numCarte, playable);
 
-			if(true) {
+			if(true && m_poseEntity.m_cardPose.m_num == -1) {
 				m_poseEntity.m_cardPose = m_gameData.m_main[numCarte];
 				m_gameData.m_main[numCarte] = Card(); 
 			}
@@ -307,23 +313,19 @@ void GameScene::doUpdate(gf::Time time) {
 
 			m_gameData.m_plateau.movePieces(gf::Vector2i(coupRep.posStart.x, coupRep.posStart.y), gf::Vector2i(coupRep.posEnd.x, coupRep.posEnd.y));
 
-			ChessColor c = !m_gameData.m_myColor;
-			if (currentPhase != Phase::PAS_MON_TOUR) {
-				m_gameData.m_plateau.playerInEchec = m_gameData.m_plateau.isInEchec(c);
-			} else {
-				m_gameData.m_plateau.playerInEchec = m_gameData.m_plateau.isInEchec(m_gameData.m_myColor);
-			}
+			m_gameData.m_plateau.playerInEchec = m_gameData.m_plateau.isInEchec(!m_gameData.m_plateau.turnTo);
 
 			m_gameData.m_plateau.prettyPrint();
 			
 			m_gameData.m_plateau.lastCoup.push_back(gf::Vector2i(coupRep.posStart.x,coupRep.posStart.y));
 			m_gameData.m_plateau.lastCoup.push_back(gf::Vector2i(coupRep.posEnd.x,coupRep.posEnd.y));
-			m_gameData.m_plateau.allPositions.push_back(m_gameData.m_plateau.getFen());
+			
+			m_gameData.m_plateau.allPositions.push_back(m_gameData.m_plateau.getFen());	
+			m_poseEntity.returnCardHand();
 
 			if(pieceStart.getType() == ChessPiece::PAWN &&( coupRep.posEnd.y == 0 || coupRep.posEnd.y == 7)) {
 				m_promotion = true;
 			}else {
-				// a changer surement
 				if(m_gameData.m_phase.getCurrentPhase() != Phase::PAS_MON_TOUR) {
 					m_gameData.m_phase.setCurrentPhase(Phase::APRES_COUP);
 					if(m_gameData.m_phase.getNbCartePlay() !=0) {
@@ -350,15 +352,11 @@ void GameScene::doUpdate(gf::Time time) {
 			
 			m_gameData.m_plateau.promotionPiece(gf::Vector2i(promoRep.pos.x, promoRep.pos.y), promoRep.choice);
 
-			ChessColor c = !m_gameData.m_myColor;
-			if (currentPhase != Phase::PAS_MON_TOUR) {
-				m_gameData.m_plateau.playerInEchec = m_gameData.m_plateau.isInEchec(c);
-			} else {
-				m_gameData.m_plateau.playerInEchec = m_gameData.m_plateau.isInEchec(m_gameData.m_myColor);
-			}
+			m_gameData.m_plateau.playerInEchec = m_gameData.m_plateau.isInEchec(!m_gameData.m_plateau.turnTo);
 			
 			m_gameData.m_plateau.allPositions.push_back(m_gameData.m_plateau.getFen());
-			
+			m_poseEntity.returnCardHand();
+
 			m_gameData.m_plateau.prettyPrint();
 			if(m_gameData.m_phase.getCurrentPhase() != Phase::PAS_MON_TOUR) {
 				m_gameData.m_phase.setCurrentPhase(Phase::APRES_COUP);

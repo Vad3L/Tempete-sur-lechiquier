@@ -25,6 +25,10 @@ class PoseEntity : public gf::Entity {
 		
 		void update(gf::Time time) override;
 		void render(gf::RenderTarget &target, const gf::RenderStates &states) override ;
+
+		void returnCardHand();
+		bool clickIsInCardPose(gf::Vector2i sizeWindows, gf::Vector2i mouseCoord);
+
 		Card m_cardPose;
 		Card m_cardDiscard;
 		
