@@ -7,12 +7,16 @@ bool binNotChange(Plateau& p){
 	int len = p.allPositions.size();
 	
 	if (len - 2 < 0) {
+		gf::Log::error("111111\n");
 		return false;
 	}
 
 	std::string before = p.allPositions[len - 2];
 	std::string now = p.allPositions.back();
 	std::string not_piece = "1234567890/";
+	gf::Log::error("laaaaaaaaaaaaaaaaaaaaaaa\n");
+	gf::Log::error("%s\n", before.c_str());
+	gf::Log::error("%s\n", now.c_str());
 
 	size_t count_before = 0;
 	size_t count_after = 0;
@@ -30,14 +34,21 @@ bool binNotChange(Plateau& p){
 	}
 
 	if (count_before == count_after) {
+		gf::Log::error("2222222222222222\n");
 		return true;
 	}
+
+	gf::Log::error("3333333333333333333\n");
 	return false;
 }
 
 bool isInEchecAfterCard(Plateau &p , std::function<void(Plateau&, gf::Vector2i s, gf::Vector2i e)> execute) {
 	Plateau pp = p;
 	assert(pp.getFen() == p.getFen());
+	// TODO REGARDER SI LE JOEUR EST DEJA EN ECHEC AVTN LACTIVATION DE LA CARTE
+	// => POSSIBLE d'activer la carte car c'est pas elle qui nous met en echec (c'est le deplacement normal)
+	// /!\ attention au carte d'avant coup qui peut pas nous sortir d'un echec
+
 	// achanger plus tard pour mettre s et e
 	execute(pp,gf::Vector2i(-1),gf::Vector2i(-1));
 	

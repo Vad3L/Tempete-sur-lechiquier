@@ -171,6 +171,7 @@ void performPromotion (Plateau& plateau, PromotionRep& promo) {
 void performCard (Plateau& plateau, CardRep& c, std::vector<Card>& hand) {
 	gf::Log::debug("------CARD VALIDE------\n");
 	hand[c.card].m_execute(plateau, c.a, c.b);
+	plateau.allPositions.push_back(plateau.getFen());
 	gf::Log::debug("La carte %s est joué \n", hand[c.card].m_name.c_str());
 	plateau.prettyPrint();
 }

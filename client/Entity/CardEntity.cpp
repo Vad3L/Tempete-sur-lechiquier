@@ -42,7 +42,7 @@ void CardEntity::render(gf::RenderTarget &target, const gf::RenderStates &states
 
 	gf::Text cardName(c.m_name, m_cardsFont, titleCharacterSize);
 	cardName.setColor(gf::Color::Black);
-	if(c.m_name.size()>12) {
+	if(c.m_name.size()>15) {
 		cardName.setPosition({position.x+25, position.y+sizeCard.y/1.62f});
 	}else {
 		cardName.setPosition({position.x+25, position.y+sizeCard.y/1.55f});

@@ -10,6 +10,7 @@ PoseEntity::PoseEntity(gf::ResourceManager& resources,GameData &gameData)
 	m_cardsIllustration.setSmooth(true);
 	m_accessories.setSmooth(true);
 	m_cardPose = Card();
+	m_cardDiscard = Card();
 }
 
 void PoseEntity::update([[maybe_unused]] gf::Time time) {
@@ -21,13 +22,18 @@ void PoseEntity::render(gf::RenderTarget &target, const gf::RenderStates &states
 	
 	gf::Vector2i sizeCard = gf::Vector2i(200+20,300+20);
 
-	gf::Vector2f position = coords.getRelativePoint({ 0.2f, 0.4f });
+	gf::Vector2f position1 = coords.getRelativePoint({ 0.2f, 0.4f });
+	gf::Vector2f position2 = coords.getRelativePoint({ 0.8f, 0.4f });
 	
 	gf::RoundedRectangleShape contour(sizeCard);
 	contour.setColor(gf::Color::Black);
-	
-	gf::Text poseName("Carte jouée", m_poseNameFont, 16.f);
-	poseName.setPosition({position.x,position.y-sizeCard.y/2.f-2.5f});
+	contour.setOutlineThickness(6.f);
+	contour.setRadius(22);
+	contour.setPosition(position1);
+	contour.setAnchor(gf::Anchor::Center);
+
+	gf::Text poseName("Carte à jouée", m_poseNameFont, 16.f);
+	poseName.setPosition({position1.x,position1.y-sizeCard.y/2.f-2.5f});
 	poseName.setAnchor(gf::Anchor::Center);
 
 	switch (m_gameData.m_phase.getCurrentPhase()) {
@@ -52,16 +58,11 @@ void PoseEntity::render(gf::RenderTarget &target, const gf::RenderStates &states
 		contour.setOutlineColor(gf::Color::White);
 		poseName.setColor(gf::Color::White);
 	}
-	
-	contour.setOutlineThickness(6.f);
-	contour.setRadius(22);
-	contour.setPosition(position);
-	contour.setAnchor(gf::Anchor::Center);
 
 	gf::RectangleShape placementTexte;
 	placementTexte.setSize({130.f,14.0f});
 	placementTexte.setColor(gf::Color::Black);
-	placementTexte.setPosition({position.x,position.y-sizeCard.y/2.f-2.5f});
+	placementTexte.setPosition({position1.x,position1.y-sizeCard.y/2.f-2.5f});
 	placementTexte.setAnchor(gf::Anchor::Center);
 
 	target.draw(contour, states);
@@ -71,5 +72,26 @@ void PoseEntity::render(gf::RenderTarget &target, const gf::RenderStates &states
 	if(m_cardPose.m_num!=-1) {
 		m_cardEntity.render(target, states, m_cardPose, 0.237f, 0.94f);
 	}
+
+	//défausse
+
+	contour.setOutlineColor(gf::Color::White);
+	contour.setPosition(position2);
+	contour.setAnchor(gf::Anchor::Center);
+
+	placementTexte.setPosition({position2.x,position2.y-sizeCard.y/2.f-2.5f});
+	placementTexte.setAnchor(gf::Anchor::Center);
+
+	poseName.setString("Défausse");
+	poseName.setColor(gf::Color::White);
+	poseName.setPosition({position2.x,position2.y-sizeCard.y/2.f-2.5f});
+	poseName.setAnchor(gf::Anchor::Center);
+
+	target.draw(contour, states);
+	target.draw(placementTexte,states);
+	target.draw(poseName,states);
 	
+	if(m_cardDiscard.m_num!=-1) {
+		m_cardEntity.render(target, states, m_cardDiscard, 1.197f, 0.94f);
+	}
 }

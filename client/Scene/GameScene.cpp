@@ -397,7 +397,10 @@ void GameScene::doUpdate(gf::Time time) {
 			gf::Log::debug("------CARTE VALIDE------ %i\n", carteRep.num);
 
 			m_gameData.m_cards[carteRep.num].m_execute(m_gameData.m_plateau, carteRep.a, carteRep.b);
+			m_gameData.m_plateau.allPositions.push_back(m_gameData.m_plateau.getFen());
 			
+			m_poseEntity.m_cardDiscard = m_gameData.m_cards[carteRep.num];
+
 			if(m_gameData.m_phase.getCurrentPhase() != Phase::PAS_MON_TOUR) {
 				m_gameData.m_phase.nextPhaseCard(m_gameData.m_cards[carteRep.num]);
 				m_poseEntity.m_cardPose = Card();
@@ -405,7 +408,7 @@ void GameScene::doUpdate(gf::Time time) {
 					m_gameData.m_plateau.turnTo = !m_gameData.m_plateau.turnTo;	
 				}
 			}
-			m_gameData.m_plateau.playerInEchec = m_gameData.m_plateau.isInEchec(m_gameData.m_plateau.turnTo);
+			m_gameData.m_plateau.playerInEchec = m_gameData.m_plateau.isInEchec(m_gameData.m_plateau.turnTo	);
 		}else {
 			gf::Log::debug("------CARTE INVALIDE------\n");
 		}	

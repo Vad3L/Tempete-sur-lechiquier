@@ -26,6 +26,7 @@ class PoseEntity : public gf::Entity {
 		void update(gf::Time time) override;
 		void render(gf::RenderTarget &target, const gf::RenderStates &states) override ;
 		Card m_cardPose;
+		Card m_cardDiscard;
 		
 	private:
 		gf::Texture& m_cardsIllustration;
