@@ -183,7 +183,7 @@ void GameScene::doProcessEvent(gf::Event& event) {
 
 			gf::Log::info("carte %i est jouable %i \n", numCarte, playable);
 
-			if(playable && m_poseEntity.m_cardPose.m_num == -1) {
+			if(true) {
 				m_poseEntity.m_cardPose = m_gameData.m_main[numCarte];
 				m_gameData.m_main[numCarte] = Card(); 
 			}
@@ -327,8 +327,7 @@ void GameScene::doUpdate(gf::Time time) {
 				if(m_gameData.m_phase.getCurrentPhase() != Phase::PAS_MON_TOUR) {
 					m_gameData.m_phase.setCurrentPhase(Phase::APRES_COUP);
 					if(m_gameData.m_phase.getNbCartePlay() !=0) {
-						//gf::Log::debug("appelle du callback endturn\n");
-						//m_endTurn.triggerCallback();
+						
 						m_gameData.m_phase.setCurrentPhase(Phase::PAS_MON_TOUR);
 						m_gameData.m_plateau.turnTo = !m_gameData.m_plateau.turnTo;	
 					}
@@ -364,8 +363,7 @@ void GameScene::doUpdate(gf::Time time) {
 			if(m_gameData.m_phase.getCurrentPhase() != Phase::PAS_MON_TOUR) {
 				m_gameData.m_phase.setCurrentPhase(Phase::APRES_COUP);
 				if(m_gameData.m_phase.getNbCartePlay() !=0) {
-					//gf::Log::debug("appelle du callback endturn\n");
-					//m_endTurn.triggerCallback();
+
 					m_gameData.m_phase.setCurrentPhase(Phase::PAS_MON_TOUR);
 					m_gameData.m_plateau.turnTo = !m_gameData.m_plateau.turnTo;	
 				}
@@ -398,7 +396,7 @@ void GameScene::doUpdate(gf::Time time) {
 
 			m_gameData.m_cards[carteRep.num].m_execute(m_gameData.m_plateau, carteRep.a, carteRep.b);
 			m_gameData.m_plateau.allPositions.push_back(m_gameData.m_plateau.getFen());
-			
+
 			m_poseEntity.m_cardDiscard = m_gameData.m_cards[carteRep.num];
 
 			if(m_gameData.m_phase.getCurrentPhase() != Phase::PAS_MON_TOUR) {

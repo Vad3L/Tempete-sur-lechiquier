@@ -244,11 +244,14 @@ int performTurn (GamePhase& gp, Plateau& p, gf::TcpSocket& player, gf::TcpSocket
 			gp.nextPhaseCard(hand[card.card]);
 		} else if (card.err == CodeRep::NO_CARD) {
 			gp.setCurrentPhase(Phase::PAS_MON_TOUR);
-		}
+		} 
 
 		pack.is(card);
-		if (sendingPacket(player, pack)) { return -1; }
-		if (sendingPacket(other, pack)) { return -1; }
+		if(card.err == CodeRep::NONE) {
+			if (sendingPacket(player, pack)) { return -1; }
+			if (sendingPacket(other, pack)) { return -1; }
+		}
+		
 	}
 
 	if (gp.getCurrentPhase() == Phase::PAS_MON_TOUR) {
