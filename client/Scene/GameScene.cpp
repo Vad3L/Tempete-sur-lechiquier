@@ -385,7 +385,6 @@ void GameScene::doUpdate(gf::Time time) {
 		int j = 0;
 		if(deckRep.err == CodeRep::NONE) {	
 			for(int i=0; i< 5; i++) {	
-				gf::Log::info("icic icic icici %i\n", m_gameData.m_main[i].m_num);
 				if(m_gameData.m_main[i].m_num == -1) {
 					m_gameData.m_main[i] = m_gameData.m_cards[deckRep.hand[j].m_num];
 					j++;
@@ -403,6 +402,9 @@ void GameScene::doUpdate(gf::Time time) {
 			gf::Log::debug("------CARTE VALIDE------ %i\n", carteRep.num);
 
 			m_gameData.m_cards[carteRep.num].m_execute(m_gameData.m_plateau, carteRep.a, carteRep.b);
+			
+			m_gameData.m_plateau.playerInEchec = m_gameData.m_plateau.isInEchec(!m_gameData.m_plateau.turnTo);
+
 			m_gameData.m_plateau.allPositions.push_back(m_gameData.m_plateau.getFen());
 
 			m_poseEntity.m_cardDiscard = m_gameData.m_cards[carteRep.num];
@@ -414,7 +416,6 @@ void GameScene::doUpdate(gf::Time time) {
 					m_gameData.m_plateau.turnTo = !m_gameData.m_plateau.turnTo;	
 				}
 			}
-			m_gameData.m_plateau.playerInEchec = m_gameData.m_plateau.isInEchec(m_gameData.m_plateau.turnTo	);
 		}else {
 			gf::Log::debug("------CARTE INVALIDE------\n");
 		}	
