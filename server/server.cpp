@@ -36,7 +36,7 @@ int main (int argc, char* argv[]) {
 		
 		if(sendStartOrEnd(client1, client2, CodeRep::GAME_START) == -1) {
 			sendStartOrEnd(client1, client2, CodeRep::GAME_END, ChessStatus::SURRENDER); 
-			return -1;
+			break;
 		}
 		
 		Plateau plateau;
