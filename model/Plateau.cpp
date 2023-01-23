@@ -1,9 +1,10 @@
 #include "Plateau.hpp"
 
 Plateau::Plateau()
-: coordCaseSelected(-1, -1)
-, coordPrisePassant(-1, -1)
-, caseProvocateEchec(-1, -1)
+: coordCaseSelected(-1)
+, coordPrisePassant(-1)
+, caseProvocateEchec(-1)
+, m_promotion(false)
 , playerInEchec(false) {
 	for (int i = 0; i < 8; i++) {
 		for (int coordPass = 0; coordPass < 8; coordPass++) {
@@ -16,6 +17,7 @@ Plateau::Plateau()
 				switch (coordPass) {
 					case 0:
 					case 7:
+						if(!(i ==0 && coordPass==0))
 						state[i * 8 + coordPass].piece = Piece(c, ChessPiece::ROOK);
 						break;
 					case 1:
@@ -27,7 +29,7 @@ Plateau::Plateau()
 						state[i * 8 + coordPass].piece = Piece(c, ChessPiece::BISHOP);
 						break;
 					case 3:
-					//	state[i * 8 + coordPass].piece = Piece(c, ChessPiece::QUEEN);
+						state[i * 8 + coordPass].piece = Piece(c, ChessPiece::QUEEN);
 						break;
 					case 4:
 						state[i * 8 + coordPass].piece = Piece(c, ChessPiece::KING);

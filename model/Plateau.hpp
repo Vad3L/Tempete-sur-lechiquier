@@ -47,7 +47,9 @@ class Plateau {
 		std::vector<Case> state;
 		
 		bool playerInEchec;
+		bool m_promotion;
 		gf::Vector2i caseProvocateEchec;
+		std::vector<gf::Vector2i> m_casesClicked;
 
 		gf::Vector2i coordPrisePassant;
 		std::vector<gf::Vector2i> lastCoup;
