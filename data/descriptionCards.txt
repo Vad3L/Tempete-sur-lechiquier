@@ -6,3 +6,6 @@
 110;QUATRE COINS;Si trois des quatre coins de l'échiquier sont occupés, placez l'une de vos pièces, de votre choix, dans le quatrième coins.;0;1;1
 132;VAMPIRISME;L'une de vos pièces, qui vient de prendre une pièce adverse, se transforme en une pièce de même type que celle qu'elle vient de prendre. Ainsi, par exemple, si l'un de vos Pions a pris un Cavalier, il devient un Cavalier.;1;0;0
 135;VISITES OFFICIELLES;Permutez votre Roi avec celui de votre adversaire, à condition que cela ne mette aucun de vous deux en échec.;1;0;0
+0;AMBITION;Remplacer l'un de vos pions par l'une des pièces, sauf la Dame, que vous a prises votre adversaire.;1;0;0
+1;AMOUR COURTOIS;Amenez l'un de vos Cavaliers sur une case libre adjacente à votre Dame.;0;0;1
+2;AMPHETAMINES;S'il ne vient pas de prendre une pièce adverse, le Fou que vous avez joué peut être déplacé de nouveau.;1;0;0

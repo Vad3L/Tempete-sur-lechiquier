@@ -384,7 +384,9 @@ void GameScene::doUpdate(gf::Time time) {
 		
 		if(deckRep.err == CodeRep::NONE) {	
 			for(int i=0; i< deckRep.hand.size(); i++) {	
-				m_gameData.m_main[i] = m_gameData.m_cards[deckRep.hand[i].m_num];
+				if(m_gameData.m_main[i].m_num == -1) {
+					m_gameData.m_main[i] = m_gameData.m_cards[deckRep.hand[i].m_num];
+				}
 			}
 		}
 	}

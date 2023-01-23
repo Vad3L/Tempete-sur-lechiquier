@@ -83,6 +83,9 @@ void QuitScene::doRender(gf::RenderTarget& target, const gf::RenderStates &state
 	constexpr gf::Vector2f backgroundSize(0.5f, 0.3f);
 
 	target.setView(getHudView());
+	
+	gf::RoundedRectangleShape backgroundT(target.getSize());
+	backgroundT.setColor(gf::Color::fromRgba32(0,0,0,200));
 
 	gf::Coordinates coords(target);
 
@@ -110,6 +113,7 @@ void QuitScene::doRender(gf::RenderTarget& target, const gf::RenderStates &state
 	m_quitButton.setParagraphWidth(paragraphWidth);
 	m_quitButton.setPadding(paddingSize);
 	
+	target.draw(backgroundT, states);
 	m_widgets.render(target, states);
 }
 

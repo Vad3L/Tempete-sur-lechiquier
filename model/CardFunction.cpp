@@ -7,16 +7,12 @@ bool binNotChange(Plateau& p){
 	int len = p.allPositions.size();
 	
 	if (len - 2 < 0) {
-		gf::Log::error("111111\n");
 		return false;
 	}
 
 	std::string before = p.allPositions[len - 2];
 	std::string now = p.allPositions.back();
 	std::string not_piece = "1234567890/";
-	gf::Log::error("laaaaaaaaaaaaaaaaaaaaaaa\n");
-	gf::Log::error("%s\n", before.c_str());
-	gf::Log::error("%s\n", now.c_str());
 
 	size_t count_before = 0;
 	size_t count_after = 0;
@@ -34,26 +30,49 @@ bool binNotChange(Plateau& p){
 	}
 
 	if (count_before == count_after) {
-		gf::Log::error("2222222222222222\n");
 		return true;
 	}
 
-	gf::Log::error("3333333333333333333\n");
 	return false;
 }
 
-bool isInEchecAfterCard(Plateau &p , std::function<void(Plateau&, gf::Vector2i s, gf::Vector2i e)> execute) {
+bool isInEchecAfterCardGreen(Plateau &p , std::function<void(Plateau&, gf::Vector2i s, gf::Vector2i e)> execute) {
 	Plateau pp = p;
-	assert(pp.getFen() == p.getFen());
-	// TODO REGARDER SI LE JOEUR EST DEJA EN ECHEC AVTN LACTIVATION DE LA CARTE
-	// => POSSIBLE d'activer la carte car c'est pas elle qui nous met en echec (c'est le deplacement normal)
-	// /!\ attention au carte d'avant coup qui peut pas nous sortir d'un echec
-
-	// achanger plus tard pour mettre s et e
-	execute(pp,gf::Vector2i(-1),gf::Vector2i(-1));
 	
+	assert(pp.getFen() == p.getFen());
+
+	// a changer plus tard pour mettre s et e	
+	execute(pp,gf::Vector2i(-1),gf::Vector2i(-1));
+
+	bool ret = true;
+	gf::Vector2i caseProvocateEchec(-1);
+	if(p.playerInEchec) {
+		caseProvocateEchec = p.caseProvocateEchec; //obtenir la dernier case qui met met en cehc l'afversaire forcement par un coup normal
+	}
+
+	// chercher si une autre case case met en echec l'adversaire apres l'activation de la carte
+	if(p.turnTo == ChessColor::WHITE) {
+		ret = pp.isInEchec(ChessColor::WHITE) || pp.isInEchec(ChessColor::BLACK, gf::Vector2i(-1), caseProvocateEchec);
+	}else {
+		ret = pp.isInEchec(ChessColor::WHITE, gf::Vector2i(-1), caseProvocateEchec) || pp.isInEchec(ChessColor::BLACK);
+	}
+
+	return ret ;
+}
+
+bool isInEchecAfterCardYellow(Plateau &p , std::function<void(Plateau&, gf::Vector2i s, gf::Vector2i e)> execute) {
+	Plateau pp = p;
+
+	if(p.playerInEchec) {
+		return true;
+	}
+
+	// a changer plus tard pour mettre s et e
+	execute(pp,gf::Vector2i(-1),gf::Vector2i(-1));
+
 	return pp.isInEchec(ChessColor::WHITE) || pp.isInEchec(ChessColor::BLACK);
 }
+
 
 //card
 void NoCard (Plateau& p, gf::Vector2i s, gf::Vector2i e) {}
@@ -72,7 +91,7 @@ bool PrincessIsPlayable (Plateau& p, Phase f){
 		return false;
 	}
 	
-	if (isInEchecAfterCard(p, Princess)){
+	if (isInEchecAfterCardGreen(p, Princess)){
 		gf::Log::info("Cette carte met en Echec l'un des deux rois - donc invalide\n");
 		return false;
 	}
@@ -123,7 +142,7 @@ bool BombeAtomiqueIsPlayable (Plateau& p, Phase f){
 		return false;
 	}
 
-	if (isInEchecAfterCard(p, BombeAtomique)){
+	if (isInEchecAfterCardGreen(p, BombeAtomique)){
 		gf::Log::info("Cette carte met en Echec l'un des deux rois - donc invalide\n");
 		return false;
 	}
@@ -145,7 +164,7 @@ bool VampirismeIsPlayable (Plateau& p, Phase f){
 		return false;
 	}
 	
-	if (isInEchecAfterCard(p, Vampirisme)){
+	if (isInEchecAfterCardGreen(p, Vampirisme)){
 		gf::Log::info("Cette carte met en Echec l'un des deux rois - donc invalide\n");
 		return false;
 	}
@@ -179,7 +198,7 @@ bool VisitesOfficiellesIsPlayable (Plateau& p, Phase f){
 		return false;
 	}
 
-	if(isInEchecAfterCard(p, VisitesOfficielles)) {
+	if(isInEchecAfterCardGreen(p, VisitesOfficielles)) {
 		gf::Log::info("Cette carte met en Echec l'un des deux rois - donc invalide\n");
 		return false;
 	}

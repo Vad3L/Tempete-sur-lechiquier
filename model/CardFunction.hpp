@@ -6,7 +6,8 @@
 
 //tools
 bool binNotChange(Plateau& p);
-bool isInEchecAfterCard(Plateau &p,std::function<void(Plateau&, gf::Vector2i s, gf::Vector2i e)> execute);
+bool isInEchecAfterCardGreen(Plateau &p,std::function<void(Plateau&, gf::Vector2i s, gf::Vector2i e)> execute);
+bool isInEchecAfterCardYellow(Plateau &p,std::function<void(Plateau&, gf::Vector2i s, gf::Vector2i e)> execute);
 
 //card
 void NoCard (Plateau& p, gf::Vector2i s, gf::Vector2i e);

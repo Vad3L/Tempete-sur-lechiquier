@@ -148,6 +148,9 @@ bool performCoup (Plateau& plateau, CoupRep& coup) {
 	Piece p = plateau.state[coup.posStart.y * 8 + coup.posStart.x].piece;
 	p.isMoved = true;
 	plateau.movePieces(gf::Vector2i(coup.posStart.x, coup.posStart.y), gf::Vector2i(coup.posEnd.x, coup.posEnd.y));
+
+	plateau.playerInEchec = plateau.isInEchec(!plateau.turnTo);
+	
 	plateau.prettyPrint();
 	plateau.lastCoup.push_back(gf::Vector2i(coup.posStart.x,coup.posStart.y));
 	plateau.lastCoup.push_back(gf::Vector2i(coup.posEnd.x,coup.posEnd.y));   
@@ -163,6 +166,9 @@ bool performCoup (Plateau& plateau, CoupRep& coup) {
 void performPromotion (Plateau& plateau, PromotionRep& promo) {
 	gf::Log::debug("------PROMO VALIDE------\n");
 	plateau.promotionPiece(gf::Vector2i(promo.pos.x, promo.pos.y), promo.choice);
+	
+	plateau.playerInEchec = plateau.isInEchec(!plateau.turnTo);
+	
 	gf::Log::debug("------PROMO -----------------------------------------VALIDE------%li\n", plateau.allPositions.size());
 	plateau.allPositions.push_back(plateau.getFen());
 	plateau.prettyPrint();
@@ -172,6 +178,9 @@ void performCard (Plateau& plateau, CardRep& c, std::vector<Card>& hand) {
 	gf::Log::debug("------CARD VALIDE------\n");
 	hand[c.card].m_execute(plateau, c.a, c.b);
 	plateau.allPositions.push_back(plateau.getFen());
+
+	plateau.playerInEchec = plateau.isInEchec(!plateau.turnTo);
+
 	gf::Log::debug("La carte %s est joué \n", hand[c.card].m_name.c_str());
 	plateau.prettyPrint();
 }
@@ -227,6 +236,7 @@ int performTurn (GamePhase& gp, Plateau& p, gf::TcpSocket& player, gf::TcpSocket
 			}
 
 			promotion = performCoup(p, coup);
+		
 			if (!promotion) {
 				gp.setCurrentPhase(Phase::APRES_COUP);
 			}
@@ -247,7 +257,7 @@ int performTurn (GamePhase& gp, Plateau& p, gf::TcpSocket& player, gf::TcpSocket
 		} 
 
 		pack.is(card);
-		if(card.err == CodeRep::NONE) {
+		if(card.err != CodeRep::NO_CARD) {
 			if (sendingPacket(player, pack)) { return -1; }
 			if (sendingPacket(other, pack)) { return -1; }
 		}

@@ -35,7 +35,7 @@ class Plateau {
 		void deMovePieces(gf::Vector2i coord1, gf::Vector2i coord2, bool inBin);
 		void promotionPiece(gf::Vector2i coordStart, ChessPiece p);
 
-		bool isInEchec(ChessColor color, gf::Vector2i coord = gf::Vector2i(-1));
+		bool isInEchec(ChessColor color, gf::Vector2i coord = gf::Vector2i(-1), gf::Vector2i caseAvoid = gf::Vector2i(-1));
 		
 		ChessStatus isGameOver (ChessColor c);
 		void tmp(std::vector<gf::Vector2i> t);
@@ -45,7 +45,10 @@ class Plateau {
 		gf::Vector2i coordCaseSelected;
 		std::vector<Piece> bin;
 		std::vector<Case> state;
+		
 		bool playerInEchec;
+		gf::Vector2i caseProvocateEchec;
+
 		gf::Vector2i coordPrisePassant;
 		std::vector<gf::Vector2i> lastCoup;
 		std::vector<std::string> allPositions;

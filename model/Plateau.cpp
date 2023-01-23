@@ -3,6 +3,7 @@
 Plateau::Plateau()
 : coordCaseSelected(-1, -1)
 , coordPrisePassant(-1, -1)
+, caseProvocateEchec(-1, -1)
 , playerInEchec(false) {
 	for (int i = 0; i < 8; i++) {
 		for (int coordPass = 0; coordPass < 8; coordPass++) {
@@ -26,7 +27,7 @@ Plateau::Plateau()
 						state[i * 8 + coordPass].piece = Piece(c, ChessPiece::BISHOP);
 						break;
 					case 3:
-						state[i * 8 + coordPass].piece = Piece(c, ChessPiece::QUEEN);
+					//	state[i * 8 + coordPass].piece = Piece(c, ChessPiece::QUEEN);
 						break;
 					case 4:
 						state[i * 8 + coordPass].piece = Piece(c, ChessPiece::KING);
@@ -455,7 +456,9 @@ void Plateau::deMovePieces(gf::Vector2i coord1, gf::Vector2i coord2, bool inBin)
 	}
 }
 
-bool Plateau::isInEchec(ChessColor color, gf::Vector2i coord) {
+// coord case ou vont regarder lechec 
+// caseAvoid case qu'on vont veut pas regarder si cett cette case met echec 
+bool Plateau::isInEchec(ChessColor color, gf::Vector2i coord, gf::Vector2i caseAvoid) {
 	if(coord == gf::Vector2i(-1)) { // case ou on cherche l'echec du roi de couleur color
 		for(auto &caseP : state) {
 			if(caseP.piece.getType() == ChessPiece::KING && caseP.piece.getColor() == color) {
@@ -471,7 +474,7 @@ bool Plateau::isInEchec(ChessColor color, gf::Vector2i coord) {
 	}
 
 	for(auto & caseP : state) {
-		if(caseP.piece.getType() != ChessPiece::NONE && caseP.piece.getColor() != color) {
+		if(caseP.piece.getType() != ChessPiece::NONE && caseP.piece.getColor() != color && caseP.position != caseAvoid) {
 			
 			std::vector<gf::Vector2i> casesAv = caseP.piece.getMoves(caseP.position);
 			casesAv = filterMoveAuthorized_Tangled(caseP.position, casesAv);
@@ -480,6 +483,7 @@ bool Plateau::isInEchec(ChessColor color, gf::Vector2i coord) {
 			for(auto coordPass : casesAv) {
 				
 				if(coord == coordPass) {	
+					caseProvocateEchec = caseP.position;
 					return true;
 				}
 			}
