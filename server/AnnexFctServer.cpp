@@ -174,7 +174,7 @@ void performPromotion (Plateau& plateau, PromotionRep& promo) {
 	plateau.prettyPrint();
 }
 
-void performCard (Plateau& plateau, CardRep& c, std::vector<Card>& hand) {
+void performCard (Plateau& plateau, CardRep& c, std::vector<Card>& hand, Deck& d) {
 	gf::Log::debug("------CARD VALIDE------\n");
 	hand[c.card].m_execute(plateau, c.a, c.b);
 	plateau.allPositions.push_back(plateau.getFen());
@@ -183,9 +183,26 @@ void performCard (Plateau& plateau, CardRep& c, std::vector<Card>& hand) {
 
 	gf::Log::debug("La carte %s est joué \n", hand[c.card].m_name.c_str());
 	plateau.prettyPrint();
+	Card pick = d.getFirst();
+	d.drop(hand[c.card]);
+	hand[c.card] = pick;
+
+	if (d.getNbCardInDeck() == 0) {
+		d.emptyDiscard();
+	}
 }
 
-int performTurn (GamePhase& gp, Plateau& p, gf::TcpSocket& player, gf::TcpSocket& other, std::vector<Card>& hand, bool& promotion) {
+void sendHand (gf::TcpSocket& player, Card new_card) {
+	gf::Packet pack;
+	std::vector<Card> new_hand = { new_card };
+	DistribRep rep;
+	rep.err = NONE;
+	rep.hand = new_hand;
+	pack.is(rep);
+	sendingPacket(player, pack);
+}
+
+int performTurn (Deck& d, GamePhase& gp, Plateau& p, gf::TcpSocket& player, gf::TcpSocket& other, std::vector<Card>& hand, bool& promotion) {
 	gf::Log::debug("début phase %i\n", (int)(gp.getCurrentPhase()));
 	gf::Packet pack;
 	if (receivingPacket(player, pack) == -1) {
@@ -203,7 +220,8 @@ int performTurn (GamePhase& gp, Plateau& p, gf::TcpSocket& player, gf::TcpSocket
 		CardRep card = pack.as<CardRep>();
 		checkCardPacketValidity(p, card, hand, gp.getCurrentPhase());
 		if (card.err == CodeRep::NONE) {
-			performCard(p, card, hand);
+			performCard(p, card, hand, d);
+			sendHand(player, hand[card.card]);
 			gp.nextPhaseCard(hand[card.card]);
 		} else {
 			return 2;
@@ -250,7 +268,8 @@ int performTurn (GamePhase& gp, Plateau& p, gf::TcpSocket& player, gf::TcpSocket
 		CardRep card = pack.as<CardRep>();
 		checkCardPacketValidity(p, card, hand, gp.getCurrentPhase());
 		if (card.err == CodeRep::NONE) {
-			performCard(p, card, hand);
+			performCard(p, card, hand, d);
+			sendHand(player, hand[card.card]);
 			gp.nextPhaseCard(hand[card.card]);
 		} else if (card.err == CodeRep::NO_CARD) {
 			gp.setCurrentPhase(Phase::PAS_MON_TOUR);
@@ -401,7 +420,7 @@ int sendInit(gf::TcpSocket& client, ChessColor c, std::vector<Card>& hand) {
 		pack.is(rep);
 		if (gf::SocketStatus::Data != client.sendPacket(pack)) {
 			gf::Log::error("Lors de l'envoie du packet contenant la couleur au client\n");
-		exit(-2);
+			exit(-2);
 		}
 
 		DistribRep distrib;

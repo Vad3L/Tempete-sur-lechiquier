@@ -16,6 +16,8 @@ class Deck{
 
 		Card getFirst();
 		int getNbCardInDeck();
+		void emptyDiscard ();
+		void drop (Card c);
 
 		std::pair<std::vector<Card>,std::vector<Card>> distribute();
 
@@ -27,9 +29,6 @@ class Deck{
 	private:
 		void swap(Card &a, Card &b);
 		void shuffle();
-		
-		void drop(Card m_card);		
-
 };
 
 #endif // DECK_H
