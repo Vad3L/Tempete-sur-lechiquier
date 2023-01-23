@@ -328,8 +328,8 @@ void GameScene::doUpdate(gf::Time time) {
 			}
 		}else if(repPartie.err == CodeRep::TURN_START) {
 			gf::Log::info("mon tour commence\n");
-			//assert(m_gameData.m_phase.getCurrentPhase()==Phase::PAS_MON_TOUR);
 			m_gameData.m_phase.setCurrentPhase(Phase::AVANT_COUP);
+			assert(m_gameData.m_phase.getNbCartePlay()==0);
 			m_gameData.m_plateau.turnTo = m_gameData.m_myColor;
 		}
 	}	 
@@ -361,9 +361,9 @@ void GameScene::doUpdate(gf::Time time) {
 				m_gameData.m_plateau.m_promotion = true;
 			}else {
 				if(m_gameData.m_phase.getCurrentPhase() != Phase::PAS_MON_TOUR) {
+			
 					m_gameData.m_phase.setCurrentPhase(Phase::APRES_COUP);
 					if(m_gameData.m_phase.getNbCartePlay() !=0) {
-						
 						m_gameData.m_phase.setCurrentPhase(Phase::PAS_MON_TOUR);
 						m_gameData.m_plateau.turnTo = !m_gameData.m_plateau.turnTo;	
 					}
@@ -474,6 +474,8 @@ void GameScene::onActivityChange(bool active) {
 		m_network.deconnect();
 		m_boardView.setRotation(0);
 		m_gameData.reset();
+		m_poseEntity.m_cardPose = Card();
+		m_poseEntity.m_cardDiscard = Card();
 	}
 }
 

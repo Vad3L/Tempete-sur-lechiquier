@@ -21,6 +21,9 @@ int GamePhase::getNbCartePlay() {
 }
 
 void GamePhase::setCurrentPhase(Phase phase) {
+	if(phase == Phase::PAS_MON_TOUR || phase == Phase::AVANT_COUP) { // tour suivant
+		m_nbCartePlay = 0;
+	}  
 	m_currentPhase = phase;
 }
 
