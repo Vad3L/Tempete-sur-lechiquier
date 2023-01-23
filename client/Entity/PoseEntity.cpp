@@ -70,7 +70,7 @@ void PoseEntity::render(gf::RenderTarget &target, const gf::RenderStates &states
 	target.draw(poseName,states);
 
 	if(m_cardPose.m_num!=-1) {
-		m_cardEntity.render(target, states, m_cardPose, 0.237f, 0.94f);
+		m_cardEntity.render(target, states, m_cardPose, gf::Vector2f(0.237f, 0.94f));
 	}
 
 	//défausse
@@ -93,7 +93,7 @@ void PoseEntity::render(gf::RenderTarget &target, const gf::RenderStates &states
 	target.draw(poseName,states);
 	
 	if(m_cardDiscard.m_num!=-1) {
-		m_cardEntity.render(target, states, m_cardDiscard, 1.197f, 0.94f);
+		m_cardEntity.render(target, states, m_cardDiscard, gf::Vector2f(1.197f, 0.94f));
 	}
 }
 

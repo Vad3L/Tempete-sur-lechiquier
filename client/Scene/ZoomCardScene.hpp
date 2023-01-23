@@ -31,6 +31,8 @@ class ZoomCardScene : public gf::Scene {
 		gf::Action m_fullscreenAction;
 
 		CardEntity m_cardEntity;
+		gf::Font& m_cardsFont;
+		gf::Font & m_rulesFont;
 };
 
 

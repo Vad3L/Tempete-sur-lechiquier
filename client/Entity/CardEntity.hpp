@@ -22,8 +22,9 @@ class CardEntity : public gf::Entity {
 		CardEntity(gf::ResourceManager& resources);
 		
 		void update(gf::Time time) override;
-		void render(gf::RenderTarget &target, const gf::RenderStates &states, Card c, float x, float y, int zoom=1) ;
+		void render(gf::RenderTarget &target, const gf::RenderStates &states, Card c, gf::Vector2f boxCoord, int zoom=1) ;
 
+		Card m_card;
 	private:
 		gf::Font& m_cardsFont;
 		gf::Texture& m_cardsIllustration;

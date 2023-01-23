@@ -12,8 +12,8 @@ CardEntity::CardEntity(gf::ResourceManager& resources)
 void CardEntity::update([[maybe_unused]] gf::Time time) {
 }
 
-void CardEntity::render(gf::RenderTarget &target, const gf::RenderStates &states, Card c, float x, float y, int zoom){
-
+void CardEntity::render(gf::RenderTarget &target, const gf::RenderStates &states, Card c, gf::Vector2f boxCoord, int zoom){
+	m_card = c;
 	int numberImageW = 10;
 	int numberImageH = 14;
 	gf::Coordinates coordsCard({1200,300});
@@ -27,7 +27,7 @@ void CardEntity::render(gf::RenderTarget &target, const gf::RenderStates &states
 	
 	int i = c.m_num%numberImageW;
 	int j = c.m_num/numberImageW;	   
-	gf::Vector2f position= coordsCard.getRelativePoint({ x, y });
+	gf::Vector2f position= coordsCard.getRelativePoint({ boxCoord.x, boxCoord.y });
 	gf::RoundedRectangleShape card(sizeCard);
 	card.setColor(gf::Color::White);
 	card.setRadius(22);
@@ -72,9 +72,9 @@ void CardEntity::render(gf::RenderTarget &target, const gf::RenderStates &states
 	}*/
 	
 	std::string description = c.m_description; 
-	if(zoom == 1) {
-		description = description.substr(0, 60) + "...";
-	}
+	
+	description = description.substr(0, 60) + "...";
+	
 
 	gf::Text cardDescription(description, m_cardsFont, instructionsCharacterSize);
 	
