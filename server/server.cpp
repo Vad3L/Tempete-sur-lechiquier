@@ -7,6 +7,8 @@ int main (int argc, char* argv[]) {
 	int port = 43771;
 
 	signal(SIGPIPE, SIG_IGN);
+	while (true) {
+
 	gf::TcpListener listener(std::to_string(port));
 	
 	std::vector<int> numCards;
@@ -120,6 +122,7 @@ int main (int argc, char* argv[]) {
 	}
 		
 	client1.~TcpSocket();
-		
+
+	}
 	return 0;
 }
