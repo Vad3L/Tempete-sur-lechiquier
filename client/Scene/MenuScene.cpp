@@ -14,6 +14,7 @@ MenuScene::MenuScene(GameHub& game)
 , m_play("Jouer", game.resources.getFont("fonts/Trajan-Color-Concept.otf"))
 , m_rules("Regles", game.resources.getFont("fonts/Trajan-Color-Concept.otf"))
 , m_quit("Quitter", game.resources.getFont("fonts/Trajan-Color-Concept.otf"))
+, m_settings("Parametres", game.resources.getFont("fonts/Trajan-Color-Concept.otf"))
 {
 	setClearColor(gf::Color::Black);
 
@@ -60,6 +61,11 @@ MenuScene::MenuScene(GameHub& game)
 		gf::Log::debug("Quit pressed!\n");
 		m_game.popAllScenes();
 	});
+
+	setupButton(m_settings, [&] () {
+		gf::Log::debug("Settings pressed!\n");
+		m_game.replaceAllScenes(*m_game.settings);
+	});	
 }
 
 void MenuScene::doHandleActions([[maybe_unused]] gf::Window& window) {
@@ -102,7 +108,6 @@ void MenuScene::doRender(gf::RenderTarget& target, const gf::RenderStates &state
 	float backgroundHeight = coords.getRelativeSize(gf::vec(0.0f, 1.0f)).height;
 	float backgroundScale = backgroundHeight / m_backgroundTexture.getSize().height;
 
-
 	target.setView(getHudView());
 
 	unsigned titleCharacterSize = coords.getRelativeCharacterSize(0.1f);
@@ -131,11 +136,16 @@ void MenuScene::doRender(gf::RenderTarget& target, const gf::RenderStates &state
 	m_rules.setParagraphWidth(paragraphWidth);
 	m_rules.setPadding(paddingSize);
 
+	m_settings.setCharacterSize(resumeCharacterSize);
+	m_settings.setPosition(coords.getRelativePoint({0.275f, 0.425f + (characterSize + spaceBetweenButton) * 2}));
+	m_settings.setParagraphWidth(paragraphWidth);
+	m_settings.setPadding(paddingSize);
+
 	m_quit.setCharacterSize(resumeCharacterSize);
-	m_quit.setPosition(coords.getRelativePoint({0.275f, 0.425f + (characterSize + spaceBetweenButton) * 2}));
+	m_quit.setPosition(coords.getRelativePoint({0.275f, 0.425f + (characterSize + spaceBetweenButton) * 3}));
 	m_quit.setParagraphWidth(paragraphWidth);
 	m_quit.setPadding(paddingSize);
-
+	
 	m_widgets.render(target, states);
 
 	gf::Sprite background(m_backgroundTexture);
@@ -155,6 +165,9 @@ void MenuScene::doShow() {
 	m_rules.setDefault();
 	m_widgets.addWidget(m_rules);
 
+	m_settings.setDefault();
+	m_widgets.addWidget(m_settings);
+	
 	m_quit.setDefault();
 	m_widgets.addWidget(m_quit);
 

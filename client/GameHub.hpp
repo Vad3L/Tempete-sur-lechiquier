@@ -11,6 +11,7 @@
 #include "Scene/GameScene.hpp"
 #include "Scene/RulesScene.hpp"
 #include "Scene/QuitScene.hpp"
+#include "Scene/SettingsScene.hpp"
 
 struct GameHub : gf::GameManager {
 	GameHub();
@@ -22,12 +23,13 @@ struct GameHub : gf::GameManager {
 	std::unique_ptr<GameScene> game;
 	std::unique_ptr<RulesScene> rules;
 	std::unique_ptr<QuitScene> quit;
-
+	std::unique_ptr<SettingsScene> settings;
+	
 	gf::BlackoutSegueEffect blackoutEffect;
 	bool m_loadingFinish = false;
 
 	void loadingDownloadAssets();
-	void loadingAssets(Network &network);
+	void loadingAssets(Network &network, GameData &data);
 	bool loadingFinish();
 };
 

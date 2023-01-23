@@ -1,10 +1,11 @@
 #include "GameScene.hpp"
 #include "../GameHub.hpp"
 
-GameScene::GameScene(GameHub& game, Network &network)
+GameScene::GameScene(GameHub& game, Network &network, GameData &gameData)
 : gf::Scene(game.getRenderer().getSize())
 , m_game(game)
 , m_network(network)
+, m_gameData(gameData)
 , m_quitAction("quit")
 , m_fullscreenAction("Fullscreen")
 , m_texture1Action("Texture1")
@@ -189,7 +190,7 @@ void GameScene::doProcessEvent(gf::Event& event) {
 
 			gf::Log::info("carte %i est jouable %i \n", numCarte, playable);
 
-			if(true && m_poseEntity.m_cardPose.m_num == -1) {
+			if(playable && m_poseEntity.m_cardPose.m_num == -1) {
 				m_poseEntity.m_cardPose = m_gameData.m_main[numCarte];
 				m_gameData.m_main[numCarte] = Card(); 
 			}

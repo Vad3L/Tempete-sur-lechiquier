@@ -11,9 +11,9 @@ PlaySelectScene::PlaySelectScene(GameHub& game, Network &network)
 , m_triggerAction("TriggerAction")
 , m_quitAction("QuitAction")
 , m_fullscreenAction("FullscreenAction")
+, m_connectAction("ConnectAction")
 , m_PlayTitleEntity(game.resources)
 , m_ipWidget("pas de serveur", game.resources.getFont("fonts/Trajan-Color-Concept.otf"))
-, m_connectAction("ConnectAction")
 , m_index(0)
 , m_leftWidget("<", game.resources.getFont("fonts/DejaVuSans.ttf"))
 , m_rightWidget(">", game.resources.getFont("fonts/DejaVuSans.ttf"))
@@ -87,14 +87,14 @@ void PlaySelectScene::doHandleActions([[maybe_unused]] gf::Window& window) {
 	}
 
 	if(m_leftAction.isActive()) {
-		changeRightLeft(false);
+		m_leftWidget.triggerCallback();
 		while(m_leftWidget.isDefault()){
 			m_widgets.selectPreviousWidget();
 		}
 	}
 
 	if(m_rightAction.isActive()) {
-		changeRightLeft(true);
+		m_rightWidget.triggerCallback();
 		while(m_rightWidget.isDefault()){
 			m_widgets.selectNextWidget();
 		}
@@ -151,7 +151,6 @@ void PlaySelectScene::doRender(gf::RenderTarget& target, const gf::RenderStates 
 	}else{
 		m_leftWidget.setPosition(coords.getRelativePoint({2.775, 0.425f + characterSize }));
 	}
-
 
 	if(m_index != m_listIp.size()-1 ){
 		m_rightWidget.setCharacterSize(resumeCharacterSize);

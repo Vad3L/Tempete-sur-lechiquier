@@ -85,7 +85,7 @@ void PoseEntity::render(gf::RenderTarget &target, const gf::RenderStates &states
 
 	poseName.setString("Défausse");
 	poseName.setColor(gf::Color::White);
-	poseName.setPosition({position2.x,position2.y-sizeCard.y/2.f-4.f});
+	poseName.setPosition({position2.x,position2.y-sizeCard.y/2.f-5.f});
 	poseName.setAnchor(gf::Anchor::Center);
 
 	target.draw(contour, states);

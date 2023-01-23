@@ -37,6 +37,7 @@ class MenuScene : public gf::Scene {
 		gf::TextButtonWidget m_play;
 		gf::TextButtonWidget m_rules;
 		gf::TextButtonWidget m_quit;
+		gf::TextButtonWidget m_settings;
 
 		gf::WidgetContainer m_widgets;
 };

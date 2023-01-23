@@ -32,7 +32,7 @@ struct GameData;
 
 class GameScene : public gf::Scene {
 	public:
-		GameScene(GameHub& game, Network &network);
+		GameScene(GameHub &game, Network &network, GameData &gameData);
 	private:
 		void doHandleActions(gf::Window& window) override;
 		void doProcessEvent(gf::Event& event) override;
@@ -44,10 +44,10 @@ class GameScene : public gf::Scene {
 	private:
 		std::string m_ip;
 
-		GameHub& m_game;
-		GameData m_gameData;
-		Network& m_network;
-		
+		GameHub &m_game;
+		Network &m_network;
+		GameData &m_gameData;
+
 		gf::Action m_quitAction;
 		gf::Action m_fullscreenAction;
 		gf::Action m_texture1Action;

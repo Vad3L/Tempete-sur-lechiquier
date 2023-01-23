@@ -12,7 +12,7 @@ void GameHub::loadingDownloadAssets() {
 	//splashScreen->loadAnimation();
 }
 
-void GameHub::loadingAssets(Network &network) {
+void GameHub::loadingAssets(Network &network, GameData &data) {
 	gf::Log::info("fin debut chargment\n");
 	start = std::make_unique<StartScene>(*this);
 	gf::Log::info("fin chargment start scene\n");
@@ -22,10 +22,12 @@ void GameHub::loadingAssets(Network &network) {
 	gf::Log::info("fin chargement rules scene\n");
 	play = std::make_unique<PlaySelectScene>(*this, network);
 	gf::Log::info("fin chargement play scene\n");
-	game = std::make_unique<GameScene>(*this, network);
+	game = std::make_unique<GameScene>(*this, network, data);
 	gf::Log::info("fin chargment game scene\n");
 	quit = std::make_unique<QuitScene>(*this);
 	gf::Log::info("fin chargment quit scene\n");
+	settings = std::make_unique<SettingsScene>(*this, data);
+	gf::Log::info("fin chargment settings scene\n");
 	gf::Log::info("fin chargment total\n");
 	
 	m_loadingFinish = true;

@@ -1,7 +1,6 @@
 #include "RulesScene.hpp"
 #include "../GameHub.hpp"
 
-
 RulesScene::RulesScene(GameHub& game)
 : gf::Scene(game.getRenderer().getSize())
 , m_game(game)
@@ -91,14 +90,14 @@ void RulesScene::doHandleActions([[maybe_unused]] gf::Window& window) {
 	}
 
 	if(m_leftAction.isActive()) {
-		changeRightLeft(false);
+		m_pageLeft.triggerCallback();
 		while(m_pageLeft.isDefault()){
 			m_widgets.selectPreviousWidget();
 		}
 	}
 
 	if(m_rightAction.isActive()) {
-		changeRightLeft(true);
+		m_pageRight.triggerCallback();
 		while(m_pageRight.isDefault()){
 			m_widgets.selectPreviousWidget();
 		}

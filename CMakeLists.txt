@@ -39,6 +39,7 @@ add_executable(client_tsl
 	client/Scene/RulesScene.cpp
 	client/Scene/QuitScene.cpp
 	client/Scene/DownloadScene.cpp
+	client/Scene/SettingsScene.cpp
 
 	client/Entity/BoardEntity.cpp
 	client/Entity/TableBoardEntity.cpp
@@ -48,6 +49,8 @@ add_executable(client_tsl
 	client/Entity/MainEntity.cpp
 	client/Entity/PoseEntity.cpp
 	client/Entity/CardEntity.cpp
+	client/Entity/SettingsEntity.cpp
+
 	)
 
 add_executable(server_tsl
