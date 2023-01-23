@@ -166,11 +166,24 @@ void GameScene::doProcessEvent(gf::Event& event) {
 
 	if(clickRight) {
 		int numCarte = m_mainEntity.getCardSelected(m_cardsView.getSize(), m_game.getRenderer().mapPixelToCoords(event.mouseButton.coords, m_cardsView));
-		
+		Card c = Card();
+
 		if(numCarte!=-1) {
-			m_game.zoomCard->m_cardZoom = m_gameData.m_main[numCarte];
+			c = m_gameData.m_main[numCarte];
+		}
+
+		if(m_poseEntity.m_cardPose.m_num !=-1 && m_poseEntity.clickIsInCardPose(getHudView().getSize(), m_game.getRenderer().mapPixelToCoords(event.mouseButton.coords, getHudView()))) {
+			c = m_poseEntity.m_cardPose;
+		}
+
+		if(m_poseEntity.m_cardDiscard.m_num !=-1 && m_poseEntity.clickIsInCardDiscard(getHudView().getSize(), m_game.getRenderer().mapPixelToCoords(event.mouseButton.coords, getHudView()))) {
+			c = m_poseEntity.m_cardDiscard;
+		}
+		
+		if(c.m_num !=-1) {
+			m_game.zoomCard->m_cardZoom = c;
 			m_game.pushScene(*m_game.zoomCard);
-			pause();
+			pause();	
 		}
 	}
 
@@ -178,7 +191,7 @@ void GameScene::doProcessEvent(gf::Event& event) {
 		return;
 	}
 
-	if(m_poseEntity.clickIsInCardPose(getHudView().getSize(), m_game.getRenderer().mapPixelToCoords(event.mouseButton.coords, getHudView()))) {
+	if(m_poseEntity.m_cardPose.m_num!=-1 && m_poseEntity.clickIsInCardPose(getHudView().getSize(), m_game.getRenderer().mapPixelToCoords(event.mouseButton.coords, getHudView()))) {
 		m_poseEntity.returnCardHand();
 		return;
 	}

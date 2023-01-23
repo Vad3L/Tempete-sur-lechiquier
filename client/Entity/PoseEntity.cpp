@@ -123,3 +123,17 @@ bool PoseEntity::clickIsInCardPose(gf::Vector2i sizeWindows, gf::Vector2i mouseC
 	gf::Log::info("on a pas clicker sur la carte posée\n");
 	return false;
 }
+
+bool PoseEntity::clickIsInCardDiscard(gf::Vector2i sizeWindows, gf::Vector2i mouseCoord) {
+	gf::Log::info("coord case clicker carte pose %i et %i\n", mouseCoord.x,mouseCoord.y);
+	int x = mouseCoord.x;
+	int y = mouseCoord.y;
+	// 1420 < x < 1650
+	// 270 < y < 600
+	if(x>1420 && x<1650 && y>270 && y<600) {
+		gf::Log::info("on a pas clicker sur la carte defaussé\n");
+		return true;
+	}
+	gf::Log::info("on a pas clicker sur la carte defaussé\n");
+	return false;
+}

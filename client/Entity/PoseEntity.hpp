@@ -28,7 +28,8 @@ class PoseEntity : public gf::Entity {
 
 		void returnCardHand();
 		bool clickIsInCardPose(gf::Vector2i sizeWindows, gf::Vector2i mouseCoord);
-
+		bool clickIsInCardDiscard(gf::Vector2i sizeWindows, gf::Vector2i mouseCoord);
+		
 		Card m_cardPose;
 		Card m_cardDiscard;
 		
