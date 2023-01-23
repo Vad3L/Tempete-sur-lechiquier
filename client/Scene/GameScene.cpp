@@ -382,10 +382,13 @@ void GameScene::doUpdate(gf::Time time) {
 		
 		auto deckRep = m_packet.as<DistribRep>();
 		
+		int j = 0;
 		if(deckRep.err == CodeRep::NONE) {	
-			for(int i=0; i< deckRep.hand.size(); i++) {	
+			for(int i=0; i< 5; i++) {	
+				gf::Log::info("icic icic icici %i\n", m_gameData.m_main[i].m_num);
 				if(m_gameData.m_main[i].m_num == -1) {
-					m_gameData.m_main[i] = m_gameData.m_cards[deckRep.hand[i].m_num];
+					m_gameData.m_main[i] = m_gameData.m_cards[deckRep.hand[j].m_num];
+					j++;
 				}
 			}
 		}
