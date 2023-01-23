@@ -8,8 +8,6 @@ GameScene::GameScene(GameHub& game, Network &network, GameData &gameData)
 , m_gameData(gameData)
 , m_quitAction("quit")
 , m_fullscreenAction("Fullscreen")
-, m_texture1Action("Texture1")
-, m_texture2Action("Texture2")
 , m_endTurnAction("endTurnAction")
 , m_playCardAction("playCardAction")
 , m_boardEntity(game.resources, m_gameData)
@@ -28,12 +26,6 @@ GameScene::GameScene(GameHub& game, Network &network, GameData &gameData)
 
 	m_fullscreenAction.addKeycodeKeyControl(gf::Keycode::F);
 	addAction(m_fullscreenAction);
-	
-	m_texture1Action.addScancodeKeyControl(gf::Scancode::Num1);
-	addAction(m_texture1Action);
-
-	m_texture2Action.addScancodeKeyControl(gf::Scancode::Num2);
-	addAction(m_texture2Action);
 
 	m_endTurnAction.addScancodeKeyControl(gf::Scancode::Return);
 	addAction(m_endTurnAction);
@@ -41,6 +33,9 @@ GameScene::GameScene(GameHub& game, Network &network, GameData &gameData)
 	m_playCardAction.addScancodeKeyControl(gf::Scancode::P);
 	addAction(m_playCardAction);
 
+	m_triggerAction.addMouseButtonControl(gf::MouseButton::Left);
+	addAction(m_triggerAction);
+	
 	m_boardView = gf::ExtendView({ 0, 0 }, { 403, 403 });
 	m_boardView.setViewport(gf::RectF::fromPositionSize({ 0.275f, 0.125f}, { 0.45f, 0.45f }));
 
@@ -55,9 +50,6 @@ GameScene::GameScene(GameHub& game, Network &network, GameData &gameData)
 	m_views.addView(m_cardsView);
 
 	m_views.setInitialFramebufferSize({game.getRenderer().getSize()});
-
-	m_triggerAction.addMouseButtonControl(gf::MouseButton::Left);
-	addAction(m_triggerAction);
 
 	gf::Coordinates coordsWidget({500,500});
 	auto setupButton = [&] (gf::TextButtonWidget& button, gf::Vector2f position,  auto callback) {
@@ -129,14 +121,6 @@ void GameScene::doHandleActions([[maybe_unused]] gf::Window& window) {
 		window.toggleFullscreen();
 	}
 
-	if (m_texture1Action.isActive()) {
-		m_gameData.m_style = 0;
-	}
-
-	if (m_texture2Action.isActive()) {
-		m_gameData.m_style = 1;
-	}
-
 	if (m_triggerAction.isActive()) {
 		m_widgets.triggerAction();
 	}
@@ -154,7 +138,13 @@ void GameScene::doHandleActions([[maybe_unused]] gf::Window& window) {
 }
 
 void GameScene::doProcessEvent(gf::Event& event) {
-	bool click = false;
+	if(!isActive()) {
+		return;
+	}
+	
+	bool clickLeft = false;
+	bool clickRight = false;
+
 	m_views.processEvent(event);
 	
 	if (m_gameData.m_gameStatus != ChessStatus::ON_GOING) { return; }
@@ -165,12 +155,26 @@ void GameScene::doProcessEvent(gf::Event& event) {
 			break;
 
 		case gf::EventType::MouseButtonPressed:
-			click = true;
+			if(event.mouseButton.button == gf::MouseButton::Left) {
+				clickLeft = true;
+			}else {
+				clickRight = true;
+			}
 			break;
 
 		}
 
-	if(!click) {
+	if(clickRight) {
+		int numCarte = m_mainEntity.getCardSelected(m_cardsView.getSize(), m_game.getRenderer().mapPixelToCoords(event.mouseButton.coords, m_cardsView));
+		
+		if(numCarte!=-1) {
+			m_game.zoomCard->m_cardZoom = m_gameData.m_main[numCarte];
+			m_game.pushScene(*m_game.zoomCard);
+			pause();
+		}
+	}
+
+	if(!clickLeft) {
 		return;
 	}
 

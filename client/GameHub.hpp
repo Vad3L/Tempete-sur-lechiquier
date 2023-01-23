@@ -12,6 +12,7 @@
 #include "Scene/RulesScene.hpp"
 #include "Scene/QuitScene.hpp"
 #include "Scene/SettingsScene.hpp"
+#include "Scene/ZoomCardScene.hpp"
 
 struct GameHub : gf::GameManager {
 	GameHub();
@@ -24,6 +25,7 @@ struct GameHub : gf::GameManager {
 	std::unique_ptr<RulesScene> rules;
 	std::unique_ptr<QuitScene> quit;
 	std::unique_ptr<SettingsScene> settings;
+	std::unique_ptr<ZoomCardScene> zoomCard;
 	
 	gf::BlackoutSegueEffect blackoutEffect;
 	bool m_loadingFinish = false;

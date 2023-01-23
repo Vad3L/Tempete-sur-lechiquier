@@ -13,7 +13,7 @@ void GameHub::loadingDownloadAssets() {
 }
 
 void GameHub::loadingAssets(Network &network, GameData &data) {
-	gf::Log::info("fin debut chargment\n");
+	gf::Log::info("debut chargment\n");
 	start = std::make_unique<StartScene>(*this);
 	gf::Log::info("fin chargment start scene\n");
 	menu = std::make_unique<MenuScene>(*this);
@@ -23,12 +23,14 @@ void GameHub::loadingAssets(Network &network, GameData &data) {
 	play = std::make_unique<PlaySelectScene>(*this, network);
 	gf::Log::info("fin chargement play scene\n");
 	game = std::make_unique<GameScene>(*this, network, data);
-	gf::Log::info("fin chargment game scene\n");
+	gf::Log::info("fin chargement game scene\n");
 	quit = std::make_unique<QuitScene>(*this);
-	gf::Log::info("fin chargment quit scene\n");
+	gf::Log::info("fin chargement quit scene\n");
 	settings = std::make_unique<SettingsScene>(*this, data);
-	gf::Log::info("fin chargment settings scene\n");
-	gf::Log::info("fin chargment total\n");
+	gf::Log::info("fin chargement settings scene\n");
+	zoomCard = std::make_unique<ZoomCardScene>(*this);
+	gf::Log::info("fin chargement zoom card scene\n");
+	gf::Log::info("fin chargement total\n");
 	
 	m_loadingFinish = true;
 }

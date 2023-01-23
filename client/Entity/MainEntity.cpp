@@ -2,7 +2,7 @@
 
 MainEntity::MainEntity(gf::ResourceManager& resources,GameData &gameData)
 : m_gameData(gameData)
-, m_card(resources,gameData)
+, m_card(resources)
 {
 
 }
@@ -24,7 +24,7 @@ void MainEntity::render(gf::RenderTarget &target, const gf::RenderStates &states
 int MainEntity::getCardSelected(gf::Vector2i sizeWindows, gf::Vector2i mouseCoord) { //sizeWindows = CardsView
 
 	int cardSelected = -1;
-	
+	//gf::Log::debug("y = %i et x = %i\n",mouseCoord.y, mouseCoord.x);
 	if(mouseCoord.y < -120){
 		gf::Log::debug("clique en dehors des cartes \n");
 		return -1;

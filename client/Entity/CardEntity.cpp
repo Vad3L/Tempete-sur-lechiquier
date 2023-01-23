@@ -1,10 +1,9 @@
 #include "CardEntity.hpp"
 
-CardEntity::CardEntity(gf::ResourceManager& resources,GameData &gameData)
+CardEntity::CardEntity(gf::ResourceManager& resources)
 : m_cardsFont(resources.getFont("fonts/DejaVuSans.ttf"))
 ,m_cardsIllustration(resources.getTexture("images/CardIlustrationSheet.png"))
 ,m_accessories(resources.getTexture("images/AccesoriesCards.png"))
-,m_gameData(gameData)
 {
 	m_cardsIllustration.setSmooth(true);
 	m_accessories.setSmooth(true);
@@ -13,14 +12,14 @@ CardEntity::CardEntity(gf::ResourceManager& resources,GameData &gameData)
 void CardEntity::update([[maybe_unused]] gf::Time time) {
 }
 
-void CardEntity::render(gf::RenderTarget &target, const gf::RenderStates &states, Card c, float x, float y){
+void CardEntity::render(gf::RenderTarget &target, const gf::RenderStates &states, Card c, float x, float y, int zoom){
 
 	int numberImageW = 10;
 	int numberImageH = 14;
 	gf::Coordinates coordsCard({1200,300});
-	gf::Vector2i sizeCard = gf::Vector2i(200,300);
-	constexpr float titleCharacterSize = 16.f;
-	constexpr float instructionsCharacterSize = 14.f;
+	gf::Vector2i sizeCard = gf::Vector2i(200*zoom,300*zoom);
+	float titleCharacterSize = zoom*(16.f);
+	float instructionsCharacterSize = zoom*(14.f);
 
 	if(c.m_num == -1) {
 		return;
@@ -48,7 +47,7 @@ void CardEntity::render(gf::RenderTarget &target, const gf::RenderStates &states
 		cardName.setPosition({position.x+25, position.y+sizeCard.y/1.55f});
 	}
 	cardName.setAlignment(gf::Alignment::Center);
-	cardName.setParagraphWidth(200-50);
+	cardName.setParagraphWidth(sizeCard.x-50);
 
 	gf::RectangleShape rect({sizeCard.x/1.1f, sizeCard.x/4.3f});
 	rect.setTexture(m_accessories,gf::RectF::fromPositionSize({ 0.f  , 0.f }, { 1.f , 1.f }));
@@ -72,10 +71,16 @@ void CardEntity::render(gf::RenderTarget &target, const gf::RenderStates &states
 		rect.setColor(gf::Color::White);
 	}*/
 	
-	gf::Text cardDescription(c.m_description.substr(0, 60)+"...", m_cardsFont, instructionsCharacterSize);
+	std::string description = c.m_description; 
+	if(zoom == 1) {
+		description = description.substr(0, 60) + "...";
+	}
+
+	gf::Text cardDescription(description, m_cardsFont, instructionsCharacterSize);
+	
 	cardDescription.setColor(gf::Color::Black);
 	cardDescription.setPosition({position.x+10, position.y+sizeCard.y/1.3f});
-	cardDescription.setParagraphWidth(200-20);
+	cardDescription.setParagraphWidth(sizeCard.x-20);
 	cardDescription.setAlignment(gf::Alignment::Center);
 		
 	target.draw(card, states);

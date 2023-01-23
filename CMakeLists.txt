@@ -40,6 +40,7 @@ add_executable(client_tsl
 	client/Scene/QuitScene.cpp
 	client/Scene/DownloadScene.cpp
 	client/Scene/SettingsScene.cpp
+	client/Scene/ZoomCardScene.cpp
 
 	client/Entity/BoardEntity.cpp
 	client/Entity/TableBoardEntity.cpp

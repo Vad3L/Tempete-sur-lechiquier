@@ -5,7 +5,7 @@ PoseEntity::PoseEntity(gf::ResourceManager& resources,GameData &gameData)
 , m_accessories(resources.getTexture("images/AccesoriesCards.png"))
 , m_gameData(gameData)
 , m_poseNameFont(resources.getFont("fonts/DejaVuSans.ttf"))
-, m_cardEntity(resources, gameData)
+, m_cardEntity(resources)
 {
 	m_cardsIllustration.setSmooth(true);
 	m_accessories.setSmooth(true);

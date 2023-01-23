@@ -16,21 +16,18 @@
 
 #include "../GameData.hpp"
 
-struct GameData;
 
 class CardEntity : public gf::Entity {
 	public:
-		CardEntity(gf::ResourceManager& resources,GameData &gameData);
+		CardEntity(gf::ResourceManager& resources);
 		
 		void update(gf::Time time) override;
-		void render(gf::RenderTarget &target, const gf::RenderStates &states, Card c, float x, float y) ;
+		void render(gf::RenderTarget &target, const gf::RenderStates &states, Card c, float x, float y, int zoom=1) ;
 
 	private:
 		gf::Font& m_cardsFont;
 		gf::Texture& m_cardsIllustration;
 		gf::Texture& m_accessories;
-
-		GameData &m_gameData;
 };
 
 

@@ -52,7 +52,6 @@ SettingsScene::SettingsScene(GameHub& game, GameData &gameData)
 		m_widgets.addWidget(button);
 	};
 
-
 	setupButton(m_rightButton, [&] () {
 		gf::Log::debug("Next texture pressed!\n");
 		changeTexture('+');

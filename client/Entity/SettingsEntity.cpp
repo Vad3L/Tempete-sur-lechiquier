@@ -41,17 +41,15 @@ void SettingsEntity::render(gf::RenderTarget &target, const gf::RenderStates &st
 	subtitle.setAnchor(gf::Anchor::Center);
 
 	gf::Text textureStyle("None", m_font, subtitleCharacterSize);
-	textureStyle.setColor(gf::Color::White);
+	textureStyle.setColor(gf::Color::Blue);
 	textureStyle.setPosition(coords.getRelativePoint({ 0.5f, 0.5f }));
 	textureStyle.setAnchor(gf::Anchor::Center);
 
 	switch (m_gameData.m_style) {
 		case 0:
-			gf::Log::debug("000000000000000\n");
 			textureStyle.setString("Bois");
 			break;
 		case 1:
-		gf::Log::debug("11111111111111111\n");
 			textureStyle.setString("Chic");
 			break;
 	}

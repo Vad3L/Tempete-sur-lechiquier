@@ -54,7 +54,7 @@ void RulesEntity::render(gf::RenderTarget &target, const gf::RenderStates &state
 	paragraph.setColor(gf::Color::White);
 	paragraph.setLineSpacing(1.5f);
 	paragraph.setFont(m_rulesFont);
-	paragraph.setCharacterSize((height/100+width/100));
+	paragraph.setCharacterSize((height/90+width/90));
 	paragraph.setParagraphWidth(width-50);
 	paragraph.setAlignment(gf::Alignment::Center);
 	paragraph.setString(rules[m_index]);
