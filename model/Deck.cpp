@@ -87,7 +87,7 @@ Deck::Deck(std::vector<int> numCards){
 
 
 Card Deck::getFirst() {
-	Card tmp=m_deck.back();
+	Card tmp = m_deck.back();
 	m_deck.pop_back();
 	return tmp;
 }
@@ -135,4 +135,10 @@ std::pair<std::vector<Card>,std::vector<Card>> Deck::distribute(){
 
 int Deck::getNbCardInDeck(){
 	return (int)m_deck.size();
+}
+
+void Deck::emptyDiscard () {
+	m_deck = m_discard;
+	m_discard = std::vector<Card>();
+	shuffle(); 
 }

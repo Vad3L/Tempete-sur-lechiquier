@@ -63,7 +63,7 @@ int main (int argc, char* argv[]) {
 						}
 					}
 
-					int ret = performTurn(phase, plateau, client1, client2, TwoHand.first, promotion);
+					int ret = performTurn(deck, phase, plateau, client1, client2, TwoHand.first, promotion);
 
 					if(ret == -1) {
 						break;
@@ -90,7 +90,7 @@ int main (int argc, char* argv[]) {
 						}
 					}
 
-					int ret = performTurn(phase, plateau, client2, client1, TwoHand.second, promotion);
+					int ret = performTurn(deck, phase, plateau, client2, client1, TwoHand.second, promotion);
 					if(ret == -1) {
 						break;
 					} else if (ret == 0) {

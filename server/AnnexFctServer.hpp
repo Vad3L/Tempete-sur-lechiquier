@@ -14,11 +14,12 @@
 #include <gf/Log.h>
 
 #include "../model/Plateau.hpp"
+#include "../model/Deck.hpp"
 #include "../protocole/Protocole.hpp"
 #include "../model/GamePhase.hpp"
 
-int performTurn (GamePhase& gp, Plateau& plateau, gf::TcpSocket& player, gf::TcpSocket& other, std::vector<Card>& hand, bool& promotion);
-void performCard (Plateau& plateau, CardRep& c, std::vector<Card>& hand);
+int performTurn (Deck& d, GamePhase& gp, Plateau& plateau, gf::TcpSocket& player, gf::TcpSocket& other, std::vector<Card>& hand, bool& promotion);
+void performCard (Plateau& plateau, CardRep& c, std::vector<Card>& hand, Deck& d);
 void performPromotion (Plateau& plateau, PromotionRep& p);
 bool performCoup (Plateau& plateau, CoupRep& c);
 
