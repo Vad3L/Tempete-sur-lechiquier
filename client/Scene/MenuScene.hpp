@@ -34,10 +34,11 @@ class MenuScene : public gf::Scene {
 		gf::Action m_triggerAction;
 		gf::Action m_fullscreenAction;
 		
-		gf::TextButtonWidget m_play;
-		gf::TextButtonWidget m_rules;
-		gf::TextButtonWidget m_quit;
-		gf::TextButtonWidget m_settings;
+		gf::SpriteWidget m_play;
+		gf::SpriteWidget m_rules;
+		gf::SpriteWidget m_quit;
+		gf::SpriteWidget m_settings;
+		float m_cog;
 
 		gf::WidgetContainer m_widgets;
 };

@@ -10,9 +10,9 @@ RulesScene::RulesScene(GameHub& game)
 , m_rightAction("PageRight")
 , m_fullscreenAction("FullScreen")
 , m_triggerAction("TriggerAction")
-, m_quitButton("Menu", game.resources.getFont("fonts/Trajan-Color-Concept.otf"))
-, m_pageLeft("<", game.resources.getFont("fonts/DejaVuSans.ttf"))
-, m_pageRight(">", game.resources.getFont("fonts/DejaVuSans.ttf"))
+, m_quitButton(game.resources.getTexture("images/button/menuButton.png"),game.resources.getTexture("images/button/menuButton.png"),game.resources.getTexture("images/button/menuButton.png"))
+, m_pageLeft(game.resources.getTexture("images/button/leftArrow.png"),game.resources.getTexture("images/button/leftArrow.png"),game.resources.getTexture("images/button/leftArrow.png"))
+, m_pageRight(game.resources.getTexture("images/button/rightArrow.png"),game.resources.getTexture("images/button/rightArrow.png"),game.resources.getTexture("images/button/rightArrow.png"))
 , m_rulesEntity(game.resources)
 {
 	setClearColor(gf::Color::Black);
@@ -36,15 +36,7 @@ RulesScene::RulesScene(GameHub& game)
 	m_rightAction.addScancodeKeyControl(gf::Scancode::Right);
 	addAction(m_rightAction);
 
-	auto setupButton = [&] (gf::TextButtonWidget& button, auto callback) {
-		button.setDefaultTextColor(gf::Color::Black);
-		button.setDefaultBackgroundColor(gf::Color::Gray(0.7f));
-		button.setSelectedTextColor(gf::Color::Black);
-		button.setSelectedBackgroundColor(gf::Color::fromRgba32(212,30,27,255));
-		button.setDisabledTextColor(gf::Color::Black);
-		button.setDisabledBackgroundColor(gf::Color::Red);
-		button.setAnchor(gf::Anchor::TopLeft);
-		button.setAlignment(gf::Alignment::Center);
+	auto setupButton = [&] (gf::SpriteWidget& button, auto callback) {
 		button.setCallback(callback);
 		m_widgets.addWidget(button);
 	};
@@ -116,25 +108,11 @@ void RulesScene::doProcessEvent(gf::Event& event) {
 void RulesScene::doRender(gf::RenderTarget& target, const gf::RenderStates &states) {
 
 	target.setView(getHudView());
-	gf::Coordinates coords(target);
+	gf::Coordinates coords(target);	
 
-	constexpr float characterSize = 0.075f;
-	constexpr gf::Vector2f backgroundSize(0.5f, 0.3f);
-	constexpr gf::Vector2f backgroundSizeArrow(0.1f, 0.3f);
+	m_quitButton.setAnchor(gf::Anchor::Center);
+	m_quitButton.setPosition(coords.getRelativePoint({0.5f, 0.825f}));
 	
-	float paragraphWidth = coords.getRelativeSize(backgroundSize - 0.05f).x;
-	const float paragraphWidthArrow = coords.getRelativeSize(backgroundSizeArrow - 0.05f).x;
-	const float paddingSize = coords.getRelativeSize({0.01f, 0.f}).x;
-	const unsigned resumeCharacterSize = coords.getRelativeCharacterSize(characterSize);
-
-	m_quitButton.setCharacterSize(resumeCharacterSize);
-	m_quitButton.setPosition(coords.getRelativePoint({0.275f, 0.825f}));
-	m_quitButton.setParagraphWidth(paragraphWidth);
-	m_quitButton.setPadding(paddingSize);
-	
-	m_pageLeft.setCharacterSize(resumeCharacterSize);
-	m_pageLeft.setParagraphWidth(paragraphWidthArrow);	
-	m_pageLeft.setPadding(paddingSize);
 	m_pageLeft.setAnchor(gf::Anchor::Center);
 	if(m_rulesEntity.m_index>0) {
 		m_pageLeft.setPosition(coords.getRelativePoint({0.15f, 0.4}));
@@ -142,9 +120,6 @@ void RulesScene::doRender(gf::RenderTarget& target, const gf::RenderStates &stat
 		m_pageLeft.setPosition(coords.getRelativePoint({-2.87f, 0.4}));
 	}
 	
-	m_pageRight.setCharacterSize(resumeCharacterSize);
-	m_pageRight.setParagraphWidth(paragraphWidthArrow);
-	m_pageRight.setPadding(paddingSize);
 	m_pageRight.setAnchor(gf::Anchor::Center);
 	if(m_rulesEntity.m_index<3) {
 		m_pageRight.setPosition(coords.getRelativePoint({0.85f, 0.4}));
@@ -152,9 +127,12 @@ void RulesScene::doRender(gf::RenderTarget& target, const gf::RenderStates &stat
 		m_pageRight.setPosition(coords.getRelativePoint({2.87f, 0.4}));
 	}
 	
+	m_pageRight.setScale(1.f/2.f);
+	m_pageLeft.setScale(1.f/2.f);
+	m_quitButton.setScale(1.f/2.f);
 
-	m_widgets.render(target, states);
 	m_rulesEntity.render(target,states);
+	m_widgets.render(target, states);
 }
 
 void RulesScene::doShow() {

@@ -11,10 +11,10 @@ MenuScene::MenuScene(GameHub& game)
 , m_triggerAction("TriggerAction")
 , m_quitAction("Quit")
 , m_fullscreenAction("Fullscreen")
-, m_play("Jouer", game.resources.getFont("fonts/Trajan-Color-Concept.otf"))
-, m_rules("Regles", game.resources.getFont("fonts/Trajan-Color-Concept.otf"))
-, m_quit("Quitter", game.resources.getFont("fonts/Trajan-Color-Concept.otf"))
-, m_settings("Parametres", game.resources.getFont("fonts/Trajan-Color-Concept.otf"))
+, m_play(game.resources.getTexture("images/button/JouerButton.png"),game.resources.getTexture("images/button/JouerButton.png"),game.resources.getTexture("images/button/JouerButton.png"))
+, m_rules(game.resources.getTexture("images/button/reglesButton.png"),game.resources.getTexture("images/button/reglesButton.png"),game.resources.getTexture("images/button/reglesButton.png"))
+, m_quit(game.resources.getTexture("images/button/quitterButton.png"),game.resources.getTexture("images/button/quitterButton.png"),game.resources.getTexture("images/button/quitterButton.png"))
+, m_settings(game.resources.getTexture("images/Cog.png"),game.resources.getTexture("images/Cog.png"),game.resources.getTexture("images/Cog.png"))
 {
 	setClearColor(gf::Color::Black);
 
@@ -34,35 +34,30 @@ MenuScene::MenuScene(GameHub& game)
 	m_triggerAction.addMouseButtonControl(gf::MouseButton::Left);
 	addAction(m_triggerAction);
 
-	auto setupButton = [&] (gf::TextButtonWidget& button, auto callback) {
-		button.setDefaultTextColor(gf::Color::Black);
-		button.setDefaultBackgroundColor(gf::Color::Gray(0.7f));
-		button.setSelectedTextColor(gf::Color::Black);
-		button.setSelectedBackgroundColor(gf::Color::fromRgba32(212,30,27,255));
-		button.setDisabledTextColor(gf::Color::Black);
-		button.setDisabledBackgroundColor(gf::Color::Red);
-		button.setAnchor(gf::Anchor::TopLeft);
-		button.setAlignment(gf::Alignment::Center);
+	auto setupButtonSprite = [&] (gf::SpriteWidget& button, auto callback) {
 		button.setCallback(callback);
 		m_widgets.addWidget(button);
 	};
 
-	setupButton(m_play, [&] () {
+	m_cog = 0;
+	m_settings.setScale(1.f/5.f);
+
+	setupButtonSprite(m_play, [&] () {
 		gf::Log::debug("Play pressed!\n");
 		m_game.replaceAllScenes(*m_game.play);
 	});
 
-	setupButton(m_rules, [&] () {
+	setupButtonSprite(m_rules, [&] () {
 		gf::Log::debug("Rules pressed!\n");
 		m_game.replaceAllScenes(*m_game.rules);
 	});
 
-	setupButton(m_quit, [&] () {
+	setupButtonSprite(m_quit, [&] () {
 		gf::Log::debug("Quit pressed!\n");
 		m_game.popAllScenes();
 	});
 
-	setupButton(m_settings, [&] () {
+	setupButtonSprite(m_settings, [&] () {
 		gf::Log::debug("Settings pressed!\n");
 		m_game.replaceAllScenes(*m_game.settings);
 	});	
@@ -108,52 +103,49 @@ void MenuScene::doRender(gf::RenderTarget& target, const gf::RenderStates &state
 	float backgroundHeight = coords.getRelativeSize(gf::vec(0.0f, 1.0f)).height;
 	float backgroundScale = backgroundHeight / m_backgroundTexture.getSize().height;
 
-	target.setView(getHudView());
-
-	unsigned titleCharacterSize = coords.getRelativeCharacterSize(0.1f);
-
-	gf::Text title("Tempete sur l echiquier", m_game.resources.getFont("../data/fonts/Trajan-Color-Concept.otf"), titleCharacterSize);
-	title.setColor(gf::Color::White);
-	title.setPosition(coords.getRelativePoint({ 0.5f, 0.1f }));
-	title.setAnchor(gf::Anchor::TopCenter);
-	target.draw(title, states);
-
-	constexpr float characterSize = 0.075f;
-	constexpr float spaceBetweenButton = 0.045f;
-	constexpr gf::Vector2f backgroundSize(0.5f, 0.3f);
-
-	const float paragraphWidth = coords.getRelativeSize(backgroundSize - 0.05f).x;
-	const float paddingSize = coords.getRelativeSize({0.01f, 0.f}).x;
-	const unsigned resumeCharacterSize = coords.getRelativeCharacterSize(characterSize);
-
-	m_play.setCharacterSize(resumeCharacterSize);
-	m_play.setPosition(coords.getRelativePoint({0.275f, 0.41f}));
-	m_play.setParagraphWidth(paragraphWidth);
-	m_play.setPadding(paddingSize);
-
-	m_rules.setCharacterSize(resumeCharacterSize);
-	m_rules.setPosition(coords.getRelativePoint({0.275f, 0.425f + characterSize + spaceBetweenButton}));
-	m_rules.setParagraphWidth(paragraphWidth);
-	m_rules.setPadding(paddingSize);
-
-	m_settings.setCharacterSize(resumeCharacterSize);
-	m_settings.setPosition(coords.getRelativePoint({0.275f, 0.425f + (characterSize + spaceBetweenButton) * 2}));
-	m_settings.setParagraphWidth(paragraphWidth);
-	m_settings.setPadding(paddingSize);
-
-	m_quit.setCharacterSize(resumeCharacterSize);
-	m_quit.setPosition(coords.getRelativePoint({0.275f, 0.425f + (characterSize + spaceBetweenButton) * 3}));
-	m_quit.setParagraphWidth(paragraphWidth);
-	m_quit.setPadding(paddingSize);
-	
-	m_widgets.render(target, states);
-
 	gf::Sprite background(m_backgroundTexture);
 	background.setColor(gf::Color::Opaque(0.20f));
 	background.setPosition(coords.getCenter());
 	background.setAnchor(gf::Anchor::Center);
 	background.setScale(backgroundScale);
+
+	target.setView(getHudView());
+
+	unsigned titleCharacterSize = coords.getRelativeCharacterSize(0.1f);
+
+	gf::Text title("Tempete sur l echiquier", m_game.resources.getFont("fonts/Trajan-Color-Concept.otf"), titleCharacterSize);
+	title.setColor(gf::Color::White);
+	title.setPosition(coords.getRelativePoint({ 0.5f, 0.1f }));
+	title.setAnchor(gf::Anchor::TopCenter);
+	target.draw(title, states);
+
+	constexpr float spaceBetweenButton = 0.2f;
+	constexpr gf::Vector2f backgroundSize(0.5f, 0.3f);
+	
+	m_play.setAnchor(gf::Anchor::Center);
+	m_play.setPosition(coords.getRelativePoint({0.5f, 0.41f}));
+	m_play.setScale(1.f/2.f);
+	
+	m_rules.setAnchor(gf::Anchor::Center);
+	m_rules.setPosition(coords.getRelativePoint({0.5f, 0.425f + spaceBetweenButton}));
+	m_rules.setScale(1.f/2.f);
+
+	m_quit.setAnchor(gf::Anchor::Center);
+	m_quit.setPosition(coords.getRelativePoint({0.5f, 0.425f + spaceBetweenButton * 2}));
+	m_quit.setScale(1.f/2.f);
+
+	m_settings.setPosition(coords.getRelativePoint({0.1f, 0.1f}));
+	m_settings.setAnchor(gf::Anchor::Center);
+	
+	if(m_settings.isSelected()){(m_cog < gf::Pi*2) ? m_cog+= 0.01 : m_cog=0 ;}
+	m_settings.setRotation(m_cog);
+	m_settings.setPosition(coords.getRelativePoint({0.9f, 0.9f }));
+
+
+	
 	target.draw(background, states);
+	m_widgets.render(target, states);
+	
 }
 
 void MenuScene::doShow() {
@@ -165,11 +157,11 @@ void MenuScene::doShow() {
 	m_rules.setDefault();
 	m_widgets.addWidget(m_rules);
 
-	m_settings.setDefault();
-	m_widgets.addWidget(m_settings);
-	
 	m_quit.setDefault();
 	m_widgets.addWidget(m_quit);
+
+	m_settings.setDefault();
+	m_widgets.addWidget(m_settings);
 
 	m_widgets.selectNextWidget();
 }

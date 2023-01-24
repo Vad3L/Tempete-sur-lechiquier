@@ -29,9 +29,9 @@ class RulesScene : public gf::Scene {
 	private:
 		GameHub& m_game;
 
-		gf::TextButtonWidget m_quitButton;
-		gf::TextButtonWidget m_pageLeft;
-		gf::TextButtonWidget m_pageRight;
+		gf::SpriteWidget m_quitButton;
+		gf::SpriteWidget m_pageLeft;
+		gf::SpriteWidget m_pageRight;
 		gf::WidgetContainer m_widgets;
 
 		gf::Action m_quitAction;
