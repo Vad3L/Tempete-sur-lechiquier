@@ -2,6 +2,8 @@
 
 #include "../GameHub.hpp"
 
+#include <fstream>
+
 SettingsScene::SettingsScene(GameHub& game, GameData &gameData)
 : gf::Scene(game.getRenderer().getSize())
 , m_game(game)
@@ -12,7 +14,6 @@ SettingsScene::SettingsScene(GameHub& game, GameData &gameData)
 , m_triggerAction("TriggerAction")
 , m_quitAction("QuitAction")
 , m_fullscreenAction("FullscreenAction")
-, m_backgroundTexture(game.resources.getTexture("images/startMenu1.png"))
 , m_quitButton("Menu", game.resources.getFont("fonts/Trajan-Color-Concept.otf"))
 , m_rightButton(">", game.resources.getFont("fonts/DejaVuSans.ttf"))
 , m_leftButton("<", game.resources.getFont("fonts/DejaVuSans.ttf"))
@@ -121,8 +122,6 @@ void SettingsScene::doRender(gf::RenderTarget& target, const gf::RenderStates &s
 
 	gf::Coordinates coords(target);
 
-	float backgroundHeight = coords.getRelativeSize(gf::vec(0.0f, 1.0f)).height;
-	float backgroundScale = backgroundHeight / m_backgroundTexture.getSize().height;
 
 	const float paragraphWidth = coords.getRelativeSize(backgroundSize - 0.05f).x;
 	const float paragraphWidthArrow = coords.getRelativeSize(backgroundSizeArrow - 0.05f).x;
@@ -181,3 +180,19 @@ void SettingsScene::doShow() {
 	
 }
 
+void SettingsScene::onActivityChange(bool active){
+	if(!active){	
+		gf::Log::debug("Scene settings desactive\n");
+		
+		std::ofstream file(std::string(GAME_CONFIGDIR)+"Settings.txt");
+
+		if(!file) {
+			gf::Log::error("Impossible d'ouvrir le fichier.\n");
+		}
+		else {
+			
+			file << m_gameData.m_style;
+			file.close();
+		}
+	}
+}

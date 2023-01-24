@@ -45,7 +45,7 @@ void TableBoardEntity::render(gf::RenderTarget &target, const gf::RenderStates &
 
 	switch (m_gameData.m_phase.getCurrentSubPhase()) {
 		case SubPhase::CLIQUER_CASES:
-			indication = "Choisisez des cases sur le plateau";
+			indication = "Choisissez des cases sur le plateau";
 		break;
 	}
 

@@ -12,8 +12,9 @@
 #include <gf/Log.h>
 #include <gf/WidgetContainer.h>
 #include <gf/Widgets.h>
+#include <gf/AnimatedSprite.h>
+#include <gf/Animation.h>
 
-#include <iostream>
 #include <map>
 
 #include "../../model/Plateau.hpp"
@@ -42,7 +43,6 @@ class GameScene : public gf::Scene {
 
 		void onActivityChange(bool active)  override;
 	private:
-		std::string m_ip;
 
 		GameHub &m_game;
 		Network &m_network;
@@ -72,7 +72,10 @@ class GameScene : public gf::Scene {
 
 		gf::WidgetContainer m_widgets;
 
-		
+		gf::Texture &m_loading;
+		gf::Font &m_font;	
+		gf::Animation m_animation;
+		gf::AnimatedSprite m_animatedSprite;
 
 };  
 

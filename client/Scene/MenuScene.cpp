@@ -5,7 +5,7 @@
 MenuScene::MenuScene(GameHub& game)
 : gf::Scene(game.getRenderer().getSize())
 , m_game(game)
-, m_backgroundTexture(game.resources.getTexture("images/startMenu1.png"))
+, m_backgroundTexture(game.resources.getTexture("images/StartMenu.png"))
 , m_upAction("UpAction")
 , m_downAction("DownAction")
 , m_triggerAction("TriggerAction")
@@ -122,17 +122,17 @@ void MenuScene::doRender(gf::RenderTarget& target, const gf::RenderStates &state
 	constexpr float spaceBetweenButton = 0.2f;
 	constexpr gf::Vector2f backgroundSize(0.5f, 0.3f);
 	
-	m_play.setAnchor(gf::Anchor::Center);
 	m_play.setPosition(coords.getRelativePoint({0.5f, 0.41f}));
 	m_play.setScale(1.f/2.f);
-	
-	m_rules.setAnchor(gf::Anchor::Center);
-	m_rules.setPosition(coords.getRelativePoint({0.5f, 0.425f + spaceBetweenButton}));
-	m_rules.setScale(1.f/2.f);
+	m_play.setAnchor(gf::Anchor::Center);
 
-	m_quit.setAnchor(gf::Anchor::Center);
+	m_rules.setPosition(coords.getRelativePoint({0.5f, 0.418f + spaceBetweenButton}));
+	m_rules.setScale(1.f/2.f);
+	m_rules.setAnchor(gf::Anchor::Center);
+
 	m_quit.setPosition(coords.getRelativePoint({0.5f, 0.425f + spaceBetweenButton * 2}));
 	m_quit.setScale(1.f/2.f);
+	m_quit.setAnchor(gf::Anchor::Center);
 
 	m_settings.setPosition(coords.getRelativePoint({0.1f, 0.1f}));
 	m_settings.setAnchor(gf::Anchor::Center);
@@ -140,12 +140,9 @@ void MenuScene::doRender(gf::RenderTarget& target, const gf::RenderStates &state
 	if(m_settings.isSelected()){(m_cog < gf::Pi*2) ? m_cog+= 0.01 : m_cog=0 ;}
 	m_settings.setRotation(m_cog);
 	m_settings.setPosition(coords.getRelativePoint({0.9f, 0.9f }));
-
-
 	
 	target.draw(background, states);
-	m_widgets.render(target, states);
-	
+	m_widgets.render(target, states);	
 }
 
 void MenuScene::doShow() {

@@ -4,7 +4,7 @@
 
 SettingsEntity::SettingsEntity(gf::ResourceManager& resources, GameData &gameData)
 : m_font(resources.getFont("fonts/Trajan-Color-Concept.otf"))
-, m_backgroundTexture(resources.getTexture("images/startMenu1.png"))
+, m_backgroundTexture(resources.getTexture("images/StartMenu.png"))
 , m_gameData(gameData)
 {
 

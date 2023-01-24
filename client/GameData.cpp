@@ -11,6 +11,21 @@ GameData::GameData()
 	for(Card c: deck.m_deck) {
 		m_cards.insert({c.m_num, c});
 	}
+
+	std::ifstream file(std::string(GAME_CONFIGDIR)+"Settings.txt");
+
+	if (!file) {
+		gf::Log::error("Impossible d'ouvrir le fichier.\n");
+	}else{
+		std::string line;
+	
+		while (std::getline(file, line)) {
+			m_style = atoi(line.c_str());	
+			break;
+		}
+		
+		file.close();
+	}
 }
 
 void GameData::reset() {

@@ -17,8 +17,17 @@ GameScene::GameScene(GameHub& game, Network &network, GameData &gameData)
 , m_endTurn("Fin tour", game.resources.getFont("fonts/Trajan-Color-Concept.otf"))
 , m_playCard("Activer carte", game.resources.getFont("fonts/Trajan-Color-Concept.otf"))
 , m_triggerAction("TriggerAction")
+, m_loading(game.resources.getTexture("images/Loading.png"))
+, m_font(game.resources.getFont("fonts/Trajan-Color-Concept.otf"))
 {
 	setClearColor(gf::Color::Black);
+	
+	//m_animation.addTileset(m_loading, gf::vec(1, 11), gf::milliseconds(400), 11);
+	m_animation.addTileset(m_loading, gf::vec(1, 10), gf::milliseconds(400), 10);
+	m_animatedSprite.setAnimation(m_animation);
+	m_animatedSprite.setPosition(m_game.getWindow().getSize()/2);
+  	m_animatedSprite.setOrigin({ 81.f / 2.0f, 84 / 2.0f });
+	m_animatedSprite.setAnchor(gf::Anchor::Center);
 	
 	m_quitAction.addKeycodeKeyControl(gf::Keycode::Escape);
 	addAction(m_quitAction);
@@ -49,6 +58,8 @@ GameScene::GameScene(GameHub& game, Network &network, GameData &gameData)
 	m_views.addView(m_cardsView);
 
 	m_views.setInitialFramebufferSize({game.getRenderer().getSize()});
+
+	m_loading.setSmooth(true);
 
 	gf::Coordinates coordsWidget({500,500});
 	auto setupButton = [&] (gf::TextButtonWidget& button, gf::Vector2f position,  auto callback) {
@@ -293,6 +304,20 @@ void GameScene::doProcessEvent(gf::Event& event) {
 }
 
 void GameScene::doRender(gf::RenderTarget& target, const gf::RenderStates &states) {
+	if(m_gameData.m_gameStatus == ChessStatus::NO_STARTED) {
+		target.setView(getHudView());
+		gf::Coordinates coords(target);
+
+		gf::Text text("En attente d un autre joueur", m_font, 50);
+		text.setPosition(coords.getRelativePoint({0.5f, 0.35f }));	
+		text.setAnchor(gf::Anchor::Center);
+		text.setColor(gf::Color::White);
+
+		target.draw(text, states);
+		target.draw(m_animatedSprite, states);
+
+		return;
+	}
 	
 	target.setView(m_tableBoardView);
 	m_tableBoardEntity.render(target, states);
@@ -306,11 +331,12 @@ void GameScene::doRender(gf::RenderTarget& target, const gf::RenderStates &state
 	target.setView(getHudView());
 	m_poseEntity.render(target, states);
 
-	target.setView(getHudView());
 	m_widgets.render(target, states);
 }
 
 void GameScene::doUpdate(gf::Time time) {
+	m_animatedSprite.update(time);
+
 	if(!m_network.m_queue.poll(m_packet)) {
 		return;
 	}

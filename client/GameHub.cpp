@@ -13,9 +13,9 @@ void GameHub::loadingDownloadAssets() {
 }
 
 void GameHub::loadingAssets(Network &network, GameData &data) {
-	gf::Log::info("debut chargment\n");
+	gf::Log::info("debut chargement\n");
 	start = std::make_unique<StartScene>(*this);
-	gf::Log::info("fin chargment start scene\n");
+	gf::Log::info("fin chargement start scene\n");
 	menu = std::make_unique<MenuScene>(*this);
 	gf::Log::info("fin chargement menu scene\n");
 	rules = std::make_unique<RulesScene>(*this);

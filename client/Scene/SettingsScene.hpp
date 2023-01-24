@@ -26,13 +26,12 @@ class SettingsScene : public gf::Scene {
 		void doHandleActions(gf::Window& window) override;
 		void doRender(gf::RenderTarget& target, const gf::RenderStates &states) override;
 		void doShow() override;
+		void onActivityChange(bool active) override;
 		
 		void changeTexture(char c);
 	
 		GameHub &m_game;
 		GameData &m_gameData;
-
-		gf::Texture& m_backgroundTexture;
 
 		gf::Action m_leftAction;
 		gf::Action m_rightAction;
