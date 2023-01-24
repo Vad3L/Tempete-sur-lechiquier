@@ -94,7 +94,21 @@ GameScene::GameScene(GameHub& game, Network &network, GameData &gameData)
 		CardRep cardRep;
 		cardRep.err = CodeRep::CARD;
 		cardRep.card = -1; 
+		cardRep.a = gf::Vector2i(-1);
+		cardRep.b = gf::Vector2i(-1);
 		
+		auto it = m_gameData.m_plateau.m_casesClicked.begin();
+
+		if(it != m_gameData.m_plateau.m_casesClicked.end()) {
+			cardRep.a = *it;
+		}
+
+		it++;
+
+		if(it != m_gameData.m_plateau.m_casesClicked.end()) {
+			cardRep.b = *it;
+		}
+
 		for(int i=0; i < m_gameData.m_main.size(); i++) {
 			if(m_gameData.m_main[i].m_num == -1) {
 				cardRep.card = i; 
@@ -102,7 +116,6 @@ GameScene::GameScene(GameHub& game, Network &network, GameData &gameData)
 			}
 		}
 		
-		// pour l'instant pas a et b car pas de case clique
 		gf::Log::debug("envoie au serveur la card %li\n", cardRep.card);
 		m_network.send(cardRep);
 	});
@@ -201,6 +214,25 @@ void GameScene::doProcessEvent(gf::Event& event) {
 
 	Phase currentPhase = m_gameData.m_phase.getCurrentPhase();
 	
+
+	if(m_gameData.m_phase.getCurrentSubPhase() == SubPhase::CLIQUER_CASES) {
+		gf::Vector2i v = m_boardEntity.getCaseSelected(m_boardView.getSize(), m_game.getRenderer().mapPixelToCoords(event.mouseButton.coords, m_boardView));
+		if(v.x == -1 || v.y == -1) {
+			return;
+		}
+		
+		auto it = std::find(m_gameData.m_plateau.m_casesClicked.begin(), m_gameData.m_plateau.m_casesClicked.end(), v);
+		if(it != m_gameData.m_plateau.m_casesClicked.end()) {
+			m_gameData.m_plateau.m_casesClicked.erase(it);
+			return;
+		}
+		
+		if(m_gameData.m_plateau.m_casesClicked.size()<2) {
+			m_gameData.m_plateau.m_casesClicked.push_back(v);
+		}
+		return;
+	}
+
 	if(currentPhase == Phase::APRES_COUP || currentPhase == Phase::AVANT_COUP && !m_gameData.m_plateau.m_promotion) {
 		int numCarte = m_mainEntity.getCardSelected(m_cardsView.getSize(), m_game.getRenderer().mapPixelToCoords(event.mouseButton.coords, m_cardsView));
 
@@ -257,14 +289,6 @@ void GameScene::doProcessEvent(gf::Event& event) {
 				m_network.send(coup);
 			}
 		}
-	}
-
-	if(m_gameData.m_phase.getCurrentSubPhase() == SubPhase::CLIQUER_CASES) {
-		gf::Vector2i v = m_boardEntity.getCaseSelected(m_boardView.getSize(), m_game.getRenderer().mapPixelToCoords(event.mouseButton.coords, m_boardView));
-		if(v.x == -1 || v.y == -1) {
-			return;
-		}
-		m_gameData.m_plateau.m_casesClicked.push_back(v);
 	}
 }
 
@@ -433,16 +457,15 @@ void GameScene::doUpdate(gf::Time time) {
 			m_gameData.m_cards[carteRep.num].m_execute(m_gameData.m_plateau, carteRep.a, carteRep.b);
 			
 			m_gameData.m_plateau.playerInEchec = m_gameData.m_plateau.isInEchec(!m_gameData.m_plateau.turnTo);
-
 			m_gameData.m_plateau.allPositions.push_back(m_gameData.m_plateau.getFen());
 
 			m_poseEntity.m_cardDiscard = m_gameData.m_cards[carteRep.num];
+			m_gameData.m_plateau.m_casesClicked.clear();
 
 			if(m_gameData.m_phase.getCurrentPhase() != Phase::PAS_MON_TOUR) {
 				m_gameData.m_phase.nextPhaseCard(m_gameData.m_cards[carteRep.num]);
 				
 				m_gameData.m_phase.setCurrentSubPhase(SubPhase::NONE);
-				m_gameData.m_plateau.m_casesClicked.clear();
 
 				m_poseEntity.m_cardPose = Card();
 				if(m_gameData.m_phase.getCurrentPhase() == Phase::PAS_MON_TOUR) { //carte mais fin a mon tour

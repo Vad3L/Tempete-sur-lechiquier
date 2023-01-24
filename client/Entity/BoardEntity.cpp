@@ -54,7 +54,14 @@ void BoardEntity::render(gf::RenderTarget &target, const gf::RenderStates &state
 		} else if(m_gameData.m_plateau.lastCoup.size() >= 2 && (pos == m_gameData.m_plateau.lastCoup.back() || pos == m_gameData.m_plateau.lastCoup[m_gameData.m_plateau.lastCoup.size()-2])) {
 			shape.setColor(gf::Color::fromRgba32(250, 190, 88, 200));
 		}else if(std::find(m_gameData.m_plateau.m_casesClicked.begin(),m_gameData.m_plateau.m_casesClicked.end(), pos) != m_gameData.m_plateau.m_casesClicked.end()) {
-			shape.setColor(gf::Color::Blue);
+			switch (m_gameData.m_phase.getCurrentPhase()) {
+				case Phase::AVANT_COUP:
+					shape.setColor(gf::Color::Yellow);
+					break;
+				case Phase::APRES_COUP:
+					shape.setColor(gf::Color::Green);
+					break;
+			}
 		}else {
 
 			if (y % 2 == 0) {

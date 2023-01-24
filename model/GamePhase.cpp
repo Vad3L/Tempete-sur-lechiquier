@@ -43,4 +43,12 @@ void GamePhase::nextPhaseCard(Card cardPlay){
 			m_currentPhase = Phase::PAS_MON_TOUR;
 		}
 	}
+
+	if(cardPlay.m_action == Action::CHOOSE_CASES) {
+		if(cardPlay.m_effect == Effect::NONE) {
+			m_currentPhase = (Phase)((int)m_currentPhase+1);
+		}else if(cardPlay.m_effect == Effect::REPLACE_COUP) {
+			m_currentPhase = Phase::PAS_MON_TOUR;
+		}
+	}
 }
