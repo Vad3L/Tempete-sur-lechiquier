@@ -53,8 +53,6 @@ class GameScene : public gf::Scene {
 		gf::Action m_endTurnAction;
 		gf::Action m_playCardAction;
 		gf::Action m_triggerAction;
-	
-		bool m_promotion;
 
 		gf::Packet m_packet;
 

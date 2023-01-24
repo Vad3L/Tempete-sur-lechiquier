@@ -14,7 +14,6 @@ GameScene::GameScene(GameHub& game, Network &network, GameData &gameData)
 , m_mainEntity(game.resources, m_gameData)
 , m_tableBoardEntity(game.resources, m_gameData)
 , m_poseEntity(game.resources, m_gameData)
-, m_promotion(false)
 , m_endTurn("Fin tour", game.resources.getFont("fonts/Trajan-Color-Concept.otf"))
 , m_playCard("Activer carte", game.resources.getFont("fonts/Trajan-Color-Concept.otf"))
 , m_triggerAction("TriggerAction")
@@ -82,6 +81,8 @@ GameScene::GameScene(GameHub& game, Network &network, GameData &gameData)
 			m_network.send(cardRep);
 			m_gameData.m_plateau.turnTo = !m_gameData.m_plateau.turnTo;
 			m_poseEntity.returnCardHand();
+			m_gameData.m_phase.setCurrentSubPhase(SubPhase::NONE);
+			m_gameData.m_plateau.m_casesClicked.clear();
 		}
 	});
 
@@ -93,7 +94,21 @@ GameScene::GameScene(GameHub& game, Network &network, GameData &gameData)
 		CardRep cardRep;
 		cardRep.err = CodeRep::CARD;
 		cardRep.card = -1; 
+		cardRep.a = gf::Vector2i(-1);
+		cardRep.b = gf::Vector2i(-1);
 		
+		auto it = m_gameData.m_plateau.m_casesClicked.begin();
+
+		if(it != m_gameData.m_plateau.m_casesClicked.end()) {
+			cardRep.a = *it;
+		}
+
+		it++;
+
+		if(it != m_gameData.m_plateau.m_casesClicked.end()) {
+			cardRep.b = *it;
+		}
+
 		for(int i=0; i < m_gameData.m_main.size(); i++) {
 			if(m_gameData.m_main[i].m_num == -1) {
 				cardRep.card = i; 
@@ -101,7 +116,6 @@ GameScene::GameScene(GameHub& game, Network &network, GameData &gameData)
 			}
 		}
 		
-		// pour l'instant pas a et b car pas de case clique
 		gf::Log::debug("envoie au serveur la card %li\n", cardRep.card);
 		m_network.send(cardRep);
 	});
@@ -193,12 +207,33 @@ void GameScene::doProcessEvent(gf::Event& event) {
 
 	if(m_poseEntity.m_cardPose.m_num!=-1 && m_poseEntity.clickIsInCardPose(getHudView().getSize(), m_game.getRenderer().mapPixelToCoords(event.mouseButton.coords, getHudView()))) {
 		m_poseEntity.returnCardHand();
+		m_gameData.m_phase.setCurrentSubPhase(SubPhase::NONE);
+		m_gameData.m_plateau.m_casesClicked.clear();
 		return;
 	}
 
 	Phase currentPhase = m_gameData.m_phase.getCurrentPhase();
 	
-	if(currentPhase == Phase::APRES_COUP || currentPhase == Phase::AVANT_COUP) {
+
+	if(m_gameData.m_phase.getCurrentSubPhase() == SubPhase::CLIQUER_CASES) {
+		gf::Vector2i v = m_boardEntity.getCaseSelected(m_boardView.getSize(), m_game.getRenderer().mapPixelToCoords(event.mouseButton.coords, m_boardView));
+		if(v.x == -1 || v.y == -1) {
+			return;
+		}
+		
+		auto it = std::find(m_gameData.m_plateau.m_casesClicked.begin(), m_gameData.m_plateau.m_casesClicked.end(), v);
+		if(it != m_gameData.m_plateau.m_casesClicked.end()) {
+			m_gameData.m_plateau.m_casesClicked.erase(it);
+			return;
+		}
+		
+		if(m_gameData.m_plateau.m_casesClicked.size()<2) {
+			m_gameData.m_plateau.m_casesClicked.push_back(v);
+		}
+		return;
+	}
+
+	if(currentPhase == Phase::APRES_COUP || currentPhase == Phase::AVANT_COUP && !m_gameData.m_plateau.m_promotion) {
 		int numCarte = m_mainEntity.getCardSelected(m_cardsView.getSize(), m_game.getRenderer().mapPixelToCoords(event.mouseButton.coords, m_cardsView));
 
 		if(numCarte!=-1) {
@@ -209,18 +244,23 @@ void GameScene::doProcessEvent(gf::Event& event) {
 
 			if(playable && m_poseEntity.m_cardPose.m_num == -1) {
 				m_poseEntity.m_cardPose = m_gameData.m_main[numCarte];
-				m_gameData.m_main[numCarte] = Card(); 
+				if(m_gameData.m_main[numCarte].m_action == Action::CHOOSE_CASES) {
+					m_gameData.m_phase.setCurrentSubPhase(SubPhase::CLIQUER_CASES);
+				}
+				m_gameData.m_main[numCarte] = Card();
+				m_gameData.m_plateau.coordCaseSelected = gf::Vector2i(-1);
+				m_gameData.m_plateau.moveAvailable.clear();
 			}
 		}
 	}
 	
-	if(currentPhase==Phase::COUP || currentPhase==Phase::AVANT_COUP) { 
+	if(currentPhase==Phase::COUP || (currentPhase==Phase::AVANT_COUP  && m_poseEntity.m_cardPose.m_num==-1)) { 
 		gf::Vector2i v = m_boardEntity.getCaseSelected(m_boardView.getSize(), m_game.getRenderer().mapPixelToCoords(event.mouseButton.coords, m_boardView));
 		if(v.x == -1 || v.y == -1) {
 			return;
 		}
 
-		if(m_promotion) {
+		if(m_gameData.m_plateau.m_promotion) {
 
 			PromotionRep promo;
 
@@ -312,8 +352,8 @@ void GameScene::doUpdate(gf::Time time) {
 			}
 		}else if(repPartie.err == CodeRep::TURN_START) {
 			gf::Log::info("mon tour commence\n");
-			//assert(m_gameData.m_phase.getCurrentPhase()==Phase::PAS_MON_TOUR);
 			m_gameData.m_phase.setCurrentPhase(Phase::AVANT_COUP);
+			assert(m_gameData.m_phase.getNbCartePlay()==0);
 			m_gameData.m_plateau.turnTo = m_gameData.m_myColor;
 		}
 	}	 
@@ -342,17 +382,17 @@ void GameScene::doUpdate(gf::Time time) {
 			m_poseEntity.returnCardHand();
 
 			if(pieceStart.getType() == ChessPiece::PAWN &&( coupRep.posEnd.y == 0 || coupRep.posEnd.y == 7)) {
-				m_promotion = true;
+				m_gameData.m_plateau.m_promotion = true;
 			}else {
 				if(m_gameData.m_phase.getCurrentPhase() != Phase::PAS_MON_TOUR) {
+			
 					m_gameData.m_phase.setCurrentPhase(Phase::APRES_COUP);
 					if(m_gameData.m_phase.getNbCartePlay() !=0) {
-						
 						m_gameData.m_phase.setCurrentPhase(Phase::PAS_MON_TOUR);
 						m_gameData.m_plateau.turnTo = !m_gameData.m_plateau.turnTo;	
 					}
 				}
-				m_promotion = false;
+				m_gameData.m_plateau.m_promotion = false;
 			}
 			
 		}else if(coupRep.err == CodeRep::COUP_NO_VALIDE) {
@@ -362,7 +402,7 @@ void GameScene::doUpdate(gf::Time time) {
 
 	if(m_packet.getType() == PromotionRep::type) {
 		gf::Log::info("promo recu serveur\n");
-		assert(m_promotion);
+		assert(m_gameData.m_plateau.m_promotion);
 
 		auto promoRep = m_packet.as<PromotionRep>();
 		if(promoRep.err == CodeRep::NONE) {
@@ -384,7 +424,7 @@ void GameScene::doUpdate(gf::Time time) {
 					m_gameData.m_plateau.turnTo = !m_gameData.m_plateau.turnTo;	
 				}
 			}
-			m_promotion = false;
+			m_gameData.m_plateau.m_promotion = false;
 		}else {
 			gf::Log::debug("------PROMOTION INVALIDE------\n");
 		}
@@ -417,13 +457,16 @@ void GameScene::doUpdate(gf::Time time) {
 			m_gameData.m_cards[carteRep.num].m_execute(m_gameData.m_plateau, carteRep.a, carteRep.b);
 			
 			m_gameData.m_plateau.playerInEchec = m_gameData.m_plateau.isInEchec(!m_gameData.m_plateau.turnTo);
-
 			m_gameData.m_plateau.allPositions.push_back(m_gameData.m_plateau.getFen());
 
 			m_poseEntity.m_cardDiscard = m_gameData.m_cards[carteRep.num];
+			m_gameData.m_plateau.m_casesClicked.clear();
 
 			if(m_gameData.m_phase.getCurrentPhase() != Phase::PAS_MON_TOUR) {
 				m_gameData.m_phase.nextPhaseCard(m_gameData.m_cards[carteRep.num]);
+				
+				m_gameData.m_phase.setCurrentSubPhase(SubPhase::NONE);
+
 				m_poseEntity.m_cardPose = Card();
 				if(m_gameData.m_phase.getCurrentPhase() == Phase::PAS_MON_TOUR) { //carte mais fin a mon tour
 					m_gameData.m_plateau.turnTo = !m_gameData.m_plateau.turnTo;	
@@ -454,6 +497,8 @@ void GameScene::onActivityChange(bool active) {
 		m_network.deconnect();
 		m_boardView.setRotation(0);
 		m_gameData.reset();
+		m_poseEntity.m_cardPose = Card();
+		m_poseEntity.m_cardDiscard = Card();
 	}
 }
 

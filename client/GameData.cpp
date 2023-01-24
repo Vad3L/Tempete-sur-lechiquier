@@ -16,6 +16,7 @@ GameData::GameData()
 void GameData::reset() {
 	m_myColor = ChessColor::NONE;
 	m_phase.setCurrentPhase(Phase::PAS_MON_TOUR);
+	m_phase.setCurrentSubPhase(SubPhase::NONE);
 	m_plateau = Plateau();
 	m_gameStatus = ChessStatus::NO_STARTED;
 	m_main.fill(Card()); 

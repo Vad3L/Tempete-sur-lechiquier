@@ -29,7 +29,7 @@ Deck::Deck(std::vector<int> numCards){
 		
 	//format du fichier
 	//NUM;NAME;DESCRIPTION;TURN;ACTION;EFFECT (3 dernières valeurs sont des entier correspondant à la la valeur dans leur énum)
-	for(int k =0 ;k<2;k++) {
+	for(int k =0 ;k<11;k++) {
 		std::ifstream file(std::string(CARDS_DESCRIPTIONDIR)+"descriptionCards.txt");
 
 		std::string delimiter = ";";

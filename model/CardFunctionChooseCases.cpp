@@ -80,6 +80,7 @@ void QuatreCoin (Plateau& p, gf::Vector2i s, gf::Vector2i e) {
 	inBoard(s);
 	inBoard(e);
 	Case &c = p.state[s.y * 8 + s.x];
+	// todo ne pas utiliser e mais cherhce le quatrième coins vide
 	Case &d = p.state[e.y * 8 + e.x];
 	d.piece = c.piece;
 	c.piece = Piece(ChessColor::NONE, ChessPiece::NONE);

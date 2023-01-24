@@ -9,12 +9,8 @@ bool checkCoupValide(Plateau& plateau, gf::Vector2i coordStart, gf::Vector2i coo
 	Piece pieceStart = plateau.state[coordStart.y * 8 + coordStart.x].piece;
 	Piece p = plateau.state[coordEnd.y * 8 + coordEnd.x].piece;
 
-	ChessColor last = ChessColor::BLACK;
-	if(plateau.lastCoup.size() > 0) {
-		last = plateau.state[plateau.lastCoup.back().y * 8 + plateau.lastCoup.back().x].piece.getColor();
-	}
 	
-	if(pieceStart.getColor() == ChessColor::NONE || pieceStart.getColor() == last) {
+	if(pieceStart.getColor() == ChessColor::NONE || pieceStart.getColor() != plateau.turnTo) {
 		return false;
 	}
 
@@ -221,9 +217,9 @@ int performTurn (Deck& d, GamePhase& gp, Plateau& p, gf::TcpSocket& player, gf::
 		CardRep card = pack.as<CardRep>();
 		checkCardPacketValidity(p, card, hand, gp.getCurrentPhase());
 		if (card.err == CodeRep::NONE) {
+			gp.nextPhaseCard(hand[card.card]);
 			performCard(p, card, hand, d);
 			sendHand(player, hand[card.card]);
-			gp.nextPhaseCard(hand[card.card]);
 		} else {
 			return 2;
 		}
@@ -251,9 +247,10 @@ int performTurn (Deck& d, GamePhase& gp, Plateau& p, gf::TcpSocket& player, gf::
 			CoupRep coup = pack.as<CoupRep>();
 			checkCoupPacketValidity(p, coup);
 			if (coup.err != CodeRep::NONE) {
+				gf::Log::debug("in if\n");
 				return 2;
 			}
-
+			gf::Log::debug("Coup\n");
 			promotion = performCoup(p, coup);
 		
 			if (!promotion) {
@@ -269,9 +266,9 @@ int performTurn (Deck& d, GamePhase& gp, Plateau& p, gf::TcpSocket& player, gf::
 		CardRep card = pack.as<CardRep>();
 		checkCardPacketValidity(p, card, hand, gp.getCurrentPhase());
 		if (card.err == CodeRep::NONE) {
+			gp.nextPhaseCard(hand[card.card]);
 			performCard(p, card, hand, d);
 			sendHand(player, hand[card.card]);
-			gp.nextPhaseCard(hand[card.card]);
 		} else if (card.err == CodeRep::NO_CARD) {
 			gp.setCurrentPhase(Phase::PAS_MON_TOUR);
 		} 

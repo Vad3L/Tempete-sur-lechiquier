@@ -32,7 +32,6 @@ void BoardEntity::render(gf::RenderTarget &target, const gf::RenderStates &state
 	myTurn = (lastColor != m_gameData.m_myColor);
 
 	gf::Texture &texture = (m_gameData.m_style == 0) ? m_backgroundTexture : m_backgroundTexture2;
-	bool promotion = false;
 	gf::Vector2f pieceToPromuteCoords;
 	ChessColor pieceToPromuteColor;
 	
@@ -54,6 +53,15 @@ void BoardEntity::render(gf::RenderTarget &target, const gf::RenderStates &state
 			shape.setColor(gf::Color::fromRgba32(255, 0, 0, 100));
 		} else if(m_gameData.m_plateau.lastCoup.size() >= 2 && (pos == m_gameData.m_plateau.lastCoup.back() || pos == m_gameData.m_plateau.lastCoup[m_gameData.m_plateau.lastCoup.size()-2])) {
 			shape.setColor(gf::Color::fromRgba32(250, 190, 88, 200));
+		}else if(std::find(m_gameData.m_plateau.m_casesClicked.begin(),m_gameData.m_plateau.m_casesClicked.end(), pos) != m_gameData.m_plateau.m_casesClicked.end()) {
+			switch (m_gameData.m_phase.getCurrentPhase()) {
+				case Phase::AVANT_COUP:
+					shape.setColor(gf::Color::Yellow);
+					break;
+				case Phase::APRES_COUP:
+					shape.setColor(gf::Color::Green);
+					break;
+			}
 		}else {
 
 			if (y % 2 == 0) {
@@ -93,7 +101,6 @@ void BoardEntity::render(gf::RenderTarget &target, const gf::RenderStates &state
 			
 
 			if(c.piece.getType() == ChessPiece::PAWN && (y == 0 || y == 7) && !myTurn) {
-				promotion = true;
 				pieceToPromuteCoords.x = x;
 				pieceToPromuteCoords.y = y;
 				pieceToPromuteColor = c.piece.getColor();
@@ -125,7 +132,7 @@ void BoardEntity::render(gf::RenderTarget &target, const gf::RenderStates &state
 		}
 	}
 
-	if(promotion){
+	if(m_gameData.m_plateau.m_promotion){
 		gf::RectangleShape rectangle({sizeSquare-sizeLine,((sizeSquare*4)-sizeLine)});
 		rectangle.setColor(gf::Color::White);
 		rectangle.setOutlineColor(gf::Color::Black);
