@@ -5,7 +5,7 @@
 4;ANNULATION;Le déplacement de votre adversaire est annulé. Il doit rejouer un autre coup, avec la même pièce ou une autre.;3;0;2
 5;ANTI-GANG;Jouez cette carte lorsque votre adversaire vous annonce un échec, même mat. Il doit alors remettre la pièce qu'il vient de jouer là où elle était avant, et ne peut rien jouer d'autre.;3;0;2
 6;APARTHEID;Retirez immédiatement de l'échiquier tous les pions noirs qui se trouvent sur des cases blanches, et tous les pions blancs qui se trouvent sur des cases noires;1;0;0
-7;ASILE;Sur l'échiquier, permutez l'un de vos Fous avec l'une de vos Tours.;1;0;0
+7;ASILE;Sur l'échiquier, permutez l'un de vos Fous avec l'une de vos Tours.;1;1;0
 8;ATTENTAT;En jouant cette carte, notez sur un papier les coordonnées d'une case de l'échiquier, vide ou occupée par l'une de vos pièces. Dès qu'une pièce adverse s'arrête sur cette case, une bombe explose et la pièce est retirée du jeu. S'il s'agit du Roi, la bombe explose, mais le Roi reste en place.;1;1;0
 9;AUTODEFENSE;Votre adversaire veut prendre l'une de vos pièces, mais celle-ci se défend. La pièce attaquée reste en place, et c'est la pièce attaquante qui est éliminée.;3;0;0
 10;AVION PRIVE;Déplacez votre Roi pour l'amener sur n'importe quelle case libre de l'échiquier.;0;0;1

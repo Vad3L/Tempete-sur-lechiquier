@@ -94,10 +94,10 @@ bool Chameau (Plateau& p, gf::Vector2i s,gf::Vector2i e) {
 	piece = Piece(playerColor, ChessPiece::CAMEL);
 
 	bool res = p.isInEchec(p.turnTo) || p.isInEchec(!p.turnTo, gf::Vector2i(-1), caseProvocateEchec);
-	if (!res) {
+	if (res) {
 		piece = Piece(playerColor, ChessPiece::KNIGHT);
 	}
-	return res;
+	return !res;
 }
 
 bool ChameauIsPlayable (Plateau& p, Phase f) {
