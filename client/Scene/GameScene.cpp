@@ -23,10 +23,10 @@ GameScene::GameScene(GameHub& game, Network &network, GameData &gameData)
 	setClearColor(gf::Color::Black);
 	
 	//m_animation.addTileset(m_loading, gf::vec(1, 11), gf::milliseconds(400), 11);
-	m_animation.addTileset(m_loading, gf::vec(1, 10), gf::milliseconds(400), 10);
+	m_animation.addTileset(m_loading, gf::vec(12, 1), gf::milliseconds(400), 12);
 	m_animatedSprite.setAnimation(m_animation);
 	m_animatedSprite.setPosition(m_game.getWindow().getSize()/2);
-  	m_animatedSprite.setOrigin({ 81.f / 2.0f, 84 / 2.0f });
+  	m_animatedSprite.setOrigin({ 84.f / 2.0f, 84.f / 2.0f });
 	m_animatedSprite.setAnchor(gf::Anchor::Center);
 	
 	m_quitAction.addKeycodeKeyControl(gf::Keycode::Escape);
