@@ -338,3 +338,7 @@ std::vector<gf::Vector2i> Piece::getCasesPassPrincess (gf::Vector2i posStart, gf
 
 	return newpos;
 }
+
+bool Piece::operator== (const Piece &p) const {
+	return color == p.color && type == p.type;
+}
