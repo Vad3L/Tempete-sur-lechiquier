@@ -1,7 +1,7 @@
 #include "Deck.hpp"
 
 Deck::Deck(std::vector<int> numCards){
-	std::map<int, std::function<bool(Plateau&, gf::Vector2i, gf::Vector2i)>> m_execsfuncs;
+	std::map<int, std::function<bool(Plateau&, std::vector<gf::Vector2i>)>> m_execsfuncs;
 	std::map<int, std::function<bool(Plateau&, Phase)>> m_isplayfuncs;
 
 	m_execsfuncs.insert({ 29, Chameau });	
@@ -30,7 +30,7 @@ Deck::Deck(std::vector<int> numCards){
 
 		
 	//format du fichier
-	//NUM;NAME;DESCRIPTION;TURN;ACTION;EFFECT (3 dernières valeurs sont des entier correspondant à la la valeur dans leur énum)
+	//NUM;NAME;DESCRIPTION;TURN;ACTION;EFFECT;nbCase (3 dernières valeurs sont des entier correspondant à la la valeur dans leur énum)
 	for(int k =0 ;k<11;k++) {
 		std::ifstream file(std::string(CARDS_DESCRIPTIONDIR)+"descriptionCards.txt");
 
@@ -42,8 +42,8 @@ Deck::Deck(std::vector<int> numCards){
 			std::string line;
 		
 			while (std::getline(file, line)) {
-				std::string tab[6];
-				for(int i=0 ; i<6 ; i++) {
+				std::array<std::string,7> tab;
+				for(int i=0 ; i<tab.size() ; i++) {
 					
 					std::size_t index = line.find(delimiter);
 					tab[i] = line.substr(0, index);
@@ -51,22 +51,24 @@ Deck::Deck(std::vector<int> numCards){
 					line = line.substr(index+1);
 				}
 
-				gf::Log::info("card /%s/,/%s/,/%s/,/%s/,/%s/,/%s/\n", tab[0].c_str(), tab[1].c_str(), tab[2].substr(0,50).c_str(), tab[3].c_str(), tab[4].c_str(), tab[5].c_str());
+				gf::Log::info("card /%s/,/%s/,/%s/,/%s/,/%s/,/%s/,/%s/\n", tab[0].c_str(), tab[1].c_str(), tab[2].substr(0,50).c_str(), tab[3].c_str(), tab[4].c_str(), tab[5].c_str(), tab[6].c_str());
 				//tab[0] num
 				//tab[1] name
 				//tab[2] description
 				//tab[3] num turn
 				//tab[4] num action
 				//tab[5] num effect
+				//tab[6] nub click max possible
 				int num = atoi(tab[0].c_str());
 				int numTurn = atoi(tab[3].c_str());
 				int numAction = atoi(tab[4].c_str());
 				int numEffect = atoi(tab[5].c_str());
+				int nbClickPossible = atoi(tab[6].c_str());
 				Turn turn = (Turn)numTurn;
 				Action action = (Action)numAction;
 				Effect effect = (Effect)numEffect;
 
-				Card c(num, tab[1], tab[2], turn, action, effect);
+				Card c(num, tab[1], tab[2], turn, action, effect, nbClickPossible);
 
 				c.m_isPlayable = m_isplayfuncs[num];
 				c.m_execute = m_execsfuncs[num];

@@ -14,7 +14,7 @@ bool NoCardPlayable (Plateau& p, Phase f);
 
 bool Princess (Plateau& p, std::vector<gf::Vector2i> tabVector);
 bool BombeAtomique (Plateau& p, std::vector<gf::Vector2i> tabVector);
-bool Vampirisme (Plateau& p, gf::Vector2i s = gf::Vector2i(-1), gf::Vector2i e = gf::Vector2i(-1));
+bool Vampirisme (Plateau& p, std::vector<gf::Vector2i> tabVector);
 bool VisitesOfficielles (Plateau& p, std::vector<gf::Vector2i> tabVector); 
 
 bool PrincessIsPlayable (Plateau& p, Phase f);

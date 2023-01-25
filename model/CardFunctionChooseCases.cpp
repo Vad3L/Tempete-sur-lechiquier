@@ -49,7 +49,7 @@ bool checkGoodChoose(Plateau &p, Piece &pieceChooseOne, Piece refA , Piece &piec
 
 bool ChevalFou (Plateau& p, std::vector<gf::Vector2i> tabVector) {
 	gf::Log::info("Apelle ChevalFou execute\n");
-	if(!inBoard(tabVector[0]) || !inBoard([1])) {
+	if(!inBoard(tabVector[0]) || !inBoard(tabVector[1])) {
 		return false;
 	}
 	
@@ -74,7 +74,7 @@ bool ChevalFouIsPlayable (Plateau& p, Phase f) {
 }
 
 
-bool Chameau (Plateau& p, gf::Vector2i s,gf::Vector2i e) {
+bool Chameau (Plateau& p, std::vector<gf::Vector2i> tabVector) {
 	gf::Log::info("Apelle Chameau execute\n");
 	if(!inBoard(tabVector[0])) {
 		return false;
@@ -165,7 +165,7 @@ bool QuatreCoinIsPlayable (Plateau& p, Phase f) {
 bool Asile(Plateau& p, std::vector<gf::Vector2i> tabVector){
 	gf::Log::info("Apelle Asile execute\n");
 	
-	if(!inBoard(gf::Vector2i[0]) || !inBoard(gf::Vector2i[1])) {
+	if(!inBoard(tabVector[0]) || !inBoard(tabVector[1])) {
 		return false;
 	}
 	

@@ -105,20 +105,8 @@ GameScene::GameScene(GameHub& game, Network &network, GameData &gameData)
 		CardRep cardRep;
 		cardRep.err = CodeRep::CARD;
 		cardRep.card = -1; 
-		cardRep.a = gf::Vector2i(-1);
-		cardRep.b = gf::Vector2i(-1);
 		
-		auto it = m_gameData.m_plateau.m_casesClicked.begin();
-
-		if(it != m_gameData.m_plateau.m_casesClicked.end()) {
-			cardRep.a = *it;
-		}
-
-		it++;
-
-		if(it != m_gameData.m_plateau.m_casesClicked.end()) {
-			cardRep.b = *it;
-		}
+		cardRep.poses = m_gameData.m_plateau.m_casesClicked;
 
 		for(int i=0; i < m_gameData.m_main.size(); i++) {
 			if(m_gameData.m_main[i].m_num == -1) {
@@ -238,7 +226,7 @@ void GameScene::doProcessEvent(gf::Event& event) {
 			return;
 		}
 		
-		if(m_gameData.m_plateau.m_casesClicked.size()<2) {
+		if(m_gameData.m_plateau.m_casesClicked.size() < m_poseEntity.m_cardPose.m_nbClickPossible) {
 			m_gameData.m_plateau.m_casesClicked.push_back(v);
 		}
 		return;
@@ -481,7 +469,7 @@ void GameScene::doUpdate(gf::Time time) {
 		if(carteRep.err == CodeRep::NONE) {
 			gf::Log::debug("------CARTE VALIDE------ %i\n", carteRep.num);
 
-			m_gameData.m_cards[carteRep.num].m_execute(m_gameData.m_plateau, carteRep.a, carteRep.b);
+			m_gameData.m_cards[carteRep.num].m_execute(m_gameData.m_plateau, carteRep.poses);
 			
 			m_gameData.m_plateau.playerInEchec = m_gameData.m_plateau.isInEchec(!m_gameData.m_plateau.turnTo);
 			m_gameData.m_plateau.allPositions.push_back(m_gameData.m_plateau.getFen());

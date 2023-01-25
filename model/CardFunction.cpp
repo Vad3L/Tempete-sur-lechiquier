@@ -41,7 +41,7 @@ bool isInEchecAfterCardGreen(Plateau &p , std::function<bool(Plateau&, std::vect
 	
 	assert(pp.getFen() == p.getFen());
 
-	execute(pp,gf::Vector2i(-1),gf::Vector2i(-1));
+	execute(pp, {});
 
 	bool ret = true;
 	gf::Vector2i caseProvocateEchec(-1);

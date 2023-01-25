@@ -1,6 +1,6 @@
 #include "Card.hpp"
 
-Card::Card(int num, std::string name,std::string description,Turn turn, Action action, Effect effect){
+Card::Card(int num, std::string name,std::string description,Turn turn, Action action, Effect effect, int nbClickPossible){
 	m_num = num;
 	m_name = name;
 	m_description = description;
@@ -9,10 +9,12 @@ Card::Card(int num, std::string name,std::string description,Turn turn, Action a
 	m_effect = effect;
 	m_execute = NoCard;
 	m_isPlayable = NoCardPlayable;
+	m_nbClickPossible = nbClickPossible;
 }
 
 Card::Card () {
 	m_execute = NoCard;
 	m_isPlayable = NoCardPlayable;
 	m_num = -1;
+	m_nbClickPossible = 0;
 }
