@@ -372,7 +372,8 @@ void GameScene::doUpdate(gf::Time time) {
 			}
 
 			gf::Log::info("Vous jouez la couleur : %i\n", (int)m_gameData.m_myColor);
-
+			m_boardView.setRotation(0.f);
+			
 			if(m_gameData.m_myColor == ChessColor::BLACK) {
 				m_boardView.setRotation(gf::Pi);
 			}

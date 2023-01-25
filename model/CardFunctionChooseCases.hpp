@@ -4,14 +4,14 @@
 #include "Plateau.hpp"
 
 //tools
-bool isPossibleSwapPieces(Plateau &p,ChessPiece a, ChessPiece b, ChessColor y);
+bool isPossibleSwapPieces(Plateau &p,ChessPiece p1, ChessPiece p2, ChessColor color);
 bool checkGoodChoose(Plateau &p,ChessPiece typeOne,Piece pieceChooseOne, ChessPiece typeTwo,Piece pieceChooseTwo,ChessColor color);
 
 //cards
-void Chameau (Plateau& p, gf::Vector2i s,gf::Vector2i e);
-void QuatreCoin (Plateau& p, gf::Vector2i s, gf::Vector2i e);
-void ChevalFou (Plateau& p, gf::Vector2i s, gf::Vector2i e);
-void Asile (Plateau& p, gf::Vector2i s, gf::Vector2i e);
+bool Chameau (Plateau& p, gf::Vector2i s,gf::Vector2i e);
+bool QuatreCoin (Plateau& p, gf::Vector2i s, gf::Vector2i e);
+bool ChevalFou (Plateau& p, gf::Vector2i s, gf::Vector2i e);
+bool Asile (Plateau& p, gf::Vector2i s, gf::Vector2i e);
  
 bool ChameauIsPlayable (Plateau& p, Phase f);
 bool QuatreCoinIsPlayable (Plateau& p, Phase f);
