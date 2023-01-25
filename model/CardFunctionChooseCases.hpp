@@ -5,7 +5,7 @@
 
 //tools
 bool isPossibleSwapPieces(Plateau &p,ChessPiece p1, ChessPiece p2, ChessColor color);
-bool checkGoodChoose(Plateau &p,ChessPiece typeOne,Piece pieceChooseOne, ChessPiece typeTwo,Piece pieceChooseTwo,ChessColor color);
+bool checkGoodChoose(Plateau &p,ChessPiece typeOne,Piece &pieceChooseOne, ChessPiece typeTwo,Piece &pieceChooseTwo,ChessColor color);
 
 //cards
 bool Chameau (Plateau& p, gf::Vector2i s,gf::Vector2i e);

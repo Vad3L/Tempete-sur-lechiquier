@@ -56,10 +56,7 @@ inline bool inBoard(gf::Vector2i pos) {
 	//assert(pos.x < 8);
 	//assert(pos.y >= 0);
 	//assert(pos.y < 8);
-	if(pos.x < 0 || pos.x > 7 || pos.y < 0 || pos.y > 7) {
-		return false;
-	}
-	return true;
+	return !(pos.x < 0 || pos.x > 7 || pos.y < 0 || pos.y > 7);
 }
 
 #endif // ECHEC_H

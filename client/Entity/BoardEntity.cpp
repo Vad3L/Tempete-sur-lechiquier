@@ -51,9 +51,7 @@ void BoardEntity::render(gf::RenderTarget &target, const gf::RenderStates &state
 			shape.setColor(gf::Color::fromRgba32(255, 0, 0, 100));
 		} else if(c.piece.getType() == ChessPiece::KING && c.piece.getColor() != m_gameData.m_myColor && !myTurn && m_gameData.m_plateau.playerInEchec) {
 			shape.setColor(gf::Color::fromRgba32(255, 0, 0, 100));
-		} else if(m_gameData.m_plateau.lastCoup.size() >= 2 && (pos == m_gameData.m_plateau.lastCoup.back() || pos == m_gameData.m_plateau.lastCoup[m_gameData.m_plateau.lastCoup.size()-2])) {
-			shape.setColor(gf::Color::fromRgba32(250, 190, 88, 200));
-		}else if(std::find(m_gameData.m_plateau.m_casesClicked.begin(),m_gameData.m_plateau.m_casesClicked.end(), pos) != m_gameData.m_plateau.m_casesClicked.end()) {
+		} else if(std::find(m_gameData.m_plateau.m_casesClicked.begin(),m_gameData.m_plateau.m_casesClicked.end(), pos) != m_gameData.m_plateau.m_casesClicked.end()) {
 			switch (m_gameData.m_phase.getCurrentPhase()) {
 				case Phase::AVANT_COUP:
 					shape.setColor(gf::Color::Yellow);
@@ -62,6 +60,8 @@ void BoardEntity::render(gf::RenderTarget &target, const gf::RenderStates &state
 					shape.setColor(gf::Color::Green);
 					break;
 			}
+		}else if(m_gameData.m_plateau.lastCoup.size() >= 2 && (pos == m_gameData.m_plateau.lastCoup.back() || pos == m_gameData.m_plateau.lastCoup[m_gameData.m_plateau.lastCoup.size()-2])) {
+			shape.setColor(gf::Color::fromRgba32(250, 190, 88, 200));
 		}else {
 
 			if (y % 2 == 0) {

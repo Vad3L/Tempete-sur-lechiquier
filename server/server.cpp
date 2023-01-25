@@ -28,6 +28,7 @@ int main (int argc, char* argv[]) {
 		auto TwoHand = deck.distribute();
 		
 		if (client1) {
+			sendInit(client1, ChessColor::WHITE, TwoHand.first);
 
 			gf::TcpSocket client2 = listener.accept();
 			if (client2) {
