@@ -13,10 +13,12 @@ bool Chameau (Plateau& p, std::vector<gf::Vector2i> tabVector);
 bool QuatreCoin (Plateau& p, std::vector<gf::Vector2i> tabVector);
 bool ChevalFou (Plateau& p, std::vector<gf::Vector2i> tabVector);
 bool Asile (Plateau& p, std::vector<gf::Vector2i> tabVector);
+bool TourFada (Plateau& p, std::vector<gf::Vector2i> tabVector);
  
 bool ChameauIsPlayable (Plateau& p, Phase f);
 bool QuatreCoinIsPlayable (Plateau& p, Phase f);
 bool ChevalFouIsPlayable (Plateau& p, Phase f);
 bool AsileIsPlayable (Plateau& p, Phase f);
+bool TourFadaIsPlayable (Plateau& p, Phase f);
 
 #endif // CARD_FUNC_CHOOSE_CASES_H

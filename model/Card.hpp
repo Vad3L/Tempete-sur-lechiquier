@@ -9,7 +9,7 @@
 #include "CardFunction.hpp"
 #include "CardFunctionChooseCases.hpp"
 
-enum class Turn{
+enum class Turn {
 	AVANT_COUP,
 	APRES_COUP,
 	BOTH,

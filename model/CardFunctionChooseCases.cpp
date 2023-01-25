@@ -70,7 +70,7 @@ bool ChevalFouIsPlayable (Plateau& p, Phase f) {
 		return false;
 	}
 
-	return pieceExist(p, ChessPiece::KNIGHT, p.turnTo) || pieceExist(p, ChessPiece::BISHOP, p.turnTo);
+	return pieceExist(p, ChessPiece::KNIGHT, p.turnTo) && pieceExist(p, ChessPiece::BISHOP, p.turnTo);
 }
 
 
@@ -182,11 +182,40 @@ bool Asile(Plateau& p, std::vector<gf::Vector2i> tabVector){
 
 
 bool AsileIsPlayable(Plateau& p, Phase f){ 
-	gf::Log::info("Apelle Asile jouable\n");
+	gf::Log::info("Appelle Asile jouable\n");
 	if(f!= Phase::APRES_COUP){
 		return false;
 	}
 
-	return pieceExist(p, ChessPiece::ROOK, p.turnTo) || pieceExist(p, ChessPiece::BISHOP, p.turnTo);
+	return pieceExist(p, ChessPiece::ROOK, p.turnTo) && pieceExist(p, ChessPiece::BISHOP, p.turnTo);
+}
+
+bool TourFada (Plateau& p, std::vector<gf::Vector2i> tabVector) {
+	gf::Log::info("Appelle Tour Fada execute\n");
+	if (tabVector.size() != 2) {
+		return false;
+	}
+
+	if (!inBoard(tabVector[0]) || !inBoard(tabVector[1])) {
+		return false;
+	}
+
+	Piece& piece1 = p.state[tabVector[0].y * 8 + tabVector[0].x].piece;
+	Piece& piece2 = p.state[tabVector[1].y * 8 + tabVector[1].x].piece;
+
+	if (checkGoodChoose(p, piece1, Piece(!p.turnTo, ChessPiece::ROOK), piece2, Piece(!p.turnTo, ChessPiece::BISHOP))) {
+		std::swap(piece1, piece2);
+		return true;
+	}
+	return false;
+}
+
+bool TourFadaIsPlayable (Plateau& p, Phase f) {
+	gf::Log::info("Appelle Tour Fada jouable\n");
+	if (f != Phase::APRES_COUP) {
+		return false;
+	}
+
+	return pieceExist(p, ChessPiece::ROOK, !p.turnTo) && pieceExist(p, ChessPiece::BISHOP, !p.turnTo);
 }
 
