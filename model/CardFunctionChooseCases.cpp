@@ -86,14 +86,18 @@ bool Chameau (Plateau& p, gf::Vector2i s,gf::Vector2i e) {
 	}
 	ChessColor playerColor = piece.getColor();
 
-	piece = Piece(playerColor, ChessPiece::CAMEL);
-
-	if (p.isInEchec(ChessColor::WHITE) || p.isInEchec(ChessColor::BLACK)) {
-		piece = Piece(playerColor, ChessPiece::KNIGHT);
-		return false;
+	gf::Vector2i caseProvocateEchec(-1);
+	if (p.playerInEchec) {
+		caseProvocateEchec = p.caseProvocateEchec;
 	}
 
-	return true;
+	piece = Piece(playerColor, ChessPiece::CAMEL);
+
+	bool res = p.isInEchec(p.turnTo) || p.isInEchec(!p.turnTo, gf::Vector2i(-1), caseProvocateEchec);
+	if (!res) {
+		piece = Piece(playerColor, ChessPiece::KNIGHT);
+	}
+	return res;
 }
 
 bool ChameauIsPlayable (Plateau& p, Phase f) {
