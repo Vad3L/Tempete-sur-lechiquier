@@ -6,16 +6,16 @@
 
 //tools
 bool binNotChange(Plateau& p);
-bool isInEchecAfterCardGreen(Plateau &p,std::function<bool(Plateau&, gf::Vector2i s, gf::Vector2i e)> execute);
+bool isInEchecAfterCardGreen(Plateau &p,std::function<bool(Plateau&, std::vector<gf::Vector2i> tabVector)> execute);
 
 //card
-bool NoCard (Plateau& p, gf::Vector2i s, gf::Vector2i e);
+bool NoCard (Plateau& p, std::vector<gf::Vector2i> tabVector);
 bool NoCardPlayable (Plateau& p, Phase f);
 
-bool Princess (Plateau& p, gf::Vector2i s, gf::Vector2i e);
-bool BombeAtomique (Plateau& p, gf::Vector2i s, gf::Vector2i e);
+bool Princess (Plateau& p, std::vector<gf::Vector2i> tabVector);
+bool BombeAtomique (Plateau& p, std::vector<gf::Vector2i> tabVector);
 bool Vampirisme (Plateau& p, gf::Vector2i s = gf::Vector2i(-1), gf::Vector2i e = gf::Vector2i(-1));
-bool VisitesOfficielles (Plateau& p, gf::Vector2i s, gf::Vector2i e); 
+bool VisitesOfficielles (Plateau& p, std::vector<gf::Vector2i> tabVector); 
 
 bool PrincessIsPlayable (Plateau& p, Phase f);
 bool BombeAtomiqueIsPlayable (Plateau& p, Phase f);

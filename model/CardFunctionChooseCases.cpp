@@ -47,14 +47,14 @@ bool checkGoodChoose(Plateau &p, Piece &pieceChooseOne, Piece refA , Piece &piec
 	return !res;
 }
 
-bool ChevalFou (Plateau& p, gf::Vector2i s, gf::Vector2i e) {
-	gf::Log::info("apelle ChevalFou execute\n");
-	if(!inBoard(s) || !inBoard(e)) {
+bool ChevalFou (Plateau& p, std::vector<gf::Vector2i> tabVector) {
+	gf::Log::info("Apelle ChevalFou execute\n");
+	if(!inBoard(tabVector[0]) || !inBoard([1])) {
 		return false;
 	}
 	
-	Piece &piece1 = p.state[s.y * 8 + s.x].piece;
-	Piece &piece2 = p.state[e.y * 8 + e.x].piece;
+	Piece &piece1 = p.state[tabVector[0].y * 8 + tabVector[0].x].piece;
+	Piece &piece2 = p.state[tabVector[1].y * 8 + tabVector[1].x].piece;
 
 	if(checkGoodChoose(p, piece1, Piece(p.turnTo, ChessPiece::KNIGHT), piece2, Piece(p.turnTo, ChessPiece::BISHOP))) {
 		std::swap(piece1, piece2);
@@ -65,7 +65,7 @@ bool ChevalFou (Plateau& p, gf::Vector2i s, gf::Vector2i e) {
 }
 
 bool ChevalFouIsPlayable (Plateau& p, Phase f) {
-	gf::Log::info("apelle ChevalFou jouable\n");
+	gf::Log::info("Apelle ChevalFou jouable\n");
 	if (f != Phase::APRES_COUP) {
 		return false;
 	}
@@ -75,11 +75,11 @@ bool ChevalFouIsPlayable (Plateau& p, Phase f) {
 
 
 bool Chameau (Plateau& p, gf::Vector2i s,gf::Vector2i e) {
-	gf::Log::info("apelle Chameau execute\n");
-	if(!inBoard(s)) {
+	gf::Log::info("Apelle Chameau execute\n");
+	if(!inBoard(tabVector[0])) {
 		return false;
 	}
-	Piece& piece=p.state[s.y * 8 + s.x].piece;
+	Piece& piece=p.state[tabVector[0].y * 8 + tabVector[0].x].piece;
 
 	if (piece.getType() != ChessPiece::KNIGHT) {
 		return false;
@@ -101,7 +101,7 @@ bool Chameau (Plateau& p, gf::Vector2i s,gf::Vector2i e) {
 }
 
 bool ChameauIsPlayable (Plateau& p, Phase f) {
-	gf::Log::info("apelle chameau jouable\n");
+	gf::Log::info("Apelle chameau jouable\n");
 	if (f != Phase::APRES_COUP) {
 		return false;
 	}
@@ -110,11 +110,11 @@ bool ChameauIsPlayable (Plateau& p, Phase f) {
 }
 
 
-bool QuatreCoin (Plateau& p, gf::Vector2i s, gf::Vector2i e) {
-	gf::Log::info("apelle Quatre coin execute\n");
-	if(!inBoard(s)){return false;}
-	Case &c = p.state[s.y * 8 + s.x];
-	
+bool QuatreCoin (Plateau& p, std::vector<gf::Vector2i> tabVector) {
+	gf::Log::info("Apelle Quatre coin execute\n");
+	if(!inBoard(tabVector[0])){return false;}
+	Case &c = p.state[tabVector[0].y * 8 + tabVector[0].x];
+	gf::Vector2i e(-1);
 	int occupied = 0;
 	std::vector<gf::Vector2i> coins = { gf::Vector2i(0, 0),
 										gf::Vector2i(0, 7),
@@ -133,11 +133,17 @@ bool QuatreCoin (Plateau& p, gf::Vector2i s, gf::Vector2i e) {
 	d.piece = c.piece;
 	c.piece = Piece(ChessColor::NONE, ChessPiece::NONE);
 
-	return true;
+	bool res = p.isInEchec(p.turnTo) || p.isInEchec(!p.turnTo, gf::Vector2i(-1), e);
+	if (res) {
+		c.piece = d.piece;
+		d.piece = Piece(ChessColor::NONE, ChessPiece::NONE);
+	}
+	return !res;
+
 }
 
 bool QuatreCoinIsPlayable (Plateau& p, Phase f) {
-	gf::Log::info("apelle Quatre coin jouable\n");
+	gf::Log::info("Apelle Quatre coin jouable\n");
 	if (f != Phase::AVANT_COUP) {
 		return false;
 	}
@@ -156,15 +162,15 @@ bool QuatreCoinIsPlayable (Plateau& p, Phase f) {
 	return occupied == 3;
 }
 
-bool Asile(Plateau& p, gf::Vector2i s, gf::Vector2i e){
-	gf::Log::info("apelle Asile execute\n");
+bool Asile(Plateau& p, std::vector<gf::Vector2i> tabVector){
+	gf::Log::info("Apelle Asile execute\n");
 	
-	if(!inBoard(s) || !inBoard(e)) {
+	if(!inBoard(gf::Vector2i[0]) || !inBoard(gf::Vector2i[1])) {
 		return false;
 	}
 	
-	Piece &piece1 = p.state[s.y * 8 + s.x].piece;
-	Piece &piece2 = p.state[e.y * 8 + e.x].piece;
+	Piece &piece1 = p.state[tabVector[0].y * 8 + tabVector[0].x].piece;
+	Piece &piece2 = p.state[tabVector[1].y * 8 + tabVector[1].x].piece;
 
 	if(checkGoodChoose(p, piece1, Piece(p.turnTo, ChessPiece::ROOK), piece2, Piece(p.turnTo, ChessPiece::BISHOP))) {
 		std::swap(piece1, piece2);
@@ -176,7 +182,7 @@ bool Asile(Plateau& p, gf::Vector2i s, gf::Vector2i e){
 
 
 bool AsileIsPlayable(Plateau& p, Phase f){ 
-	gf::Log::info("apelle Asile jouable\n");
+	gf::Log::info("Apelle Asile jouable\n");
 	if(f!= Phase::APRES_COUP){
 		return false;
 	}

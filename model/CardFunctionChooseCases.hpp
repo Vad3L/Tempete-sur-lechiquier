@@ -9,10 +9,10 @@ bool checkGoodCase(Plateau &p, gf::Vector2i coord, ChessPiece type, ChessColor c
 bool checkGoodChoose(Plateau &p, Piece &pieceChooseOne, Piece refA , Piece &pieceChooseTwo, Piece refB);
 
 //cards
-bool Chameau (Plateau& p, gf::Vector2i s,gf::Vector2i e);
-bool QuatreCoin (Plateau& p, gf::Vector2i s, gf::Vector2i e);
-bool ChevalFou (Plateau& p, gf::Vector2i s, gf::Vector2i e);
-bool Asile (Plateau& p, gf::Vector2i s, gf::Vector2i e);
+bool Chameau (Plateau& p, std::vector<gf::Vector2i> tabVector);
+bool QuatreCoin (Plateau& p, std::vector<gf::Vector2i> tabVector);
+bool ChevalFou (Plateau& p, std::vector<gf::Vector2i> tabVector);
+bool Asile (Plateau& p, std::vector<gf::Vector2i> tabVector);
  
 bool ChameauIsPlayable (Plateau& p, Phase f);
 bool QuatreCoinIsPlayable (Plateau& p, Phase f);

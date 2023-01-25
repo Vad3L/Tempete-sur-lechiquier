@@ -36,7 +36,7 @@ bool binNotChange(Plateau& p){
 	return false;
 }
 
-bool isInEchecAfterCardGreen(Plateau &p , std::function<bool(Plateau&, gf::Vector2i s, gf::Vector2i e)> execute) {
+bool isInEchecAfterCardGreen(Plateau &p , std::function<bool(Plateau&, std::vector<gf::Vector2i> tabVector)> execute) {
 	Plateau pp = p;
 	
 	assert(pp.getFen() == p.getFen());
@@ -60,10 +60,10 @@ bool isInEchecAfterCardGreen(Plateau &p , std::function<bool(Plateau&, gf::Vecto
 }
 
 //card
-bool NoCard (Plateau& p, gf::Vector2i s, gf::Vector2i e) { return false;}
+bool NoCard (Plateau& p, std::vector<gf::Vector2i> tabVector) { return false;}
 bool NoCardPlayable (Plateau& p, Phase f) { return false; }
 
-bool Princess (Plateau& p, gf::Vector2i s, gf::Vector2i e) {
+bool Princess (Plateau& p, std::vector<gf::Vector2i> tabVector) {
 	gf::Log::info("Apelle Princesse execute\n");
 	gf::Vector2i pos = (p.turnTo  == ChessColor::WHITE ? gf::Vector2i(3,7): gf::Vector2i(3,0)); 
 	Case &c = p.state[pos.y * 8 + pos.x];
@@ -97,7 +97,7 @@ bool PrincessIsPlayable (Plateau& p, Phase f){
 	return false;
 }
 
-bool BombeAtomique (Plateau& p, gf::Vector2i s, gf::Vector2i e) {
+bool BombeAtomique (Plateau& p, std::vector<gf::Vector2i> tabVector) {
 	gf::Log::info("Appelle Bombe atomique execute\n");
 
 	std::vector<gf::Vector2i> targets;
@@ -139,7 +139,7 @@ bool BombeAtomiqueIsPlayable (Plateau& p, Phase f){
 	return binNotChange(p);
 }
 
-bool Vampirisme (Plateau& p, gf::Vector2i s, gf::Vector2i e){
+bool Vampirisme (Plateau& p, std::vector<gf::Vector2i> tabVector){
 	gf::Log::info("Appelle Vampirisme execute\n");
 
 	gf::Vector2i pos = p.lastCoup.back();
@@ -165,7 +165,7 @@ bool VampirismeIsPlayable (Plateau& p, Phase f){
 	return p.state[pos.y * 8 + pos.x].piece.getType() != ChessPiece::KING;
 }
 
-bool VisitesOfficielles (Plateau& p, gf::Vector2i s, gf::Vector2i e){
+bool VisitesOfficielles (Plateau& p, std::vector<gf::Vector2i> tabVector){
 	gf::Log::info("Appelle Visites Officielles execute\n");
 	gf::Vector2i roiB(-1);
 	gf::Vector2i roiN(-1);
