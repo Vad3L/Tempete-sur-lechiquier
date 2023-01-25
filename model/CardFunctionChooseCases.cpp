@@ -107,10 +107,23 @@ bool ChameauIsPlayable (Plateau& p, Phase f) {
 
 bool QuatreCoin (Plateau& p, gf::Vector2i s, gf::Vector2i e) {
 	gf::Log::info("apelle Quatre coin execute\n");
-	inBoard(s);
-	inBoard(e);
+	if(!inBoard(s)){return false;}
 	Case &c = p.state[s.y * 8 + s.x];
-	// todo ne pas utiliser e mais cherhce le quatrième coins vide
+	
+	int occupied = 0;
+	std::vector<gf::Vector2i> coins = { gf::Vector2i(0, 0),
+										gf::Vector2i(0, 7),
+										gf::Vector2i(7, 0),
+										gf::Vector2i(7, 7) };
+	for (auto c : coins) {
+		if (p.state[c.y * 8 + c.x].piece.getType() != ChessPiece::NONE) {
+			occupied++;
+		}else{
+			e = c;
+			break;
+		}
+	}
+	if(!inBoard(e)){return false;}
 	Case &d = p.state[e.y * 8 + e.x];
 	d.piece = c.piece;
 	c.piece = Piece(ChessColor::NONE, ChessPiece::NONE);
@@ -125,10 +138,10 @@ bool QuatreCoinIsPlayable (Plateau& p, Phase f) {
 	}
 
 	int occupied = 0;
-	std::vector<gf::Vector2i> coins = { 	gf::Vector2i(0, 0),
-						gf::Vector2i(0, 7),
-						gf::Vector2i(7, 0),
-						gf::Vector2i(7, 7) };
+	std::vector<gf::Vector2i> coins = { gf::Vector2i(0, 0),
+										gf::Vector2i(0, 7),
+										gf::Vector2i(7, 0),
+										gf::Vector2i(7, 7) };
 	for (auto c : coins) {
 		if (p.state[c.y * 8 + c.x].piece.getType() != ChessPiece::NONE) {
 			occupied++;
