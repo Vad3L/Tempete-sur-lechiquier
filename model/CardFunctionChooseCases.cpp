@@ -101,7 +101,8 @@ bool ChameauIsPlayable (Plateau& p, Phase f) {
 	if (f != Phase::APRES_COUP) {
 		return false;
 	}
-	return true;
+
+	return pieceExist(p, ChessPiece::KNIGHT, p.turnTo);
 }
 
 
