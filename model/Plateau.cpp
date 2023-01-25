@@ -582,7 +582,7 @@ ChessStatus Plateau::isGameOver (ChessColor col) {
 	}
 
 	for (size_t i = 0; i < allPositions.size(); i++) {
-		gf::Log::debug("-%s",allPositions[i].c_str());
+		gf::Log::debug("-%s\n",allPositions[i].c_str());
 		size_t count = 0;
 		for (size_t j = i; j < allPositions.size(); j++) {
 			

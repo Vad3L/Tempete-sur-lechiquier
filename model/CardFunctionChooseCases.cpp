@@ -118,14 +118,12 @@ bool QuatreCoin (Plateau& p, std::vector<gf::Vector2i> tabVector) {
 	Case &c = p.state[tabVector[0].y * 8 + tabVector[0].x];
 	gf::Vector2i e(-1);
 	int occupied = 0;
-	std::vector<gf::Vector2i> coins = { gf::Vector2i(0, 0),
-										gf::Vector2i(0, 7),
-										gf::Vector2i(7, 0),
-										gf::Vector2i(7, 7) };
+	std::vector<gf::Vector2i> coins = { 	gf::Vector2i(0, 0),
+											gf::Vector2i(0, 7),
+											gf::Vector2i(7, 0),
+											gf::Vector2i(7, 7) };
 	for (auto c : coins) {
-		if (p.state[c.y * 8 + c.x].piece.getType() != ChessPiece::NONE) {
-			occupied++;
-		}else{
+		if (p.state[c.y * 8 + c.x].piece.getType() == ChessPiece::NONE) {
 			e = c;
 			break;
 		}
@@ -146,15 +144,15 @@ bool QuatreCoin (Plateau& p, std::vector<gf::Vector2i> tabVector) {
 
 bool QuatreCoinIsPlayable (Plateau& p, Phase f) {
 	gf::Log::info("Apelle Quatre coin jouable\n");
-	if (f != Phase::AVANT_COUP) {
+	if (f != Phase::AVANT_COUP ) {
 		return false;
 	}
 
 	int occupied = 0;
-	std::vector<gf::Vector2i> coins = { gf::Vector2i(0, 0),
-										gf::Vector2i(0, 7),
-										gf::Vector2i(7, 0),
-										gf::Vector2i(7, 7) };
+	std::vector<gf::Vector2i> coins = { 	gf::Vector2i(0, 0),
+											gf::Vector2i(0, 7),
+											gf::Vector2i(7, 0),
+											gf::Vector2i(7, 7) };
 	for (auto c : coins) {
 		if (p.state[c.y * 8 + c.x].piece.getType() != ChessPiece::NONE) {
 			occupied++;
