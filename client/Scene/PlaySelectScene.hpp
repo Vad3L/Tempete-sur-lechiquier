@@ -46,8 +46,8 @@ class PlaySelectScene : public gf::Scene {
 		
 		PlayTitleEntity m_PlayTitleEntity;
 
-		gf::TextButtonWidget m_leftWidget;
-		gf::TextButtonWidget m_rightWidget;
+		gf::SpriteWidget m_leftWidget;
+		gf::SpriteWidget m_rightWidget;
 
 		gf::WidgetContainer m_widgets;
 		gf::TextButtonWidget m_ipWidget;

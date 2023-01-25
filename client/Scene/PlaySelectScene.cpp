@@ -15,8 +15,8 @@ PlaySelectScene::PlaySelectScene(GameHub& game, Network &network)
 , m_PlayTitleEntity(game.resources)
 , m_ipWidget("pas de serveur", game.resources.getFont("fonts/Trajan-Color-Concept.otf"))
 , m_index(0)
-, m_leftWidget("<", game.resources.getFont("fonts/DejaVuSans.ttf"))
-, m_rightWidget(">", game.resources.getFont("fonts/DejaVuSans.ttf"))
+, m_leftWidget(game.resources.getTexture("images/button/leftArrow.png"),game.resources.getTexture("images/button/leftArrow.png"),game.resources.getTexture("images/button/leftArrowSelected.png"))
+, m_rightWidget(game.resources.getTexture("images/button/rightArrow.png"),game.resources.getTexture("images/button/rightArrow.png"),game.resources.getTexture("images/button/rightArrowSelected.png"))
 , m_listIp()
 {
 	setClearColor(gf::Color::Black);
@@ -53,6 +53,12 @@ PlaySelectScene::PlaySelectScene(GameHub& game, Network &network)
 		m_widgets.addWidget(button);
 	};
 
+	auto setupButtonSprite = [&] (gf::SpriteWidget& button, auto callback) {
+		button.setAnchor(gf::Anchor::Center);
+		button.setCallback(callback);
+		m_widgets.addWidget(button);
+	};
+
 	setupButton(m_ipWidget, [&] () {
 		std::string ip = std::string(m_listIp[m_index].first);
 		m_network.connect(ip,"43771");
@@ -61,20 +67,20 @@ PlaySelectScene::PlaySelectScene(GameHub& game, Network &network)
 		gf::sleep(gf::milliseconds(500));
 		
 		if(m_network.isConnected()){
-			gf::Log::debug("Connexion réussie\n");
+			gf::Log::info("Connexion réussie\n");
 			m_game.replaceAllScenes(*m_game.game);
 		}else{
-			gf::Log::debug("Connexions échoué\n");
+			gf::Log::info("Connexions échoué\n");
 			m_PlayTitleEntity.m_errorText.setString("Connexion au serveur a échoué");
 		}
 		
 	});
 
-	setupButton(m_rightWidget, [&] () {
+	setupButtonSprite(m_rightWidget, [&] () {
 		changeRightLeft(true);
 	});
 
-	setupButton(m_leftWidget, [&] () {
+	setupButtonSprite(m_leftWidget, [&] () {
 		changeRightLeft(false);
 	});
 	
@@ -134,34 +140,22 @@ void PlaySelectScene::doRender(gf::RenderTarget& target, const gf::RenderStates 
 	gf::Coordinates coords(target);
 
 	const float paragraphWidth = coords.getRelativeSize(backgroundSize - 0.05f).x;
-	const float paragraphWidthArrow = coords.getRelativeSize(backgroundSizeArrow - 0.05f).x;
 	const float paddingSize = coords.getRelativeSize({0.01f, 0.f}).x;
 	const unsigned resumeCharacterSize = coords.getRelativeCharacterSize(characterSize);
 	
 	m_ipWidget.setCharacterSize(resumeCharacterSize);
-	m_ipWidget.setPosition(coords.getRelativePoint({0.275f, 0.425f + characterSize}));
+	m_ipWidget.setPosition(coords.getRelativePoint({0.275f, 0.425f +characterSize }));
 	m_ipWidget.setParagraphWidth(paragraphWidth);
 	m_ipWidget.setPadding(paddingSize);
 
-	if(m_index != 0 ){
-		m_leftWidget.setCharacterSize(resumeCharacterSize);
-		m_leftWidget.setPosition(coords.getRelativePoint({0.075f, 0.425f + characterSize }));
-		m_leftWidget.setParagraphWidth(paragraphWidthArrow);
-		m_leftWidget.setPadding(paddingSize);
-	}else{
-		m_leftWidget.setPosition(coords.getRelativePoint({2.775, 0.425f + characterSize }));
-	}
+	m_leftWidget.setPosition(coords.getRelativePoint({( m_index != 0 ? 0.125f : 2.775f), 0.425f +characterSize}));
+	m_leftWidget.setScale(1.f/2.f);
 
-	if(m_index != m_listIp.size()-1 ){
-		m_rightWidget.setCharacterSize(resumeCharacterSize);
-		m_rightWidget.setPosition(coords.getRelativePoint({0.775, 0.425f + characterSize }));
-		m_rightWidget.setParagraphWidth(paragraphWidthArrow);
-		m_rightWidget.setPadding(paddingSize);
-	}else{
-		m_rightWidget.setPosition(coords.getRelativePoint({2.775, 0.425f + characterSize }));
-	}
-	m_widgets.render(target, states);
+	m_rightWidget.setPosition(coords.getRelativePoint({ (m_index != m_listIp.size()-1 ? 0.875f : 2.775f), 0.425f +characterSize}));
+	m_rightWidget.setScale(1.f/2.f);
+
 	m_PlayTitleEntity.render(target,states);
+	m_widgets.render(target, states);
 }
 
 void PlaySelectScene::doShow() {

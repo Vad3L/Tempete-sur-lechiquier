@@ -11,9 +11,9 @@ MenuScene::MenuScene(GameHub& game)
 , m_triggerAction("TriggerAction")
 , m_quitAction("Quit")
 , m_fullscreenAction("Fullscreen")
-, m_play(game.resources.getTexture("images/button/JouerButton.png"),game.resources.getTexture("images/button/JouerButton.png"),game.resources.getTexture("images/button/JouerButton.png"))
-, m_rules(game.resources.getTexture("images/button/reglesButton.png"),game.resources.getTexture("images/button/reglesButton.png"),game.resources.getTexture("images/button/reglesButton.png"))
-, m_quit(game.resources.getTexture("images/button/quitterButton.png"),game.resources.getTexture("images/button/quitterButton.png"),game.resources.getTexture("images/button/quitterButton.png"))
+, m_play(game.resources.getTexture("images/button/JouerButton.png"),game.resources.getTexture("images/button/JouerButton.png"),game.resources.getTexture("images/button/JouerButtonSelected.png"))
+, m_rules(game.resources.getTexture("images/button/reglesButton.png"),game.resources.getTexture("images/button/reglesButton.png"),game.resources.getTexture("images/button/reglesButtonSelected.png"))
+, m_quit(game.resources.getTexture("images/button/quitterButton.png"),game.resources.getTexture("images/button/quitterButton.png"),game.resources.getTexture("images/button/quitterButtonSelected.png"))
 , m_settings(game.resources.getTexture("images/Cog.png"),game.resources.getTexture("images/Cog.png"),game.resources.getTexture("images/Cog.png"))
 {
 	setClearColor(gf::Color::Black);

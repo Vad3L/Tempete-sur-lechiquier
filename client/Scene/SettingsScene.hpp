@@ -40,9 +40,9 @@ class SettingsScene : public gf::Scene {
 		gf::Action m_fullscreenAction;
 		gf::Action m_quitAction;
 
-		gf::TextButtonWidget m_quitButton;
-		gf::TextButtonWidget m_rightButton;
-		gf::TextButtonWidget m_leftButton;
+		gf::SpriteWidget m_quitButton;
+		gf::SpriteWidget m_rightButton;
+		gf::SpriteWidget m_leftButton;
 	
 		gf::WidgetContainer m_widgets;
 

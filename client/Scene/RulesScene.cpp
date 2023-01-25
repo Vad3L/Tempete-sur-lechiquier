@@ -10,9 +10,9 @@ RulesScene::RulesScene(GameHub& game)
 , m_rightAction("PageRight")
 , m_fullscreenAction("FullScreen")
 , m_triggerAction("TriggerAction")
-, m_quitButton(game.resources.getTexture("images/button/menuButton.png"),game.resources.getTexture("images/button/menuButton.png"),game.resources.getTexture("images/button/menuButton.png"))
-, m_pageLeft(game.resources.getTexture("images/button/leftArrow.png"),game.resources.getTexture("images/button/leftArrow.png"),game.resources.getTexture("images/button/leftArrow.png"))
-, m_pageRight(game.resources.getTexture("images/button/rightArrow.png"),game.resources.getTexture("images/button/rightArrow.png"),game.resources.getTexture("images/button/rightArrow.png"))
+, m_quitButton(game.resources.getTexture("images/button/menuButton.png"),game.resources.getTexture("images/button/menuButton.png"),game.resources.getTexture("images/button/menuButtonSelected.png"))
+, m_pageLeft(game.resources.getTexture("images/button/leftArrow.png"),game.resources.getTexture("images/button/leftArrow.png"),game.resources.getTexture("images/button/leftArrowSelected.png"))
+, m_pageRight(game.resources.getTexture("images/button/rightArrow.png"),game.resources.getTexture("images/button/rightArrow.png"),game.resources.getTexture("images/button/rightArrowSelected.png"))
 , m_rulesEntity(game.resources)
 {
 	setClearColor(gf::Color::Black);
@@ -37,6 +37,7 @@ RulesScene::RulesScene(GameHub& game)
 	addAction(m_rightAction);
 
 	auto setupButton = [&] (gf::SpriteWidget& button, auto callback) {
+		button.setAnchor(gf::Anchor::Center);
 		button.setCallback(callback);
 		m_widgets.addWidget(button);
 	};
@@ -110,22 +111,12 @@ void RulesScene::doRender(gf::RenderTarget& target, const gf::RenderStates &stat
 	target.setView(getHudView());
 	gf::Coordinates coords(target);	
 
-	m_quitButton.setAnchor(gf::Anchor::Center);
 	m_quitButton.setPosition(coords.getRelativePoint({0.5f, 0.825f}));
 	
-	m_pageLeft.setAnchor(gf::Anchor::Center);
-	if(m_rulesEntity.m_index>0) {
-		m_pageLeft.setPosition(coords.getRelativePoint({0.15f, 0.4}));
-	}else {
-		m_pageLeft.setPosition(coords.getRelativePoint({-2.87f, 0.4}));
-	}
+	m_pageLeft.setPosition(coords.getRelativePoint({( m_rulesEntity.m_index>0 ? 0.15f : -2.87f), 0.4}));
+
 	
-	m_pageRight.setAnchor(gf::Anchor::Center);
-	if(m_rulesEntity.m_index<3) {
-		m_pageRight.setPosition(coords.getRelativePoint({0.85f, 0.4}));
-	}else {
-		m_pageRight.setPosition(coords.getRelativePoint({2.87f, 0.4}));
-	}
+	m_pageRight.setPosition(coords.getRelativePoint({( m_rulesEntity.m_index<3 ? 0.85f : 2.87f), 0.4}));
 	
 	m_pageRight.setScale(1.f/2.f);
 	m_pageLeft.setScale(1.f/2.f);

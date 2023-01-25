@@ -14,9 +14,9 @@ SettingsScene::SettingsScene(GameHub& game, GameData &gameData)
 , m_triggerAction("TriggerAction")
 , m_quitAction("QuitAction")
 , m_fullscreenAction("FullscreenAction")
-, m_quitButton("Menu", game.resources.getFont("fonts/Trajan-Color-Concept.otf"))
-, m_rightButton(">", game.resources.getFont("fonts/DejaVuSans.ttf"))
-, m_leftButton("<", game.resources.getFont("fonts/DejaVuSans.ttf"))
+, m_quitButton(game.resources.getTexture("images/button/menuButton.png"),game.resources.getTexture("images/button/menuButton.png"),game.resources.getTexture("images/button/menuButtonSelected.png"))
+, m_leftButton(game.resources.getTexture("images/button/leftArrow.png"),game.resources.getTexture("images/button/leftArrow.png"),game.resources.getTexture("images/button/leftArrowSelected.png"))
+, m_rightButton(game.resources.getTexture("images/button/rightArrow.png"),game.resources.getTexture("images/button/rightArrow.png"),game.resources.getTexture("images/button/rightArrowSelected.png"))
 , m_settingsEntity(game.resources, m_gameData)
 {
 	setClearColor(gf::Color::Black);
@@ -40,15 +40,8 @@ SettingsScene::SettingsScene(GameHub& game, GameData &gameData)
 	m_triggerAction.addScancodeKeyControl(gf::Scancode::Return);
 	addAction(m_triggerAction);
 
-	auto setupButton = [&] (gf::TextButtonWidget& button, auto callback) {
-		button.setDefaultTextColor(gf::Color::Black);
-		button.setDefaultBackgroundColor(gf::Color::Gray(0.7f));
-		button.setSelectedTextColor(gf::Color::Black);
-		button.setSelectedBackgroundColor(gf::Color::fromRgba32(212,30,27,255));
-		button.setDisabledTextColor(gf::Color::Black);
-		button.setDisabledBackgroundColor(gf::Color::Red);
-		button.setAnchor(gf::Anchor::TopLeft);
-		button.setAlignment(gf::Alignment::Center);
+	auto setupButton = [&] (gf::SpriteWidget& button, auto callback) {
+		button.setAnchor(gf::Anchor::Center);
 		button.setCallback(callback);
 		m_widgets.addWidget(button);
 	};
@@ -116,43 +109,23 @@ void SettingsScene::doProcessEvent(gf::Event& event) {
 }
 
 void SettingsScene::doRender(gf::RenderTarget& target, const gf::RenderStates &states) {
-	constexpr float characterSize = 0.075f;
 	constexpr gf::Vector2f backgroundSize(0.5f, 0.3f);
 	constexpr gf::Vector2f backgroundSizeArrow(0.2f, 0.3f);
 
 	gf::Coordinates coords(target);
-
-
-	const float paragraphWidth = coords.getRelativeSize(backgroundSize - 0.05f).x;
-	const float paragraphWidthArrow = coords.getRelativeSize(backgroundSizeArrow - 0.05f).x;
-	const float paddingSize = coords.getRelativeSize({0.01f, 0.f}).x;
-	const unsigned resumeCharacterSize = coords.getRelativeCharacterSize(characterSize);
 	
-	m_quitButton.setCharacterSize(resumeCharacterSize);
-	m_quitButton.setPosition(coords.getRelativePoint({0.275f, 0.825f}));
-	m_quitButton.setParagraphWidth(paragraphWidth);
-	m_quitButton.setPadding(paddingSize);
+	m_quitButton.setPosition(coords.getRelativePoint({0.5f, 0.825f}));
+	m_quitButton.setScale(1.f/2.f);
 	
-	if(m_gameData.m_style > 0) {
-		m_leftButton.setCharacterSize(resumeCharacterSize);
-		m_leftButton.setPosition(coords.getRelativePoint({0.075f, 0.425f + characterSize }));
-		m_leftButton.setParagraphWidth(paragraphWidthArrow);
-		m_leftButton.setPadding(paddingSize);
-	}else {
-		m_leftButton.setPosition(coords.getRelativePoint({2.775, 0.425f + characterSize }));
-	}
+	m_leftButton.setPosition(coords.getRelativePoint({(m_gameData.m_style > 0 ? 0.225f : 2.775f), 0.425f }));
+	m_leftButton.setScale(1.f/2.f);
+	
+	m_rightButton.setScale(1.f/2.f);
+	m_rightButton.setPosition(coords.getRelativePoint({(m_gameData.m_style < 1 ? 0.775f : 2.775f), 0.425f }));
 
-	if(m_gameData.m_style < 1) {
-		m_rightButton.setCharacterSize(resumeCharacterSize);
-		m_rightButton.setPosition(coords.getRelativePoint({0.775, 0.425f + characterSize }));
-		m_rightButton.setParagraphWidth(paragraphWidthArrow);
-		m_rightButton.setPadding(paddingSize);
-	}else {
-		m_rightButton.setPosition(coords.getRelativePoint({2.775, 0.425f + characterSize }));
-	}
-
-	m_widgets.render(target, states);
+	
 	m_settingsEntity.render(target, states);
+	m_widgets.render(target, states);
 }
 
 void SettingsScene::changeTexture(char c) {
