@@ -49,7 +49,7 @@ bool checkGoodChoose(Plateau &p, Piece &pieceChooseOne, Piece refA , Piece &piec
 
 bool ChevalFou (Plateau& p, std::vector<gf::Vector2i> tabVector) {
 	gf::Log::info("Apelle ChevalFou execute\n");
-	if(!inBoard(tabVector[0]) || !inBoard(tabVector[1])) {
+	if(tabVector.size() != 2 || !inBoard(tabVector[0]) || !inBoard(tabVector[1])) {
 		return false;
 	}
 	
@@ -76,7 +76,7 @@ bool ChevalFouIsPlayable (Plateau& p, Phase f) {
 
 bool Chameau (Plateau& p, std::vector<gf::Vector2i> tabVector) {
 	gf::Log::info("Apelle Chameau execute\n");
-	if(!inBoard(tabVector[0])) {
+	if(tabVector.size() != 1 || !inBoard(tabVector[0])) {
 		return false;
 	}
 	Piece& piece=p.state[tabVector[0].y * 8 + tabVector[0].x].piece;
@@ -112,7 +112,9 @@ bool ChameauIsPlayable (Plateau& p, Phase f) {
 
 bool QuatreCoin (Plateau& p, std::vector<gf::Vector2i> tabVector) {
 	gf::Log::info("Apelle Quatre coin execute\n");
-	if(!inBoard(tabVector[0])){return false;}
+	if(tabVector.size() != 2 || !inBoard(tabVector[0])){
+		return false;
+	}
 	Case &c = p.state[tabVector[0].y * 8 + tabVector[0].x];
 	gf::Vector2i e(-1);
 	int occupied = 0;
@@ -165,7 +167,7 @@ bool QuatreCoinIsPlayable (Plateau& p, Phase f) {
 bool Asile(Plateau& p, std::vector<gf::Vector2i> tabVector){
 	gf::Log::info("Apelle Asile execute\n");
 	
-	if(!inBoard(tabVector[0]) || !inBoard(tabVector[1])) {
+	if(tabVector.size() != 2 || !inBoard(tabVector[0]) || !inBoard(tabVector[1])) {
 		return false;
 	}
 	
