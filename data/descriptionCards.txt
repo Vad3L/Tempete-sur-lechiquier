@@ -9,8 +9,5 @@
 131;URBANISME;Sur l'échiquier, permutez l'une de vos Tours avec une Tour adverse.;1;1;0;2
 122;SCHIZOPHRÉNIE;Sur l'échiquier, permutez l'un de vos Fous avec un Fou adverse.;1;1;0;2
 126;TOUR DE FADA;Sur l'échiquier, permuttez un Fou adverse avec une Tour adverse.;1;1;0;2
-<<<<<<< HEAD
 16;BONNES COPINES;Sur l'échiquier, permutez l'une de vos Dame avec une Dame adverse.;0;1;1;2
-=======
 45;DESINTEGRATION;Retirez de l'échiquier l'une de vos propres pièces.;1;1;0;1
->>>>>>> b1d01a9b2a93fae2b661d3cc8d832b85c0f874ff
