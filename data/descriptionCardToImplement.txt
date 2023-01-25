@@ -120,11 +120,11 @@
 119;ROQUE ET ROLLE;Si aucune pièce adverse ne se trouve sur votre première rangée, vous pouvez le souhaitez toutes vos pièces qui s'y trouvent.;0;0;1
 120;RUADE;Annulez le coup que vient de jouer votre adversaire avec l'un de ses Cavaliers. Déplacez vous-même à sa place, ce même Cavalier. Vous pouvez même prendre ainsi l'une pièce adverse...ou l'une de vos pièces;3;0;2
 121;SAUTE MOUTON;Déplacez l'un de vos pions comme au jeu de Dames, en sautant sur les diagones par dessus vos pièces ou velles de l'adversaire. Cependant, les pièces sautées au cours de ce déplacement ne sont pas "prises" et resent sur place.;0;0;1
-122;SCHIZOPHRENIE;Sur l'échiquier, permutez l'un de vos Fous avec un Fou adverse.;1;0;0
+122;SCHIZOPHRÉNIE;Sur l'échiquier, permutez l'un de vos Fous avec un Fou adverse.;1;1;0
 123;SERIAL KILLER;L'un de vos Pions, qui vient d eprendre une pièce adverse, est pris d'une frénésie destructrice. Continuez à déplacer, en diagonale, le même pion en prenant à chaque déplacement une pièce adverse, tant que cela est possible.;1;0;0
 124;TIR;Vous pouvez prendre une pièce adver "au tir", sans que son agresseur vienne prendre sa place. le coup consiste simplement à désigner une la case que votre pièce pourrait atteindre, puis à retirer la pièce adverse qui s'y trouve, la pièce qui prend ne bougeant pas.;0;1;1
 125;TOI AUSSI MON FILS ! Jouez cette carte lorsque vous adversaire vous annonce un échec, même mat. La pièce qui vous met en échec change alors de couleur et passe dans votre camp.;3;0;0
-126;TOUR DE FADA;Sur l'échiquier, permuttez un Fou adverse avec une Tour adverse.;1;0;0
+126;TOUR DE FADA;Sur l'échiquier, permuttez un Fou adverse avec une Tour adverse.;1;1;0
 127;TOURNEZ MANEGE;Faites pivoter l'échiquier d'un quart de tour dans le sens de votre choix. Les pions se déplacent toujours vers l'adversaire, et tous ceux qui se retrouvent sur la dernière rangée sont imédiatement promus. Ceux se retrouvant sur la rangée de départ peuvent se déplacer de deux cases.;1;0;0
 128;TRAHISON;Un Pion adverse qui se trouve déjà de votre côté de l'échiquier (plus près de votre bord que de celui de l'adversaire) change soudain de couleur et passe dans votre camp.;0;0;0
 129;TRAPPE;En jouant cette carte, notez sur un papier les coordonées d'une case de l'échiquier, vide ou occupée par l'une de vos pièces.? Dès qu'une pièce adverse s'arrête sur cette case, une bombe explose et la pièce est retirée du jeu. S'il s'agit du Roi, la bombe explose, mais le Roi reste en place.;1;1;0
