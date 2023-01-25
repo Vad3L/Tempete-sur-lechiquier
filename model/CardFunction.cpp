@@ -41,7 +41,6 @@ bool isInEchecAfterCardGreen(Plateau &p , std::function<void(Plateau&, gf::Vecto
 	
 	assert(pp.getFen() == p.getFen());
 
-	// a changer plus tard pour mettre s et e	
 	execute(pp,gf::Vector2i(-1),gf::Vector2i(-1));
 
 	bool ret = true;
@@ -60,18 +59,18 @@ bool isInEchecAfterCardGreen(Plateau &p , std::function<void(Plateau&, gf::Vecto
 	return ret ;
 }
 
-bool isInEchecAfterCardYellow(Plateau &p , std::function<void(Plateau&, gf::Vector2i s, gf::Vector2i e)> execute) {
+//intule dans ce fichier
+/*bool isInEchecAfterCardYellow(Plateau &p , std::function<void(Plateau&, gf::Vector2i s, gf::Vector2i e)> execute) {
 	Plateau pp = p;
 
 	if(p.playerInEchec) {
 		return true;
 	}
 
-	// a changer plus tard pour mettre s et e
 	execute(pp,gf::Vector2i(-1),gf::Vector2i(-1));
 
 	return pp.isInEchec(ChessColor::WHITE) || pp.isInEchec(ChessColor::BLACK);
-}
+}*/
 
 
 //card
