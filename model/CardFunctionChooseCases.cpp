@@ -1,56 +1,34 @@
 #include "CardFunctionChooseCases.hpp"
 
-bool isInEchecAfterCard(Plateau &p , std::function<bool(Plateau&, gf::Vector2i s, gf::Vector2i e)> execute) {
-	Plateau pp = p;
-	
-	assert(pp.getFen() == p.getFen());
-
-	execute(pp,gf::Vector2i(-1),gf::Vector2i(-1));
-
-	bool ret = true;
-	gf::Vector2i caseProvocateEchec(-1);
-	if(p.playerInEchec) {
-		caseProvocateEchec = p.caseProvocateEchec; //obtenir la dernier case qui met met en cehc l'afversaire forcement par un coup normal
-	}
-
-	// chercher si une autre case case met en echec l'adversaire apres l'activation de la carte
-	if(p.turnTo == ChessColor::WHITE) {
-		ret = pp.isInEchec(ChessColor::WHITE) || pp.isInEchec(ChessColor::BLACK, gf::Vector2i(-1), caseProvocateEchec);
-	}else {
-		ret = pp.isInEchec(ChessColor::WHITE, gf::Vector2i(-1), caseProvocateEchec) || pp.isInEchec(ChessColor::BLACK);
-	}
-
-	return ret;
-}
-
-
-//Ne fonctionne que pour des pièces de même couleurs
-bool isPossibleSwapPieces(Plateau &p,ChessPiece p1, ChessPiece p2, ChessColor color){
+bool pieceExist(Plateau &p,ChessPiece type, ChessColor color) {
 	for(auto caseEchiquier: p.state){
-		for(auto caseEchiquierbis: p.state){
-			if(checkGoodChoose(p, p1, caseEchiquier.piece, p2, caseEchiquierbis.piece, color)){
-				return true;
-			}
+		if(caseEchiquier.piece.getType() == type && caseEchiquier.piece.getColor() == color) {
+			return true;
 		}
 	}
 	return false;
 }
 
-bool checkGoodChoose(Plateau &p,ChessPiece typeOne,Piece &pieceChooseOne, ChessPiece typeTwo,Piece &pieceChooseTwo,ChessColor color){
+bool checkGoodCase(Plateau &p, gf::Vector2i coord, ChessPiece type, ChessColor color) {
+	Piece &piece = p.state[coord.y * 8 + coord.x].piece;
+	return piece.getType() == type &&  piece.getColor() == color;
+}
+
+bool checkGoodChoose(Plateau &p, Piece &pieceChooseOne, Piece refA , Piece &pieceChooseTwo, Piece refB) {
 	bool res = false;
-	
-	if(pieceChooseOne.getType()== typeOne && pieceChooseTwo.getType()==typeTwo && pieceChooseOne.getColor() == color && pieceChooseTwo.getColor() == color){
-		res=true;
-	}
-	
-	if(pieceChooseOne.getType()== typeTwo && pieceChooseTwo.getType()== typeOne && pieceChooseTwo.getColor() == color && pieceChooseOne.getColor() == color){
-		res=true;
-	}
+
+	if(refA == pieceChooseOne && refB == pieceChooseTwo) {
+		res = true;
+	} 
+
+	if(refA == pieceChooseTwo && refB == pieceChooseOne) {
+		res = true;
+	} 
 
 	if(!res){
 		return false;
 	}
-
+	
 	std::swap(pieceChooseOne, pieceChooseTwo);
 
 	gf::Vector2i caseProvocateEchec(-1);
@@ -75,11 +53,11 @@ bool ChevalFou (Plateau& p, gf::Vector2i s, gf::Vector2i e) {
 		return false;
 	}
 	
-	Piece &p1 = p.state[s.y * 8 + s.x].piece;
-	Piece &p2 = p.state[e.y * 8 + e.x].piece;
+	Piece &piece1 = p.state[s.y * 8 + s.x].piece;
+	Piece &piece2 = p.state[e.y * 8 + e.x].piece;
 
-	if(checkGoodChoose(p, ChessPiece::KNIGHT, p1, ChessPiece::BISHOP, p2, p.turnTo)) {
-		std::swap(p1, p2);
+	if(checkGoodChoose(p, piece1, Piece(p.turnTo, ChessPiece::KNIGHT), piece2, Piece(p.turnTo, ChessPiece::BISHOP))) {
+		std::swap(piece1, piece2);
 		return true;
 	}
 
@@ -92,7 +70,7 @@ bool ChevalFouIsPlayable (Plateau& p, Phase f) {
 		return false;
 	}
 
-	return isPossibleSwapPieces(p, ChessPiece::KNIGHT, ChessPiece::BISHOP, p.turnTo);
+	return pieceExist(p, ChessPiece::KNIGHT, p.turnTo) || pieceExist(p, ChessPiece::BISHOP, p.turnTo);
 }
 
 
@@ -114,6 +92,7 @@ bool Chameau (Plateau& p, gf::Vector2i s,gf::Vector2i e) {
 		piece = Piece(playerColor, ChessPiece::KNIGHT);
 		return false;
 	}
+
 	return true;
 }
 
@@ -123,8 +102,8 @@ bool ChameauIsPlayable (Plateau& p, Phase f) {
 		return false;
 	}
 	return true;
-
 }
+
 
 bool QuatreCoin (Plateau& p, gf::Vector2i s, gf::Vector2i e) {
 	gf::Log::info("apelle Quatre coin execute\n");
@@ -156,27 +135,25 @@ bool QuatreCoinIsPlayable (Plateau& p, Phase f) {
 		}
 	}
 
-	if (occupied != 3) {
-		return false;
-	}
-
-	return true;
+	return occupied == 3;
 }
 
 bool Asile(Plateau& p, gf::Vector2i s, gf::Vector2i e){
 	gf::Log::info("apelle Asile execute\n");
 	
-	inBoard(s);
-	inBoard(e);
-	Piece &c = p.state[s.y * 8 + s.x].piece;
-	Piece &d = p.state[e.y * 8 + e.x].piece;
-	if(checkGoodChoose(p,ChessPiece::ROOK,d,ChessPiece::BISHOP,c,p.turnTo)){
-		gf::Log::info("Check true\n");
-		std::swap(c,d);
-
+	if(!inBoard(s) || !inBoard(e)) {
+		return false;
 	}
 	
-	return true;
+	Piece &piece1 = p.state[s.y * 8 + s.x].piece;
+	Piece &piece2 = p.state[e.y * 8 + e.x].piece;
+
+	if(checkGoodChoose(p, piece1, Piece(p.turnTo, ChessPiece::ROOK), piece2, Piece(p.turnTo, ChessPiece::BISHOP))) {
+		std::swap(piece1, piece2);
+		return true;
+	}
+
+	return false;
 }
 
 
@@ -186,7 +163,6 @@ bool AsileIsPlayable(Plateau& p, Phase f){
 		return false;
 	}
 
-	return isPossibleSwapPieces(p,ChessPiece::ROOK,ChessPiece::BISHOP,p.turnTo);
-
-	return true;
+	return pieceExist(p, ChessPiece::ROOK, p.turnTo) || pieceExist(p, ChessPiece::BISHOP, p.turnTo);
 }
+

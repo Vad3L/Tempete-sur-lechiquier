@@ -42,6 +42,8 @@ class Piece  {
 		std::vector<gf::Vector2i> getCasesPassCamel (gf::Vector2i posStart, gf::Vector2i posEnd);
 		std::vector<gf::Vector2i> getCasesPassPrince (gf::Vector2i posStart, gf::Vector2i posEnd);
 		std::vector<gf::Vector2i> getCasesPassPrincess (gf::Vector2i posStart, gf::Vector2i posEnd);
+		
+		bool operator== (const Piece &p) const;
 
 	protected:
 		ChessColor color;
