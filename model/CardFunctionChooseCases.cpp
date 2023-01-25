@@ -116,29 +116,27 @@ bool QuatreCoin (Plateau& p, std::vector<gf::Vector2i> tabVector) {
 		return false;
 	}
 	Case &c = p.state[tabVector[0].y * 8 + tabVector[0].x];
-	gf::Vector2i e(-1);
-	int occupied = 0;
+
+	gf::Vector2i coordLibre(-1);
 	std::vector<gf::Vector2i> coins = { gf::Vector2i(0, 0),
 										gf::Vector2i(0, 7),
 										gf::Vector2i(7, 0),
 										gf::Vector2i(7, 7) };
 	for (auto c : coins) {
-		if (p.state[c.y * 8 + c.x].piece.getType() != ChessPiece::NONE) {
-			occupied++;
-		}else{
-			e = c;
+		if (p.state[c.y * 8 + c.x].piece.getType() == ChessPiece::NONE) {
+			coordLibre = c;
 			break;
 		}
 	}
-	if(!inBoard(e)){return false;}
-	Case &d = p.state[e.y * 8 + e.x];
-	d.piece = c.piece;
-	c.piece = Piece(ChessColor::NONE, ChessPiece::NONE);
 
-	bool res = p.isInEchec(p.turnTo) || p.isInEchec(!p.turnTo, gf::Vector2i(-1), e);
+	if(!inBoard(coordLibre)){return false;}
+
+	Case &libre = p.state[coordLibre.y * 8 + coordLibre.x];
+	std::swap(libre.piece, c.piece);
+
+	bool res = p.isInEchec(p.turnTo) || p.isInEchec(!p.turnTo);
 	if (res) {
-		c.piece = d.piece;
-		d.piece = Piece(ChessColor::NONE, ChessPiece::NONE);
+		std::swap(libre.piece, c.piece);
 	}
 	return !res;
 
@@ -146,7 +144,7 @@ bool QuatreCoin (Plateau& p, std::vector<gf::Vector2i> tabVector) {
 
 bool QuatreCoinIsPlayable (Plateau& p, Phase f) {
 	gf::Log::info("Apelle Quatre coin jouable\n");
-	if (f != Phase::AVANT_COUP) {
+	if (f != Phase::AVANT_COUP && p.playerInEchec) {
 		return false;
 	}
 
@@ -222,7 +220,7 @@ bool TourFadaIsPlayable (Plateau& p, Phase f) {
 }
 
 bool Urbanisme(Plateau& p, std::vector<gf::Vector2i> tabVector){
-	gf::Log::info("Apelle Asile execute\n");
+	gf::Log::info("Appelle Urbansime execute\n");
 	
 	if(tabVector.size() != 2 || !inBoard(tabVector[0]) || !inBoard(tabVector[1])) {
 		return false;
@@ -240,7 +238,7 @@ bool Urbanisme(Plateau& p, std::vector<gf::Vector2i> tabVector){
 }
 
 bool UrbanismeIsPlayable(Plateau& p, Phase f) { 
-	gf::Log::info("Apelle Asile jouable\n");
+	gf::Log::info("Appelle Urbanisme jouable\n");
 	if(f!= Phase::APRES_COUP){
 		return false;
 	}
@@ -249,7 +247,7 @@ bool UrbanismeIsPlayable(Plateau& p, Phase f) {
 }
 
 bool Schizophrenie(Plateau& p, std::vector<gf::Vector2i> tabVector){
-	gf::Log::info("Apelle Asile execute\n");
+	gf::Log::info("Appelle Schizophrenie execute\n");
 	
 	if(tabVector.size() != 2 || !inBoard(tabVector[0]) || !inBoard(tabVector[1])) {
 		return false;
@@ -267,10 +265,38 @@ bool Schizophrenie(Plateau& p, std::vector<gf::Vector2i> tabVector){
 }
 
 bool SchizophrenieIsPlayable(Plateau& p, Phase f) { 
-	gf::Log::info("Apelle Asile jouable\n");
+	gf::Log::info("Appelle Schizophrenie jouable\n");
 	if(f!= Phase::APRES_COUP){
 		return false;
 	}
 
 	return pieceExist(p, ChessPiece::BISHOP, p.turnTo) && pieceExist(p, ChessPiece::BISHOP, !p.turnTo);
+}
+
+bool BonnesCopines(Plateau& p, std::vector<gf::Vector2i> tabVector){
+	gf::Log::info("Appelle BonnesCopines execute\n");
+	
+	if(tabVector.size() != 2 || !inBoard(tabVector[0]) || !inBoard(tabVector[1])) {
+		return false;
+	}
+	
+	Piece &piece1 = p.state[tabVector[0].y * 8 + tabVector[0].x].piece;
+	Piece &piece2 = p.state[tabVector[1].y * 8 + tabVector[1].x].piece;
+
+	if(checkGoodChoose(p, piece1, Piece(p.turnTo, ChessPiece::QUEEN), piece2, Piece(!p.turnTo, ChessPiece::QUEEN))) {
+		std::swap(piece1, piece2);
+		return true;
+	}
+
+	return false;
+}
+
+
+bool BonnesCopinesIsPlayable(Plateau& p, Phase f){ 
+	gf::Log::info("Appelle BonnesCopines jouable\n");
+	if(f!= Phase::AVANT_COUP){
+		return false;
+	}
+
+	return pieceExist(p, ChessPiece::QUEEN, p.turnTo) && pieceExist(p, ChessPiece::QUEEN, !p.turnTo);
 }

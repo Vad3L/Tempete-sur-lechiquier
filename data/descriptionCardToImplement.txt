@@ -14,7 +14,7 @@
 13;BARRICADE;Placez une barrière de deux cases de lang, rectiligne ou à angle droit, entre n'importe quelles cases de l'échiquier. Cette barrière ne peut être franchie par aucune pièce, excepté les cavaliers ou toute autre pièce ayant acquis la capacité de "sauter" d'une manière similaire.;1;1;0
 14;BOMBARDE;L'une de vos Tours peut, en se déplaçant normalement en ligne droite, sauter par dessus une pièce, qu'elle soit à vous ou à votre adversaire, pour prendre la pièce adverse qui se trouve immédiatement au-delà;1;0;0
 15;BOMBE ATOMIQUE;Si la pièce que vous venez de déplacer n'as pas pris une pièce adverse, vous pouvez l afaire "exploser". Elle est alors retirée du jeu, ainsi que toutes les autres pièces, quelles que soient leur couleur, qui se trouvent sur les huit cases adjacentes. Les Rois ne sont pas affectés par l'explosion.;1;0;0
-16;BONNES COPINES;Sur l'échiquier, permutez votre Dame avec celle de votre adversaire.;0;0;1
+16;BONNES COPINES;Sur l'échiquier, permutez l'une de vos Dame avec une Dame adverse.;0;1;1
 17;BONNET D'ÂNE; Désignez une pièce adverse(sauf le Roi), que vous envoyez au piquet sur une case libre située dans l'un des quatre coins de l'échiquier. Votre adversaire ne pourra pas déplacer cette pièce à son prochain tour.;1;0;0
 18;BOUCHE D'EGOUT;Placez des bouches d'égout (pièces de monnaie) sur deux cases de l'échiquier. Une pièce se trouvant sur une bouche d'égout peut désormais, à la place de son déplacement normal, se rendre sur n'importe quelle autre bouche d'égout, occupée ou non.;1;1;0
 19;BOUCLIER;Votre adversaire ne peut pas vous prendre ce tour-ci la pièce que vous venez de déplacer.;1;0;0

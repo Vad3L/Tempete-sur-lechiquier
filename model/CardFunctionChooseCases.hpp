@@ -16,6 +16,7 @@ bool Asile (Plateau& p, std::vector<gf::Vector2i> tabVector);
 bool Urbanisme (Plateau& p, std::vector<gf::Vector2i> tabVector);
 bool Schizophrenie (Plateau& p, std::vector<gf::Vector2i> tabVector);
 bool TourFada (Plateau& p, std::vector<gf::Vector2i> tabVector);
+bool BonnesCopines (Plateau& p, std::vector<gf::Vector2i> tabVector);
  
 bool ChameauIsPlayable (Plateau& p, Phase f);
 bool QuatreCoinIsPlayable (Plateau& p, Phase f);
@@ -24,6 +25,7 @@ bool AsileIsPlayable (Plateau& p, Phase f);
 bool UrbanismeIsPlayable (Plateau& p, Phase f);
 bool SchizophrenieIsPlayable (Plateau& p, Phase f);
 bool TourFadaIsPlayable (Plateau& p, Phase f);
+bool BonnesCopinesIsPlayable (Plateau& p, Phase f);
 
 
 #endif // CARD_FUNC_CHOOSE_CASES_H
