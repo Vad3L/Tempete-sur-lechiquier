@@ -73,13 +73,12 @@ struct CardRep {
 	CodeRep err;
 	size_t card; //num car dans mai
 	int num; // num carte jouée
-	Pos a;
-	Pos b;
+	std::vector<Pos> poses;
 };
 
 template<typename Archive>
 Archive operator|(Archive& ar, CardRep& data) {
-	return ar | data.err | data.card | data.a | data.b | data.num;
+	return ar | data.err | data.card | data.poses | data.num;
 }
 
 template<typename Archive>
