@@ -36,7 +36,7 @@ bool binNotChange(Plateau& p){
 	return false;
 }
 
-bool isInEchecAfterCardGreen(Plateau &p , std::function<void(Plateau&, gf::Vector2i s, gf::Vector2i e)> execute) {
+bool isInEchecAfterCardGreen(Plateau &p , std::function<bool(Plateau&, gf::Vector2i s, gf::Vector2i e)> execute) {
 	Plateau pp = p;
 	
 	assert(pp.getFen() == p.getFen());
@@ -59,29 +59,17 @@ bool isInEchecAfterCardGreen(Plateau &p , std::function<void(Plateau&, gf::Vecto
 	return ret ;
 }
 
-//intule dans ce fichier
-/*bool isInEchecAfterCardYellow(Plateau &p , std::function<void(Plateau&, gf::Vector2i s, gf::Vector2i e)> execute) {
-	Plateau pp = p;
-
-	if(p.playerInEchec) {
-		return true;
-	}
-
-	execute(pp,gf::Vector2i(-1),gf::Vector2i(-1));
-
-	return pp.isInEchec(ChessColor::WHITE) || pp.isInEchec(ChessColor::BLACK);
-}*/
-
-
 //card
-void NoCard (Plateau& p, gf::Vector2i s, gf::Vector2i e) {}
+bool NoCard (Plateau& p, gf::Vector2i s, gf::Vector2i e) { return false;}
 bool NoCardPlayable (Plateau& p, Phase f) { return false; }
 
-void Princess (Plateau& p, gf::Vector2i s, gf::Vector2i e) {
+bool Princess (Plateau& p, gf::Vector2i s, gf::Vector2i e) {
 	gf::Log::info("Apelle Princesse execute\n");
 	gf::Vector2i pos = (p.turnTo  == ChessColor::WHITE ? gf::Vector2i(3,7): gf::Vector2i(3,0)); 
 	Case &c = p.state[pos.y * 8 + pos.x];
 	c.piece = Piece(p.turnTo, ChessPiece::PRINCESS);
+
+	return true;
 }
 
 bool PrincessIsPlayable (Plateau& p, Phase f){
@@ -109,7 +97,7 @@ bool PrincessIsPlayable (Plateau& p, Phase f){
 	return false;
 }
 
-void BombeAtomique (Plateau& p, gf::Vector2i s, gf::Vector2i e) {
+bool BombeAtomique (Plateau& p, gf::Vector2i s, gf::Vector2i e) {
 	gf::Log::info("Appelle Bombe atomique execute\n");
 
 	std::vector<gf::Vector2i> targets;
@@ -133,6 +121,8 @@ void BombeAtomique (Plateau& p, gf::Vector2i s, gf::Vector2i e) {
 			p.state[v.y * 8 + v.x].piece = Piece(ChessColor::NONE, ChessPiece::NONE);
 		}
 	}
+
+	return true;
 }
 
 bool BombeAtomiqueIsPlayable (Plateau& p, Phase f){
@@ -149,11 +139,13 @@ bool BombeAtomiqueIsPlayable (Plateau& p, Phase f){
 	return binNotChange(p);
 }
 
-void Vampirisme (Plateau& p, gf::Vector2i s, gf::Vector2i e){
+bool Vampirisme (Plateau& p, gf::Vector2i s, gf::Vector2i e){
 	gf::Log::info("Appelle Vampirisme execute\n");
 
 	gf::Vector2i pos = p.lastCoup.back();
 	p.state[pos.y * 8 + pos.x].piece = Piece(p.turnTo, p.bin.back().getType());
+
+	return true;
 }
 
 bool VampirismeIsPlayable (Plateau& p, Phase f){
@@ -171,10 +163,9 @@ bool VampirismeIsPlayable (Plateau& p, Phase f){
 	gf::Vector2i pos = p.lastCoup.back();
 	
 	return p.state[pos.y * 8 + pos.x].piece.getType() != ChessPiece::KING;
-	
 }
 
-void VisitesOfficielles (Plateau& p, gf::Vector2i s, gf::Vector2i e){
+bool VisitesOfficielles (Plateau& p, gf::Vector2i s, gf::Vector2i e){
 	gf::Log::info("Appelle Visites Officielles execute\n");
 	gf::Vector2i roiB(-1);
 	gf::Vector2i roiN(-1);
@@ -189,6 +180,8 @@ void VisitesOfficielles (Plateau& p, gf::Vector2i s, gf::Vector2i e){
 	}
 
 	std::swap(p.state[roiB.y*8+roiB.x].piece, p.state[roiN.y*8+roiN.x].piece);
+
+	return true;
 }
 
 bool VisitesOfficiellesIsPlayable (Plateau& p, Phase f){

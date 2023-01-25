@@ -37,7 +37,7 @@ class Card{
 		Action m_action;
 		Effect m_effect;
 		int m_num;
-		std::function<void(Plateau&, gf::Vector2i, gf::Vector2i)> m_execute;
+		std::function<bool(Plateau&, gf::Vector2i, gf::Vector2i)> m_execute;
 		std::function<bool(Plateau&, Phase)> m_isPlayable;
 
 		Card(int num, std::string name,std::string m_description,Turn turn, Action action, Effect effect);

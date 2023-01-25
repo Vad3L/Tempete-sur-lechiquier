@@ -1,7 +1,9 @@
 #include "Deck.hpp"
 
 Deck::Deck(std::vector<int> numCards){
-	
+	std::map<int, std::function<bool(Plateau&, gf::Vector2i, gf::Vector2i)>> m_execsfuncs;
+	std::map<int, std::function<bool(Plateau&, Phase)>> m_isplayfuncs;
+
 	m_execsfuncs.insert({ 29, Chameau });	
 	m_isplayfuncs.insert({ 29, ChameauIsPlayable });
 
