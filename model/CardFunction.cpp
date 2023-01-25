@@ -2,6 +2,19 @@
 #include "cassert"
 
 //tools
+std::vector<std::string> explode(std::string const & s, char delim)
+{
+    std::vector<std::string> result;
+    std::istringstream iss(s);
+
+    for (std::string token; std::getline(iss, token, delim); )
+    {
+        result.push_back(std::move(token));
+    }
+
+    return result;
+}
+
 bool binNotChange(Plateau& p){
 
 	int len = p.allPositions.size();
@@ -13,6 +26,16 @@ bool binNotChange(Plateau& p){
 	std::string before = p.allPositions[len - 2];
 	std::string now = p.allPositions.back();
 	std::string not_piece = "1234567890/";
+
+
+	if (len >= 3){
+		int index = (p.turnTo == ChessColor::WHITE ? 0:7 );
+		char c = (p.turnTo == ChessColor::WHITE ? 'P':'p' );
+		auto tabS = explode(before,'/');
+		if(tabS[index].find(c,0) != std::string::npos){
+			before = p.allPositions[len - 3];
+		}
+	}
 
 	size_t count_before = 0;
 	size_t count_after = 0;

@@ -2,7 +2,7 @@
 #define CARD_FUNC_H
 
 #include "Plateau.hpp"
-
+#include <sstream>
 
 //tools
 bool binNotChange(Plateau& p);
