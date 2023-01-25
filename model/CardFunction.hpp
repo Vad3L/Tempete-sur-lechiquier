@@ -22,7 +22,4 @@ bool BombeAtomiqueIsPlayable (Plateau& p, Phase f);
 bool VampirismeIsPlayable (Plateau& p, Phase f);
 bool VisitesOfficiellesIsPlayable (Plateau& p, Phase f);
 
-
-
-
 #endif
