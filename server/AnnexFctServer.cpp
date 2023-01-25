@@ -150,7 +150,7 @@ bool performCoup (Plateau& plateau, CoupRep& coup) {
 	plateau.prettyPrint();
 	plateau.lastCoup.push_back(gf::Vector2i(coup.posStart.x,coup.posStart.y));
 	plateau.lastCoup.push_back(gf::Vector2i(coup.posEnd.x,coup.posEnd.y));   
-	gf::Log::debug("------COUP -----------------------------------------VALIDE------ %li\n", plateau.allPositions.size());
+	gf::Log::debug("------COUP ------------------VALIDE------ %li\n", plateau.allPositions.size());
 	plateau.allPositions.push_back(plateau.getFen());
 	
 	if (p.getType() == ChessPiece::PAWN && (coup.posEnd.y == 0 || coup.posEnd.y == 7)) {

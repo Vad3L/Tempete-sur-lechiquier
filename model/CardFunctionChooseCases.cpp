@@ -112,10 +112,10 @@ bool ChameauIsPlayable (Plateau& p, Phase f) {
 
 bool QuatreCoin (Plateau& p, std::vector<gf::Vector2i> tabVector) {
 	gf::Log::info("Apelle Quatre coin execute\n");
-	if(tabVector.size() != 2 || !inBoard(tabVector[0])){
+	if(tabVector.size() != 1 || !inBoard(tabVector[0])){
 		return false;
 	}
-	Case &c = p.state[tabVector[0].y * 8 + tabVector[0].x];
+	Piece &piece1 = p.state[tabVector[0].y * 8 + tabVector[0].x].piece;
 
 	gf::Vector2i coordLibre(-1);
 	std::vector<gf::Vector2i> coins = { gf::Vector2i(0, 0),
@@ -128,15 +128,16 @@ bool QuatreCoin (Plateau& p, std::vector<gf::Vector2i> tabVector) {
 			break;
 		}
 	}
-
+	
 	if(!inBoard(coordLibre)){return false;}
 
-	Case &libre = p.state[coordLibre.y * 8 + coordLibre.x];
-	std::swap(libre.piece, c.piece);
+	Piece &piece2 = p.state[coordLibre.y * 8 + coordLibre.x].piece;
+
+	std::swap(piece1, piece2);
 
 	bool res = p.isInEchec(p.turnTo) || p.isInEchec(!p.turnTo);
 	if (res) {
-		std::swap(libre.piece, c.piece);
+		std::swap(piece1, piece2);
 	}
 	return !res;
 
@@ -149,10 +150,10 @@ bool QuatreCoinIsPlayable (Plateau& p, Phase f) {
 	}
 
 	int occupied = 0;
-	std::vector<gf::Vector2i> coins = { gf::Vector2i(0, 0),
-										gf::Vector2i(0, 7),
-										gf::Vector2i(7, 0),
-										gf::Vector2i(7, 7) };
+	std::vector<gf::Vector2i> coins = { 	gf::Vector2i(0, 0),
+											gf::Vector2i(0, 7),
+											gf::Vector2i(7, 0),
+											gf::Vector2i(7, 7) };
 	for (auto c : coins) {
 		if (p.state[c.y * 8 + c.x].piece.getType() != ChessPiece::NONE) {
 			occupied++;
@@ -294,7 +295,7 @@ bool BonnesCopines(Plateau& p, std::vector<gf::Vector2i> tabVector){
 
 bool BonnesCopinesIsPlayable(Plateau& p, Phase f){ 
 	gf::Log::info("Appelle BonnesCopines jouable\n");
-	if(f!= Phase::AVANT_COUP){
+	if(f!= Phase::AVANT_COUP && p.playerInEchec){
 		return false;
 	}
 
