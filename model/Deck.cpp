@@ -31,13 +31,20 @@ Deck::Deck(std::vector<int> numCards){
 	m_execsfuncs.insert({ 131, Urbanisme });
 	m_isplayfuncs.insert({ 131, UrbanismeIsPlayable });
 	
-	m_execsfuncs.insert({ 131, Shizophrenie });
-	m_isplayfuncs.insert({ 131, ShizophrenieIsPlayable });
+	m_execsfuncs.insert({ 122, Schizophrenie });
+	m_isplayfuncs.insert({ 122, SchizophrenieIsPlayable });
 		
+	m_execsfuncs.insert({ 126, TourFada });
+	m_isplayfuncs.insert({ 126, TourFadaIsPlayable });
+
 		
 	//format du fichier
 	//NUM;NAME;DESCRIPTION;TURN;ACTION;EFFECT;nbCase (3 dernières valeurs sont des entier correspondant à la la valeur dans leur énum)
-	for(int k =0 ;k<11;k++) {
+	int borne = 11;
+	if(numCards.size()<1) {
+		borne = 1;
+	}
+	for(int k =0 ;k<borne;k++) {
 		std::ifstream file(std::string(CARDS_DESCRIPTIONDIR)+"descriptionCards.txt");
 
 		std::string delimiter = ";";

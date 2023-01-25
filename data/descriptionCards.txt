@@ -8,3 +8,4 @@
 135;VISITES OFFICIELLES;Permutez votre Roi avec celui de votre adversaire, à condition que cela ne mette aucun de vous deux en échec.;1;0;0;0
 131;URBANISME;Sur l'échiquier, permutez l'une de vos Tours avec une Tour adverse.;1;1;0;2
 122;SCHIZOPHRÉNIE;Sur l'échiquier, permutez l'un de vos Fous avec un Fou adverse.;1;1;0;2
+126;TOUR DE FADA;Sur l'échiquier, permuttez un Fou adverse avec une Tour adverse.;1;1;0;2

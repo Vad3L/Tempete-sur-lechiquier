@@ -49,7 +49,7 @@ bool checkGoodChoose(Plateau &p, Piece &pieceChooseOne, Piece refA , Piece &piec
 
 bool ChevalFou (Plateau& p, std::vector<gf::Vector2i> tabVector) {
 	gf::Log::info("Apelle ChevalFou execute\n");
-	if(!inBoard(tabVector[0]) || !inBoard(tabVector[1])) {
+	if(tabVector.size() != 2 || !inBoard(tabVector[0]) || !inBoard(tabVector[1])) {
 		return false;
 	}
 	
@@ -70,13 +70,13 @@ bool ChevalFouIsPlayable (Plateau& p, Phase f) {
 		return false;
 	}
 
-	return pieceExist(p, ChessPiece::KNIGHT, p.turnTo) || pieceExist(p, ChessPiece::BISHOP, p.turnTo);
+	return pieceExist(p, ChessPiece::KNIGHT, p.turnTo) && pieceExist(p, ChessPiece::BISHOP, p.turnTo);
 }
 
 
 bool Chameau (Plateau& p, std::vector<gf::Vector2i> tabVector) {
 	gf::Log::info("Apelle Chameau execute\n");
-	if(!inBoard(tabVector[0])) {
+	if(tabVector.size() != 1 || !inBoard(tabVector[0])) {
 		return false;
 	}
 	Piece& piece=p.state[tabVector[0].y * 8 + tabVector[0].x].piece;
@@ -112,7 +112,9 @@ bool ChameauIsPlayable (Plateau& p, Phase f) {
 
 bool QuatreCoin (Plateau& p, std::vector<gf::Vector2i> tabVector) {
 	gf::Log::info("Apelle Quatre coin execute\n");
-	if(!inBoard(tabVector[0])){return false;}
+	if(tabVector.size() != 2 || !inBoard(tabVector[0])){
+		return false;
+	}
 	Case &c = p.state[tabVector[0].y * 8 + tabVector[0].x];
 	gf::Vector2i e(-1);
 	int occupied = 0;
@@ -165,7 +167,7 @@ bool QuatreCoinIsPlayable (Plateau& p, Phase f) {
 bool Asile(Plateau& p, std::vector<gf::Vector2i> tabVector){
 	gf::Log::info("Apelle Asile execute\n");
 	
-	if(!inBoard(tabVector[0]) || !inBoard(tabVector[1])) {
+	if(tabVector.size() != 2 || !inBoard(tabVector[0]) || !inBoard(tabVector[1])) {
 		return false;
 	}
 	
@@ -182,12 +184,41 @@ bool Asile(Plateau& p, std::vector<gf::Vector2i> tabVector){
 
 
 bool AsileIsPlayable(Plateau& p, Phase f){ 
-	gf::Log::info("Apelle Asile jouable\n");
+	gf::Log::info("Appelle Asile jouable\n");
 	if(f!= Phase::APRES_COUP){
 		return false;
 	}
 
-	return pieceExist(p, ChessPiece::ROOK, p.turnTo) || pieceExist(p, ChessPiece::BISHOP, p.turnTo);
+	return pieceExist(p, ChessPiece::ROOK, p.turnTo) && pieceExist(p, ChessPiece::BISHOP, p.turnTo);
+}
+
+bool TourFada (Plateau& p, std::vector<gf::Vector2i> tabVector) {
+	gf::Log::info("Appelle Tour Fada execute\n");
+	if (tabVector.size() != 2) {
+		return false;
+	}
+
+	if (!inBoard(tabVector[0]) || !inBoard(tabVector[1])) {
+		return false;
+	}
+
+	Piece& piece1 = p.state[tabVector[0].y * 8 + tabVector[0].x].piece;
+	Piece& piece2 = p.state[tabVector[1].y * 8 + tabVector[1].x].piece;
+
+	if (checkGoodChoose(p, piece1, Piece(!p.turnTo, ChessPiece::ROOK), piece2, Piece(!p.turnTo, ChessPiece::BISHOP))) {
+		std::swap(piece1, piece2);
+		return true;
+	}
+	return false;
+}
+
+bool TourFadaIsPlayable (Plateau& p, Phase f) {
+	gf::Log::info("Appelle Tour Fada jouable\n");
+	if (f != Phase::APRES_COUP) {
+		return false;
+	}
+
+	return pieceExist(p, ChessPiece::ROOK, !p.turnTo) && pieceExist(p, ChessPiece::BISHOP, !p.turnTo);
 }
 
 bool Urbanisme(Plateau& p, std::vector<gf::Vector2i> tabVector){
@@ -214,10 +245,10 @@ bool UrbanismeIsPlayable(Plateau& p, Phase f) {
 		return false;
 	}
 
-	return pieceExist(p, ChessPiece::ROOK, p.turnTo) || pieceExist(p, ChessPiece::ROOK, !p.turnTo);
+	return pieceExist(p, ChessPiece::ROOK, p.turnTo) && pieceExist(p, ChessPiece::ROOK, !p.turnTo);
 }
 
-bool Shizophrenie(Plateau& p, std::vector<gf::Vector2i> tabVector){
+bool Schizophrenie(Plateau& p, std::vector<gf::Vector2i> tabVector){
 	gf::Log::info("Apelle Asile execute\n");
 	
 	if(tabVector.size() != 2 || !inBoard(tabVector[0]) || !inBoard(tabVector[1])) {
@@ -235,11 +266,11 @@ bool Shizophrenie(Plateau& p, std::vector<gf::Vector2i> tabVector){
 	return false;
 }
 
-bool ShizophrenieIsPlayable(Plateau& p, Phase f) { 
+bool SchizophrenieIsPlayable(Plateau& p, Phase f) { 
 	gf::Log::info("Apelle Asile jouable\n");
 	if(f!= Phase::APRES_COUP){
 		return false;
 	}
 
-	return pieceExist(p, ChessPiece::BISHOP, p.turnTo) || pieceExist(p, ChessPiece::BISHOP, !p.turnTo);
+	return pieceExist(p, ChessPiece::BISHOP, p.turnTo) && pieceExist(p, ChessPiece::BISHOP, !p.turnTo);
 }
