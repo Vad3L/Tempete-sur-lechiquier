@@ -48,7 +48,7 @@ bool checkGoodChoose(Plateau &p, Piece &pieceChooseOne, Piece refA , Piece &piec
 }
 
 bool ChevalFou (Plateau& p, std::vector<gf::Vector2i> tabVector) {
-	gf::Log::info("Apelle ChevalFou execute\n");
+	gf::Log::info("Appel ChevalFou execute\n");
 	if(tabVector.size() != 2 || !inBoard(tabVector[0]) || !inBoard(tabVector[1])) {
 		return false;
 	}
@@ -65,7 +65,7 @@ bool ChevalFou (Plateau& p, std::vector<gf::Vector2i> tabVector) {
 }
 
 bool ChevalFouIsPlayable (Plateau& p, Phase f) {
-	gf::Log::info("Apelle ChevalFou jouable\n");
+	gf::Log::info("Appel ChevalFou jouable\n");
 	if (f != Phase::APRES_COUP) {
 		return false;
 	}
@@ -75,7 +75,7 @@ bool ChevalFouIsPlayable (Plateau& p, Phase f) {
 
 
 bool Chameau (Plateau& p, std::vector<gf::Vector2i> tabVector) {
-	gf::Log::info("Apelle Chameau execute\n");
+	gf::Log::info("Appel Chameau execute\n");
 	if(tabVector.size() != 1 || !inBoard(tabVector[0])) {
 		return false;
 	}
@@ -101,7 +101,7 @@ bool Chameau (Plateau& p, std::vector<gf::Vector2i> tabVector) {
 }
 
 bool ChameauIsPlayable (Plateau& p, Phase f) {
-	gf::Log::info("Apelle chameau jouable\n");
+	gf::Log::info("Appel chameau jouable\n");
 	if (f != Phase::APRES_COUP) {
 		return false;
 	}
@@ -111,7 +111,7 @@ bool ChameauIsPlayable (Plateau& p, Phase f) {
 
 
 bool QuatreCoin (Plateau& p, std::vector<gf::Vector2i> tabVector) {
-	gf::Log::info("Apelle Quatre coin execute\n");
+	gf::Log::info("Appel Quatre coin execute\n");
 	if(tabVector.size() != 2 || !inBoard(tabVector[0])){
 		return false;
 	}
@@ -119,9 +119,9 @@ bool QuatreCoin (Plateau& p, std::vector<gf::Vector2i> tabVector) {
 	gf::Vector2i e(-1);
 	int occupied = 0;
 	std::vector<gf::Vector2i> coins = { gf::Vector2i(0, 0),
-										gf::Vector2i(0, 7),
-										gf::Vector2i(7, 0),
-										gf::Vector2i(7, 7) };
+					gf::Vector2i(0, 7),
+					gf::Vector2i(7, 0),
+					gf::Vector2i(7, 7) };
 	for (auto c : coins) {
 		if (p.state[c.y * 8 + c.x].piece.getType() != ChessPiece::NONE) {
 			occupied++;
@@ -145,16 +145,16 @@ bool QuatreCoin (Plateau& p, std::vector<gf::Vector2i> tabVector) {
 }
 
 bool QuatreCoinIsPlayable (Plateau& p, Phase f) {
-	gf::Log::info("Apelle Quatre coin jouable\n");
+	gf::Log::info("Appel Quatre coin jouable\n");
 	if (f != Phase::AVANT_COUP) {
 		return false;
 	}
 
 	int occupied = 0;
 	std::vector<gf::Vector2i> coins = { gf::Vector2i(0, 0),
-										gf::Vector2i(0, 7),
-										gf::Vector2i(7, 0),
-										gf::Vector2i(7, 7) };
+					gf::Vector2i(0, 7),
+					gf::Vector2i(7, 0),
+					gf::Vector2i(7, 7) };
 	for (auto c : coins) {
 		if (p.state[c.y * 8 + c.x].piece.getType() != ChessPiece::NONE) {
 			occupied++;
@@ -165,7 +165,7 @@ bool QuatreCoinIsPlayable (Plateau& p, Phase f) {
 }
 
 bool Asile(Plateau& p, std::vector<gf::Vector2i> tabVector){
-	gf::Log::info("Apelle Asile execute\n");
+	gf::Log::info("Appel Asile execute\n");
 	
 	if(tabVector.size() != 2 || !inBoard(tabVector[0]) || !inBoard(tabVector[1])) {
 		return false;
@@ -184,7 +184,7 @@ bool Asile(Plateau& p, std::vector<gf::Vector2i> tabVector){
 
 
 bool AsileIsPlayable(Plateau& p, Phase f){ 
-	gf::Log::info("Appelle Asile jouable\n");
+	gf::Log::info("Appel Asile jouable\n");
 	if(f!= Phase::APRES_COUP){
 		return false;
 	}
@@ -193,7 +193,7 @@ bool AsileIsPlayable(Plateau& p, Phase f){
 }
 
 bool TourFada (Plateau& p, std::vector<gf::Vector2i> tabVector) {
-	gf::Log::info("Appelle Tour Fada execute\n");
+	gf::Log::info("Appel Tour Fada execute\n");
 	if (tabVector.size() != 2) {
 		return false;
 	}
@@ -213,7 +213,7 @@ bool TourFada (Plateau& p, std::vector<gf::Vector2i> tabVector) {
 }
 
 bool TourFadaIsPlayable (Plateau& p, Phase f) {
-	gf::Log::info("Appelle Tour Fada jouable\n");
+	gf::Log::info("Appel Tour Fada jouable\n");
 	if (f != Phase::APRES_COUP) {
 		return false;
 	}
@@ -222,7 +222,7 @@ bool TourFadaIsPlayable (Plateau& p, Phase f) {
 }
 
 bool Urbanisme(Plateau& p, std::vector<gf::Vector2i> tabVector){
-	gf::Log::info("Apelle Asile execute\n");
+	gf::Log::info("Appel Asile execute\n");
 	
 	if(tabVector.size() != 2 || !inBoard(tabVector[0]) || !inBoard(tabVector[1])) {
 		return false;
@@ -240,7 +240,7 @@ bool Urbanisme(Plateau& p, std::vector<gf::Vector2i> tabVector){
 }
 
 bool UrbanismeIsPlayable(Plateau& p, Phase f) { 
-	gf::Log::info("Apelle Asile jouable\n");
+	gf::Log::info("Appel Asile jouable\n");
 	if(f!= Phase::APRES_COUP){
 		return false;
 	}
@@ -249,7 +249,7 @@ bool UrbanismeIsPlayable(Plateau& p, Phase f) {
 }
 
 bool Schizophrenie(Plateau& p, std::vector<gf::Vector2i> tabVector){
-	gf::Log::info("Apelle Asile execute\n");
+	gf::Log::info("Appel Asile execute\n");
 	
 	if(tabVector.size() != 2 || !inBoard(tabVector[0]) || !inBoard(tabVector[1])) {
 		return false;
@@ -267,10 +267,62 @@ bool Schizophrenie(Plateau& p, std::vector<gf::Vector2i> tabVector){
 }
 
 bool SchizophrenieIsPlayable(Plateau& p, Phase f) { 
-	gf::Log::info("Apelle Asile jouable\n");
+	gf::Log::info("Appel Asile jouable\n");
 	if(f!= Phase::APRES_COUP){
 		return false;
 	}
 
 	return pieceExist(p, ChessPiece::BISHOP, p.turnTo) && pieceExist(p, ChessPiece::BISHOP, !p.turnTo);
+}
+
+bool Desintegration (Plateau& p, std::vector<gf::Vector2i> tabVector) {
+	gf::Log::info("Appel Désintégration execute\n");
+	if (tabVector.size() != 1) {
+		return false;
+	}
+
+	if (!inBoard(tabVector[0])) {
+		return false;
+	}
+
+	Piece& piece = p.state[tabVector[0].y * 8 + tabVector[0].x].piece;
+	if (piece.getColor() != p.turnTo) {
+		return false;
+	}
+	if (piece.getType() == ChessPiece::KING || piece.getType() == ChessPiece::NONE) {
+		return false;
+	}
+
+	gf::Vector2i caseProvocateEchec(-1);
+	if (p.playerInEchec) {
+		caseProvocateEchec = p.caseProvocateEchec;
+	}
+
+	Piece empty = Piece(ChessColor::NONE, ChessPiece::NONE);
+	Piece copy = piece;
+	piece = empty;
+
+	bool res = p.isInEchec(p.turnTo) || p.isInEchec(!p.turnTo, gf::Vector2i(-1), caseProvocateEchec);
+	if (res) {
+		piece = copy;
+	}
+
+	return !res;
+}
+
+bool DesintegrationIsPlayable (Plateau& p, Phase f) {
+	gf::Log::info("Appel Désintégration jouable\n");
+	if (f != Phase::APRES_COUP) {
+		return false;
+	}
+
+	bool has_notking = false;
+	for (auto c : p.state) {
+		if (c.piece.getType() != ChessPiece::KING && c.piece.getType() != ChessPiece::NONE && c.piece.getColor() == p.turnTo) {
+			has_notking = true;
+			break;
+		}
+	}
+
+	return has_notking;
 }
