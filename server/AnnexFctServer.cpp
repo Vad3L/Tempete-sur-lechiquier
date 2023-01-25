@@ -276,8 +276,13 @@ int performTurn (Deck& d, GamePhase& gp, Plateau& p, gf::TcpSocket& player, gf::
 		checkCardPacketValidity(p, card, hand, gp.getCurrentPhase());
 		if (card.err == CodeRep::NONE) {
 			gp.nextPhaseCard(hand[card.card]);
-			performCard(p, card, hand, d);
-			sendHand(player, hand[card.card]);
+			bool worked = performCard(p, card, hand, d);
+			if (!worked) {
+				gp.setCurrentPhase(Phase::APRES_COUP);
+				return 2;
+			} else {
+				sendHand(player, hand[card.card]);
+			}
 		} else if (card.err == CodeRep::NO_CARD) {
 			gp.setCurrentPhase(Phase::PAS_MON_TOUR);
 		} 
