@@ -28,23 +28,22 @@ int main (int argc, char* argv[]) {
 		auto TwoHand = deck.distribute();
 		
 		if (client1) {
-			sendInit(client1, ChessColor::WHITE, TwoHand.first);
-			
+
 			gf::TcpSocket client2 = listener.accept();
 			if (client2) {
-			sendInit(client2, ChessColor::BLACK, TwoHand.second);
+				sendInit(client2, ChessColor::BLACK, TwoHand.second);
+				
+				if(sendStartOrEnd(client1, client2, CodeRep::GAME_START) == -1) {
+					sendStartOrEnd(client1, client2, CodeRep::GAME_END, ChessStatus::SURRENDER); 
+					break;
+				}
 			
-			if(sendStartOrEnd(client1, client2, CodeRep::GAME_START) == -1) {
-				sendStartOrEnd(client1, client2, CodeRep::GAME_END, ChessStatus::SURRENDER); 
-				break;
-			}
-			
-			Plateau plateau;
-			ChessStatus gameStatus = ChessStatus::ON_GOING;
-			bool player = true;
-			bool promotion = false;
-			GamePhase phase;
-			while (true) {
+				Plateau plateau;
+				ChessStatus gameStatus = ChessStatus::ON_GOING;
+				bool player = true;
+				bool promotion = false;
+				GamePhase phase;
+				while (true) {
 					plateau.moveAvailable.clear();
 					if (player) {
 						gf::Log::debug("------TOUR J1------\n");
@@ -64,9 +63,7 @@ int main (int argc, char* argv[]) {
 								sendingPacket(client1, pack);	
 							}
 						}
-
 						int ret = performTurn(deck, phase, plateau, client1, client2, TwoHand.first, promotion);
-
 						if(ret == -1) {
 							break;
 						} else if (ret==0) {
@@ -117,12 +114,9 @@ int main (int argc, char* argv[]) {
 					sendStartOrEnd(client1, client2, CodeRep::GAME_END, ChessStatus::SURRENDER); 
 				}
 			}
-
 			client2.~TcpSocket();
-		}
-			
+		}	
 		client1.~TcpSocket();
-
 	}
 	return 0;
 }

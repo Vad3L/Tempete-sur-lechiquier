@@ -170,10 +170,13 @@ void performPromotion (Plateau& plateau, PromotionRep& promo) {
 	plateau.prettyPrint();
 }
 
-void performCard (Plateau& plateau, CardRep& c, std::vector<Card>& hand, Deck& d) {
+bool performCard (Plateau& plateau, CardRep& c, std::vector<Card>& hand, Deck& d) {
 	gf::Log::debug("------CARD VALIDE------\n");
-	hand[c.card].m_execute(plateau, c.a, c.b);
-	
+	bool works = hand[c.card].m_execute(plateau, c.a, c.b);
+	if (!works) {
+		return false;
+	}
+
 	plateau.playerInEchec = plateau.isInEchec(!plateau.turnTo);
 
 	plateau.allPositions.push_back(plateau.getFen());
@@ -187,6 +190,7 @@ void performCard (Plateau& plateau, CardRep& c, std::vector<Card>& hand, Deck& d
 	if (d.getNbCardInDeck() == 0) {
 		d.emptyDiscard();
 	}
+	return true;
 }
 
 void sendHand (gf::TcpSocket& player, Card new_card) {
@@ -218,8 +222,13 @@ int performTurn (Deck& d, GamePhase& gp, Plateau& p, gf::TcpSocket& player, gf::
 		checkCardPacketValidity(p, card, hand, gp.getCurrentPhase());
 		if (card.err == CodeRep::NONE) {
 			gp.nextPhaseCard(hand[card.card]);
-			performCard(p, card, hand, d);
-			sendHand(player, hand[card.card]);
+			bool worked = performCard(p, card, hand, d);
+			if (!worked) {
+				gp.setCurrentPhase(Phase::AVANT_COUP);
+				return 2;
+			} else {
+				sendHand(player, hand[card.card]);
+			}
 		} else {
 			return 2;
 		}
@@ -418,7 +427,7 @@ int sendInit(gf::TcpSocket& client, ChessColor c, std::vector<Card>& hand) {
 		pack.is(rep);
 		if (gf::SocketStatus::Data != client.sendPacket(pack)) {
 			gf::Log::error("Lors de l'envoie du packet contenant la couleur au client\n");
-			exit(-2);
+			return -2;
 		}
 
 		DistribRep distrib;
@@ -427,7 +436,7 @@ int sendInit(gf::TcpSocket& client, ChessColor c, std::vector<Card>& hand) {
 		pack.is(distrib);
 		if (gf::SocketStatus::Data != client.sendPacket(pack)) {
 			gf::Log::error("Lors de l'envoie du packet contenant la main au client\n");
-			exit(-1);
+			return -1;
 		}
 	return 0;
 }

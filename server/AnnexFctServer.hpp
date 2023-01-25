@@ -19,7 +19,7 @@
 #include "../model/GamePhase.hpp"
 
 int performTurn (Deck& d, GamePhase& gp, Plateau& plateau, gf::TcpSocket& player, gf::TcpSocket& other, std::vector<Card>& hand, bool& promotion);
-void performCard (Plateau& plateau, CardRep& c, std::vector<Card>& hand, Deck& d);
+bool performCard (Plateau& plateau, CardRep& c, std::vector<Card>& hand, Deck& d);
 void performPromotion (Plateau& plateau, PromotionRep& p);
 bool performCoup (Plateau& plateau, CoupRep& c);
 
