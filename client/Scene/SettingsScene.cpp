@@ -2,6 +2,7 @@
 
 #include "../GameHub.hpp"
 #include "../Singletons.hpp"
+#include "../Singletons.hpp"
 
 #include <fstream>
 
@@ -47,6 +48,9 @@ SettingsScene::SettingsScene(GameHub& game, GameData &gameData)
 	m_triggerAction.addScancodeKeyControl(gf::Scancode::Return);
 	addAction(m_triggerAction);
 
+	btnClicked.setBuffer(gAudioManager().getSound("sounds/ClickButton.ogg"));
+	btnClicked.setVolume(FxsVolume);
+
 	auto setupButton = [&] (gf::SpriteWidget& button, auto callback) {
 		button.setAnchor(gf::Anchor::Center);
 		button.setCallback(callback);
@@ -55,21 +59,25 @@ SettingsScene::SettingsScene(GameHub& game, GameData &gameData)
 
 	setupButton(m_rightStyleButton, [&] () {
 		gf::Log::debug("Next texture pressed!\n");
+		btnClicked.play();
 		changeTexture('+');
 	});
 
 	setupButton(m_leftStyleButton, [&] () {
 		gf::Log::debug("Previous texture pressed!\n");
+		btnClicked.play();
 		changeTexture('-');
 	});
 
 	setupButton(m_rightSoundButton, [&] () {
 		gf::Log::debug("Up sound pressed!\n");
+		btnClicked.play();
 		changeSound('+');
 	});
 
 	setupButton(m_leftSoundButton, [&] () {
 		gf::Log::debug("Down sound pressed!\n");
+		btnClicked.play();
 		changeSound('-');
 	});
 

@@ -42,7 +42,7 @@ void TableBoardEntity::render(gf::RenderTarget &target, const gf::RenderStates &
 			indication = "Au tour de l'adversaire de jouer" ;
 			break;
 		default :
-			indication = "ERROR 1";
+			break;
 	}
 
 	switch (m_gameData.m_phase.getCurrentSubPhase()) {
@@ -50,7 +50,7 @@ void TableBoardEntity::render(gf::RenderTarget &target, const gf::RenderStates &
 			indication = "Choisissez des cases sur le plateau";
 			break;
 		default :
-				indication = "Choisissez pas de cases sur le plateau";
+			break;
 	}
 
 	switch (m_gameData.m_gameStatus) {
@@ -70,7 +70,7 @@ void TableBoardEntity::render(gf::RenderTarget &target, const gf::RenderStates &
 			indication = "Vous gagnez par abandon";
 			break;
 		default :
-			indication = "ERROR 2";
+			break;
 	}
 	
 

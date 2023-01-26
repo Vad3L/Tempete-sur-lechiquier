@@ -10,6 +10,7 @@
 #include <gf/Log.h>
 #include <gf/RenderTarget.h>
 
+#include <SFML/Audio.hpp>
 
 struct GameHub;
 
@@ -34,6 +35,7 @@ class QuitScene : public gf::Scene {
 		gf::TextButtonWidget m_resumeButton;
 		gf::TextButtonWidget m_quitButton;
 
+		sf::Sound btnClicked;		
 };
 
 

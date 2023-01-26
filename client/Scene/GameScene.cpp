@@ -3,6 +3,8 @@
 
 #include <string>
 
+#include "../Singletons.hpp"
+
 GameScene::GameScene(GameHub& game, Network &network, GameData &gameData)
 : gf::Scene(game.getRenderer().getSize())
 , m_game(game)
@@ -45,6 +47,21 @@ GameScene::GameScene(GameHub& game, Network &network, GameData &gameData)
 	m_triggerAction.addMouseButtonControl(gf::MouseButton::Left);
 	addAction(m_triggerAction);
 	
+	clickButton.setBuffer(gAudioManager().getSound("sounds/ClickButton.ogg"));
+	clock.setVolume(FxsVolume);
+
+	clock.setBuffer(gAudioManager().getSound("sounds/Clock.ogg"));
+	clock.setVolume(FxsVolume);
+		
+	takePiece.setBuffer(gAudioManager().getSound("sounds/TakePiece.ogg"));
+	takePiece.setVolume(FxsVolume);
+
+	movePiece.setBuffer(gAudioManager().getSound("sounds/MovePiece.ogg"));
+	movePiece.setVolume(FxsVolume);
+
+	checkPiece.setBuffer(gAudioManager().getSound("sounds/CheckPiece.ogg"));
+	checkPiece.setVolume(FxsVolume);
+
 	m_boardView = gf::ExtendView({ 0, 0 }, { 403, 403 });
 	m_boardView.setViewport(gf::RectF::fromPositionSize({ 0.275f, 0.125f}, { 0.45f, 0.45f }));
 
@@ -87,6 +104,7 @@ GameScene::GameScene(GameHub& game, Network &network, GameData &gameData)
 	setupButton(m_endTurn, { 0.6f, 0.25f }, [&] () {
 		if(m_gameData.m_phase.getCurrentPhase()==Phase::APRES_COUP) {
 			gf::Log::debug("EndTurn pressed!\n");
+			clickButton.play();
 			m_gameData.m_phase.setCurrentPhase(Phase::PAS_MON_TOUR);
 			CardRep cardRep;
 			cardRep.err = CodeRep::NO_CARD;
@@ -116,6 +134,7 @@ GameScene::GameScene(GameHub& game, Network &network, GameData &gameData)
 			}
 		}
 		
+		clickButton.play();
 		gf::Log::debug("envoie au serveur la card %li\n", cardRep.card);
 		m_network.send(cardRep);
 	});
@@ -262,7 +281,7 @@ void GameScene::doProcessEvent(gf::Event& event) {
 		}
 
 		if(m_gameData.m_plateau.m_promotion) {
-
+			
 			PromotionRep promo;
 
 			promo.pos.x = v.x;
@@ -274,9 +293,12 @@ void GameScene::doProcessEvent(gf::Event& event) {
 			m_network.send(promo);
 		   
 		}else {
-
+			
 			bool coupPionEnded = m_gameData.m_plateau.setMovement(m_gameData.m_myColor, v);
-		
+			if(m_gameData.m_plateau.coordCaseSelected != gf::Vector2i(-1) && !coupPionEnded) {
+				takePiece.play();
+			}
+
 			if(coupPionEnded) {
 				CoupRep coup;
 				coup.posStart.x = m_gameData.m_plateau.coordCaseSelected.x;
@@ -346,6 +368,7 @@ void GameScene::doUpdate(gf::Time time) {
 		startTime -= time.asSeconds();
 		if(startTime < 0) {
 			m_gameData.m_gameStatus = ChessStatus::ON_GOING;
+			clock.stop();
 		}
 	}
 	
@@ -362,7 +385,9 @@ void GameScene::doUpdate(gf::Time time) {
 			gf::Log::info("Jeux commence\n");
 			m_gameData.m_gameStatus = ChessStatus::STOP_WATCH;
 			startTime = 5;
-
+			
+			gBackgroundMusic.stop();
+			clock.play();
 		} else if (repPartie.err == CodeRep::GAME_END) {
 			gf::Log::info("Jeux Fini\n");
 
@@ -411,7 +436,14 @@ void GameScene::doUpdate(gf::Time time) {
 
 			m_gameData.m_plateau.movePieces(gf::Vector2i(coupRep.posStart.x, coupRep.posStart.y), gf::Vector2i(coupRep.posEnd.x, coupRep.posEnd.y));
 
+			bool playerInEchecB = m_gameData.m_plateau.playerInEchec;
 			m_gameData.m_plateau.playerInEchec = m_gameData.m_plateau.isInEchec(!m_gameData.m_plateau.turnTo);
+
+			if(!playerInEchecB && m_gameData.m_plateau.playerInEchec) {
+				checkPiece.play();
+			}else {
+				movePiece.play();
+			}
 
 			m_gameData.m_plateau.prettyPrint();
 			
@@ -435,6 +467,7 @@ void GameScene::doUpdate(gf::Time time) {
 				m_gameData.m_plateau.m_promotion = false;
 			}
 			
+			
 		}else if(coupRep.err == CodeRep::COUP_NO_VALIDE) {
 			gf::Log::debug("------COUP INVALIDE------\n");
 		}
@@ -450,7 +483,12 @@ void GameScene::doUpdate(gf::Time time) {
 			
 			m_gameData.m_plateau.promotionPiece(gf::Vector2i(promoRep.pos.x, promoRep.pos.y), promoRep.choice);
 
+			bool playerInEchecB = m_gameData.m_plateau.playerInEchec;
 			m_gameData.m_plateau.playerInEchec = m_gameData.m_plateau.isInEchec(!m_gameData.m_plateau.turnTo);
+
+			if(!playerInEchecB && m_gameData.m_plateau.playerInEchec) {
+				checkPiece.play();
+			}
 			
 			m_gameData.m_plateau.allPositions.push_back(m_gameData.m_plateau.getFen());
 			m_poseEntity.returnCardHand();
@@ -497,6 +535,7 @@ void GameScene::doUpdate(gf::Time time) {
 			m_gameData.m_cards[carteRep.num].m_execute(m_gameData.m_plateau, carteRep.poses);
 			
 			m_gameData.m_plateau.playerInEchec = m_gameData.m_plateau.isInEchec(!m_gameData.m_plateau.turnTo);
+
 			m_gameData.m_plateau.allPositions.push_back(m_gameData.m_plateau.getFen());
 
 			m_poseEntity.m_cardDiscard = m_gameData.m_cards[carteRep.num];

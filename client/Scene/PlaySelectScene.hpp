@@ -55,7 +55,8 @@ class PlaySelectScene : public gf::Scene {
 		std::map<int, std::pair<std::string, std::string>> m_listIp; // IP et nameServer (adreese est unique)
 
 		gf::WidgetContainer m_widgets;
-		
+
+		sf::Sound btnClicked;
 };
 
 

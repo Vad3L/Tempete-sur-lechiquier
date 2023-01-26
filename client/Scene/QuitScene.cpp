@@ -1,6 +1,8 @@
 #include "QuitScene.hpp"
 #include "../GameHub.hpp"
 
+#include "../Singletons.hpp"
+
 QuitScene::QuitScene(GameHub& game)
 : gf::Scene(game.getRenderer().getSize())
 , m_game(game)
@@ -12,20 +14,18 @@ QuitScene::QuitScene(GameHub& game)
 {
 	setClearColor(gf::Color::Black);
 
-	m_upAction.addGamepadAxisControl(gf::AnyGamepad, gf::GamepadAxis::LeftY, gf::GamepadAxisDirection::Negative);
-	m_upAction.addGamepadButtonControl(gf::AnyGamepad, gf::GamepadButton::DPadUp);
 	m_upAction.addScancodeKeyControl(gf::Scancode::Up);
 	addAction(m_upAction);
 
-	m_downAction.addGamepadAxisControl(gf::AnyGamepad, gf::GamepadAxis::LeftY, gf::GamepadAxisDirection::Positive);
-	m_downAction.addGamepadButtonControl(gf::AnyGamepad, gf::GamepadButton::DPadDown);
 	m_downAction.addScancodeKeyControl(gf::Scancode::Down);
 	addAction(m_downAction);
 
-	m_triggerAction.addGamepadButtonControl(gf::AnyGamepad, gf::GamepadButton::A);
 	m_triggerAction.addScancodeKeyControl(gf::Scancode::Return);
 	m_triggerAction.addMouseButtonControl(gf::MouseButton::Left);
 	addAction(m_triggerAction);
+
+	btnClicked.setBuffer(gAudioManager().getSound("sounds/ClickButton.ogg"));
+	btnClicked.setVolume(FxsVolume);
 
 	auto setupButton = [&] (gf::TextButtonWidget& button, auto callback) {
 		button.setDefaultTextColor(gf::Color::Black);
@@ -42,12 +42,15 @@ QuitScene::QuitScene(GameHub& game)
 
 	setupButton(m_resumeButton, [&] () {
 		gf::Log::debug("Resume button pressed!\n");
+		btnClicked.play();
 		m_game.popScene(); 
 	});
 
 	setupButton(m_quitButton, [&] () {
 		gf::Log::debug("Quit button pressed!\n");
+		btnClicked.play();
 		m_game.replaceAllScenes(*m_game.menu);
+		gBackgroundMusic.play();
 	});
 }
 

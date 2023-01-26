@@ -35,7 +35,7 @@ MenuScene::MenuScene(GameHub& game)
 	m_triggerAction.addMouseButtonControl(gf::MouseButton::Left);
 	addAction(m_triggerAction);
 
-	btnClicked.setBuffer(gAudioManager().getSound("sounds/button_click.ogg"));
+	btnClicked.setBuffer(gAudioManager().getSound("sounds/ClickButton.ogg"));
 	btnClicked.setVolume(FxsVolume);
 
 	auto setupButtonSprite = [&] (gf::SpriteWidget& button, auto callback) {

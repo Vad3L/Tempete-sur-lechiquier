@@ -16,6 +16,7 @@
 #include <gf/Animation.h>
 
 #include <map>
+#include <SFML/Audio.hpp>
 
 #include "../../model/Plateau.hpp"
 #include "../../protocole/Protocole.hpp"
@@ -77,6 +78,12 @@ class GameScene : public gf::Scene {
 		gf::AnimatedSprite m_animatedSprite;
 		
 		float startTime = 0.f;
+
+		sf::Sound clickButton;
+		sf::Sound clock;
+		sf::Sound takePiece;
+		sf::Sound movePiece;
+		sf::Sound checkPiece;
 };  
 
 

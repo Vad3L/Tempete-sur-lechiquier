@@ -38,7 +38,7 @@ RulesScene::RulesScene(GameHub& game)
 	m_rightAction.addScancodeKeyControl(gf::Scancode::Right);
 	addAction(m_rightAction);
 
-	btnClicked.setBuffer(gAudioManager().getSound("sounds/button_click.ogg"));
+	btnClicked.setBuffer(gAudioManager().getSound("sounds/ClickButton.ogg"));
 	btnClicked.setVolume(FxsVolume);
 
 	auto setupButton = [&] (gf::SpriteWidget& button, auto callback) {

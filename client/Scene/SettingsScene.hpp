@@ -14,6 +14,8 @@
 
 #include "../Entity/SettingsEntity.hpp"
 
+#include <SFML/Audio.hpp>
+
 struct GameHub;	
 struct GameData;
 
@@ -47,12 +49,14 @@ class SettingsScene : public gf::Scene {
 		gf::SpriteWidget m_rightSoundButton;
 		gf::SpriteWidget m_leftSoundButton;
 		gf::SpriteWidget m_quitButton;
-			
+
 		SettingsEntity m_settingsEntity;
 		
 		gf::WidgetContainer m_widgets;
 
-		int m_ligne = 0;
+		std::size_t m_ligne = 0;
+
+		sf::Sound btnClicked;
 
 };
 

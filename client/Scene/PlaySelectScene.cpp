@@ -1,6 +1,7 @@
 #include "MenuScene.hpp"
 #include "../GameHub.hpp"
 
+#include "../Singletons.hpp"
 
 PlaySelectScene::PlaySelectScene(GameHub& game, Network &network)
 : gf::Scene(game.getRenderer().getSize())
@@ -40,6 +41,9 @@ PlaySelectScene::PlaySelectScene(GameHub& game, Network &network)
 	m_connectAction.addScancodeKeyControl(gf::Scancode::Return);
 	addAction(m_connectAction);
 	
+	btnClicked.setBuffer(gAudioManager().getSound("sounds/ClickButton.ogg"));
+	btnClicked.setVolume(FxsVolume);
+
 	auto setupButton = [&] (gf::TextButtonWidget& button, auto callback) {
 		button.setDefaultTextColor(gf::Color::Black);
 		button.setDefaultBackgroundColor(gf::Color::Gray(0.7f));
@@ -60,6 +64,8 @@ PlaySelectScene::PlaySelectScene(GameHub& game, Network &network)
 	};
 
 	setupButton(m_ipWidget, [&] () {
+		btnClicked.play();
+
 		std::string ip = std::string(m_listIp[m_index].first);
 		m_network.connect(ip,"43771");
 		gf::Log::debug("Tentative de connexion  à %s\n", ip.c_str());
@@ -77,10 +83,12 @@ PlaySelectScene::PlaySelectScene(GameHub& game, Network &network)
 	});
 
 	setupButtonSprite(m_rightWidget, [&] () {
+		btnClicked.play();
 		changeRightLeft(true);
 	});
 
 	setupButtonSprite(m_leftWidget, [&] () {
+		btnClicked.play();
 		changeRightLeft(false);
 	});
 	
