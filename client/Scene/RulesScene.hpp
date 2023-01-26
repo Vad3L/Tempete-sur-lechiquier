@@ -30,21 +30,22 @@ class RulesScene : public gf::Scene {
    
 	private:
 		GameHub& m_game;
-
-		gf::SpriteWidget m_quitButton;
-		gf::SpriteWidget m_pageLeft;
-		gf::SpriteWidget m_pageRight;
-		gf::WidgetContainer m_widgets;
-
-		gf::Action m_quitAction;
-		gf::Action m_triggerAction;
+		
 		gf::Action m_leftAction;
 		gf::Action m_rightAction;
 		gf::Action m_downAction;
 		gf::Action m_fullscreenAction;
+		gf::Action m_triggerAction;
+		gf::Action m_quitAction;
 		
+		gf::SpriteWidget m_pageLeft;
+		gf::SpriteWidget m_pageRight;
+		gf::SpriteWidget m_quitButton;
+
 		RulesEntity m_rulesEntity;
 
+		gf::WidgetContainer m_widgets;
+		
 		sf::Sound btnClicked;
 };
 

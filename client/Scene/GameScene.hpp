@@ -61,12 +61,11 @@ class GameScene : public gf::Scene {
 		gf::ExtendView m_cardsView;
 		gf::ViewContainer m_views;
 
-		PoseEntity m_poseEntity;
 		BoardEntity m_boardEntity;
-		TableBoardEntity m_tableBoardEntity;
 		MainEntity m_mainEntity;
-
-
+		TableBoardEntity m_tableBoardEntity;
+		PoseEntity m_poseEntity;
+	
 		gf::TextButtonWidget m_endTurn;
 		gf::TextButtonWidget m_playCard;
 

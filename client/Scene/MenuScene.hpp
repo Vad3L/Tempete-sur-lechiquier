@@ -27,20 +27,21 @@ class MenuScene : public gf::Scene {
 
 	private:
 		GameHub& m_game;
-		gf::Texture& m_backgroundTexture;
-
-		gf::Action m_quitAction;
 
 		gf::Action m_upAction;
 		gf::Action m_downAction;
 		gf::Action m_triggerAction;
+		gf::Action m_quitAction;
 		gf::Action m_fullscreenAction;
 		
 		gf::SpriteWidget m_play;
 		gf::SpriteWidget m_rules;
 		gf::SpriteWidget m_quit;
 		gf::SpriteWidget m_settings;
+
 		float m_cog;
+
+		gf::Texture& m_backgroundTexture;
 
 		gf::WidgetContainer m_widgets;
 

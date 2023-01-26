@@ -4,8 +4,8 @@
 
 PlaySelectScene::PlaySelectScene(GameHub& game, Network &network)
 : gf::Scene(game.getRenderer().getSize())
-, m_network(network)
 , m_game(game)
+, m_network(network)
 , m_rightAction("RightAction")
 , m_leftAction("LeftAction")
 , m_triggerAction("TriggerAction")
@@ -134,7 +134,6 @@ void PlaySelectScene::doProcessEvent(gf::Event& event) {
 void PlaySelectScene::doRender(gf::RenderTarget& target, const gf::RenderStates &states) {
 	constexpr float characterSize = 0.075f;
 	constexpr gf::Vector2f backgroundSize(0.5f, 0.3f);
-	constexpr gf::Vector2f backgroundSizeArrow(0.2f, 0.3f);
 
 	target.setView(getHudView());
 	gf::Coordinates coords(target);

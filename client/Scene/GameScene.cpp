@@ -10,21 +10,20 @@ GameScene::GameScene(GameHub& game, Network &network, GameData &gameData)
 , m_gameData(gameData)
 , m_quitAction("quit")
 , m_fullscreenAction("Fullscreen")
-, m_endTurnAction("endTurnAction")
+, m_endTurnAction("EndTurnAction")
 , m_playCardAction("playCardAction")
+, m_triggerAction("TriggerAction")
 , m_boardEntity(game.resources, m_gameData)
 , m_mainEntity(game.resources, m_gameData)
 , m_tableBoardEntity(game.resources, m_gameData)
 , m_poseEntity(game.resources, m_gameData)
 , m_endTurn("Fin tour", game.resources.getFont("fonts/Trajan-Color-Concept.otf"))
 , m_playCard("Activer carte", game.resources.getFont("fonts/Trajan-Color-Concept.otf"))
-, m_triggerAction("TriggerAction")
 , m_loading(game.resources.getTexture("images/Loading.png"))
 , m_font(game.resources.getFont("fonts/Trajan-Color-Concept.otf"))
 {
 	setClearColor(gf::Color::Black);
 	
-	//m_animation.addTileset(m_loading, gf::vec(1, 11), gf::milliseconds(400), 11);
 	m_animation.addTileset(m_loading, gf::vec(12, 1), gf::milliseconds(400), 12);
 	m_animatedSprite.setAnimation(m_animation);
 	m_animatedSprite.setPosition(m_game.getWindow().getSize()/2);
@@ -110,7 +109,7 @@ GameScene::GameScene(GameHub& game, Network &network, GameData &gameData)
 		
 		cardRep.poses = m_gameData.m_plateau.m_casesClicked;
 
-		for(int i=0; i < m_gameData.m_main.size(); i++) {
+		for(std::size_t i=0; i < m_gameData.m_main.size(); i++) {
 			if(m_gameData.m_main[i].m_num == -1) {
 				cardRep.card = i; 
 				break;
@@ -234,7 +233,7 @@ void GameScene::doProcessEvent(gf::Event& event) {
 		return;
 	}
 
-	if(currentPhase == Phase::APRES_COUP || currentPhase == Phase::AVANT_COUP && !m_gameData.m_plateau.m_promotion) {
+	if((currentPhase == Phase::APRES_COUP || currentPhase == Phase::AVANT_COUP) && !m_gameData.m_plateau.m_promotion) {
 		int numCarte = m_mainEntity.getCardSelected(m_cardsView.getSize(), m_game.getRenderer().mapPixelToCoords(event.mouseButton.coords, m_cardsView));
 
 		if(numCarte!=-1) {
@@ -353,7 +352,7 @@ void GameScene::doUpdate(gf::Time time) {
 		return;
 	}
 	
-	Phase currentPhase = m_gameData.m_phase.getCurrentPhase();
+	//Phase currentPhase = m_gameData.m_phase.getCurrentPhase();
 
 	if (m_packet.getType() == PartieRep::type) {
 

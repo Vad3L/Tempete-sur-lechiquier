@@ -91,7 +91,7 @@ bool Plateau::setMovement(ChessColor color, gf::Vector2i v) {
 	coordPrisePassant = gf::Vector2i(-1);
 
 	Piece pSelect = state[v.y * 8 + v.x].piece;
-	ChessColor colAdv = !color;
+	//ChessColor colAdv = !color;
 
 	if(coordCaseSelected.y ==-1 && coordCaseSelected.x == -1) { // aucune première de selectionné
 		if( pSelect.getType() != ChessPiece::NONE && pSelect.getColor() == color) { // selectionne case si la piece nous appartient 

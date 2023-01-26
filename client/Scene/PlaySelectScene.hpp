@@ -34,25 +34,27 @@ class PlaySelectScene : public gf::Scene {
 	private:
 		GameHub& m_game;
 		Network& m_network;
-		
+
+		gf::Action m_rightAction;
+		gf::Action m_leftAction;
+		gf::Action m_triggerAction;
 		gf::Action m_quitAction;
 
-		gf::Action m_leftAction;
-		gf::Action m_rightAction;
-
-		gf::Action m_triggerAction;
-		gf::Action m_connectAction;
 		gf::Action m_fullscreenAction;
+		gf::Action m_connectAction;
 		
 		PlayTitleEntity m_PlayTitleEntity;
+		
+		gf::TextButtonWidget m_ipWidget;
+
+		std::size_t m_index;
 
 		gf::SpriteWidget m_leftWidget;
 		gf::SpriteWidget m_rightWidget;
 
-		gf::WidgetContainer m_widgets;
-		gf::TextButtonWidget m_ipWidget;
 		std::map<int, std::pair<std::string, std::string>> m_listIp; // IP et nameServer (adreese est unique)
-		std::size_t m_index;
+
+		gf::WidgetContainer m_widgets;
 		
 };
 

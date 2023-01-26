@@ -6,7 +6,6 @@
 MenuScene::MenuScene(GameHub& game)
 : gf::Scene(game.getRenderer().getSize())
 , m_game(game)
-, m_backgroundTexture(game.resources.getTexture("images/StartMenu.png"))
 , m_upAction("UpAction")
 , m_downAction("DownAction")
 , m_triggerAction("TriggerAction")
@@ -16,6 +15,7 @@ MenuScene::MenuScene(GameHub& game)
 , m_rules(game.resources.getTexture("images/button/reglesButton.png"),game.resources.getTexture("images/button/reglesButton.png"),game.resources.getTexture("images/button/reglesButtonSelected.png"))
 , m_quit(game.resources.getTexture("images/button/quitterButton.png"),game.resources.getTexture("images/button/quitterButton.png"),game.resources.getTexture("images/button/quitterButtonSelected.png"))
 , m_settings(game.resources.getTexture("images/Cog.png"),game.resources.getTexture("images/Cog.png"),game.resources.getTexture("images/Cog.png"))
+, m_backgroundTexture(game.resources.getTexture("images/StartMenu.png"))
 {
 	setClearColor(gf::Color::Black);
 
@@ -127,7 +127,6 @@ void MenuScene::doRender(gf::RenderTarget& target, const gf::RenderStates &state
 	target.draw(title, states);
 
 	constexpr float spaceBetweenButton = 0.2f;
-	constexpr gf::Vector2f backgroundSize(0.5f, 0.3f);
 	
 	m_play.setPosition(coords.getRelativePoint({0.5f, 0.41f}));
 	m_play.setScale(1.f/2.f);

@@ -42,16 +42,19 @@ class Plateau {
 
 	public:
 		std::vector<gf::Vector2i> moveAvailable;
-		gf::Vector2i coordCaseSelected;
+		
 		std::vector<Piece> bin;
 		std::vector<Case> state;
-		
-		bool playerInEchec;
-		bool m_promotion;
+
+		gf::Vector2i coordCaseSelected;
+		gf::Vector2i coordPrisePassant;
 		gf::Vector2i caseProvocateEchec;
+		bool m_promotion;
+		bool playerInEchec;
+		
 		std::vector<gf::Vector2i> m_casesClicked;
 
-		gf::Vector2i coordPrisePassant;
+		
 		std::vector<gf::Vector2i> lastCoup;
 		std::vector<std::string> allPositions;
 		ChessColor turnTo;

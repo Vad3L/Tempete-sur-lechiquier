@@ -185,8 +185,6 @@ void SettingsScene::doProcessEvent(gf::Event& event) {
 }
 
 void SettingsScene::doRender(gf::RenderTarget& target, const gf::RenderStates &states) {
-	constexpr gf::Vector2f backgroundSize(0.5f, 0.3f);
-	constexpr gf::Vector2f backgroundSizeArrow(0.2f, 0.3f);
 
 	target.setView(getHudView());
 	gf::Coordinates coords(target);
