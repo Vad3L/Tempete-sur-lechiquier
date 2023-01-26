@@ -4,8 +4,8 @@
 GameHub::GameHub()
 : GameManager("Tempête sur l'échiquier", { GAME_DATADIR })
 , download(std::make_unique<DownloadScene>(*this))
-{
-
+{	
+	
 }
 
 void GameHub::loadingDownloadAssets() {

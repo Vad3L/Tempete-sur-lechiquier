@@ -298,7 +298,6 @@ void GameScene::doRender(gf::RenderTarget& target, const gf::RenderStates &state
 	gf::Coordinates coords(target);
 	
 	if(m_gameData.m_gameStatus == ChessStatus::NO_STARTED) {
-
 		gf::Text text("En attente d un autre joueur", m_font, 50);
 		text.setPosition(coords.getRelativePoint({0.5f, 0.35f }));	
 		text.setAnchor(gf::Anchor::Center);
@@ -306,12 +305,11 @@ void GameScene::doRender(gf::RenderTarget& target, const gf::RenderStates &state
 
 		target.draw(text, states);
 		target.draw(m_animatedSprite, states);
-
 		return;
 	}
 	
 	if(m_gameData.m_gameStatus == ChessStatus::STOP_WATCH) {
-		std::string indaction = "La partie commence dans " + std::to_string((int)startTime) + " secondes ...\n Vous etes les " + ((m_gameData.m_myColor==ChessColor::WHITE) ? "Blancs" : "Noires");
+		std::string indaction = "La partie commence dans " + std::to_string((int)startTime) + " secondes ...\n Vous jouez les " + ((m_gameData.m_myColor==ChessColor::WHITE) ? "Blancs" : "Noires");
 		gf::Text text(indaction, m_font, 50);
 		text.setColor(gf::Color::White);
 		text.setPosition(coords.getRelativePoint({0.5f, 0.35f }));	
@@ -320,7 +318,6 @@ void GameScene::doRender(gf::RenderTarget& target, const gf::RenderStates &state
 		text.setLineSpacing(2.f);
 		text.setAnchor(gf::Anchor::Center);
 		
-
 		target.draw(text, states);
 		return;
 	}

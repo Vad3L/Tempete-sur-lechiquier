@@ -24,6 +24,7 @@ struct GameData {
 	int m_style;
 	std::array<Card, 5> m_main;
 	std::map<int , Card> m_cards;
+	float m_sounds;
 };
 
 

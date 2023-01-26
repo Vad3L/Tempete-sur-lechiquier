@@ -30,8 +30,9 @@ class BoardEntity : public gf::Entity {
 
 	private:
 		
-		gf::Texture& m_backgroundTexture;
-		gf::Texture& m_backgroundTexture2;
+		gf::Texture &m_backgroundTexture;
+		gf::Texture &m_backgroundTexture2;
+		gf::Texture &m_target;
 
 		GameData &m_gameData;
 };

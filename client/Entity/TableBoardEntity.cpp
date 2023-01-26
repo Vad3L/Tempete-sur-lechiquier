@@ -4,7 +4,7 @@ TableBoardEntity::TableBoardEntity(gf::ResourceManager& resources, GameData &gam
 : m_font(resources.getFont("fonts/DejaVuSans.ttf"))
 , m_backgroundTexture(resources.getTexture("images/ChessSheet.png"))
 , m_backgroundTexture2(resources.getTexture("images/ChessSheet2.png"))
-,m_gameData(gameData)
+, m_gameData(gameData)
 {
 	m_backgroundTexture.setSmooth(true);
 	m_backgroundTexture2.setSmooth(true);

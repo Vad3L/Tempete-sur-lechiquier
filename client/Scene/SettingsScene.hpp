@@ -29,6 +29,7 @@ class SettingsScene : public gf::Scene {
 		void onActivityChange(bool active) override;
 		
 		void changeTexture(char c);
+		void changeSound(char c);
 	
 		GameHub &m_game;
 		GameData &m_gameData;
@@ -36,17 +37,22 @@ class SettingsScene : public gf::Scene {
 		gf::Action m_leftAction;
 		gf::Action m_rightAction;
 		gf::Action m_downAction;
+		gf::Action m_upAction;
 		gf::Action m_triggerAction;
 		gf::Action m_fullscreenAction;
 		gf::Action m_quitAction;
 
 		gf::SpriteWidget m_quitButton;
-		gf::SpriteWidget m_rightButton;
-		gf::SpriteWidget m_leftButton;
+		gf::SpriteWidget m_rightStyleButton;
+		gf::SpriteWidget m_leftStyleButton;
+		gf::SpriteWidget m_rightSoundButton;
+		gf::SpriteWidget m_leftSoundButton;
 	
 		gf::WidgetContainer m_widgets;
 
 		SettingsEntity m_settingsEntity;
+
+		int m_ligne = 0;
 
 };
 

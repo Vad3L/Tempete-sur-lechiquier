@@ -14,6 +14,8 @@
 #include "Scene/SettingsScene.hpp"
 #include "Scene/ZoomCardScene.hpp"
 
+#include "AudioManager.hpp"
+
 struct GameHub : gf::GameManager {
 	GameHub();
 

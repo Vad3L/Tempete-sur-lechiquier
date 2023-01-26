@@ -1,6 +1,7 @@
 #include "MenuScene.hpp"
 #include "../GameHub.hpp"
 
+#include "../Singletons.hpp"
 
 MenuScene::MenuScene(GameHub& game)
 : gf::Scene(game.getRenderer().getSize())
@@ -34,6 +35,9 @@ MenuScene::MenuScene(GameHub& game)
 	m_triggerAction.addMouseButtonControl(gf::MouseButton::Left);
 	addAction(m_triggerAction);
 
+	btnClicked.setBuffer(gAudioManager().getSound("sounds/button_click.ogg"));
+	btnClicked.setVolume(FxsVolume);
+
 	auto setupButtonSprite = [&] (gf::SpriteWidget& button, auto callback) {
 		button.setCallback(callback);
 		m_widgets.addWidget(button);
@@ -44,11 +48,13 @@ MenuScene::MenuScene(GameHub& game)
 
 	setupButtonSprite(m_play, [&] () {
 		gf::Log::debug("Play pressed!\n");
+		btnClicked.play();
 		m_game.replaceAllScenes(*m_game.play);
 	});
 
 	setupButtonSprite(m_rules, [&] () {
 		gf::Log::debug("Rules pressed!\n");
+		btnClicked.play();
 		m_game.replaceAllScenes(*m_game.rules);
 	});
 
@@ -59,6 +65,7 @@ MenuScene::MenuScene(GameHub& game)
 
 	setupButtonSprite(m_settings, [&] () {
 		gf::Log::debug("Settings pressed!\n");
+		btnClicked.play();
 		m_game.replaceAllScenes(*m_game.settings);
 	});	
 }

@@ -18,6 +18,8 @@ class SettingsEntity : public gf::Entity {
 		void update(gf::Time time) override;
 		void render(gf::RenderTarget &target, const gf::RenderStates &states) override;
 		
+		int m_ligne;
+		
 	private:
 		gf::Font& m_font;
 		gf::Texture& m_backgroundTexture;

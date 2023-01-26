@@ -3,10 +3,12 @@
 BoardEntity::BoardEntity(gf::ResourceManager& resources, GameData &gameData)
 : m_backgroundTexture(resources.getTexture("images/ChessSheet.png"))
 , m_backgroundTexture2(resources.getTexture("images/ChessSheet2.png"))
+, m_target(resources.getTexture("images/Target.png"))
 ,m_gameData(gameData)
 {
 	m_backgroundTexture.setSmooth(true);
 	m_backgroundTexture2.setSmooth(true);
+	m_target.setSmooth(true);
 }
 
 void BoardEntity::update([[maybe_unused]] gf::Time time) {
@@ -51,7 +53,9 @@ void BoardEntity::render(gf::RenderTarget &target, const gf::RenderStates &state
 			shape.setColor(gf::Color::fromRgba32(255, 0, 0, 100));
 		} else if(c.piece.getType() == ChessPiece::KING && c.piece.getColor() != m_gameData.m_myColor && !myTurn && m_gameData.m_plateau.playerInEchec) {
 			shape.setColor(gf::Color::fromRgba32(255, 0, 0, 100));
-		} else if(std::find(m_gameData.m_plateau.m_casesClicked.begin(),m_gameData.m_plateau.m_casesClicked.end(), pos) != m_gameData.m_plateau.m_casesClicked.end()) {
+		} else if(m_gameData.m_plateau.lastCoup.size() >= 2 && (pos == m_gameData.m_plateau.lastCoup.back() || pos == m_gameData.m_plateau.lastCoup[m_gameData.m_plateau.lastCoup.size()-2])) {
+			shape.setColor(gf::Color::fromRgba32(250, 190, 88, 200));
+		}else if(std::find(m_gameData.m_plateau.m_casesClicked.begin(),m_gameData.m_plateau.m_casesClicked.end(), pos) != m_gameData.m_plateau.m_casesClicked.end()) {
 			switch (m_gameData.m_phase.getCurrentPhase()) {
 				case Phase::AVANT_COUP:
 					shape.setColor(gf::Color::Yellow);
@@ -60,8 +64,6 @@ void BoardEntity::render(gf::RenderTarget &target, const gf::RenderStates &state
 					shape.setColor(gf::Color::Green);
 					break;
 			}
-		}else if(m_gameData.m_plateau.lastCoup.size() >= 2 && (pos == m_gameData.m_plateau.lastCoup.back() || pos == m_gameData.m_plateau.lastCoup[m_gameData.m_plateau.lastCoup.size()-2])) {
-			shape.setColor(gf::Color::fromRgba32(250, 190, 88, 200));
 		}else {
 
 			if (y % 2 == 0) {
@@ -92,10 +94,11 @@ void BoardEntity::render(gf::RenderTarget &target, const gf::RenderStates &state
 
 		target.draw(shape, states);
 
+		gf::Sprite sprite;
 		// draw pieces
 		if (c.piece.getType() != ChessPiece::NONE) {
    
-			gf::Sprite sprite;
+			
 			float i = (float)c.piece.getType();
 			float j = ((int)c.piece.getColor())/4.f;
 			
@@ -120,6 +123,25 @@ void BoardEntity::render(gf::RenderTarget &target, const gf::RenderStates &state
 			}	 
 		}
 		
+		if(std::find(m_gameData.m_plateau.m_casesClicked.begin(),m_gameData.m_plateau.m_casesClicked.end(), pos) != m_gameData.m_plateau.m_casesClicked.end()) {
+			shape.unsetTexture();
+			switch (m_gameData.m_phase.getCurrentPhase()) {
+				case Phase::AVANT_COUP:
+					shape.setColor(gf::Color::Yellow);
+					break;
+				case Phase::APRES_COUP:
+					shape.setColor(gf::Color::Green);
+					break;
+			}
+			
+			target.draw(shape, states);
+			target.draw(sprite, states);
+			
+			shape.setColor(gf::Color::White);
+			shape.setTexture(m_target, gf::RectF::fromPositionSize({0.f, 0.f}, { 1.f, 1.f}));
+			target.draw(shape, states);
+		}
+
 		// draw move authorized
 		auto it = std::find(m_gameData.m_plateau.moveAvailable.begin(), m_gameData.m_plateau.moveAvailable.end(), gf::Vector2i(x, y));
 		if(it != m_gameData.m_plateau.moveAvailable.end()) {

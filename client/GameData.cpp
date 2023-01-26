@@ -6,6 +6,7 @@ GameData::GameData()
 , m_plateau()
 , m_style(0)
 , m_gameStatus(ChessStatus::NO_STARTED)
+, m_sounds(74.f)
 {
 	Deck deck = Deck();
 	for(Card c: deck.m_deck) {
@@ -19,9 +20,12 @@ GameData::GameData()
 	}else{
 		std::string line;
 	
-		while (std::getline(file, line)) {
+		if(std::getline(file, line)) {
 			m_style = atoi(line.c_str());	
-			break;
+		}
+		
+		if(std::getline(file, line)) {
+			m_sounds = atoi(line.c_str());	
 		}
 		
 		file.close();

@@ -1,6 +1,8 @@
 #include "RulesScene.hpp"
 #include "../GameHub.hpp"
 
+#include "../Singletons.hpp"
+
 RulesScene::RulesScene(GameHub& game)
 : gf::Scene(game.getRenderer().getSize())
 , m_game(game)
@@ -36,6 +38,9 @@ RulesScene::RulesScene(GameHub& game)
 	m_rightAction.addScancodeKeyControl(gf::Scancode::Right);
 	addAction(m_rightAction);
 
+	btnClicked.setBuffer(gAudioManager().getSound("sounds/button_click.ogg"));
+	btnClicked.setVolume(FxsVolume);
+
 	auto setupButton = [&] (gf::SpriteWidget& button, auto callback) {
 		button.setAnchor(gf::Anchor::Center);
 		button.setCallback(callback);
@@ -44,16 +49,19 @@ RulesScene::RulesScene(GameHub& game)
 
 	setupButton(m_quitButton, [&] () {
 		gf::Log::debug("Quit pressed!\n");
+		btnClicked.play();
 		m_game.replaceAllScenes(*m_game.menu);
 	});
 
 	setupButton(m_pageRight, [&] () {
 		gf::Log::debug("Page up pressed!\n");
+		btnClicked.play();
 		changeRightLeft(true);
 	});
 
 	setupButton(m_pageLeft, [&] () {
 		gf::Log::debug("Page down pressed!\n");
+		btnClicked.play();
 		changeRightLeft(false);
 	});
 

@@ -12,6 +12,8 @@
 #include <gf/Log.h>
 #include <gf/Coordinates.h>
 
+#include <SFML/Audio.hpp>
+
 struct GameHub;	
 
 class RulesScene : public gf::Scene {
@@ -42,6 +44,8 @@ class RulesScene : public gf::Scene {
 		gf::Action m_fullscreenAction;
 		
 		RulesEntity m_rulesEntity;
+
+		sf::Sound btnClicked;
 };
 
 #endif // RULES_SCENE_H

@@ -27,9 +27,9 @@ class TableBoardEntity: public gf::Entity {
 		
 	private:
 
-		gf::Font& m_font;
-		gf::Texture& m_backgroundTexture;
-		gf::Texture& m_backgroundTexture2;
+		gf::Font &m_font;
+		gf::Texture &m_backgroundTexture;
+		gf::Texture &m_backgroundTexture2;
 
 		GameData &m_gameData;
 };

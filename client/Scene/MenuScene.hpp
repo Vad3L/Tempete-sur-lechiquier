@@ -11,6 +11,8 @@
 #include <gf/Log.h>
 #include <gf/Sprite.h>
 
+#include <SFML/Audio.hpp>
+
 struct GameHub;
 
 class MenuScene : public gf::Scene {
@@ -41,6 +43,8 @@ class MenuScene : public gf::Scene {
 		float m_cog;
 
 		gf::WidgetContainer m_widgets;
+
+		sf::Sound btnClicked;
 };
 
 

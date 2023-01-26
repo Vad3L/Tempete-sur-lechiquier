@@ -7,7 +7,7 @@ SettingsEntity::SettingsEntity(gf::ResourceManager& resources, GameData &gameDat
 , m_backgroundTexture(resources.getTexture("images/StartMenu.png"))
 , m_gameData(gameData)
 {
-
+	m_ligne = 0;
 }
 
 void SettingsEntity::update([[maybe_unused]] gf::Time time) {
@@ -24,7 +24,6 @@ void SettingsEntity::render(gf::RenderTarget &target, const gf::RenderStates &st
 	background.setPosition(coords.getCenter());
 	background.setAnchor(gf::Anchor::Center);
 	background.setScale(backgroundScale);
-	target.draw(background, states);
 
 	unsigned titleCharacterSize = coords.getRelativeCharacterSize(0.1f);
 
@@ -34,16 +33,26 @@ void SettingsEntity::render(gf::RenderTarget &target, const gf::RenderStates &st
 	title.setAnchor(gf::Anchor::TopCenter);
 
 	unsigned subtitleCharacterSize = coords.getRelativeCharacterSize(0.05f);
-
-	gf::Text subtitle("Style du plateau", m_font, subtitleCharacterSize);
-	subtitle.setColor(gf::Color::White);
-	subtitle.setPosition(coords.getRelativePoint({ 0.5f, 0.4f }));
-	subtitle.setAnchor(gf::Anchor::Center);
+	
+	gf::Text subtitleStyle("Style du plateau", m_font, subtitleCharacterSize);
+	(m_ligne==0) ? subtitleStyle.setColor(gf::Color::fromRgba32(144, 129, 60)) : subtitleStyle.setColor(gf::Color::White);
+	subtitleStyle.setPosition(coords.getRelativePoint({ 0.5f, 0.3f }));
+	subtitleStyle.setAnchor(gf::Anchor::Center);
 
 	gf::Text textureStyle("None", m_font, subtitleCharacterSize);
 	textureStyle.setColor(gf::Color::Blue);
-	textureStyle.setPosition(coords.getRelativePoint({ 0.5f, 0.5f }));
+	textureStyle.setPosition(coords.getRelativePoint({ 0.5f, 0.4f }));
 	textureStyle.setAnchor(gf::Anchor::Center);
+
+	gf::Text subtitleSound("Son du jeu", m_font, subtitleCharacterSize);
+	(m_ligne==1) ? subtitleSound.setColor(gf::Color::fromRgba32(144, 129, 60)) : subtitleSound.setColor(gf::Color::White);
+	subtitleSound.setPosition(coords.getRelativePoint({ 0.5f, 0.55f }));
+	subtitleSound.setAnchor(gf::Anchor::Center);
+	
+	gf::Text sound(std::to_string((int)m_gameData.m_sounds), m_font, subtitleCharacterSize);
+	sound.setColor(gf::Color::Blue);
+	sound.setPosition(coords.getRelativePoint({ 0.5f, 0.65f }));
+	sound.setAnchor(gf::Anchor::Center);
 
 	switch (m_gameData.m_style) {
 		case 0:
@@ -54,8 +63,11 @@ void SettingsEntity::render(gf::RenderTarget &target, const gf::RenderStates &st
 			break;
 	}
 	
+	target.draw(background, states);
 	target.draw(title, states);
 	target.draw(textureStyle, states);
-	target.draw(subtitle, states);
+	target.draw(subtitleStyle, states);
+	target.draw(subtitleSound, states);
+	target.draw(sound, states);
 }
 
