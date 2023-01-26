@@ -101,6 +101,8 @@ void MenuScene::doProcessEvent(gf::Event& event) {
 		case gf::EventType::MouseMoved:
 			m_widgets.pointTo(m_game.computeWindowToGameCoordinates(event.mouseCursor.coords, getHudView()));
 			break;
+		default :
+			break;
 	}
 }
 

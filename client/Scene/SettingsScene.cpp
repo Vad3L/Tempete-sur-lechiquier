@@ -9,18 +9,18 @@ SettingsScene::SettingsScene(GameHub& game, GameData &gameData)
 : gf::Scene(game.getRenderer().getSize())
 , m_game(game)
 , m_gameData(gameData)
-, m_rightAction("RightAction")
 , m_leftAction("LeftAction")
+, m_rightAction("RightAction")
 , m_downAction("DownAction")
 , m_upAction("UpAction")
 , m_triggerAction("TriggerAction")
-, m_quitAction("QuitAction")
 , m_fullscreenAction("FullscreenAction")
-, m_quitButton(game.resources.getTexture("images/button/menuButton.png"),game.resources.getTexture("images/button/menuButton.png"),game.resources.getTexture("images/button/menuButtonSelected.png"))
-, m_leftStyleButton(game.resources.getTexture("images/button/leftArrow.png"),game.resources.getTexture("images/button/leftArrow.png"),game.resources.getTexture("images/button/leftArrowSelected.png"))
+, m_quitAction("QuitAction")
 , m_rightStyleButton(game.resources.getTexture("images/button/rightArrow.png"),game.resources.getTexture("images/button/rightArrow.png"),game.resources.getTexture("images/button/rightArrowSelected.png"))
-, m_leftSoundButton(game.resources.getTexture("images/button/leftArrow.png"),game.resources.getTexture("images/button/leftArrow.png"),game.resources.getTexture("images/button/leftArrowSelected.png"))
+, m_leftStyleButton(game.resources.getTexture("images/button/leftArrow.png"),game.resources.getTexture("images/button/leftArrow.png"),game.resources.getTexture("images/button/leftArrowSelected.png"))
 , m_rightSoundButton(game.resources.getTexture("images/button/rightArrow.png"),game.resources.getTexture("images/button/rightArrow.png"),game.resources.getTexture("images/button/rightArrowSelected.png"))
+, m_leftSoundButton(game.resources.getTexture("images/button/leftArrow.png"),game.resources.getTexture("images/button/leftArrow.png"),game.resources.getTexture("images/button/leftArrowSelected.png"))
+, m_quitButton(game.resources.getTexture("images/button/menuButton.png"),game.resources.getTexture("images/button/menuButton.png"),game.resources.getTexture("images/button/menuButtonSelected.png"))
 , m_settingsEntity(game.resources, m_gameData)
 {
 	setClearColor(gf::Color::Black);
@@ -180,6 +180,8 @@ void SettingsScene::doProcessEvent(gf::Event& event) {
 	switch (event.type) {
 		case gf::EventType::MouseMoved:
 			m_widgets.pointTo(m_game.computeWindowToGameCoordinates(event.mouseCursor.coords, getHudView()));
+			break;
+		default :
 			break;
 	}
 }

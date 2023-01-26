@@ -33,15 +33,15 @@ class Piece  {
 
 		std::vector<gf::Vector2i> getCasesPass (gf::Vector2i posStart, gf::Vector2i posEnd);
 
-		std::vector<gf::Vector2i> getCasesPassPawn (gf::Vector2i posStart, gf::Vector2i posEnd);
-		std::vector<gf::Vector2i> getCasesPassKnight (gf::Vector2i posStart, gf::Vector2i posEnd);
-		std::vector<gf::Vector2i> getCasesPassBishop (gf::Vector2i posStart, gf::Vector2i posEnd);
-		std::vector<gf::Vector2i> getCasesPassQueen (gf::Vector2i posStart, gf::Vector2i posEnd);
-		std::vector<gf::Vector2i> getCasesPassRook (gf::Vector2i posStart, gf::Vector2i posEnd);
-		std::vector<gf::Vector2i> getCasesPassKing (gf::Vector2i posStart, gf::Vector2i posEnd);
-		std::vector<gf::Vector2i> getCasesPassCamel (gf::Vector2i posStart, gf::Vector2i posEnd);
-		std::vector<gf::Vector2i> getCasesPassPrince (gf::Vector2i posStart, gf::Vector2i posEnd);
-		std::vector<gf::Vector2i> getCasesPassPrincess (gf::Vector2i posStart, gf::Vector2i posEnd);
+		std::vector<gf::Vector2i> getCasesPassPawn ([[maybe_unused]] gf::Vector2i posStart, gf::Vector2i posEnd);
+		std::vector<gf::Vector2i> getCasesPassKnight ([[maybe_unused]] gf::Vector2i posStart, gf::Vector2i posEnd);
+		std::vector<gf::Vector2i> getCasesPassBishop ([[maybe_unused]] gf::Vector2i posStart, gf::Vector2i posEnd);
+		std::vector<gf::Vector2i> getCasesPassQueen ([[maybe_unused]] gf::Vector2i posStart, gf::Vector2i posEnd);
+		std::vector<gf::Vector2i> getCasesPassRook ([[maybe_unused]] gf::Vector2i posStart, gf::Vector2i posEnd);
+		std::vector<gf::Vector2i> getCasesPassKing ([[maybe_unused]] gf::Vector2i posStart, gf::Vector2i posEnd);
+		std::vector<gf::Vector2i> getCasesPassCamel ([[maybe_unused]] gf::Vector2i posStart, gf::Vector2i posEnd);
+		std::vector<gf::Vector2i> getCasesPassPrince ([[maybe_unused]] gf::Vector2i posStart, gf::Vector2i posEnd);
+		std::vector<gf::Vector2i> getCasesPassPrincess ([[maybe_unused]] gf::Vector2i posStart, gf::Vector2i posEnd);
 		
 		bool operator== (const Piece &p) const;
 

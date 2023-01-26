@@ -239,7 +239,7 @@ std::vector<gf::Vector2i> Plateau::filterMoveAuthorized_Pawn(gf::Vector2i coordC
 	ChessColor tab[2] = {ChessColor::WHITE, ChessColor::BLACK};
 
 	// prise en passant
-	for(std::size_t i = 0 ; i < 2 ; i++) {
+	for(int i = 0 ; i < 2 ; i++) {
 		if(piece.getColor() == tab[i] && coordCaseStart.y == 3+i && abs(lastCoup.back().y-lastCoup[lastCoup.size()-2].y) == 2 && lastCoup.back().y == 3+i) {
 			if(coordCaseStart.x-1 >= 0 && lastCoup.back().x == coordCaseStart.x-1) {
 				Piece pL = state[coordCaseStart.y * 8 + coordCaseStart.x-1].piece;

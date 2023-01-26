@@ -21,7 +21,7 @@ ZoomCardScene::ZoomCardScene(GameHub& game)
 	
 }
 
-void ZoomCardScene::doProcessEvent(gf::Event& event) {
+void ZoomCardScene::doProcessEvent([[maybe_unused]] gf::Event& event) {
 	
 }
 

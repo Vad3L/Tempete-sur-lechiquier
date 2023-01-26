@@ -16,9 +16,9 @@ class DownloadScene : public gf::Scene {
 		void doHandleActions(gf::Window& window) override;
 		void doUpdate(gf::Time time) override;
 
-		gf::Action m_escapeAction;
-
 		GameHub& m_game;
+		
+		gf::Action m_escapeAction;
 	
 };
 

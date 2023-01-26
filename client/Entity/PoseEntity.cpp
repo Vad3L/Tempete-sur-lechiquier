@@ -1,9 +1,9 @@
 #include "PoseEntity.hpp"
 
 PoseEntity::PoseEntity(gf::ResourceManager& resources,GameData &gameData)
-: m_cardsIllustration(resources.getTexture("images/CardIlustrationSheet.png"))
+: m_gameData(gameData)
+, m_cardsIllustration(resources.getTexture("images/CardIlustrationSheet.png"))
 , m_accessories(resources.getTexture("images/AccesoriesCards.png"))
-, m_gameData(gameData)
 , m_poseNameFont(resources.getFont("fonts/DejaVuSans.ttf"))
 , m_cardEntity(resources)
 {
@@ -110,7 +110,7 @@ void PoseEntity::returnCardHand() {
 	}
 }
 
-bool PoseEntity::clickIsInCardPose(gf::Vector2i sizeWindows, gf::Vector2i mouseCoord) {
+bool PoseEntity::clickIsInCardPose([[maybe_unused]] gf::Vector2i sizeWindows, gf::Vector2i mouseCoord) {
 	gf::Log::info("coord case clicker carte pose %i et %i\n", mouseCoord.x,mouseCoord.y);
 	int x = mouseCoord.x;
 	int y = mouseCoord.y;
@@ -124,7 +124,7 @@ bool PoseEntity::clickIsInCardPose(gf::Vector2i sizeWindows, gf::Vector2i mouseC
 	return false;
 }
 
-bool PoseEntity::clickIsInCardDiscard(gf::Vector2i sizeWindows, gf::Vector2i mouseCoord) {
+bool PoseEntity::clickIsInCardDiscard([[maybe_unused]] gf::Vector2i sizeWindows, gf::Vector2i mouseCoord) {
 	gf::Log::info("coord case clicker carte pose %i et %i\n", mouseCoord.x,mouseCoord.y);
 	int x = mouseCoord.x;
 	int y = mouseCoord.y;

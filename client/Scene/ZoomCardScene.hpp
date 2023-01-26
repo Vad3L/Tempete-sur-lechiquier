@@ -21,7 +21,7 @@ class ZoomCardScene : public gf::Scene {
 		Card m_cardZoom;
 		
 	private:
-		void doProcessEvent(gf::Event& event) override;
+		void doProcessEvent([[maybe_unused]] gf::Event& event) override;
 		void doHandleActions(gf::Window& window) override;
 		void doRender(gf::RenderTarget& target, const gf::RenderStates &states) override;
 

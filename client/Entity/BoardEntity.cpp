@@ -23,7 +23,7 @@ void BoardEntity::render(gf::RenderTarget &target, const gf::RenderStates &state
 
 	float sizeSquare = coords.getRelativeSize(gf::vec(0.0f, 1.f/8.f)).height;
 	float sizeLine = 2.5f;
-	Phase currentPhase = m_gameData.m_phase.getCurrentPhase();
+	//Phase currentPhase = m_gameData.m_phase.getCurrentPhase();
 
 	bool myTurn = false;
 	ChessColor lastColor = ChessColor::WHITE;
@@ -55,15 +55,6 @@ void BoardEntity::render(gf::RenderTarget &target, const gf::RenderStates &state
 			shape.setColor(gf::Color::fromRgba32(255, 0, 0, 100));
 		} else if(m_gameData.m_plateau.lastCoup.size() >= 2 && (pos == m_gameData.m_plateau.lastCoup.back() || pos == m_gameData.m_plateau.lastCoup[m_gameData.m_plateau.lastCoup.size()-2])) {
 			shape.setColor(gf::Color::fromRgba32(250, 190, 88, 200));
-		}else if(std::find(m_gameData.m_plateau.m_casesClicked.begin(),m_gameData.m_plateau.m_casesClicked.end(), pos) != m_gameData.m_plateau.m_casesClicked.end()) {
-			switch (m_gameData.m_phase.getCurrentPhase()) {
-				case Phase::AVANT_COUP:
-					shape.setColor(gf::Color::Yellow);
-					break;
-				case Phase::APRES_COUP:
-					shape.setColor(gf::Color::Green);
-					break;
-			}
 		}else {
 
 			if (y % 2 == 0) {
@@ -132,6 +123,8 @@ void BoardEntity::render(gf::RenderTarget &target, const gf::RenderStates &state
 				case Phase::APRES_COUP:
 					shape.setColor(gf::Color::Green);
 					break;
+				default :
+					shape.setColor(gf::Color::Black);
 			}
 			
 			target.draw(shape, states);
@@ -163,7 +156,7 @@ void BoardEntity::render(gf::RenderTarget &target, const gf::RenderStates &state
 		/*std::cout << "piece y :" << (float)pieceToPromuteCoords.y * 1.f/8.f + 1/16.f << std::endl;
 		std::cout << "sizeSquare :" << sizeSquare << std::endl;*/
 
-		int mul = (pieceToPromuteColor == ChessColor::WHITE) ? 1 : -1;
+		//int mul = (pieceToPromuteColor == ChessColor::WHITE) ? 1 : -1;
 
 		rectangle.setPosition(coords.getRelativePoint({-0.5f + (float)pieceToPromuteCoords.x * 1.f/8.f + 1/16.f, -0.5f + (float)pieceToPromuteCoords.y * 1.f/8.f + (pieceToPromuteColor == ChessColor::WHITE ? (1/4.f) : (-1/8.f))}));
 		rectangle.setAnchor(gf::Anchor::Center);
@@ -202,10 +195,10 @@ gf::Vector2i BoardEntity::getCaseSelected(gf::Vector2i sizeWindows, gf::Vector2i
 	return v;
 }
 
-ChessPiece BoardEntity::getChoice(gf::Vector2i sizeWindows, gf::Vector2i clickCoord) {
+ChessPiece BoardEntity::getChoice([[maybe_unused]] gf::Vector2i sizeWindows, gf::Vector2i clickCoord) {
 	ChessPiece p = ChessPiece::NONE;
 	//std::cout << "case cliquer " << clickCoord.y<< ","<< clickCoord.x<< std::endl;
-	float min = std::min(sizeWindows.height, sizeWindows.width);
+	//float min = std::min(sizeWindows.height, sizeWindows.width);
 
 	if(m_gameData.m_myColor == ChessColor::BLACK){
 		clickCoord.y -= 4;

@@ -175,8 +175,9 @@ void GameScene::doProcessEvent(gf::Event& event) {
 				clickRight = true;
 			}
 			break;
-
-		}
+		default :
+			break;
+	}
 
 	if(clickRight) {
 		int numCarte = m_mainEntity.getCardSelected(m_cardsView.getSize(), m_game.getRenderer().mapPixelToCoords(event.mouseButton.coords, m_cardsView));

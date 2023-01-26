@@ -12,9 +12,9 @@ RulesScene::RulesScene(GameHub& game)
 , m_fullscreenAction("FullScreen")
 , m_triggerAction("TriggerAction")
 , m_quitAction("Quit")
-, m_quitButton(game.resources.getTexture("images/button/menuButton.png"),game.resources.getTexture("images/button/menuButton.png"),game.resources.getTexture("images/button/menuButtonSelected.png"))
 , m_pageLeft(game.resources.getTexture("images/button/leftArrow.png"),game.resources.getTexture("images/button/leftArrow.png"),game.resources.getTexture("images/button/leftArrowSelected.png"))
 , m_pageRight(game.resources.getTexture("images/button/rightArrow.png"),game.resources.getTexture("images/button/rightArrow.png"),game.resources.getTexture("images/button/rightArrowSelected.png"))
+, m_quitButton(game.resources.getTexture("images/button/menuButton.png"),game.resources.getTexture("images/button/menuButton.png"),game.resources.getTexture("images/button/menuButtonSelected.png"))
 , m_rulesEntity(game.resources)
 {
 	setClearColor(gf::Color::Black);
@@ -47,10 +47,10 @@ RulesScene::RulesScene(GameHub& game)
 		m_widgets.addWidget(button);
 	};
 
-	setupButton(m_quitButton, [&] () {
-		gf::Log::debug("Quit pressed!\n");
+	setupButton(m_pageLeft, [&] () {
+		gf::Log::debug("Page down pressed!\n");
 		btnClicked.play();
-		m_game.replaceAllScenes(*m_game.menu);
+		changeRightLeft(false);
 	});
 
 	setupButton(m_pageRight, [&] () {
@@ -59,12 +59,11 @@ RulesScene::RulesScene(GameHub& game)
 		changeRightLeft(true);
 	});
 
-	setupButton(m_pageLeft, [&] () {
-		gf::Log::debug("Page down pressed!\n");
+	setupButton(m_quitButton, [&] () {
+		gf::Log::debug("Quit pressed!\n");
 		btnClicked.play();
-		changeRightLeft(false);
+		m_game.replaceAllScenes(*m_game.menu);
 	});
-
 }
 
 void RulesScene::doHandleActions([[maybe_unused]] gf::Window& window) {
@@ -110,7 +109,9 @@ void RulesScene::doProcessEvent(gf::Event& event) {
 	switch (event.type)	{
 		case gf::EventType::MouseMoved:
 			m_widgets.pointTo(m_game.computeWindowToGameCoordinates(event.mouseCursor.coords, getHudView()));
-		break;
+			break;
+		default :
+			break;
 	}
 }
 

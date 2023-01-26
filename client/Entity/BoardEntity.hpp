@@ -26,7 +26,7 @@ class BoardEntity : public gf::Entity {
 		void render(gf::RenderTarget &target, const gf::RenderStates &states) override;
 
 		gf::Vector2i getCaseSelected(gf::Vector2i sizeWindows, gf::Vector2i mouseCoord);
-		ChessPiece getChoice(gf::Vector2i sizeWindows,gf::Vector2i clickCoord);
+		ChessPiece getChoice([[maybe_unused]] gf::Vector2i sizeWindows,gf::Vector2i clickCoord);
 
 	private:
 		

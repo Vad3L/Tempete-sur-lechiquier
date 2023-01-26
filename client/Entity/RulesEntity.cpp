@@ -3,10 +3,11 @@
 
 
 RulesEntity::RulesEntity(gf::ResourceManager& resources)
-: m_font(resources.getFont("fonts/Trajan-Color-Concept.otf"))
+: m_index(0)
 , m_backgroundTexture(resources.getTexture("images/StartMenu.png"))
 , m_rulesFont(resources.getFont("fonts/RifficFree-Bold.ttf"))
-, m_index(0)
+, m_font(resources.getFont("fonts/Trajan-Color-Concept.otf"))
+
 {
 
 }
@@ -20,7 +21,7 @@ void RulesEntity::render(gf::RenderTarget &target, const gf::RenderStates &state
 	float backgroundHeight = coords.getRelativeSize(gf::vec(0.0f, 1.0f)).height;
 	float backgroundScale = backgroundHeight / m_backgroundTexture.getSize().height;
 	unsigned titleCharacterSize = coords.getRelativeCharacterSize(0.04f);
-	unsigned subtitleCharacterSize = coords.getRelativeCharacterSize(0.02f);
+	//unsigned subtitleCharacterSize = coords.getRelativeCharacterSize(0.02f);
 
 	gf::Sprite background(m_backgroundTexture);
 	background.setColor(gf::Color::Opaque(0.20f));

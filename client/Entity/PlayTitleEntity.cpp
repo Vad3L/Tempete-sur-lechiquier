@@ -2,9 +2,10 @@
 
 
 PlayTitleEntity::PlayTitleEntity(gf::ResourceManager& resources)
-: m_font(resources.getFont("fonts/Trajan-Color-Concept.otf"))
+: m_errorText("", resources.getFont("fonts/DejaVuSans.ttf"))
+, m_font(resources.getFont("fonts/Trajan-Color-Concept.otf"))
 , m_backgroundTexture(resources.getTexture("images/StartMenu.png"))
-, m_errorText("", resources.getFont("fonts/DejaVuSans.ttf"))
+
 {
 
 }

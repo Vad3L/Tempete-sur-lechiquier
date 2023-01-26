@@ -27,7 +27,7 @@ class MainEntity : public gf::Entity {
 		void update(gf::Time time) override;
 		void render(gf::RenderTarget &target, const gf::RenderStates &states) override ;
 
-		int getCardSelected(gf::Vector2i sizeWindows, gf::Vector2i mouseCoord);
+		int getCardSelected([[maybe_unused]] gf::Vector2i sizeWindows, gf::Vector2i mouseCoord);
 	private:
 
 		GameData &m_gameData;

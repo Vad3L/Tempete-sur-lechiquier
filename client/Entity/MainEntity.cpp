@@ -21,7 +21,7 @@ void MainEntity::render(gf::RenderTarget &target, const gf::RenderStates &states
 	}
 }
 
-int MainEntity::getCardSelected(gf::Vector2i sizeWindows, gf::Vector2i mouseCoord) { //sizeWindows = CardsView
+int MainEntity::getCardSelected([[maybe_unused]] gf::Vector2i sizeWindows, gf::Vector2i mouseCoord) { //sizeWindows = CardsView
 
 	int cardSelected = -1;
 	//gf::Log::debug("y = %i et x = %i\n",mouseCoord.y, mouseCoord.x);

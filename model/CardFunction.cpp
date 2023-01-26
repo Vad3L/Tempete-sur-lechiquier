@@ -87,7 +87,7 @@ bool NoCard (Plateau& p, std::vector<gf::Vector2i> tabVector) {
 	if(tabVector.size() != 0 || p.turnTo == ChessColor::GREY){exit(8);}
 	return false;
 }
-bool NoCardPlayable (Plateau& p, Phase f) { 
+bool NoCardPlayable (Plateau& p, [[maybe_unused]] Phase f) { 
 	if(p.turnTo == ChessColor::GREY){exit(7);}
 	return false; 
 }

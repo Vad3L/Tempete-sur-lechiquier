@@ -27,18 +27,19 @@ class PoseEntity : public gf::Entity {
 		void render(gf::RenderTarget &target, const gf::RenderStates &states) override ;
 
 		void returnCardHand();
-		bool clickIsInCardPose(gf::Vector2i sizeWindows, gf::Vector2i mouseCoord);
-		bool clickIsInCardDiscard(gf::Vector2i sizeWindows, gf::Vector2i mouseCoord);
+		bool clickIsInCardPose([[maybe_unused]] gf::Vector2i sizeWindows, gf::Vector2i mouseCoord);
+		bool clickIsInCardDiscard([[maybe_unused]] gf::Vector2i sizeWindows, gf::Vector2i mouseCoord);
 		
 		Card m_cardPose;
 		Card m_cardDiscard;
 		
 	private:
+		GameData &m_gameData;
+
 		gf::Texture& m_cardsIllustration;
 		gf::Texture& m_accessories;
 		gf::Font& m_poseNameFont;
 
-		GameData &m_gameData;
 		CardEntity m_cardEntity;
 };
 

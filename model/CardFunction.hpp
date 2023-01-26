@@ -10,7 +10,7 @@ bool isInEchecAfterCardGreen(Plateau &p,std::function<bool(Plateau&, std::vector
 
 //card
 bool NoCard (Plateau& p, std::vector<gf::Vector2i> tabVector);
-bool NoCardPlayable (Plateau& p, Phase f);
+bool NoCardPlayable (Plateau& p,[[maybe_unused]] Phase f);
 
 bool Princess (Plateau& p, std::vector<gf::Vector2i> tabVector);
 bool BombeAtomique (Plateau& p, std::vector<gf::Vector2i> tabVector);

@@ -42,15 +42,15 @@ class SettingsScene : public gf::Scene {
 		gf::Action m_fullscreenAction;
 		gf::Action m_quitAction;
 
-		gf::SpriteWidget m_quitButton;
 		gf::SpriteWidget m_rightStyleButton;
 		gf::SpriteWidget m_leftStyleButton;
 		gf::SpriteWidget m_rightSoundButton;
 		gf::SpriteWidget m_leftSoundButton;
-	
-		gf::WidgetContainer m_widgets;
-
+		gf::SpriteWidget m_quitButton;
+			
 		SettingsEntity m_settingsEntity;
+		
+		gf::WidgetContainer m_widgets;
 
 		int m_ligne = 0;
 

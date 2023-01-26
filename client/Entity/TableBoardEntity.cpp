@@ -16,7 +16,7 @@ void TableBoardEntity::update([[maybe_unused]] gf::Time time) {
 void TableBoardEntity::render(gf::RenderTarget &target, const gf::RenderStates &states) {
 	gf::Coordinates coords(gf::Vector2i(500.f , 500.f));
 
-	int numberPiece = ((int)ChessPiece::MAX - (int)ChessPiece::MIN + 1);
+	constexpr int numberPiece = (int)ChessPiece::MAX - (int)ChessPiece::MIN + 1;
 	gf::Texture &texture = (m_gameData.m_style == 0) ? m_backgroundTexture : m_backgroundTexture2;
 
 	gf::RectangleShape tableCloth(gf::Vector2f(500.f, 400.f));
@@ -41,12 +41,16 @@ void TableBoardEntity::render(gf::RenderTarget &target, const gf::RenderStates &
 		case Phase::PAS_MON_TOUR :
 			indication = "Au tour de l'adversaire de jouer" ;
 			break;
+		default :
+			indication = "ERROR 1";
 	}
 
 	switch (m_gameData.m_phase.getCurrentSubPhase()) {
 		case SubPhase::CLIQUER_CASES:
 			indication = "Choisissez des cases sur le plateau";
-		break;
+			break;
+		default :
+				indication = "Choisissez pas de cases sur le plateau";
 	}
 
 	switch (m_gameData.m_gameStatus) {
@@ -65,6 +69,8 @@ void TableBoardEntity::render(gf::RenderTarget &target, const gf::RenderStates &
 		case ChessStatus::SURRENDER:
 			indication = "Vous gagnez par abandon";
 			break;
+		default :
+			indication = "ERROR 2";
 	}
 	
 

@@ -54,8 +54,10 @@ QuitScene::QuitScene(GameHub& game)
 void QuitScene::doProcessEvent(gf::Event& event) {
 	switch (event.type) {
 		case gf::EventType::MouseMoved:
-		m_widgets.pointTo(m_game.computeWindowToGameCoordinates(event.mouseCursor.coords, getHudView()));
-		break;
+			m_widgets.pointTo(m_game.computeWindowToGameCoordinates(event.mouseCursor.coords, getHudView()));
+			break;
+		default :
+			break;
 	}
 }
 
