@@ -76,7 +76,8 @@ class GameScene : public gf::Scene {
 		gf::Font &m_font;	
 		gf::Animation m_animation;
 		gf::AnimatedSprite m_animatedSprite;
-
+		
+		std::time_t startTime = 0;
 };  
 
 

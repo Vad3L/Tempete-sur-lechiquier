@@ -1,6 +1,8 @@
 #include "GameScene.hpp"
 #include "../GameHub.hpp"
 
+#include <string>
+
 GameScene::GameScene(GameHub& game, Network &network, GameData &gameData)
 : gf::Scene(game.getRenderer().getSize())
 , m_game(game)
@@ -292,9 +294,10 @@ void GameScene::doProcessEvent(gf::Event& event) {
 }
 
 void GameScene::doRender(gf::RenderTarget& target, const gf::RenderStates &states) {
+	target.setView(getHudView());
+	gf::Coordinates coords(target);
+
 	if(m_gameData.m_gameStatus == ChessStatus::NO_STARTED) {
-		target.setView(getHudView());
-		gf::Coordinates coords(target);
 
 		gf::Text text("En attente d un autre joueur", m_font, 50);
 		text.setPosition(coords.getRelativePoint({0.5f, 0.35f }));	
@@ -307,6 +310,22 @@ void GameScene::doRender(gf::RenderTarget& target, const gf::RenderStates &state
 		return;
 	}
 	
+	std::time_t time = std::time(nullptr);
+	if(time < startTime) {
+		std::string indaction = "La partie commence dans " + std::to_string(startTime-time) + " secondes ...\n Vous etes les " + ((m_gameData.m_myColor==ChessColor::WHITE) ? "Blancs" : "Noires");
+		gf::Text text(indaction, m_font, 50);
+		text.setColor(gf::Color::White);
+		text.setPosition(coords.getRelativePoint({0.5f, 0.35f }));	
+		text.setAlignment(gf::Alignment::Center);
+		text.setParagraphWidth(1600.f);
+		text.setLineSpacing(2.f);
+		text.setAnchor(gf::Anchor::Center);
+		
+
+		target.draw(text, states);
+		return;
+	}
+
 	target.setView(m_tableBoardView);
 	m_tableBoardEntity.render(target, states);
 
@@ -338,6 +357,8 @@ void GameScene::doUpdate(gf::Time time) {
 			gf::Log::info("Jeux commence\n");
 			m_gameData.m_gameStatus = ChessStatus::ON_GOING;
 			
+			startTime = std::time(nullptr)+5;
+
 		} else if (repPartie.err == CodeRep::GAME_END) {
 			gf::Log::info("Jeux Fini\n");
 
