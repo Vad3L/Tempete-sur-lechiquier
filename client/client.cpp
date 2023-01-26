@@ -17,7 +17,6 @@ int main() {
 
 	gf::SingletonStorage<AudioManager> storageForAudioManager(gAudioManager);
 	gAudioManager().addSearchDir({GAME_DATADIR});
-	BackgroundAmbiantVolume = data.m_sounds;
 
 	hub.getWindow().toggleFullscreen();
 
@@ -27,7 +26,7 @@ int main() {
 	// Background music
 	gBackgroundMusic.setBuffer(gAudioManager().getSound("sounds/MainSounds.ogg"));
 	gBackgroundMusic.setLoop(true);
-	gBackgroundMusic.setVolume(BackgroundAmbiantVolume);
+	gBackgroundMusic.setVolume(data.m_sounds);
 	gBackgroundMusic.play();
 	
 	hub.pushScene(*hub.download);

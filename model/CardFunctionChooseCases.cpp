@@ -337,9 +337,10 @@ bool Desintegration (Plateau& p, std::vector<gf::Vector2i> tabVector) {
 
 	bool res = p.isInEchec(p.turnTo) || p.isInEchec(!p.turnTo, gf::Vector2i(-1), caseProvocateEchec);
 	if (res) {
+		p.bin.push_back(piece);
 		piece = copy;
 	}
-
+	
 	return !res;
 }
 

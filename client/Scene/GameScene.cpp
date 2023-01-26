@@ -47,8 +47,11 @@ GameScene::GameScene(GameHub& game, Network &network, GameData &gameData)
 	m_triggerAction.addMouseButtonControl(gf::MouseButton::Left);
 	addAction(m_triggerAction);
 	
-	clickButton.setBuffer(gAudioManager().getSound("sounds/ClickButton.ogg"));
-	clock.setVolume(FxsVolume);
+	clickEndturn.setBuffer(gAudioManager().getSound("sounds/ClickButton.ogg"));
+	clickEndturn.setVolume(FxsVolume);
+
+	clickplayCard.setBuffer(gAudioManager().getSound("sounds/PlayCard.ogg"));
+	clickplayCard.setVolume(FxsVolume);
 
 	clock.setBuffer(gAudioManager().getSound("sounds/Clock.ogg"));
 	clock.setVolume(FxsVolume);
@@ -61,6 +64,12 @@ GameScene::GameScene(GameHub& game, Network &network, GameData &gameData)
 
 	checkPiece.setBuffer(gAudioManager().getSound("sounds/CheckPiece.ogg"));
 	checkPiece.setVolume(FxsVolume);
+
+	drawCard.setBuffer(gAudioManager().getSound("sounds/DrawCard.ogg"));
+	drawCard.setVolume(FxsVolume);
+
+	explosion.setBuffer(gAudioManager().getSound("sounds/Explosion.ogg"));
+	explosion.setVolume(FxsVolume);
 
 	m_boardView = gf::ExtendView({ 0, 0 }, { 403, 403 });
 	m_boardView.setViewport(gf::RectF::fromPositionSize({ 0.275f, 0.125f}, { 0.45f, 0.45f }));
@@ -104,7 +113,7 @@ GameScene::GameScene(GameHub& game, Network &network, GameData &gameData)
 	setupButton(m_endTurn, { 0.6f, 0.25f }, [&] () {
 		if(m_gameData.m_phase.getCurrentPhase()==Phase::APRES_COUP) {
 			gf::Log::debug("EndTurn pressed!\n");
-			clickButton.play();
+			clickEndturn.play();
 			m_gameData.m_phase.setCurrentPhase(Phase::PAS_MON_TOUR);
 			CardRep cardRep;
 			cardRep.err = CodeRep::NO_CARD;
@@ -134,7 +143,7 @@ GameScene::GameScene(GameHub& game, Network &network, GameData &gameData)
 			}
 		}
 		
-		clickButton.play();
+		clickplayCard.play();
 		gf::Log::debug("envoie au serveur la card %li\n", cardRep.card);
 		m_network.send(cardRep);
 	});
@@ -550,6 +559,14 @@ void GameScene::doUpdate(gf::Time time) {
 				if(m_gameData.m_phase.getCurrentPhase() == Phase::PAS_MON_TOUR) { //carte mais fin a mon tour
 					m_gameData.m_plateau.turnTo = !m_gameData.m_plateau.turnTo;	
 				}
+
+				clickplayCard.stop();
+				//drawCard.play();
+			}
+
+			if(m_gameData.m_cards[carteRep.num].m_num == 15) {
+				explosion.play();
+				
 			}
 		}else {
 			gf::Log::debug("------CARTE INVALIDE------\n");

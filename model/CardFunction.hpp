@@ -9,8 +9,8 @@ bool binNotChange(Plateau& p);
 bool isInEchecAfterCardGreen(Plateau &p,std::function<bool(Plateau&, std::vector<gf::Vector2i> tabVector)> execute);
 
 //card
-bool NoCard (Plateau& p, std::vector<gf::Vector2i> tabVector);
-bool NoCardPlayable (Plateau& p,[[maybe_unused]] Phase f);
+bool NoCard ([[maybe_unused]] Plateau& p, [[maybe_unused]] std::vector<gf::Vector2i> tabVector);
+bool NoCardPlayable ([[maybe_unused]] Plateau& p,[[maybe_unused]] Phase f);
 
 bool Princess (Plateau& p, std::vector<gf::Vector2i> tabVector);
 bool BombeAtomique (Plateau& p, std::vector<gf::Vector2i> tabVector);

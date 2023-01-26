@@ -34,8 +34,8 @@ void BoardEntity::render(gf::RenderTarget &target, const gf::RenderStates &state
 	myTurn = (lastColor != m_gameData.m_myColor);
 
 	gf::Texture &texture = (m_gameData.m_style == 0) ? m_backgroundTexture : m_backgroundTexture2;
-	gf::Vector2f pieceToPromuteCoords;
-	ChessColor pieceToPromuteColor;
+	gf::Vector2f pieceToPromuteCoords(-1);
+	ChessColor pieceToPromuteColor = ChessColor::NONE;
 	
 	//draw plateau 
 	for  (Case &c : m_gameData.m_plateau.state) {
