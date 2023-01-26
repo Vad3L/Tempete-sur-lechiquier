@@ -147,7 +147,7 @@ bool QuatreCoin (Plateau& p, std::vector<gf::Vector2i> tabVector) {
 bool QuatreCoinIsPlayable (Plateau& p, Phase f) {
 	gf::Log::info("Appel Quatre coin jouable\n");
 
-	if (f != Phase::AVANT_COUP && p.playerInEchec) {
+	if (f != Phase::AVANT_COUP  || p.playerInEchec) {
 		return false;
 	}
 
@@ -301,7 +301,7 @@ bool BonnesCopines(Plateau& p, std::vector<gf::Vector2i> tabVector){
 
 bool BonnesCopinesIsPlayable(Plateau& p, Phase f){ 
 	gf::Log::info("Appel BonnesCopines jouable\n");
-	if(f!= Phase::AVANT_COUP && p.playerInEchec){
+	if(f!= Phase::AVANT_COUP || p.playerInEchec){
 		return false;
 	}
 
