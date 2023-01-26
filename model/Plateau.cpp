@@ -70,7 +70,7 @@ std::string Plateau::getSymbol(ChessColor c, ChessPiece p) {
 		return whites[(int)p];
 	} else if (c == ChessColor::BLACK) {
 		return blacks[(int)p];
-	} else if (c == ChessColor::GRAY) {
+	} else if (c == ChessColor::GREY) {
 		return neutral[(int)p];
 	} else {
 		return ".";
@@ -530,7 +530,7 @@ std::string Plateau::getFen () {
 		} else if (c.piece.getColor() == ChessColor::WHITE) {
 			fen += white[(int)c.piece.getType()];
 			empty_case = 0;
-		} else if (c.piece.getColor() == ChessColor::GRAY) {
+		} else if (c.piece.getColor() == ChessColor::GREY) {
 			fen += neutral[(int)c.piece.getType()];
 			empty_case = 0;
 		}
