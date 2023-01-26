@@ -83,13 +83,11 @@ bool isInEchecAfterCardGreen(Plateau &p , std::function<bool(Plateau&, std::vect
 }
 
 //card
-bool NoCard (Plateau& p, std::vector<gf::Vector2i> tabVector) { 
-	if(tabVector.size() != 0 || p.turnTo == ChessColor::GREY){exit(8);}
+bool NoCard ([[maybe_unused]] Plateau& p, [[maybe_unused]] std::vector<gf::Vector2i> tabVector) { 
 	return false;
 }
-bool NoCardPlayable (Plateau& p, [[maybe_unused]] Phase f) { 
-	if(p.turnTo == ChessColor::GREY){exit(7);}
-	return false; 
+bool NoCardPlayable ([[maybe_unused]] Plateau& p, [[maybe_unused]] Phase f) { 
+	return false;
 }
 
 bool Princess (Plateau& p, std::vector<gf::Vector2i> tabVector) {

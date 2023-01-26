@@ -79,11 +79,14 @@ class GameScene : public gf::Scene {
 		
 		float startTime = 0.f;
 
-		sf::Sound clickButton;
+		sf::Sound clickEndturn;
+		sf::Sound clickplayCard;
 		sf::Sound clock;
 		sf::Sound takePiece;
 		sf::Sound movePiece;
 		sf::Sound checkPiece;
+		sf::Sound drawCard;
+		sf::Sound explosion;
 };  
 
 

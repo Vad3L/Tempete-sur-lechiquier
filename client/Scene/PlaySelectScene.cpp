@@ -190,7 +190,7 @@ void PlaySelectScene::changeRightLeft(bool value) {
 			m_index++;
 		}
 	}else{
-		if(m_index-1 >= 0){
+		if(m_index >= 1){
 			m_ipWidget.setString(m_listIp[m_index-1].second);
 			m_index--;
 		}
