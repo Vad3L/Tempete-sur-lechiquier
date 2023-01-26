@@ -9,7 +9,7 @@
 
 #include <gf/SharedGraphics.h>
 
-int main(int argc, char* argv[]) {
+int main() {
 
 	GameHub hub;
 	Network network;

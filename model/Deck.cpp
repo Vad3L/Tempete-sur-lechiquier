@@ -62,7 +62,7 @@ Deck::Deck(std::vector<int> numCards){
 		
 			while (std::getline(file, line)) {
 				std::array<std::string,7> tab;
-				for(int i=0 ; i<tab.size() ; i++) {
+				for(std::size_t i=0 ; i<tab.size() ; i++) {
 					
 					std::size_t index = line.find(delimiter);
 					tab[i] = line.substr(0, index);
@@ -124,10 +124,10 @@ void Deck::swap(Card &a, Card &b){
 }
 
 void Deck::shuffle(){
-	int i=0;
+	std::size_t i=0;
 	srand((unsigned int)time(0));
-	int index;
-	int indexbis;
+	std::size_t index;
+	std::size_t indexbis;
 	while(i<m_deck.size()){
 		index=rand()%m_deck.size();
 		indexbis=rand()%m_deck.size();

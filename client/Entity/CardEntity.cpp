@@ -12,7 +12,7 @@ CardEntity::CardEntity(gf::ResourceManager& resources)
 void CardEntity::update([[maybe_unused]] gf::Time time) {
 }
 
-void CardEntity::render(gf::RenderTarget &target, const gf::RenderStates &states, Card c, gf::Vector2f boxCoord, int zoom){
+void CardEntity::draw(gf::RenderTarget &target, const gf::RenderStates &states, Card c, gf::Vector2f boxCoord, int zoom){
 	m_card = c;
 	int numberImageW = 10;
 	int numberImageH = 14;

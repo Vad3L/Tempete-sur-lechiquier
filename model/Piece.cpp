@@ -244,7 +244,7 @@ std::vector<gf::Vector2i> Piece::getCasesPass (gf::Vector2i posStart, gf::Vector
 std::vector<gf::Vector2i> Piece::getCasesPassPawn (gf::Vector2i posStart, gf::Vector2i posEnd) {
 	std::vector<gf::Vector2i> newpos;
 	int mul = (color == ChessColor::WHITE) ? -1 : 1;
-	for(std::size_t i = 1 ; i <= abs(posEnd.y-posStart.y) ; i++) {
+	for(int i = 1 ; i <= abs(posEnd.y-posStart.y) ; i++) {
 		newpos.push_back(gf::Vector2i(posStart.x, posStart.y + mul* i));
 	}
 	return newpos;
@@ -261,7 +261,7 @@ std::vector<gf::Vector2i> Piece::getCasesPassBishop (gf::Vector2i posStart, gf::
 	int mulx = (posStart.x < posEnd.x) ? 1 : -1;
 	int muly = (posStart.y < posEnd.y) ? 1 : -1;
 	
-	for(std::size_t i = 1; i <= abs(posEnd.x-posStart.x) ; i++) { 
+	for(int i = 1; i <= abs(posEnd.x-posStart.x) ; i++) { 
 		newpos.push_back(gf::Vector2i(posStart.x+i*mulx,posStart.y+i*muly));
 	}
 	

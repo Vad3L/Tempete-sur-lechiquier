@@ -36,13 +36,13 @@ class Card{
 		Turn m_turn;
 		Action m_action;
 		Effect m_effect;
-		int m_nbClickPossible;
+		std::size_t m_nbClickPossible;
 		
 		int m_num;
 		std::function<bool(Plateau&, std::vector<gf::Vector2i>)> m_execute;
 		std::function<bool(Plateau&, Phase)> m_isPlayable;
 
-		Card(int num, std::string name,std::string m_description,Turn turn, Action action, Effect effect, int nbClickPossible);
+		Card(int num, std::string name,std::string m_description,Turn turn, Action action, Effect effect, std::size_t nbClickPossible);
 		Card();
 
 };

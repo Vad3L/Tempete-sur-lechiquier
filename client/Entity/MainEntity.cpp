@@ -16,7 +16,7 @@ void MainEntity::render(gf::RenderTarget &target, const gf::RenderStates &states
 
 	int cpt = 0;
 	for (auto &c : m_gameData.m_main) {
-		m_card.render(target,states,c, gf::Vector2f(-0.5f+spaceBetweenCard*cpt,-0.4f));
+		m_card.draw(target,states,c, gf::Vector2f(-0.5f+spaceBetweenCard*cpt,-0.4f));
 		cpt++;
 	}
 }

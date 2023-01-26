@@ -100,7 +100,7 @@ void ZoomCardScene::doRender(gf::RenderTarget& target, const gf::RenderStates &s
 		cardTimeToPlay.setAlignment(gf::Alignment::Justify);
 
 		target.draw(background, states);
-		m_cardEntity.render(target, states, m_cardZoom, gf::Vector2f(0.15f, 0.75f), 2); // 2 = zoom
+		m_cardEntity.draw(target, states, m_cardZoom, gf::Vector2f(0.15f, 0.75f), 2); // 2 = zoom
 		target.draw(infoBubble, states);
 		target.draw(bubbleTittle,states);
 		target.draw(cardDescription,states);

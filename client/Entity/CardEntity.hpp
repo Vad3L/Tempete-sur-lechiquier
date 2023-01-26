@@ -22,7 +22,7 @@ class CardEntity : public gf::Entity {
 		CardEntity(gf::ResourceManager& resources);
 		
 		void update(gf::Time time) override;
-		void render(gf::RenderTarget &target, const gf::RenderStates &states, Card c, gf::Vector2f boxCoord, int zoom=1) ;
+		void draw(gf::RenderTarget &target, const gf::RenderStates &states, Card c, gf::Vector2f boxCoord, int zoom=1) ;
 
 		Card m_card;
 	private:
