@@ -296,7 +296,7 @@ void GameScene::doProcessEvent(gf::Event& event) {
 void GameScene::doRender(gf::RenderTarget& target, const gf::RenderStates &states) {
 	target.setView(getHudView());
 	gf::Coordinates coords(target);
-
+	
 	if(m_gameData.m_gameStatus == ChessStatus::NO_STARTED) {
 
 		gf::Text text("En attente d un autre joueur", m_font, 50);
@@ -310,9 +310,8 @@ void GameScene::doRender(gf::RenderTarget& target, const gf::RenderStates &state
 		return;
 	}
 	
-	std::time_t time = std::time(nullptr);
-	if(time < startTime) {
-		std::string indaction = "La partie commence dans " + std::to_string(startTime-time) + " secondes ...\n Vous etes les " + ((m_gameData.m_myColor==ChessColor::WHITE) ? "Blancs" : "Noires");
+	if(m_gameData.m_gameStatus == ChessStatus::STOP_WATCH) {
+		std::string indaction = "La partie commence dans " + std::to_string((int)startTime) + " secondes ...\n Vous etes les " + ((m_gameData.m_myColor==ChessColor::WHITE) ? "Blancs" : "Noires");
 		gf::Text text(indaction, m_font, 50);
 		text.setColor(gf::Color::White);
 		text.setPosition(coords.getRelativePoint({0.5f, 0.35f }));	
@@ -342,8 +341,17 @@ void GameScene::doRender(gf::RenderTarget& target, const gf::RenderStates &state
 }
 
 void GameScene::doUpdate(gf::Time time) {
-	m_animatedSprite.update(time);
+	if(m_gameData.m_gameStatus == ChessStatus::NO_STARTED) {
+		m_animatedSprite.update(time);
+	}
 
+	if(m_gameData.m_gameStatus == ChessStatus::STOP_WATCH) {
+		startTime -= time.asSeconds();
+		if(startTime < 0) {
+			m_gameData.m_gameStatus = ChessStatus::ON_GOING;
+		}
+	}
+	
 	if(!m_network.m_queue.poll(m_packet)) {
 		return;
 	}
@@ -355,9 +363,8 @@ void GameScene::doUpdate(gf::Time time) {
 		auto repPartie = m_packet.as<PartieRep>();
 		if (repPartie.err == CodeRep::GAME_START) {
 			gf::Log::info("Jeux commence\n");
-			m_gameData.m_gameStatus = ChessStatus::ON_GOING;
-			
-			startTime = std::time(nullptr)+5;
+			m_gameData.m_gameStatus = ChessStatus::STOP_WATCH;
+			startTime = 5;
 
 		} else if (repPartie.err == CodeRep::GAME_END) {
 			gf::Log::info("Jeux Fini\n");

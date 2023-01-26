@@ -20,6 +20,7 @@ enum class ChessStatus {
 	WIN, 
 	LOOSE,
 	SURRENDER,
+	STOP_WATCH
 };
 
 enum class ChessPiece {
