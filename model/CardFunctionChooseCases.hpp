@@ -19,6 +19,7 @@ bool TourFada (Plateau& p, std::vector<gf::Vector2i> tabVector);
 bool BonnesCopines (Plateau& p, std::vector<gf::Vector2i> tabVector);
 bool Desintegration (Plateau& p, std::vector<gf::Vector2i> tabVector);
 bool AmourCourtois (Plateau& p, std::vector<gf::Vector2i> tabVector);
+bool AvionPrive (Plateau& p, std::vector<gf::Vector2i> tabVector);
  
 bool ChameauIsPlayable (Plateau& p, Phase f);
 bool QuatreCoinIsPlayable (Plateau& p, Phase f);
@@ -30,6 +31,7 @@ bool TourFadaIsPlayable (Plateau& p, Phase f);
 bool BonnesCopinesIsPlayable (Plateau& p, Phase f);
 bool DesintegrationIsPlayable (Plateau& p, Phase f);
 bool AmourCourtoisIsPlayable (Plateau& p, Phase f);
+bool AvionPriveIsPlayable (Plateau& p, Phase f);
 
 
 #endif // CARD_FUNC_CHOOSE_CASES_H

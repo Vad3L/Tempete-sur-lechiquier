@@ -346,7 +346,7 @@ bool Desintegration (Plateau& p, std::vector<gf::Vector2i> tabVector) {
 	}else {
 		p.bin.push_back(copy);
 	}
-	
+
 	return !res;
 }
 
@@ -410,4 +410,28 @@ bool AmourCourtoisIsPlayable (Plateau& p, Phase f) {
 	}
 
 	return pieceExist(p, ChessPiece::KNIGHT, p.turnTo) && pieceExist(p, ChessPiece::QUEEN, p.turnTo);
+}
+
+bool AvionPrive(Plateau& p, std::vector<gf::Vector2i> tabVector){
+	gf::Log::info("Appel AvionPrivé execute\n");
+	
+	if(tabVector.size() != 2 || !inBoard(tabVector[0]) || !inBoard(tabVector[1])) {
+		return false;
+	}
+	
+	Piece &piece1 = p.state[tabVector[0].y * 8 + tabVector[0].x].piece;
+	Piece &piece2 = p.state[tabVector[1].y * 8 + tabVector[1].x].piece;
+
+	if(checkGoodChoose(p, piece1, Piece(p.turnTo, ChessPiece::KING), piece2, Piece(ChessColor::NONE, ChessPiece::NONE))) {
+		std::swap(piece1, piece2);
+		return true;
+	}
+
+	return false;
+}
+
+bool AvionPriveIsPlayable(Plateau& p, Phase f) { 
+	gf::Log::info("Appel AvionPrivé jouable\n");
+
+	return !(f != Phase::AVANT_COUP  || p.playerInEchec);
 }

@@ -46,6 +46,9 @@ Deck::Deck(std::vector<int> numCards){
 	m_execsfuncs.insert({ 1, AmourCourtois });
 	m_isplayfuncs.insert({ 1, AmourCourtoisIsPlayable });
 
+	m_execsfuncs.insert({ 10, AvionPrive });
+	m_isplayfuncs.insert({ 10, AvionPriveIsPlayable });
+
 	//format du fichier
 	//NUM;NAME;DESCRIPTION;TURN;ACTION;EFFECT;nbCase (3 dernières valeurs sont des entier correspondant à la la valeur dans leur énum)
 	int borne = 11;
