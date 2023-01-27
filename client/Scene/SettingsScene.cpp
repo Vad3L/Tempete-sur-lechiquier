@@ -82,7 +82,8 @@ SettingsScene::SettingsScene(GameHub& game, GameData &gameData)
 	});
 
 	setupButton(m_quitButton, [&] () {
-		gf::Log::debug("Quit seetings pressed!\n");
+		gf::Log::debug("Quit settings pressed!\n");
+		btnClicked.play();
 		m_game.replaceAllScenes(*m_game.menu);
 	});
 }
@@ -208,11 +209,11 @@ void SettingsScene::doRender(gf::RenderTarget& target, const gf::RenderStates &s
 	m_rightStyleButton.setScale(1.f/2.f);
 	m_rightStyleButton.setPosition(coords.getRelativePoint({(m_gameData.m_style < 1 ? 0.775f : 2.775f), 0.4f }));
 
-	m_leftSoundButton.setPosition(coords.getRelativePoint({(m_gameData.m_sounds > 0 ? 0.225f : 2.775f), 0.65f }));
+	m_leftSoundButton.setPosition(coords.getRelativePoint({(BackgroundAmbiantVolume > 0 ? 0.225f : 2.775f), 0.65f }));
 	m_leftSoundButton.setScale(1.f/2.f);
 	
 	m_rightSoundButton.setScale(1.f/2.f);
-	m_rightSoundButton.setPosition(coords.getRelativePoint({(m_gameData.m_sounds < 100 ? 0.775f : 2.775f), 0.65f }));
+	m_rightSoundButton.setPosition(coords.getRelativePoint({(BackgroundAmbiantVolume < 100 ? 0.775f : 2.775f), 0.65f }));
 	
 	m_settingsEntity.render(target, states);
 	m_widgets.render(target, states);
@@ -232,15 +233,18 @@ void SettingsScene::changeTexture(char c) {
 
 void SettingsScene::changeSound(char c) {
 	if(c == '+') {
-		if(m_gameData.m_sounds < 100) {
-			m_gameData.m_sounds++;
+		if(BackgroundAmbiantVolume < 100) {
+			BackgroundAmbiantVolume++;
 		}
 	}else {
-		if(m_gameData.m_sounds > 0) {
-			m_gameData.m_sounds--;
+		if(BackgroundAmbiantVolume > 0) {
+			BackgroundAmbiantVolume--;
 		}	
 	}
-	gBackgroundMusic.setVolume(m_gameData.m_sounds);
+	gBackgroundMusic.setVolume(BackgroundAmbiantVolume);
+	gf::Log::error("change son jeu à %f\n", BackgroundAmbiantVolume);
+	FxsVolume = (BackgroundAmbiantVolume == 0.f) ? 0.f : 74.f;
+	btnClicked.setVolume(FxsVolume);
 }
 
 void SettingsScene::doShow() {
@@ -272,7 +276,7 @@ void SettingsScene::onActivityChange(bool active){
 		else {
 			
 			file << m_gameData.m_style << "\n";
-			file << m_gameData.m_sounds;
+			file << BackgroundAmbiantVolume;
 			file.close();
 		}
 	}else {

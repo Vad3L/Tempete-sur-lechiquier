@@ -67,7 +67,7 @@ GameScene::GameScene(GameHub& game, Network &network, GameData &gameData)
 
 	drawCard.setBuffer(gAudioManager().getSound("sounds/DrawCard.ogg"));
 	drawCard.setVolume(FxsVolume);
-
+	
 	explosion.setBuffer(gAudioManager().getSound("sounds/Explosion.ogg"));
 	explosion.setVolume(FxsVolume);
 
@@ -561,13 +561,9 @@ void GameScene::doUpdate(gf::Time time) {
 				}
 
 				clickplayCard.stop();
-				//drawCard.play();
+				drawCard.play();
 			}
 
-			if(m_gameData.m_cards[carteRep.num].m_num == 15) {
-				explosion.play();
-				
-			}
 		}else {
 			gf::Log::debug("------CARTE INVALIDE------\n");
 		}	
@@ -587,7 +583,15 @@ void GameScene::onActivityChange(bool active) {
 	if(active && !isPaused()){
 		gf::Log::debug("scene game active\n");
 		m_views.setInitialFramebufferSize(m_game.getRenderer().getSize());
-		
+		clickEndturn.setVolume(FxsVolume);
+		clickplayCard.setVolume(FxsVolume);
+		clock.setVolume(FxsVolume);
+		takePiece.setVolume(FxsVolume);
+		movePiece.setVolume(FxsVolume);
+		checkPiece.setVolume(FxsVolume);
+		drawCard.setVolume(FxsVolume);
+		explosion.setVolume(FxsVolume);
+
 	}else if(!active && isPaused()){
 		gf::Log::debug("scene game desactive\n");
 		m_network.deconnect();

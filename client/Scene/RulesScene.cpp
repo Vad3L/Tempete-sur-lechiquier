@@ -162,5 +162,6 @@ void RulesScene::changeRightLeft(bool value) {
 void RulesScene::onActivityChange(bool active){
 	if(active){
 		m_rulesEntity.m_index = 0;
+		btnClicked.setVolume(FxsVolume);
 	}
 }

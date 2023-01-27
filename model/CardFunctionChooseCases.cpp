@@ -37,12 +37,13 @@ bool checkGoodChoose(Plateau &p, Piece &pieceChooseOne, Piece refA , Piece &piec
 	}
 
 	// chercher si une autre case case met en echec l'adversaire apres l'activation de la carte
-	if(p.turnTo == ChessColor::WHITE) {
+	/*if(p.turnTo == ChessColor::WHITE) {
 		res = p.isInEchec(ChessColor::WHITE) || p.isInEchec(ChessColor::BLACK, gf::Vector2i(-1), caseProvocateEchec);
 	}else {
 		res = p.isInEchec(ChessColor::WHITE, gf::Vector2i(-1), caseProvocateEchec) || p.isInEchec(ChessColor::BLACK);
-	}
-	
+	}*/
+	res = p.isInEchec(p.turnTo) || p.isInEchec(!p.turnTo, gf::Vector2i(-1), caseProvocateEchec);
+
 	std::swap(pieceChooseTwo, pieceChooseOne);
 	return !res;
 }
@@ -117,6 +118,10 @@ bool QuatreCoin (Plateau& p, std::vector<gf::Vector2i> tabVector) {
 	}
 	Piece &piece1 = p.state[tabVector[0].y * 8 + tabVector[0].x].piece;
 
+	if(piece1.getType() == ChessPiece::NONE || piece1.getColor() != p.turnTo) {
+		return false;
+	}
+
 	gf::Vector2i coordLibre(-1);
 	std::vector<gf::Vector2i> coins = { gf::Vector2i(0, 0),
 										gf::Vector2i(0, 7),
@@ -140,8 +145,8 @@ bool QuatreCoin (Plateau& p, std::vector<gf::Vector2i> tabVector) {
 	if (res) {
 		std::swap(piece1, piece2);
 	}
-	return !res;
 
+	return !res;
 }
 
 bool QuatreCoinIsPlayable (Plateau& p, Phase f) {
@@ -337,10 +342,11 @@ bool Desintegration (Plateau& p, std::vector<gf::Vector2i> tabVector) {
 
 	bool res = p.isInEchec(p.turnTo) || p.isInEchec(!p.turnTo, gf::Vector2i(-1), caseProvocateEchec);
 	if (res) {
-		p.bin.push_back(piece);
 		piece = copy;
+	}else {
+		p.bin.push_back(copy);
 	}
-	
+
 	return !res;
 }
 
@@ -359,4 +365,73 @@ bool DesintegrationIsPlayable (Plateau& p, Phase f) {
 	}
 
 	return has_notking;
+}
+
+bool AmourCourtois (Plateau& p, std::vector<gf::Vector2i> tabVector) {
+	gf::Log::info("Appel AmourCourtois execute\n");
+	if(tabVector.size() != 2 || !inBoard(tabVector[0]) || !inBoard(tabVector[1])){
+		return false;
+	}
+	
+	Piece &piece1 = p.state[tabVector[0].y * 8 + tabVector[0].x].piece;
+	Piece &piece2 = p.state[tabVector[1].y * 8 + tabVector[1].x].piece;
+
+
+	if(!checkGoodChoose(p, piece1, Piece(p.turnTo, ChessPiece::KNIGHT), piece2, Piece(ChessColor::NONE, ChessPiece::NONE))) {
+		return false;
+	}
+
+	Piece pieceVide = piece1;
+	gf::Vector2i coordVide = tabVector[0];
+
+	if(piece1.getType()==ChessPiece::KNIGHT) {
+		pieceVide = piece2;
+		coordVide = tabVector[1];
+	}
+
+	for(auto &c : p.state) {
+		if(c.piece.getType()==ChessPiece::QUEEN && c.piece.getColor()==p.turnTo) {
+			gf::Vector2i pos = c.position;
+			if(coordVide.x >= pos.x-1 && coordVide.x <= pos.x+1 && coordVide.y >= pos.y-1 && coordVide.y <= pos.y+1) {
+				std::swap(piece1, piece2);
+				return true;
+			}
+		}
+	}
+
+	return false;
+}
+
+bool AmourCourtoisIsPlayable (Plateau& p, Phase f) {
+	gf::Log::info("Appel AmourCourtois jouable\n");
+
+	if (f != Phase::AVANT_COUP  || p.playerInEchec) {
+		return false;
+	}
+
+	return pieceExist(p, ChessPiece::KNIGHT, p.turnTo) && pieceExist(p, ChessPiece::QUEEN, p.turnTo);
+}
+
+bool AvionPrive(Plateau& p, std::vector<gf::Vector2i> tabVector){
+	gf::Log::info("Appel AvionPrivé execute\n");
+	
+	if(tabVector.size() != 2 || !inBoard(tabVector[0]) || !inBoard(tabVector[1])) {
+		return false;
+	}
+	
+	Piece &piece1 = p.state[tabVector[0].y * 8 + tabVector[0].x].piece;
+	Piece &piece2 = p.state[tabVector[1].y * 8 + tabVector[1].x].piece;
+
+	if(checkGoodChoose(p, piece1, Piece(p.turnTo, ChessPiece::KING), piece2, Piece(ChessColor::NONE, ChessPiece::NONE))) {
+		std::swap(piece1, piece2);
+		return true;
+	}
+
+	return false;
+}
+
+bool AvionPriveIsPlayable(Plateau& p, Phase f) { 
+	gf::Log::info("Appel AvionPrivé jouable\n");
+
+	return !(f != Phase::AVANT_COUP  || p.playerInEchec);
 }

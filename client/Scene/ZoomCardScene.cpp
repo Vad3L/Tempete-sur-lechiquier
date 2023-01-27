@@ -40,7 +40,7 @@ void ZoomCardScene::doHandleActions([[maybe_unused]] gf::Window& window) {
 }
 
 void ZoomCardScene::doRender(gf::RenderTarget& target, const gf::RenderStates &states) {
-	if(m_cardZoom.m_num != 1) {
+	if(m_cardZoom.m_num != -1) {
 		gf::Coordinates coords(target);
 
 		gf::RoundedRectangleShape background(target.getSize());
