@@ -1,4 +1,5 @@
 1;AMOUR COURTOIS;Amenez l'un de vos Cavaliers sur une case libre adjacente à votre Dame.;0;1;1;2
+6;APARTHEID;Retirez immédiatement de l'échiquier tous les pions noirs qui se trouvent sur des cases blanches, et tous les pions blancs qui se trouvent sur des cases noires;1;0;0;0
 7;ASILE;Sur l'échiquier, permutez l'un de vos Fous avec l'une de vos Tours.;1;1;0;2
 10;AVION PRIVE;Déplacez votre Roi pour l'amener sur n'importe quelle case libre de l'échiquier.;0;1;1;2
 15;BOMBE ATOMIQUE;Si la pièce que vous venez de déplacer n'a pas pris une pièce adverse, vous pouvez la faire "exploser". Elle est alors retirée du jeu, ainsi que toutes les autres pièces, quelles que soient leur couleur, qui se trouvent sur les huit cases adjacentes. Les Rois ne sont pas affectés par l'explosion.;1;0;0;0

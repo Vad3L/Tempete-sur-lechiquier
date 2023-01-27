@@ -435,3 +435,48 @@ bool AvionPriveIsPlayable(Plateau& p, Phase f) {
 
 	return !(f != Phase::AVANT_COUP  || p.playerInEchec);
 }
+
+bool Apartheid([[maybe_unused]] Plateau& p, [[maybe_unused]] std::vector<gf::Vector2i> tabVector){
+	gf::Log::info("Appel Apartheid execute\n");
+	
+	Plateau copie = p;
+
+	for(auto &c : copie.state) {
+		int x = c.position.x;
+		int y = c.position.y;
+		ChessColor colorCase = ChessColor::WHITE;
+		
+		if (y % 2 == 0) {
+			if (x % 2 != 0) { // case foncée
+				colorCase = ChessColor::BLACK;
+			}
+		} else {
+			if (x % 2 == 0) { // case foncée
+				colorCase = ChessColor::BLACK;
+			}
+		}
+		
+		if(c.piece.getType()==ChessPiece::PAWN && c.piece.getColor()==!colorCase) { // bye bye le pion
+			copie.bin.push_back(c.piece);
+			c.piece = Piece(ChessColor::NONE, ChessPiece::NONE);
+		}
+	}
+
+	gf::Vector2i caseProvocateEchec(-1);
+	if(copie.playerInEchec) {
+		caseProvocateEchec = copie.caseProvocateEchec; //obtenir la dernier case qui met met en cehc l'afversaire forcement par un coup normal
+	}
+
+	bool res = copie.isInEchec(copie.turnTo) || copie.isInEchec(!copie.turnTo, gf::Vector2i(-1), caseProvocateEchec);
+	if(!res) {
+		p = copie;
+	}
+
+	return !res;
+}
+
+bool ApartheidIsPlayable([[maybe_unused]] Plateau& p, Phase f) { 
+	gf::Log::info("Appel Apartheid jouable\n");
+
+	return f == Phase::APRES_COUP && (pieceExist(p, ChessPiece::PAWN, p.turnTo) || pieceExist(p, ChessPiece::PAWN, !p.turnTo));
+}
