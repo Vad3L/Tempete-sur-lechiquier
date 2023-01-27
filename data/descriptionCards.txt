@@ -6,6 +6,7 @@
 16;BONNES COPINES;Sur l'échiquier, permutez l'une de vos Dame avec une Dame adverse.;0;1;1;2
 20;BOX;Sur l'échiquier, permutez un Cavalier adverse avec une Tour adverse.;1;1;0;2
 29;CHAMEAU;Transformez un Cavalier, en Chameau, et cela définitivement. Le chameau, comme le cavalier, peut se déplacer en sautant par dessus les cases occupées. Mais alors que le cavalier saute dans l'angle opposé d'un rectangle 3x2, le Chameau saute dans l'angle opposé d'un rectangle 4x3.;1;1;0;1
+30;CHANGEZ VOS CAVALIERS;Sur l'échiquier, permutez l'un de vos Cavalier avec un cavalier adverse.;1;1;0;2
 33;CHEVAL FOU;Sur l'échiquier, permuttez l'un de vos Fous avec l'un de vos Cavaliers.;1;1;0;2
 45;DESINTEGRATION;Retirez de l'échiquier l'une de vos propres pièces.;1;1;0;1
 104;PRINCESSE;Si vous n'avez plus de Dame et si la case de départ de celle-ci est libre, faites-y apparaître une Princesse. La Princesse se déplace dans les huit directions, comme la Dame, mais d'une ou deux cases seulement.;1;0;0;0

@@ -24,9 +24,12 @@ Deck::Deck(std::vector<int> numCards){
 
 	m_execsfuncs.insert({ 20, Box });
 	m_isplayfuncs.insert({ 20, BoxIsPlayable });
-
+	
 	m_execsfuncs.insert({ 29, Chameau });	
 	m_isplayfuncs.insert({ 29, ChameauIsPlayable });
+
+	m_execsfuncs.insert({ 30, ChangerVosCavaliers });
+	m_isplayfuncs.insert({ 30, ChangerVosCavaliersIsPlayable });
 
 	m_execsfuncs.insert({ 33, ChevalFou });
 	m_isplayfuncs.insert({ 33, ChevalFouIsPlayable });
