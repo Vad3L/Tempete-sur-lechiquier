@@ -4,32 +4,47 @@ Deck::Deck(std::vector<int> numCards){
 	std::map<int, std::function<bool(Plateau&, std::vector<gf::Vector2i>)>> m_execsfuncs;
 	std::map<int, std::function<bool(Plateau&, Phase)>> m_isplayfuncs;
 
-	m_execsfuncs.insert({ 29, Chameau });	
-	m_isplayfuncs.insert({ 29, ChameauIsPlayable });
+	m_execsfuncs.insert({ 1, AmourCourtois });
+	m_isplayfuncs.insert({ 1, AmourCourtoisIsPlayable });
 
-	m_execsfuncs.insert({ 15, BombeAtomique });
-	m_isplayfuncs.insert({ 15, BombeAtomiqueIsPlayable });
-
-	m_execsfuncs.insert({ 33, ChevalFou });
-	m_isplayfuncs.insert({ 33, ChevalFouIsPlayable });
-
-	m_execsfuncs.insert({ 104, Princess });
-	m_isplayfuncs.insert({ 104, PrincessIsPlayable });
+	m_execsfuncs.insert({ 6, Apartheid });
+	m_isplayfuncs.insert({ 6, ApartheidIsPlayable });
 	
 	m_execsfuncs.insert({ 7, Asile });
 	m_isplayfuncs.insert({ 7, AsileIsPlayable });
 	
+	m_execsfuncs.insert({ 10, AvionPrive });
+	m_isplayfuncs.insert({ 10, AvionPriveIsPlayable });
+
+	m_execsfuncs.insert({ 15, BombeAtomique });
+	m_isplayfuncs.insert({ 15, BombeAtomiqueIsPlayable });
+
+	m_execsfuncs.insert({ 16, BonnesCopines });
+	m_isplayfuncs.insert({ 16, BonnesCopinesIsPlayable });
+
+	m_execsfuncs.insert({ 20, Box });
+	m_isplayfuncs.insert({ 20, BoxIsPlayable });
+
+	m_execsfuncs.insert({ 27, CavalierSuicide });
+	m_isplayfuncs.insert({ 27, CavalierSuicideIsPlayable });
+	
+	m_execsfuncs.insert({ 29, Chameau });	
+	m_isplayfuncs.insert({ 29, ChameauIsPlayable });
+
+	m_execsfuncs.insert({ 30, ChangerVosCavaliers });
+	m_isplayfuncs.insert({ 30, ChangerVosCavaliersIsPlayable });
+
+	m_execsfuncs.insert({ 33, ChevalFou });
+	m_isplayfuncs.insert({ 33, ChevalFouIsPlayable });
+	
+	m_execsfuncs.insert({ 45, Desintegration });
+	m_isplayfuncs.insert({ 45, DesintegrationIsPlayable });
+
+	m_execsfuncs.insert({ 104, Princess });
+	m_isplayfuncs.insert({ 104, PrincessIsPlayable });
+
 	m_execsfuncs.insert({ 110, QuatreCoin });
 	m_isplayfuncs.insert({ 110, QuatreCoinIsPlayable });
-	
-	m_execsfuncs.insert({ 132, Vampirisme });
-	m_isplayfuncs.insert({ 132, VampirismeIsPlayable });
-
-	m_execsfuncs.insert({ 135, VisitesOfficielles });
-	m_isplayfuncs.insert({ 135, VisitesOfficiellesIsPlayable });
-
-	m_execsfuncs.insert({ 131, Urbanisme });
-	m_isplayfuncs.insert({ 131, UrbanismeIsPlayable });
 	
 	m_execsfuncs.insert({ 122, Schizophrenie });
 	m_isplayfuncs.insert({ 122, SchizophrenieIsPlayable });
@@ -37,17 +52,14 @@ Deck::Deck(std::vector<int> numCards){
 	m_execsfuncs.insert({ 126, TourFada });
 	m_isplayfuncs.insert({ 126, TourFadaIsPlayable });
 
-	m_execsfuncs.insert({ 16, BonnesCopines });
-	m_isplayfuncs.insert({ 16, BonnesCopinesIsPlayable });
+	m_execsfuncs.insert({ 131, Urbanisme });
+	m_isplayfuncs.insert({ 131, UrbanismeIsPlayable });
+	
+	m_execsfuncs.insert({ 132, Vampirisme });
+	m_isplayfuncs.insert({ 132, VampirismeIsPlayable });
 
-	m_execsfuncs.insert({ 45, Desintegration });
-	m_isplayfuncs.insert({ 45, DesintegrationIsPlayable });
-
-	m_execsfuncs.insert({ 1, AmourCourtois });
-	m_isplayfuncs.insert({ 1, AmourCourtoisIsPlayable });
-
-	m_execsfuncs.insert({ 10, AvionPrive });
-	m_isplayfuncs.insert({ 10, AvionPriveIsPlayable });
+	m_execsfuncs.insert({ 135, VisitesOfficielles });
+	m_isplayfuncs.insert({ 135, VisitesOfficiellesIsPlayable });
 
 	//format du fichier
 	//NUM;NAME;DESCRIPTION;TURN;ACTION;EFFECT;nbCase (3 dernières valeurs sont des entier correspondant à la la valeur dans leur énum)
