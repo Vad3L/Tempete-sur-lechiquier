@@ -11,3 +11,4 @@
 126;TOUR DE FADA;Sur l'échiquier, permuttez un Fou adverse avec une Tour adverse.;1;1;0;2
 16;BONNES COPINES;Sur l'échiquier, permutez l'une de vos Dame avec une Dame adverse.;0;1;1;2
 45;DESINTEGRATION;Retirez de l'échiquier l'une de vos propres pièces.;1;1;0;1
+1;AMOUR COURTOIS;Amenez l'un de vos Cavaliers sur une case libre adjacente à votre Dame.;0;1;1;2

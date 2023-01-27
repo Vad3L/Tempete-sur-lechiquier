@@ -43,6 +43,8 @@ Deck::Deck(std::vector<int> numCards){
 	m_execsfuncs.insert({ 45, Desintegration });
 	m_isplayfuncs.insert({ 45, DesintegrationIsPlayable });
 
+	m_execsfuncs.insert({ 1, AmourCourtois });
+	m_isplayfuncs.insert({ 1, AmourCourtoisIsPlayable });
 
 	//format du fichier
 	//NUM;NAME;DESCRIPTION;TURN;ACTION;EFFECT;nbCase (3 dernières valeurs sont des entier correspondant à la la valeur dans leur énum)
