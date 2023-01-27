@@ -5,7 +5,8 @@
 
 #include "AudioManager.hpp"
 
-static constexpr float FxsVolume = 80.0f;
+inline float BackgroundAmbiantVolume = 40.0f;
+inline float FxsVolume = 74.0f;
 
 extern gf::Singleton<AudioManager> gAudioManager;
 extern sf::Sound gBackgroundMusic;

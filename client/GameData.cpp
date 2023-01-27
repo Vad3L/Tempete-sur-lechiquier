@@ -1,12 +1,13 @@
 #include "GameData.hpp"
 
+#include "Singletons.hpp"
+
 GameData::GameData()
 : m_myColor(ChessColor::NONE)
 , m_phase()
 , m_plateau()
 , m_gameStatus(ChessStatus::NO_STARTED)
 , m_style(0)
-, m_sounds(74.f)
 {
 	Deck deck = Deck();
 	for(Card c: deck.m_deck) {
@@ -25,7 +26,8 @@ GameData::GameData()
 		}
 		
 		if(std::getline(file, line)) {
-			m_sounds = atoi(line.c_str());	
+			BackgroundAmbiantVolume = atof(line.c_str());
+			if(BackgroundAmbiantVolume == 0.f) {FxsVolume = 0.f;} 
 		}
 		
 		file.close();

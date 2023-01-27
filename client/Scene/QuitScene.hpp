@@ -22,9 +22,9 @@ class QuitScene : public gf::Scene {
 		void doProcessEvent(gf::Event& event) override;
 		void doHandleActions(gf::Window& window) override;
 		void doRender(gf::RenderTarget& target, const gf::RenderStates &states) override;
-
 		void doShow() override;
-
+		void onActivityChange(bool active) override;
+		
 		GameHub& m_game;
 
 		gf::Action m_upAction;

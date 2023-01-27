@@ -2,6 +2,8 @@
 
 #include "../GameData.hpp"
 
+#include "../Singletons.hpp"
+
 SettingsEntity::SettingsEntity(gf::ResourceManager& resources, GameData &gameData)
 : m_font(resources.getFont("fonts/Trajan-Color-Concept.otf"))
 , m_backgroundTexture(resources.getTexture("images/StartMenu.png"))
@@ -49,7 +51,7 @@ void SettingsEntity::render(gf::RenderTarget &target, const gf::RenderStates &st
 	subtitleSound.setPosition(coords.getRelativePoint({ 0.5f, 0.55f }));
 	subtitleSound.setAnchor(gf::Anchor::Center);
 	
-	gf::Text sound(std::to_string((int)m_gameData.m_sounds), m_font, subtitleCharacterSize);
+	gf::Text sound(std::to_string((int)BackgroundAmbiantVolume), m_font, subtitleCharacterSize);
 	sound.setColor(gf::Color::Blue);
 	sound.setPosition(coords.getRelativePoint({ 0.5f, 0.65f }));
 	sound.setAnchor(gf::Anchor::Center);

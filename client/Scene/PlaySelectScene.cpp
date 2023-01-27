@@ -198,7 +198,7 @@ void PlaySelectScene::changeRightLeft(bool value) {
 	
 }
 
-void PlaySelectScene::onActivityChange(bool active){
+void PlaySelectScene::onActivityChange(bool active) {
 	if(active){
 		m_PlayTitleEntity.m_errorText.setString(" ");
 		m_index = 0;
@@ -232,5 +232,7 @@ void PlaySelectScene::onActivityChange(bool active){
 			
 			file.close();
 		}
+
+		btnClicked.setVolume(FxsVolume);
 	}
 }

@@ -117,6 +117,10 @@ bool QuatreCoin (Plateau& p, std::vector<gf::Vector2i> tabVector) {
 	}
 	Piece &piece1 = p.state[tabVector[0].y * 8 + tabVector[0].x].piece;
 
+	if(piece1.getType() == ChessPiece::NONE || piece1.getColor() != p.turnTo) {
+		return false;
+	}
+
 	gf::Vector2i coordLibre(-1);
 	std::vector<gf::Vector2i> coins = { gf::Vector2i(0, 0),
 										gf::Vector2i(0, 7),
@@ -140,8 +144,8 @@ bool QuatreCoin (Plateau& p, std::vector<gf::Vector2i> tabVector) {
 	if (res) {
 		std::swap(piece1, piece2);
 	}
-	return !res;
 
+	return !res;
 }
 
 bool QuatreCoinIsPlayable (Plateau& p, Phase f) {

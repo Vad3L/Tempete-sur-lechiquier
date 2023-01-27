@@ -26,7 +26,7 @@ int main() {
 	// Background music
 	gBackgroundMusic.setBuffer(gAudioManager().getSound("sounds/MainSounds.ogg"));
 	gBackgroundMusic.setLoop(true);
-	gBackgroundMusic.setVolume(data.m_sounds);
+	gBackgroundMusic.setVolume(BackgroundAmbiantVolume);
 	gBackgroundMusic.play();
 	
 	hub.pushScene(*hub.download);

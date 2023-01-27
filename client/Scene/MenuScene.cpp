@@ -171,5 +171,10 @@ void MenuScene::doShow() {
 	m_widgets.selectNextWidget();
 }
 
+void MenuScene::onActivityChange(bool active){
+	if(active) {
+		btnClicked.setVolume(FxsVolume);
+	}
+}
 
 

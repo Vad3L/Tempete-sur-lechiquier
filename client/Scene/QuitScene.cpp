@@ -134,3 +134,9 @@ void QuitScene::doShow() {
 
 	m_widgets.selectNextWidget();
 }
+
+void QuitScene::onActivityChange(bool active){
+	if(active) {
+		btnClicked.setVolume(FxsVolume);
+	}
+}
