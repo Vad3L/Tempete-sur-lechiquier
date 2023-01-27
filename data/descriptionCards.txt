@@ -5,6 +5,7 @@
 15;BOMBE ATOMIQUE;Si la pièce que vous venez de déplacer n'a pas pris une pièce adverse, vous pouvez la faire "exploser". Elle est alors retirée du jeu, ainsi que toutes les autres pièces, quelles que soient leur couleur, qui se trouvent sur les huit cases adjacentes. Les Rois ne sont pas affectés par l'explosion.;1;0;0;0
 16;BONNES COPINES;Sur l'échiquier, permutez l'une de vos Dame avec une Dame adverse.;0;1;1;2
 20;BOX;Sur l'échiquier, permutez un Cavalier adverse avec une Tour adverse.;1;1;0;2
+27;CAVALIER SUICIDE;Jouez cette carte lorsque l'un de vos Cavaliers a la possibilité de prendre plusieurs pièces adverses. Vous le faites alors éclater en plusieurs élements qui vont prendre chacun l'une des pièces adverses se trouvant à portée. le Cavalier ainsi "éclatéé" est retiré du jeu.;0;1;1;1
 29;CHAMEAU;Transformez un Cavalier, en Chameau, et cela définitivement. Le chameau, comme le cavalier, peut se déplacer en sautant par dessus les cases occupées. Mais alors que le cavalier saute dans l'angle opposé d'un rectangle 3x2, le Chameau saute dans l'angle opposé d'un rectangle 4x3.;1;1;0;1
 30;CHANGEZ VOS CAVALIERS;Sur l'échiquier, permutez l'un de vos Cavalier avec un cavalier adverse.;1;1;0;2
 33;CHEVAL FOU;Sur l'échiquier, permuttez l'un de vos Fous avec l'un de vos Cavaliers.;1;1;0;2

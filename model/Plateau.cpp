@@ -39,14 +39,14 @@ Plateau::Plateau()
 		}
 	}
 
-	state[5 * 8 + 3].piece = Piece(ChessColor::WHITE, ChessPiece::PRINCESS);
+	/*state[5 * 8 + 3].piece = Piece(ChessColor::WHITE, ChessPiece::PRINCESS);
 	state[2 * 8 + 3].piece = Piece(ChessColor::BLACK, ChessPiece::PRINCESS);
 
 	state[5 * 8 + 4].piece = Piece(ChessColor::WHITE, ChessPiece::PRINCE);
 	state[2 * 8 + 4].piece = Piece(ChessColor::BLACK, ChessPiece::PRINCE);
 
 	state[5 * 8 + 5].piece = Piece(ChessColor::WHITE, ChessPiece::CAMEL);
-	state[2 * 8 + 5].piece = Piece(ChessColor::BLACK, ChessPiece::CAMEL);
+	state[2 * 8 + 5].piece = Piece(ChessColor::BLACK, ChessPiece::CAMEL);*/
 
 	state[1 * 8 + 0].piece = Piece(ChessColor::WHITE, ChessPiece::PAWN);
 	state[6 * 8 + 0].piece = Piece(ChessColor::BLACK, ChessPiece::PAWN);

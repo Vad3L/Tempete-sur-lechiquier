@@ -319,7 +319,7 @@ bool Desintegration (Plateau& p, std::vector<gf::Vector2i> tabVector) {
 		return false;
 	}
 
-	if (!inBoard(tabVector[0])) {
+	if (tabVector.size() != 1 || !inBoard(tabVector[0])) {
 		return false;
 	}
 
@@ -456,7 +456,7 @@ bool Apartheid([[maybe_unused]] Plateau& p, [[maybe_unused]] std::vector<gf::Vec
 			}
 		}
 		
-		if(c.piece.getType()==ChessPiece::PAWN && c.piece.getColor()==!colorCase) { // bye bye le pion
+		if(c.piece.getType()==ChessPiece::PAWN && c.piece.getColor() == (!colorCase)) { // bye bye le pion
 			copie.bin.push_back(c.piece);
 			c.piece = Piece(ChessColor::NONE, ChessPiece::NONE);
 		}
@@ -535,4 +535,75 @@ bool ChangerVosCavaliersIsPlayable(Plateau& p, Phase f) {
 	}
 
 	return pieceExist(p, ChessPiece::KNIGHT, p.turnTo) && pieceExist(p, ChessPiece::KNIGHT, !p.turnTo);
+}
+
+bool CavalierSuicide (Plateau& p, std::vector<gf::Vector2i> tabVector) {
+	gf::Log::info("Appel Cavalier Suicide execute\n");
+	
+	if(tabVector.size() != 1 || !inBoard(tabVector[0])){
+		return false;
+	}
+
+	Plateau plateauCopie = p;
+	Piece &piece = plateauCopie.state[tabVector[0].y * 8 + tabVector[0].x].piece;
+
+	if(piece.getType() != ChessPiece::KNIGHT || piece.getColor() != plateauCopie.turnTo) {
+		return false;
+	}
+	
+	std::vector<gf::Vector2i> allMoves = piece.getMoveKnight(tabVector[0]);
+	
+	plateauCopie.bin.push_back(piece);
+	piece = Piece(ChessColor::NONE, ChessPiece::NONE);
+	
+	for(auto coord : allMoves) {	
+		if(plateauCopie.state[coord.y * 8 + coord.x].piece.getColor() == !(p.turnTo)) {
+			Piece cp = plateauCopie.state[coord.y * 8 + coord.x].piece;
+			plateauCopie.state[coord.y * 8 + coord.x].piece = Piece(ChessColor::NONE, ChessPiece::NONE);
+			plateauCopie.bin.push_back(cp);
+		}
+	}
+
+	gf::Vector2i caseProvocateEchec(-1);
+	if (plateauCopie.playerInEchec) {
+		caseProvocateEchec = plateauCopie.caseProvocateEchec;
+	}
+
+	bool res = plateauCopie.isInEchec(plateauCopie.turnTo) || plateauCopie.isInEchec(!plateauCopie.turnTo, gf::Vector2i(-1), caseProvocateEchec);
+	if (!res) {
+		p = plateauCopie;
+	}
+
+	return !res;
+}
+
+bool CavalierSuicideIsPlayable (Plateau& p, Phase f) {
+	gf::Log::info("Appel CavalierSuicide jouable\n");
+
+	if (f != Phase::AVANT_COUP  || p.playerInEchec) {
+		return false;
+	}
+
+	if(!pieceExist(p, ChessPiece::KNIGHT, p.turnTo)) {
+		return false;
+	}
+
+	std::size_t nbCasesFull = 0;
+
+	for(auto &c : p.state) {
+		nbCasesFull = 0;
+		if(c.piece.getType()==ChessPiece::KNIGHT && c.piece.getColor()==p.turnTo) {
+			std::vector<gf::Vector2i> allMoves = c.piece.getMoveKnight(c.position);
+			for(auto &move : allMoves) {
+				if(p.state[move.y *8 + move.x].piece.getType()!=ChessPiece::NONE && p.state[move.y *8 + move.x].piece.getColor() == (!p.turnTo)) {
+					nbCasesFull++;
+				}
+			}
+			if(nbCasesFull > 1) {
+				return true;
+			}
+		}
+	}
+	
+	return false;
 }
