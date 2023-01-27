@@ -21,6 +21,7 @@ bool Desintegration (Plateau& p, std::vector<gf::Vector2i> tabVector);
 bool AmourCourtois (Plateau& p, std::vector<gf::Vector2i> tabVector);
 bool AvionPrive (Plateau& p, std::vector<gf::Vector2i> tabVector);
 bool Apartheid ([[maybe_unused]] Plateau& p, [[maybe_unused]] std::vector<gf::Vector2i> tabVector);
+bool Box (Plateau& p, std::vector<gf::Vector2i> tabVector);
  
 bool ChameauIsPlayable (Plateau& p, Phase f);
 bool QuatreCoinIsPlayable (Plateau& p, Phase f);
@@ -34,6 +35,7 @@ bool DesintegrationIsPlayable (Plateau& p, Phase f);
 bool AmourCourtoisIsPlayable (Plateau& p, Phase f);
 bool AvionPriveIsPlayable (Plateau& p, Phase f);
 bool ApartheidIsPlayable ([[maybe_unused]] Plateau& p, Phase f);
+bool BoxIsPlayable (Plateau& p, Phase f);
 
 
 #endif // CARD_FUNC_CHOOSE_CASES_H

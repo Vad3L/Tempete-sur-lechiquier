@@ -4,6 +4,7 @@
 10;AVION PRIVE;Déplacez votre Roi pour l'amener sur n'importe quelle case libre de l'échiquier.;0;1;1;2
 15;BOMBE ATOMIQUE;Si la pièce que vous venez de déplacer n'a pas pris une pièce adverse, vous pouvez la faire "exploser". Elle est alors retirée du jeu, ainsi que toutes les autres pièces, quelles que soient leur couleur, qui se trouvent sur les huit cases adjacentes. Les Rois ne sont pas affectés par l'explosion.;1;0;0;0
 16;BONNES COPINES;Sur l'échiquier, permutez l'une de vos Dame avec une Dame adverse.;0;1;1;2
+20;BOX;Sur l'échiquier, permutez un Cavalier adverse avec une Tour adverse.;1;1;0;2
 29;CHAMEAU;Transformez un Cavalier, en Chameau, et cela définitivement. Le chameau, comme le cavalier, peut se déplacer en sautant par dessus les cases occupées. Mais alors que le cavalier saute dans l'angle opposé d'un rectangle 3x2, le Chameau saute dans l'angle opposé d'un rectangle 4x3.;1;1;0;1
 33;CHEVAL FOU;Sur l'échiquier, permuttez l'un de vos Fous avec l'un de vos Cavaliers.;1;1;0;2
 45;DESINTEGRATION;Retirez de l'échiquier l'une de vos propres pièces.;1;1;0;1
