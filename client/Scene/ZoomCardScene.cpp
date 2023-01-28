@@ -26,10 +26,11 @@ ZoomCardScene::ZoomCardScene(GameHub& game)
 	m_views.addView(m_principalView);
 	m_principalView.onFramebufferSizeChange(game.getRenderer().getSize());
 	m_views.setInitialFramebufferSize({game.getRenderer().getSize()});
+	
 }
 
 void ZoomCardScene::doProcessEvent([[maybe_unused]] gf::Event& event) {
-	m_views.processEvent(event);	
+	m_views.processEvent(event);
 }
 
 void ZoomCardScene::doHandleActions([[maybe_unused]] gf::Window& window) {
