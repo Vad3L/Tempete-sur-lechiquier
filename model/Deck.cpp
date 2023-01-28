@@ -125,6 +125,7 @@ Deck::Deck(std::vector<int> numCards){
 				}else {
 					m_deck.push_back(c);
 				}
+				
 			}
 			file.close();
 		}

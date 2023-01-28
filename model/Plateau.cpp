@@ -607,3 +607,17 @@ void Plateau::promotionPiece(gf::Vector2i coord, ChessPiece p) {
 	gf::Log::debug("choix %i\n", (int)p);
 	state[coord.y * 8 + coord.x].piece = Piece(c, p);
 }
+
+bool Plateau::hasPromotion() {
+	for(auto &c : state) {
+		Piece piece = c.piece;
+		if(c.position.y == 0 && piece.getType()==ChessPiece::PAWN && piece.getColor()==ChessColor::WHITE) {
+			return true;
+		}
+		if(c.position.y == 7 && piece.getType()==ChessPiece::PAWN && piece.getColor()==ChessColor::BLACK) {
+			return true;
+		}
+	}
+
+	return false;
+}

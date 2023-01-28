@@ -398,7 +398,7 @@ void GameScene::doUpdate(gf::Time time) {
 		if (repPartie.err == CodeRep::GAME_START) {
 			gf::Log::info("Jeux commence\n");
 			m_gameData.m_gameStatus = ChessStatus::STOP_WATCH;
-			startTime = 5;
+			startTime = 3;
 			
 			gBackgroundMusic.stop();
 			clock.play();
@@ -490,7 +490,7 @@ void GameScene::doUpdate(gf::Time time) {
 
 	if(m_packet.getType() == PromotionRep::type) {
 		gf::Log::info("promo recu serveur\n");
-		assert(m_gameData.m_plateau.m_promotion);
+		//assert(m_gameData.m_plateau.m_promotion);
 
 		auto promoRep = m_packet.as<PromotionRep>();
 		if(promoRep.err == CodeRep::NONE) {
@@ -510,6 +510,7 @@ void GameScene::doUpdate(gf::Time time) {
 
 			m_gameData.m_plateau.prettyPrint();
 			if(m_gameData.m_phase.getCurrentPhase() != Phase::PAS_MON_TOUR) {
+				assert(m_gameData.m_plateau.m_promotion);
 				if(m_gameData.m_phase.getNbCardPlay() >= m_gameData.m_phase.getLimNbCard()) {
 
 					m_gameData.m_phase.setCurrentPhase(Phase::PAS_MON_TOUR);
@@ -562,6 +563,11 @@ void GameScene::doUpdate(gf::Time time) {
 				
 				m_gameData.m_phase.setCurrentSubPhase(SubPhase::NONE);
 
+				if(m_gameData.m_plateau.hasPromotion()) {
+					m_gameData.m_phase.setCurrentPhase(Phase::COUP);
+					m_gameData.m_plateau.m_promotion = true;
+				}
+
 				m_poseEntity.m_cardPose = Card();
 				if(m_gameData.m_phase.getCurrentPhase() == Phase::PAS_MON_TOUR) { //carte mais fin a mon tour
 					m_gameData.m_plateau.turnTo = !m_gameData.m_plateau.turnTo;	
@@ -570,7 +576,7 @@ void GameScene::doUpdate(gf::Time time) {
 				clickplayCard.stop();
 				drawCard.play();
 			}
-
+			
 		}else {
 			gf::Log::debug("------CARTE INVALIDE------\n");
 		}	

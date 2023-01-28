@@ -48,6 +48,7 @@ void GamePhase::nextPhaseCard(Card cardPlay){
 				m_currentPhase = (Phase)((int)m_currentPhase+1);
 			}		
 		}else if(cardPlay.m_effect == Effect::REPLACE_COUP) {
+			gf::Log::error("\n\n debug 1111\n\n");
 			m_currentPhase = Phase::PAS_MON_TOUR;
 		}else if(cardPlay.m_effect == Effect::REGAME_OTHER_CARTE) {
 			gf::Log::error("\n\nmise a 3\n\n");
@@ -61,6 +62,7 @@ void GamePhase::nextPhaseCard(Card cardPlay){
 				m_currentPhase = (Phase)((int)m_currentPhase+1);
 			}		
 		}else if(cardPlay.m_effect == Effect::REPLACE_COUP) {
+			gf::Log::error("\n\ndebugg 222222\n\n");
 			m_currentPhase = Phase::PAS_MON_TOUR;
 		}
 	}

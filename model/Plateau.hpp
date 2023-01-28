@@ -40,6 +40,7 @@ class Plateau {
 		ChessStatus isGameOver (ChessColor c);
 		void tmp(std::vector<gf::Vector2i> t);
 
+		bool hasPromotion();
 	public:
 		std::vector<gf::Vector2i> moveAvailable;
 		

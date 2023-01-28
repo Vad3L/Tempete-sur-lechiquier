@@ -228,6 +228,11 @@ int performTurn (Deck& d, GamePhase& gp, Plateau& p, gf::TcpSocket& player, gf::
 			} else {
 				sendHand(player, hand[card.card]);
 			}
+			if(p.hasPromotion()) {
+				gp.setCurrentPhase(Phase::COUP);
+				promotion = true;
+				gf::Log::error("\n\n promotion par carte (1)\n\n");
+			}
 		} else {
 			return 2;
 		}
@@ -245,6 +250,7 @@ int performTurn (Deck& d, GamePhase& gp, Plateau& p, gf::TcpSocket& player, gf::
 			}
 			performPromotion(p, promo);
 			if(gp.getNbCardPlay()>=gp.getLimNbCard()) {
+				gf::Log::error("\n\nfiiiiiiiiiiiiiiiiiiiiin 1 \n\n");
 				gp.setCurrentPhase(Phase::PAS_MON_TOUR);
 			}else {
 				gp.setCurrentPhase(Phase::APRES_COUP);
@@ -266,6 +272,7 @@ int performTurn (Deck& d, GamePhase& gp, Plateau& p, gf::TcpSocket& player, gf::
 		
 			if (!promotion) {
 				if(gp.getNbCardPlay()>=gp.getLimNbCard()) {
+					gf::Log::error("\n\nfiiiiiiiiiiiiiiiiiiiiin 2\n\n");
 					gp.setCurrentPhase(Phase::PAS_MON_TOUR);
 				}else {
 					gp.setCurrentPhase(Phase::APRES_COUP);
@@ -300,6 +307,11 @@ int performTurn (Deck& d, GamePhase& gp, Plateau& p, gf::TcpSocket& player, gf::
 			if (sendingPacket(other, pack)) { return -1; }
 		}
 		
+		if(p.hasPromotion()) {
+			gp.setCurrentPhase(Phase::COUP);
+			promotion = true;
+			gf::Log::error("\n\n promotion par carte (2)\n\n");
+		}
 	}
 
 	if (gp.getCurrentPhase() == Phase::PAS_MON_TOUR) {
