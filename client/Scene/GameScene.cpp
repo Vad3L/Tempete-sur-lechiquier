@@ -286,6 +286,7 @@ void GameScene::doProcessEvent(gf::Event& event) {
 	if(currentPhase==Phase::COUP || (currentPhase==Phase::AVANT_COUP  && m_poseEntity.m_cardPose.m_num==-1)) { 
 		gf::Vector2i v = m_boardEntity.getCaseSelected(m_boardView.getSize(), m_game.getRenderer().mapPixelToCoords(event.mouseButton.coords, m_boardView));
 		if(v.x == -1 || v.y == -1) {
+			gf::Log::info("clique en dehors plateau\n");
 			return;
 		}
 

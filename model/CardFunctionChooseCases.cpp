@@ -654,3 +654,30 @@ bool OhDarlingIsPlayable (Plateau& p, Phase f) {
 
 	return pieceExist(p, ChessPiece::KNIGHT, p.turnTo);
 }
+
+bool Neutralite (Plateau& p, std::vector<gf::Vector2i> tabVector){
+	gf::Log::info("Appel Neutralite execute\n");
+	if(tabVector.size() != 1 || !inBoard(tabVector[0])){
+		return false;
+	}
+
+	Piece &piece = p.state[tabVector[0].y * 8 + tabVector[0].x].piece;
+	if(piece.getType() == ChessPiece::KING || piece.getType() == ChessPiece::QUEEN || piece.getColor() == p.turnTo){
+		return false;
+	}
+
+	Piece pieceChoose(ChessColor::GREY,piece.getType());
+
+	std::swap(piece, pieceChoose);
+	return true;
+}
+
+bool NeutraliteIsPlayable (Plateau& p, Phase f) {
+	gf::Log::info("Appel Neutralite jouable\n");
+
+	if (f != Phase::APRES_COUP  || p.playerInEchec) {
+		return false;
+	}
+
+	return true;
+}
