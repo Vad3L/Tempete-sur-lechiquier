@@ -9,6 +9,7 @@
 29;CHAMEAU;Transformez un Cavalier, en Chameau, et cela définitivement. Le chameau, comme le cavalier, peut se déplacer en sautant par dessus les cases occupées. Mais alors que le cavalier saute dans l'angle opposé d'un rectangle 3x2, le Chameau saute dans l'angle opposé d'un rectangle 4x3.;1;1;0;1
 30;CHANGEZ VOS CAVALIERS;Sur l'échiquier, permutez l'un de vos Cavalier avec un cavalier adverse.;1;1;0;2
 33;CHEVAL FOU;Sur l'échiquier, permutez l'un de vos Fous avec l'un de vos Cavaliers.;1;1;0;2
+41;CRAZY HORSE;Sur l'échiquier, permutez un Cavalier adverse avec un Fou adverse.;1;1;0;2
 45;DÉSINTEGRATION;Retirez de l'échiquier l'une de vos propres pièces.;1;1;0;1
 54;ÉCURIE;Sur l'échiquier, permutez l'un de vos Cavaliers avec l'une de vos Tours;1;1;0;2
 57;VACHE FOLLE;L'un de vos Cavaliers, ou un Cavalier adverse, devient Fou. Il se déplacera désormais uniquement comme un Fou.;1;1;0;1

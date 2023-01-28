@@ -37,6 +37,9 @@ Deck::Deck(std::vector<int> numCards){
 	m_execsfuncs.insert({ 33, ChevalFou });
 	m_isplayfuncs.insert({ 33, ChevalFouIsPlayable });
 	
+	m_execsfuncs.insert({ 41, CrazyHorse });
+	m_isplayfuncs.insert({ 41, CrazyHorseIsPlayable });
+
 	m_execsfuncs.insert({ 45, Desintegration });
 	m_isplayfuncs.insert({ 45, DesintegrationIsPlayable });
 
