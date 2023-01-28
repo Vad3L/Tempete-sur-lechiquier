@@ -26,7 +26,7 @@ std::size_t GamePhase::getLimNbCard() {
 
 void GamePhase::setCurrentPhase(Phase phase) {
 	if(phase == Phase::PAS_MON_TOUR || phase == Phase::AVANT_COUP) { // tour suivant
-		gf::Log::error("\n\nremise a 0\n\n");
+	//	gf::Log::error("\n\nremise a 0\n\n");
 		m_nbCardPlay = 0;
 		m_limNbCard = 1;
 	}  
@@ -48,10 +48,10 @@ void GamePhase::nextPhaseCard(Card cardPlay){
 				m_currentPhase = (Phase)((int)m_currentPhase+1);
 			}		
 		}else if(cardPlay.m_effect == Effect::REPLACE_COUP) {
-			gf::Log::error("\n\n debug 1111\n\n");
+		//	gf::Log::error("\n\n debug 1111\n\n");
 			m_currentPhase = Phase::PAS_MON_TOUR;
 		}else if(cardPlay.m_effect == Effect::REGAME_OTHER_CARTE) {
-			gf::Log::error("\n\nmise a 3\n\n");
+		//	gf::Log::error("\n\nmise a 3\n\n");
 			m_limNbCard=3;
 		}
 	}

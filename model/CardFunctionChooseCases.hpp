@@ -29,6 +29,7 @@ bool RebeloteEtDixDeDer (Plateau& p, std::vector<gf::Vector2i> tabVector);
 bool OhDarling (Plateau& p, std::vector<gf::Vector2i> tabVector); 
 // nest pas encore inclut
 bool Neutralite (Plateau& p, std::vector<gf::Vector2i> tabVector); 
+bool Tir (Plateau& p, std::vector<gf::Vector2i> tabVector);
 
 bool ChameauIsPlayable (Plateau& p, Phase f);
 bool QuatreCoinIsPlayable (Plateau& p, Phase f);
@@ -49,5 +50,6 @@ bool RebeloteEtDixDeDerIsPlayable (Plateau& p, Phase f);
 bool NeutraliteIsPlayable (Plateau& p, Phase f);
 bool OhDarlingIsPlayable (Plateau& p, Phase f);
 bool NeutraliteIsPlayable (Plateau& p, Phase f);
+bool TirIsPlayable (Plateau& p, Phase f);
 
 #endif // CARD_FUNC_CHOOSE_CASES_H

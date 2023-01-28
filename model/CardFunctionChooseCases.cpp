@@ -704,3 +704,59 @@ bool NeutraliteIsPlayable (Plateau& p, Phase f) {
 
 	return true;
 }
+
+bool Tir (Plateau& p, std::vector<gf::Vector2i> tabVector) {
+	gf::Log::info("Appel Tir execute\n");
+
+	if (tabVector.size() != 2) {
+		return false;
+	}
+
+	if (!inBoard(tabVector[0]) || !inBoard(tabVector[1])) {
+		return false;
+	}
+
+	gf::Log::info("ok arguments\n");
+
+	Piece &piece = p.state[tabVector[0].y * 8 + tabVector[0].x].piece;
+	Piece &target =  p.state[tabVector[1].y * 8 + tabVector[1].x].piece;
+	Piece copy = target;
+	Piece empty = Piece(ChessColor::NONE, ChessPiece::NONE);
+
+	gf::Log::info("piece mal sélec ?\n");
+	if (piece.getType() == ChessPiece::NONE) { return false; }
+	if (target.getType() == ChessPiece::NONE) { return false; }
+	auto moves = p.filterMoveAuthorized(tabVector[0], piece.getMoves(tabVector[0]));
+
+	bool has_move = false;
+	for (auto m : moves) {
+		if (m == tabVector[1]) { has_move = true; break; }
+		gf::Log::info("Move { %i, %i }\n", m.x, m.y);
+	}
+	if (!has_move) { return false; }
+	gf::Log::info("move ok\n");
+
+	gf::Vector2i caseEchec(-1);
+	
+	if (p.playerInEchec) {
+		caseEchec = p.caseProvocateEchec;	
+	}
+
+	target = empty;
+	bool res = p.isInEchec(p.turnTo) || p.isInEchec(!p.turnTo, gf::Vector2i(-1), caseEchec);
+
+	if (res) {
+		target = copy;
+	} else {
+		p.bin.push_back(copy);
+	}
+	return !res;
+}
+
+bool TirIsPlayable (Plateau& p, Phase f) {
+	gf::Log::info("Appel Tir jouable\n");
+	if (f != Phase::AVANT_COUP) {
+		return false;
+	}
+	return true;
+}
