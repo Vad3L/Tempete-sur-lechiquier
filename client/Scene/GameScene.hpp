@@ -60,6 +60,7 @@ class GameScene : public gf::Scene {
 		gf::ExtendView m_boardView;
 		gf::ExtendView m_tableBoardView;
 		gf::ExtendView m_cardsView;
+		gf::ExtendView m_principalView;
 		gf::ViewContainer m_views;
 
 		BoardEntity m_boardEntity;

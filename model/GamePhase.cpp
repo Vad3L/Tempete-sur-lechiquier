@@ -4,7 +4,8 @@
 GamePhase::GamePhase(){
 	m_currentPhase = Phase::AVANT_COUP;
 	m_currentSubPhase = SubPhase::NONE;
-	m_nbCartePlay = 0;
+	m_nbCardPlay = 0;
+	m_limNbCard = 1;
 }
 
 Phase GamePhase::getCurrentPhase() {
@@ -15,14 +16,19 @@ SubPhase GamePhase::getCurrentSubPhase() {
 	return m_currentSubPhase;
 }
 
+std::size_t GamePhase::getNbCardPlay() {
+	return m_nbCardPlay;
+}
 
-int GamePhase::getNbCartePlay() {
-	return m_nbCartePlay;
+std::size_t GamePhase::getLimNbCard() {
+	return m_limNbCard;
 }
 
 void GamePhase::setCurrentPhase(Phase phase) {
 	if(phase == Phase::PAS_MON_TOUR || phase == Phase::AVANT_COUP) { // tour suivant
-		m_nbCartePlay = 0;
+		gf::Log::error("\n\nremise a 0\n\n");
+		m_nbCardPlay = 0;
+		m_limNbCard = 1;
 	}  
 	m_currentPhase = phase;
 }
@@ -34,19 +40,26 @@ void GamePhase::setCurrentSubPhase(SubPhase subPhase) {
 void GamePhase::nextPhaseCard(Card cardPlay){
 	assert(m_currentPhase!=Phase::COUP);
 	assert(m_currentPhase !=Phase::PAS_MON_TOUR);
-	m_nbCartePlay +=1;
+	m_nbCardPlay +=1;
 	
 	if(cardPlay.m_action == Action::NONE) {
 		if(cardPlay.m_effect == Effect::NONE) {
-			m_currentPhase = (Phase)((int)m_currentPhase+1);
+			if(m_nbCardPlay>=m_limNbCard) {
+				m_currentPhase = (Phase)((int)m_currentPhase+1);
+			}		
 		}else if(cardPlay.m_effect == Effect::REPLACE_COUP) {
 			m_currentPhase = Phase::PAS_MON_TOUR;
+		}else if(cardPlay.m_effect == Effect::REGAME_OTHER_CARTE) {
+			gf::Log::error("\n\nmise a 3\n\n");
+			m_limNbCard=3;
 		}
 	}
 
 	if(cardPlay.m_action == Action::CHOOSE_CASES) {
 		if(cardPlay.m_effect == Effect::NONE) {
-			m_currentPhase = (Phase)((int)m_currentPhase+1);
+			if(m_nbCardPlay>=m_limNbCard) {
+				m_currentPhase = (Phase)((int)m_currentPhase+1);
+			}		
 		}else if(cardPlay.m_effect == Effect::REPLACE_COUP) {
 			m_currentPhase = Phase::PAS_MON_TOUR;
 		}

@@ -24,7 +24,7 @@ class Plateau {
 		std::string getSymbol (ChessColor c, ChessPiece p);
 		std::string getFen ();
 		void prettyPrint();
-		bool setMovement(ChessColor color, gf::Vector2i v);
+		bool setMovement(gf::Vector2i v);
 		
 		std::vector<gf::Vector2i> filterMoveAuthorized(gf::Vector2i coordCaseStart, std::vector<gf::Vector2i> mAvailable);
 		std::vector<gf::Vector2i> filterMoveAuthorized_Tangled(gf::Vector2i coordCaseStart, std::vector<gf::Vector2i> mAvailable);

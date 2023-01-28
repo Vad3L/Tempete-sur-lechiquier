@@ -28,7 +28,6 @@ GameScene::GameScene(GameHub& game, Network &network, GameData &gameData)
 	
 	m_animation.addTileset(m_loading, gf::vec(12, 1), gf::milliseconds(400), 12);
 	m_animatedSprite.setAnimation(m_animation);
-	m_animatedSprite.setPosition(m_game.getWindow().getSize()/2);
   	m_animatedSprite.setOrigin({ 84.f / 2.0f, 84.f / 2.0f });
 	m_animatedSprite.setAnchor(gf::Anchor::Center);
 	
@@ -78,17 +77,22 @@ GameScene::GameScene(GameHub& game, Network &network, GameData &gameData)
 	m_tableBoardView.setViewport(gf::RectF::fromPositionSize({ 0.15f, 0.0f}, { 0.7f, 0.7f }));
 
 	m_cardsView = gf::ExtendView({ 0, 0 }, { 1200, 300 });
-	m_cardsView.setViewport(gf::RectF::fromPositionSize({ 0.125f, 0.7f}, { 0.75, 0.3f }));
+	m_cardsView.setViewport(gf::RectF::fromPositionSize({ 0.125f, 0.7f}, { 0.75f, 0.3f }));
+
+	m_principalView = gf::ExtendView({ 0, 0 }, { 1600, 900 });
+	m_principalView.setViewport(gf::RectF::fromPositionSize({ 0., 0.f}, { 1.f, 1.f }));
+	m_principalView.setCenter(game.getRenderer().getSize()/2);
 
 	m_views.addView(m_boardView);
 	m_views.addView(m_tableBoardView);
 	m_views.addView(m_cardsView);
+	m_views.addView(m_principalView);
 
 	m_views.setInitialFramebufferSize({game.getRenderer().getSize()});
 
 	m_loading.setSmooth(true);
 
-	gf::Coordinates coordsWidget({500,500});
+	gf::Coordinates coordsWidget(m_game.getRenderer().getSize());
 	auto setupButton = [&] (gf::TextButtonWidget& button, gf::Vector2f position,  auto callback) {
 		button.setDefaultTextColor(gf::Color::fromRgba32(212,30,27,255));
 		button.setDefaultBackgroundColor(gf::Color::Gray(0.7f));
@@ -110,7 +114,7 @@ GameScene::GameScene(GameHub& game, Network &network, GameData &gameData)
 		m_widgets.addWidget(button);
 	};
 
-	setupButton(m_endTurn, { 0.6f, 0.25f }, [&] () {
+	setupButton(m_endTurn, { 0.162f, 0.2f }, [&] () {
 		if(m_gameData.m_phase.getCurrentPhase()==Phase::APRES_COUP) {
 			gf::Log::debug("EndTurn pressed!\n");
 			clickEndturn.play();
@@ -125,7 +129,7 @@ GameScene::GameScene(GameHub& game, Network &network, GameData &gameData)
 		}
 	});
 
-	setupButton(m_playCard, { 0.9f, 0.25f }, [&] () {
+	setupButton(m_playCard, { 0.242f, 0.2f }, [&] () {
 		if(m_poseEntity.m_cardPose.m_num == -1) {
 			return;
 		}
@@ -193,7 +197,7 @@ void GameScene::doProcessEvent(gf::Event& event) {
 	
 	switch (event.type) {
 		case gf::EventType::MouseMoved:
-			m_widgets.pointTo(m_game.computeWindowToGameCoordinates(event.mouseCursor.coords, getHudView()));
+			m_widgets.pointTo(m_game.computeWindowToGameCoordinates(event.mouseCursor.coords, m_principalView));
 			break;
 
 		case gf::EventType::MouseButtonPressed:
@@ -215,11 +219,11 @@ void GameScene::doProcessEvent(gf::Event& event) {
 			c = m_gameData.m_main[numCarte];
 		}
 
-		if(m_poseEntity.m_cardPose.m_num !=-1 && m_poseEntity.clickIsInCardPose(getHudView().getSize(), m_game.getRenderer().mapPixelToCoords(event.mouseButton.coords, getHudView()))) {
+		if(m_poseEntity.m_cardPose.m_num !=-1 && m_poseEntity.clickIsInCardPose(m_principalView.getSize(), m_game.getRenderer().mapPixelToCoords(event.mouseButton.coords, m_principalView))) {
 			c = m_poseEntity.m_cardPose;
 		}
 
-		if(m_poseEntity.m_cardDiscard.m_num !=-1 && m_poseEntity.clickIsInCardDiscard(getHudView().getSize(), m_game.getRenderer().mapPixelToCoords(event.mouseButton.coords, getHudView()))) {
+		if(m_poseEntity.m_cardDiscard.m_num !=-1 && m_poseEntity.clickIsInCardDiscard(m_principalView.getSize(), m_game.getRenderer().mapPixelToCoords(event.mouseButton.coords, m_principalView))) {
 			c = m_poseEntity.m_cardDiscard;
 		}
 		
@@ -234,7 +238,7 @@ void GameScene::doProcessEvent(gf::Event& event) {
 		return;
 	}
 
-	if(m_poseEntity.m_cardPose.m_num!=-1 && m_poseEntity.clickIsInCardPose(getHudView().getSize(), m_game.getRenderer().mapPixelToCoords(event.mouseButton.coords, getHudView()))) {
+	if(m_poseEntity.m_cardPose.m_num!=-1 && m_poseEntity.clickIsInCardPose(m_principalView.getSize(), m_game.getRenderer().mapPixelToCoords(event.mouseButton.coords, m_principalView))) {
 		m_poseEntity.returnCardHand();
 		m_gameData.m_phase.setCurrentSubPhase(SubPhase::NONE);
 		m_gameData.m_plateau.m_casesClicked.clear();
@@ -303,7 +307,7 @@ void GameScene::doProcessEvent(gf::Event& event) {
 		   
 		}else {
 			
-			bool coupPionEnded = m_gameData.m_plateau.setMovement(m_gameData.m_myColor, v);
+			bool coupPionEnded = m_gameData.m_plateau.setMovement(v);
 			if(m_gameData.m_plateau.coordCaseSelected != gf::Vector2i(-1) && !coupPionEnded) {
 				takePiece.play();
 			}
@@ -325,15 +329,15 @@ void GameScene::doProcessEvent(gf::Event& event) {
 }
 
 void GameScene::doRender(gf::RenderTarget& target, const gf::RenderStates &states) {
-	target.setView(getHudView());
-	gf::Coordinates coords(target);
+	target.setView(m_principalView);
+	gf::Coordinates coords({1600,900});
 	
 	if(m_gameData.m_gameStatus == ChessStatus::NO_STARTED) {
 		gf::Text text("En attente d un autre joueur", m_font, 50);
-		text.setPosition(coords.getRelativePoint({0.5f, 0.35f }));	
+		text.setPosition(coords.getRelativePoint({0.6f, 0.45f }));	
 		text.setAnchor(gf::Anchor::Center);
 		text.setColor(gf::Color::White);
-
+		m_animatedSprite.setPosition(coords.getRelativePoint({0.6f, 0.6f }));
 		target.draw(text, states);
 		target.draw(m_animatedSprite, states);
 		return;
@@ -343,7 +347,7 @@ void GameScene::doRender(gf::RenderTarget& target, const gf::RenderStates &state
 		std::string indaction = "La partie commence dans " + std::to_string((int)startTime) + " secondes ...\n Vous jouez les " + ((m_gameData.m_myColor==ChessColor::WHITE) ? "Blancs" : "Noires");
 		gf::Text text(indaction, m_font, 50);
 		text.setColor(gf::Color::White);
-		text.setPosition(coords.getRelativePoint({0.5f, 0.35f }));	
+		text.setPosition(coords.getRelativePoint({0.6f, 0.45f }));	
 		text.setAlignment(gf::Alignment::Center);
 		text.setParagraphWidth(1600.f);
 		text.setLineSpacing(2.f);
@@ -362,7 +366,7 @@ void GameScene::doRender(gf::RenderTarget& target, const gf::RenderStates &state
 	target.setView(m_cardsView);
 	m_mainEntity.render(target, states);
 
-	target.setView(getHudView());
+	target.setView(m_principalView);
 	m_poseEntity.render(target, states);
 
 	m_widgets.render(target, states);
@@ -427,7 +431,7 @@ void GameScene::doUpdate(gf::Time time) {
 		}else if(repPartie.err == CodeRep::TURN_START) {
 			gf::Log::info("mon tour commence\n");
 			m_gameData.m_phase.setCurrentPhase(Phase::AVANT_COUP);
-			assert(m_gameData.m_phase.getNbCartePlay()==0);
+			assert(m_gameData.m_phase.getNbCardPlay()==0);
 			m_gameData.m_plateau.turnTo = m_gameData.m_myColor;
 		}
 	}	 
@@ -466,11 +470,12 @@ void GameScene::doUpdate(gf::Time time) {
 				m_gameData.m_plateau.m_promotion = true;
 			}else {
 				if(m_gameData.m_phase.getCurrentPhase() != Phase::PAS_MON_TOUR) {
-			
-					m_gameData.m_phase.setCurrentPhase(Phase::APRES_COUP);
-					if(m_gameData.m_phase.getNbCartePlay() !=0) {
+					
+					if(m_gameData.m_phase.getNbCardPlay() >= m_gameData.m_phase.getLimNbCard()) {
 						m_gameData.m_phase.setCurrentPhase(Phase::PAS_MON_TOUR);
 						m_gameData.m_plateau.turnTo = !m_gameData.m_plateau.turnTo;	
+					}else {
+						m_gameData.m_phase.setCurrentPhase(Phase::APRES_COUP);
 					}
 				}
 				m_gameData.m_plateau.m_promotion = false;
@@ -504,11 +509,12 @@ void GameScene::doUpdate(gf::Time time) {
 
 			m_gameData.m_plateau.prettyPrint();
 			if(m_gameData.m_phase.getCurrentPhase() != Phase::PAS_MON_TOUR) {
-				m_gameData.m_phase.setCurrentPhase(Phase::APRES_COUP);
-				if(m_gameData.m_phase.getNbCartePlay() !=0) {
+				if(m_gameData.m_phase.getNbCardPlay() >= m_gameData.m_phase.getLimNbCard()) {
 
 					m_gameData.m_phase.setCurrentPhase(Phase::PAS_MON_TOUR);
 					m_gameData.m_plateau.turnTo = !m_gameData.m_plateau.turnTo;	
+				}else {
+					m_gameData.m_phase.setCurrentPhase(Phase::APRES_COUP);
 				}
 			}
 			m_gameData.m_plateau.m_promotion = false;

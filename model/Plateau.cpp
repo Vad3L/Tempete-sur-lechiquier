@@ -39,17 +39,20 @@ Plateau::Plateau()
 		}
 	}
 
-	/*state[5 * 8 + 3].piece = Piece(ChessColor::WHITE, ChessPiece::PRINCESS);
+	state[5 * 8 + 3].piece = Piece(ChessColor::WHITE, ChessPiece::PRINCESS);
 	state[2 * 8 + 3].piece = Piece(ChessColor::BLACK, ChessPiece::PRINCESS);
 
 	state[5 * 8 + 4].piece = Piece(ChessColor::WHITE, ChessPiece::PRINCE);
 	state[2 * 8 + 4].piece = Piece(ChessColor::BLACK, ChessPiece::PRINCE);
 
 	state[5 * 8 + 5].piece = Piece(ChessColor::WHITE, ChessPiece::CAMEL);
-	state[2 * 8 + 5].piece = Piece(ChessColor::BLACK, ChessPiece::CAMEL);*/
+	state[2 * 8 + 5].piece = Piece(ChessColor::BLACK, ChessPiece::CAMEL);
 
 	state[1 * 8 + 0].piece = Piece(ChessColor::WHITE, ChessPiece::PAWN);
 	state[6 * 8 + 0].piece = Piece(ChessColor::BLACK, ChessPiece::PAWN);
+
+	state[2 * 8 + 0].piece = Piece(ChessColor::GREY, ChessPiece::PAWN);
+
 	allPositions.push_back(getFen());
 	turnTo = ChessColor::WHITE;
 	prettyPrint();
@@ -87,11 +90,11 @@ void Plateau::prettyPrint() {
 	}
 }
 
-bool Plateau::setMovement(ChessColor color, gf::Vector2i v) {
+bool Plateau::setMovement(gf::Vector2i v) {
 	coordPrisePassant = gf::Vector2i(-1);
 
 	Piece pSelect = state[v.y * 8 + v.x].piece;
-	//ChessColor colAdv = !color;
+	ChessColor color = turnTo;
 
 	if(coordCaseSelected.y ==-1 && coordCaseSelected.x == -1) { // aucune première de selectionné
 		if( pSelect.getType() != ChessPiece::NONE && pSelect.getColor() == color) { // selectionne case si la piece nous appartient 

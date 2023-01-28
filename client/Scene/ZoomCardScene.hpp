@@ -24,6 +24,7 @@ class ZoomCardScene : public gf::Scene {
 		void doProcessEvent([[maybe_unused]] gf::Event& event) override;
 		void doHandleActions(gf::Window& window) override;
 		void doRender(gf::RenderTarget& target, const gf::RenderStates &states) override;
+		void onActivityChange(bool active)  override;
 
 		GameHub& m_game;
 
@@ -33,6 +34,9 @@ class ZoomCardScene : public gf::Scene {
 		CardEntity m_cardEntity;
 		gf::Font& m_cardsFont;
 		gf::Font & m_rulesFont;
+
+		gf::ExtendView m_principalView;
+		gf::ViewContainer m_views;
 };
 
 

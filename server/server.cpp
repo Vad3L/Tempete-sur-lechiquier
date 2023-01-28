@@ -44,6 +44,11 @@ int main (int argc, char* argv[]) {
 				bool player = true;
 				bool promotion = false;
 				GamePhase phase;
+
+				if(sendStartTurn(client1) == -1){
+					break;
+				}
+				
 				while (true) {
 					plateau.moveAvailable.clear();
 					if (player) {
@@ -51,32 +56,13 @@ int main (int argc, char* argv[]) {
 						if ((gameStatus = plateau.isGameOver(ChessColor::WHITE)) != ChessStatus::ON_GOING) {
 							break;
 						}
-						if (phase.getCurrentPhase() == Phase::AVANT_COUP) {
-							if(sendStartTurn(client1) == -1){
-								break;
-							}
-							plateau.turnTo = ChessColor::WHITE;
-							if(debugPlateau) {
-								gf::Packet pack;
-								Debug d;
-								d.plateau = plateau.getFen();
-								pack.is(d);
-								sendingPacket(client1, pack);	
-							}
-						}
+						
 						int ret = performTurn(deck, phase, plateau, client1, client2, TwoHand.first, promotion);
 						if(ret == -1) {
 							break;
 						} else if (ret==0) {
 							player = false;
 							phase.setCurrentPhase(Phase::AVANT_COUP);
-						}
-					} else {
-						gf::Log::debug("------TOUR J2------\n");
-						if ((gameStatus = plateau.isGameOver(ChessColor::BLACK)) != ChessStatus::ON_GOING) {
-							break;
-						}
-						if (phase.getCurrentPhase() == Phase::AVANT_COUP) {
 							if(sendStartTurn(client2) == -1){
 								break;
 							}
@@ -89,6 +75,11 @@ int main (int argc, char* argv[]) {
 								sendingPacket(client2, pack);	
 							}
 						}
+					} else {
+						gf::Log::debug("------TOUR J2------\n");
+						if ((gameStatus = plateau.isGameOver(ChessColor::BLACK)) != ChessStatus::ON_GOING) {
+							break;
+						}
 
 						int ret = performTurn(deck, phase, plateau, client2, client1, TwoHand.second, promotion);
 						if(ret == -1) {
@@ -96,6 +87,19 @@ int main (int argc, char* argv[]) {
 						} else if (ret == 0) {
 							player = true;
 							phase.setCurrentPhase(Phase::AVANT_COUP);
+							
+							if(sendStartTurn(client1) == -1){
+								break;
+							}
+							plateau.turnTo = ChessColor::WHITE;
+							if(debugPlateau) {
+								gf::Packet pack;
+								Debug d;
+								d.plateau = plateau.getFen();
+								pack.is(d);
+								sendingPacket(client1, pack);	
+							}
+						
 						}
 					}
 				}

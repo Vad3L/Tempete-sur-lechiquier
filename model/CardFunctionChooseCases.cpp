@@ -607,3 +607,53 @@ bool CavalierSuicideIsPlayable (Plateau& p, Phase f) {
 	
 	return false;
 }
+
+bool RebeloteEtDixDeDer(Plateau& p, std::vector<gf::Vector2i> tabVector){
+	gf::Log::info("Appel RebeloteEtDixDeFer execute\n");
+	
+	return true;
+}
+
+bool RebeloteEtDixDeDerIsPlayable(Plateau& p, Phase f) { 
+	gf::Log::info("Appel RebeloteEtDixDeFer jouable\n");
+
+	return f== Phase::APRES_COUP || f== Phase::AVANT_COUP;
+}
+
+bool Neutralite (Plateau& p, std::vector<gf::Vector2i> tabVector) {
+	gf::Log::info("Appel Neutralite execute\n");
+	if(tabVector.size() != 1 || !inBoard(tabVector[0])){
+		return false;
+	}
+
+	Piece &piece = p.state[tabVector[0].y * 8 + tabVector[0].x].piece;
+	if(piece.getType() == ChessPiece::KING || piece.getType() == ChessPiece::QUEEN || piece.getColor() == p.turnTo){
+		return false;
+	}
+
+	gf::Vector2i caseProvocateEchec(-1);
+	if (p.playerInEchec) {
+		caseProvocateEchec = p.caseProvocateEchec;
+	}
+
+	Piece pieceChoose(ChessColor::GREY,piece.getType());
+
+	std::swap(piece, pieceChoose);
+
+	bool res = p.isInEchec(p.turnTo) || p.isInEchec(!p.turnTo, gf::Vector2i(-1), caseProvocateEchec);
+	if (res) {
+		std::swap(piece, pieceChoose);
+	}
+
+	return !res;
+}
+
+bool NeutraliteIsPlayable (Plateau& p, Phase f) {
+	gf::Log::info("Appel Neutralite jouable\n");
+
+	if (f != Phase::APRES_COUP) {
+		return false;
+	}
+
+	return true;
+}

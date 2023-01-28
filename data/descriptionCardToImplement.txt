@@ -111,7 +111,7 @@
 110;QUATRE COINS;Si trois des quatre coins de l'échiquier sont occupés, placez l'une de vos pièces, de votre choix, dans le quatrième coins.;0;1;1
 111;QUE NENNI !;Cette carte annule toute autre carte au moment où elle est jouée.;3;0;3
 112;RATON LAVEUR;Sur l'échiquier, permutez l'un de vos Pions avec l'un de vos Fous, ou l'un de vos Cavaliers, ou l'une de vos Tours.0;0;1
-113;REBELOTE ET DIX DE DER;Cette carte vous permet de joueur deux autres cartes à ce coup.0;0;3
+113;REBELOTE ET DIX DE DER;Cette carte vous permet de joueur deux autres cartes à ce coup.;0;0;3
 114;REGENCE;Vous faite disparaître votre Roi de l'échiquier pour un tour. Avant votre prochain, vous devrez le replacer sur une case livre de votre choix, au bord de l'échiquier.;0;1;0
 115;REMORQUE;Le pion que vous déplacez(sans prise) "tire" la pièce qui se trouve juste derrière lui, de manière à ce qu'elle reste immédiatement derrière lui.;0;0;1
 116;REPRESAILLES;Jouez cette carte lorsque votre adversaire vient de vous prendre une pièce (pas un Pion). Vous vous vengez alors en retirant l'un de ses pions de l'échiquier.;3;0;0

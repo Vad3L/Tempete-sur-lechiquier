@@ -40,12 +40,18 @@ Deck::Deck(std::vector<int> numCards){
 	m_execsfuncs.insert({ 45, Desintegration });
 	m_isplayfuncs.insert({ 45, DesintegrationIsPlayable });
 
+	m_execsfuncs.insert({ 83, Neutralite });
+	m_isplayfuncs.insert({ 83, NeutraliteIsPlayable });
+
 	m_execsfuncs.insert({ 104, Princess });
 	m_isplayfuncs.insert({ 104, PrincessIsPlayable });
 
 	m_execsfuncs.insert({ 110, QuatreCoin });
 	m_isplayfuncs.insert({ 110, QuatreCoinIsPlayable });
 	
+	m_execsfuncs.insert({ 113, RebeloteEtDixDeDer });
+	m_isplayfuncs.insert({ 113, RebeloteEtDixDeDerIsPlayable });
+
 	m_execsfuncs.insert({ 122, Schizophrenie });
 	m_isplayfuncs.insert({ 122, SchizophrenieIsPlayable });
 		
@@ -62,7 +68,7 @@ Deck::Deck(std::vector<int> numCards){
 	m_isplayfuncs.insert({ 135, VisitesOfficiellesIsPlayable });
 
 	//format du fichier
-	//NUM;NAME;DESCRIPTION;TURN;ACTION;EFFECT;nbCase (3 dernières valeurs sont des entier correspondant à la la valeur dans leur énum)
+	//NUM;NAME;DESCRIPTION;TURN;ACTION;EFFECT;nbCase (4 dernières valeurs sont des entier correspondant à la la valeur dans leur énum)
 	int borne = 11;
 	if(numCards.size()<1) {
 		borne = 1;

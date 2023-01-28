@@ -17,13 +17,13 @@ void PoseEntity::update([[maybe_unused]] gf::Time time) {
 }
 
 void PoseEntity::render(gf::RenderTarget &target, const gf::RenderStates &states){
-
-	gf::Coordinates coords(target);
+	
+	gf::Coordinates coords({1600,900});
 	
 	gf::Vector2i sizeCard = gf::Vector2i(200+20,300+20);
 
-	gf::Vector2f position1 = coords.getRelativePoint({ 0.2f, 0.4f });
-	gf::Vector2f position2 = coords.getRelativePoint({ 0.8f, 0.4f });
+	gf::Vector2f position1 = coords.getRelativePoint({ 0.25f, 0.5f });
+	gf::Vector2f position2 = coords.getRelativePoint({ 0.95f, 0.5f });
 	
 	gf::RoundedRectangleShape contour(sizeCard);
 	contour.setColor(gf::Color::Black);
@@ -70,7 +70,7 @@ void PoseEntity::render(gf::RenderTarget &target, const gf::RenderStates &states
 	target.draw(poseName,states);
 
 	if(m_cardPose.m_num!=-1) {
-		m_cardEntity.draw(target, states, m_cardPose, gf::Vector2f(0.237f, 0.94f));
+		m_cardEntity.draw(target, states, m_cardPose, gf::Vector2f(0.25f, 1.f));
 	}
 
 	//défausse
@@ -93,7 +93,7 @@ void PoseEntity::render(gf::RenderTarget &target, const gf::RenderStates &states
 	target.draw(poseName,states);
 	
 	if(m_cardDiscard.m_num!=-1) {
-		m_cardEntity.draw(target, states, m_cardDiscard, gf::Vector2f(1.197f, 0.94f));
+		m_cardEntity.draw(target, states, m_cardDiscard, gf::Vector2f(1.183f, 1.f));
 	}
 }
 
@@ -114,9 +114,9 @@ bool PoseEntity::clickIsInCardPose([[maybe_unused]] gf::Vector2i sizeWindows, gf
 	gf::Log::info("coord case clicker carte pose %i et %i\n", mouseCoord.x,mouseCoord.y);
 	int x = mouseCoord.x;
 	int y = mouseCoord.y;
-	// 270 < x < 500
-	// 270 < y < 600
-	if(x>270 && x<500 && y>270 && y<600) {
+	// 285 < x < 515
+	// 285 < y < 615
+	if(x>285 && x<500 && y>285 && y<615) {
 		gf::Log::info("on a pas clicker sur la carte posée\n");
 		return true;
 	}
@@ -125,12 +125,12 @@ bool PoseEntity::clickIsInCardPose([[maybe_unused]] gf::Vector2i sizeWindows, gf
 }
 
 bool PoseEntity::clickIsInCardDiscard([[maybe_unused]] gf::Vector2i sizeWindows, gf::Vector2i mouseCoord) {
-	gf::Log::info("coord case clicker carte pose %i et %i\n", mouseCoord.x,mouseCoord.y);
+	gf::Log::info("coord case clicker carte deffause %i et %i\n", mouseCoord.x,mouseCoord.y);
 	int x = mouseCoord.x;
 	int y = mouseCoord.y;
-	// 1420 < x < 1650
-	// 270 < y < 600
-	if(x>1420 && x<1650 && y>270 && y<600) {
+	// 1405 < x < 1635
+	// 285 < y < 615
+	if(x>1405 && x<1635 && y>285 && y<615) {
 		gf::Log::info("on a pas clicker sur la carte defaussé\n");
 		return true;
 	}

@@ -41,13 +41,13 @@ void CardEntity::draw(gf::RenderTarget &target, const gf::RenderStates &states, 
 
 	gf::Text cardName(c.m_name, m_cardsFont, titleCharacterSize);
 	cardName.setColor(gf::Color::Black);
-	if(c.m_name.size()>15) {
-		cardName.setPosition({position.x+25, position.y+sizeCard.y/1.62f});
+	if(c.m_name.size()>16) {
+		cardName.setPosition({position.x+25*zoom, position.y+sizeCard.y/1.62f});
 	}else {
-		cardName.setPosition({position.x+25, position.y+sizeCard.y/1.55f});
+		cardName.setPosition({position.x+25*zoom, position.y+sizeCard.y/1.55f});
 	}
 	cardName.setAlignment(gf::Alignment::Center);
-	cardName.setParagraphWidth(sizeCard.x-50);
+	cardName.setParagraphWidth(sizeCard.x-zoom*50);
 
 	gf::RectangleShape rect({sizeCard.x/1.1f, sizeCard.x/4.3f});
 	rect.setTexture(m_accessories,gf::RectF::fromPositionSize({ 0.f  , 0.f }, { 1.f , 1.f }));

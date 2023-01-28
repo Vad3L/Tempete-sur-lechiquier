@@ -13,12 +13,15 @@ class GamePhase {
 		void setCurrentPhase(Phase phase);
 		void setCurrentSubPhase(SubPhase subPhase);
 		void nextPhaseCard(Card cardPlay);
-		int getNbCartePlay();
+		std::size_t getNbCardPlay();
+		std::size_t getLimNbCard();
 
 	private:
 		Phase m_currentPhase;
 		SubPhase m_currentSubPhase;
-		int m_nbCartePlay;
+		std::size_t m_nbCardPlay;
+		std::size_t m_limNbCard;
+
 };
 
 #endif // GAMEPHASE_H
