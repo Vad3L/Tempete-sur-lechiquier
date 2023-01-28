@@ -608,13 +608,13 @@ bool CavalierSuicideIsPlayable (Plateau& p, Phase f) {
 	return false;
 }
 
-bool RebeloteEtDixDeDer(Plateau& p, std::vector<gf::Vector2i> tabVector){
+bool RebeloteEtDixDeDer([[maybe_unused]] Plateau& p, [[maybe_unused]] std::vector<gf::Vector2i> tabVector){
 	gf::Log::info("Appel RebeloteEtDixDeFer execute\n");
 	
 	return true;
 }
 
-bool RebeloteEtDixDeDerIsPlayable(Plateau& p, Phase f) { 
+bool RebeloteEtDixDeDerIsPlayable([[maybe_unused]] Plateau& p, Phase f) { 
 	gf::Log::info("Appel RebeloteEtDixDeFer jouable\n");
 
 	return f== Phase::APRES_COUP || f== Phase::AVANT_COUP;
@@ -640,6 +640,7 @@ bool OhDarling (Plateau& p, std::vector<gf::Vector2i> tabVector) {
 		pieceVide = piece2;
 		coordVide = tabVector[1];
 	}
+
 	ChessPiece aTrouver = ((piece1.getType() == ChessPiece::NONE) ? piece2.getType() : piece1.getType());
 	aTrouver = ((aTrouver == ChessPiece::QUEEN ? ChessPiece::KING : ChessPiece::QUEEN));
 
@@ -689,18 +690,87 @@ bool Neutralite (Plateau& p, std::vector<gf::Vector2i> tabVector){
 
 	bool res = p.isInEchec(p.turnTo) || p.isInEchec(!p.turnTo, gf::Vector2i(-1), caseProvocateEchec);
 	if (res) {
+		gf::Log::info("Cette carte met en Echec l'un des deux rois - donc invalide\n");
 		std::swap(piece, pieceChoose);
 	}
 
 	return !res;
 }
 
-bool NeutraliteIsPlayable (Plateau& p, Phase f) {
+bool NeutraliteIsPlayable ([[maybe_unused]] Plateau& p, Phase f) {
 	gf::Log::info("Appel Neutralite jouable\n");
+
+	if (f != Phase::APRES_COUP) {
+		return false;
+	}
+
+	return true;
+}
+
+bool Ecurie (Plateau& p, std::vector<gf::Vector2i> tabVector){
+	gf::Log::info("Appel Ecurie execute\n");
+	
+	if(tabVector.size() != 2 || !inBoard(tabVector[0]) || !inBoard(tabVector[1])) {
+		return false;
+	}
+	
+	Piece &piece1 = p.state[tabVector[0].y * 8 + tabVector[0].x].piece;
+	Piece &piece2 = p.state[tabVector[1].y * 8 + tabVector[1].x].piece;
+
+	if(checkGoodChoose(p, piece1, Piece(p.turnTo, ChessPiece::KNIGHT), piece2, Piece(p.turnTo, ChessPiece::ROOK))) {
+		std::swap(piece1, piece2);
+		return true;
+	}
+
+	return false;
+}
+
+bool EcurieIsPlayable (Plateau& p, Phase f) {
+	gf::Log::info("Appel Ecurie jouable\n");
 
 	if (f != Phase::APRES_COUP ) {
 		return false;
 	}
 
-	return true;
+	return pieceExist(p, ChessPiece::KNIGHT, p.turnTo) && pieceExist(p, ChessPiece::ROOK, p.turnTo);
+}
+
+bool EncephalopathieSongiformeEquine (Plateau& p, std::vector<gf::Vector2i> tabVector){
+	gf::Log::info("Appel EncephalopathieSongiformeEquine execute\n");
+	
+	if(tabVector.size() != 1 || !inBoard(tabVector[0])) {
+		return false;
+	}
+
+	Piece &piece1 = p.state[tabVector[0].y * 8 + tabVector[0].x].piece;
+
+	if(piece1.getType()!=ChessPiece::KNIGHT) {
+		return false;
+	}	
+
+	piece1 = Piece(piece1.getColor(), ChessPiece::BISHOP);
+
+	gf::Vector2i caseProvocateEchec(-1);
+	if (p.playerInEchec) {
+		caseProvocateEchec = p.caseProvocateEchec;
+	}
+
+	bool res = p.isInEchec(p.turnTo) || p.isInEchec(!p.turnTo, gf::Vector2i(-1), caseProvocateEchec);
+	if (res) {
+		gf::Log::info("Cette carte met en Echec l'un des deux rois - donc invalide\n");
+		piece1 = Piece(piece1.getColor(), ChessPiece::KNIGHT);
+		return false;
+	}
+
+	return !res;
+}
+
+bool EncephalopathieSongiformeEquineIsPlayable (Plateau& p, Phase f) {
+	gf::Log::info("Appel EncephalopathieSongiformeEquine jouable\n");
+
+	if (f != Phase::APRES_COUP ) {
+		return false;
+	}
+
+	return pieceExist(p, ChessPiece::KNIGHT, p.turnTo) || pieceExist(p, ChessPiece::KNIGHT, !p.turnTo);
 }

@@ -24,11 +24,14 @@ bool Apartheid ([[maybe_unused]] Plateau& p, [[maybe_unused]] std::vector<gf::Ve
 bool Box (Plateau& p, std::vector<gf::Vector2i> tabVector);
 bool ChangerVosCavaliers (Plateau& p, std::vector<gf::Vector2i> tabVector);
 bool CavalierSuicide (Plateau& p, std::vector<gf::Vector2i> tabVector);
-// nest pas encore inclut
-bool RebeloteEtDixDeDer (Plateau& p, std::vector<gf::Vector2i> tabVector);
+// inclue mais a verifier
+bool RebeloteEtDixDeDer ([[maybe_unused]] Plateau& p, [[maybe_unused]] std::vector<gf::Vector2i> tabVector);
 bool OhDarling (Plateau& p, std::vector<gf::Vector2i> tabVector); 
 // nest pas encore inclut
 bool Neutralite (Plateau& p, std::vector<gf::Vector2i> tabVector); 
+bool Ecurie (Plateau& p, std::vector<gf::Vector2i> tabVector); 
+bool EncephalopathieSongiformeEquine (Plateau& p, std::vector<gf::Vector2i> tabVector); 
+
 
 bool ChameauIsPlayable (Plateau& p, Phase f);
 bool QuatreCoinIsPlayable (Plateau& p, Phase f);
@@ -45,9 +48,10 @@ bool ApartheidIsPlayable ([[maybe_unused]] Plateau& p, Phase f);
 bool BoxIsPlayable (Plateau& p, Phase f);
 bool ChangerVosCavaliersIsPlayable (Plateau& p, Phase f);
 bool CavalierSuicideIsPlayable (Plateau& p, Phase f);
-bool RebeloteEtDixDeDerIsPlayable (Plateau& p, Phase f);
-bool NeutraliteIsPlayable (Plateau& p, Phase f);
+bool RebeloteEtDixDeDerIsPlayable ([[maybe_unused]] Plateau& p, Phase f);
+bool NeutraliteIsPlayable ([[maybe_unused]] Plateau& p, Phase f);
 bool OhDarlingIsPlayable (Plateau& p, Phase f);
-bool NeutraliteIsPlayable (Plateau& p, Phase f);
+bool EcurieIsPlayable (Plateau& p, Phase f);
+bool EncephalopathieSongiformeEquineIsPlayable (Plateau& p, Phase f);
 
 #endif // CARD_FUNC_CHOOSE_CASES_H

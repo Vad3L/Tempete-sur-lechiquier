@@ -81,7 +81,7 @@ void ZoomCardScene::doRender(gf::RenderTarget& target, const gf::RenderStates &s
 		gf::Text cardDescription(m_cardEntity.m_card.m_description, m_rulesFont, 25);
 	
 		cardDescription.setColor(gf::Color::Black);
-		cardDescription.setPosition(coords.getRelativePoint({0.72f,0.54f}));
+		cardDescription.setPosition(coords.getRelativePoint({0.72f,0.5f}));
 		cardDescription.setParagraphWidth(bubbleX-40);
 		cardDescription.setAlignment(gf::Alignment::Center);
 		cardDescription.setAnchor(gf::Anchor::Center);
@@ -108,7 +108,7 @@ void ZoomCardScene::doRender(gf::RenderTarget& target, const gf::RenderStates &s
 		gf::Text cardTimeToPlay(timeToPlay, m_rulesFont, 25);
 	
 		cardTimeToPlay.setColor(gf::Color::Black);
-		cardTimeToPlay.setPosition(coords.getRelativePoint({0.72f,0.765f}));
+		cardTimeToPlay.setPosition(coords.getRelativePoint({0.72f,0.88f}));
 		cardTimeToPlay.setParagraphWidth(bubbleX-40);
 		cardTimeToPlay.setAlignment(gf::Alignment::Center);
 		cardTimeToPlay.setAnchor(gf::Anchor::Center);
