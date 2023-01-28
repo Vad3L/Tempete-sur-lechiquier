@@ -40,6 +40,9 @@ Deck::Deck(std::vector<int> numCards){
 	m_execsfuncs.insert({ 45, Desintegration });
 	m_isplayfuncs.insert({ 45, DesintegrationIsPlayable });
 
+	m_execsfuncs.insert({ 87, OhDarling });
+	m_isplayfuncs.insert({ 87, OhDarlingIsPlayable });
+
 	m_execsfuncs.insert({ 104, Princess });
 	m_isplayfuncs.insert({ 104, PrincessIsPlayable });
 

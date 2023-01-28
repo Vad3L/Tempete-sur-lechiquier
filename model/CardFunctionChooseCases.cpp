@@ -607,3 +607,50 @@ bool CavalierSuicideIsPlayable (Plateau& p, Phase f) {
 	
 	return false;
 }
+
+
+bool OhDarling (Plateau& p, std::vector<gf::Vector2i> tabVector) {
+	gf::Log::info("Appel Oh Darling execute\n");
+	if(tabVector.size() != 2 || !inBoard(tabVector[0]) || !inBoard(tabVector[1])){
+		return false;
+	}
+	
+	Piece &piece1 = p.state[tabVector[0].y * 8 + tabVector[0].x].piece;
+	Piece &piece2 = p.state[tabVector[1].y * 8 + tabVector[1].x].piece;
+
+	if(!checkGoodChoose(p, piece1, Piece(p.turnTo, ChessPiece::KING), piece2, Piece(ChessColor::NONE, ChessPiece::NONE)) && !checkGoodChoose(p, piece1, Piece(p.turnTo, ChessPiece::QUEEN), piece2, Piece(ChessColor::NONE, ChessPiece::NONE))) {
+		return false;
+	}
+
+	Piece pieceVide = piece1;
+	gf::Vector2i coordVide = tabVector[0];
+
+	if(piece1.getType()==ChessPiece::QUEEN || piece1.getType()==ChessPiece::KING) {
+		pieceVide = piece2;
+		coordVide = tabVector[1];
+	}
+	ChessPiece aTrouver = ((piece1.getType() == ChessPiece::NONE) ? piece2.getType() : piece1.getType());
+	aTrouver = ((aTrouver == ChessPiece::QUEEN ? ChessPiece::KING : ChessPiece::QUEEN));
+
+	for(auto &c : p.state) {
+		if(c.piece.getType() == aTrouver && c.piece.getColor()==p.turnTo) {
+			gf::Vector2i pos = c.position;
+			if(coordVide.x >= pos.x-1 && coordVide.x <= pos.x+1 && coordVide.y >= pos.y-1 && coordVide.y <= pos.y+1) {
+				std::swap(piece1, piece2);
+				return true;
+			}
+		}
+	}
+
+	return false;
+}
+
+bool OhDarlingIsPlayable (Plateau& p, Phase f) {
+	gf::Log::info("Appel Oh Darling jouable\n");
+
+	if (f != Phase::AVANT_COUP  || p.playerInEchec) {
+		return false;
+	}
+
+	return pieceExist(p, ChessPiece::KNIGHT, p.turnTo);
+}
