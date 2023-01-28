@@ -826,7 +826,6 @@ bool EncephalopathieSongiformeEquine (Plateau& p, std::vector<gf::Vector2i> tabV
 	if (res) {
 		gf::Log::info("Cette carte met en Echec l'un des deux rois - donc invalide\n");
 		piece1 = Piece(piece1.getColor(), ChessPiece::KNIGHT);
-		return false;
 	}
 
 	return !res;
@@ -913,8 +912,8 @@ bool Frayeur (Plateau& p, std::vector<gf::Vector2i> tabVector) {
 
 	if (!can) { return false; }
 	gf::Vector2i caseProvocateEchec(-1);
-	if(p.playerInEchec) {
-		caseProvocateEchec = p.caseProvocateEchec; //obtenir la dernier case qui met met en cehc l'afversaire forcement par un coup normal
+	if (p.playerInEchec) {
+		caseProvocateEchec = p.caseProvocateEchec;
 	}
 
 	std::swap(pa, pb);
@@ -923,7 +922,58 @@ bool Frayeur (Plateau& p, std::vector<gf::Vector2i> tabVector) {
 	if (res) {
 		std::swap(pa, pb);
 	}
+	return !res;
+}
+
+bool GrosseDeprime (Plateau& p, std::vector<gf::Vector2i> tabVector) {
+	gf::Log::info("Appel GrosseDeprime execute\n");
+	if(tabVector.size() != 1 || !inBoard(tabVector[0])) {
+		return false;
+	}
+	
+	Piece &piece1 = p.state[tabVector[0].y * 8 + tabVector[0].x].piece;
+
+	if(piece1.getType()!=ChessPiece::PAWN || piece1.getColor()==p.turnTo) {
+		return false;
+	}
+
+	int x = p.state[tabVector[0].y * 8 + tabVector[0].x].position.x;
+	int y = p.state[tabVector[0].y * 8 + tabVector[0].x].position.y;
+
+	for(int i=-1; i<=1; i++) {
+		for(int j=-1; j<=1; j++) {
+			if(inBoard({x-i, y-j}) && (i !=0 || j!=0)) {
+				if(!(p.state[(y-j)*8 + (x-i)].piece.getType()==ChessPiece::NONE && p.state[(y-j)*8 + (x-i)].piece.getColor()==ChessColor::NONE)) {
+					gf::Log::info("Le pion adverse à un voisin - donc invalide\n");
+					return false;
+				}
+			}
+		}
+	}
+
+	piece1 = Piece(ChessColor::NONE, ChessPiece::NONE);
+
+	gf::Vector2i caseProvocateEchec(-1);
+	if (p.playerInEchec) {
+		caseProvocateEchec = p.caseProvocateEchec;
+	}
+
+	bool res = p.isInEchec(p.turnTo) || p.isInEchec(!p.turnTo, gf::Vector2i(-1), caseProvocateEchec);
+	if (res) {
+		gf::Log::info("Cette carte met en Echec l'un des deux rois - donc invalide\n");
+		piece1 = Piece(!p.turnTo, ChessPiece::PAWN);
+	} else {
+		p.bin.push_back(Piece(!p.turnTo, ChessPiece::PAWN));
+	}
 
 	return !res;
 }
 
+bool GrosseDeprimeIsPlayable (Plateau& p, Phase f) {
+	gf::Log::info("Appel GrosseDeprime jouable\n");
+	if (f != Phase::APRES_COUP) {
+		return false;
+	}
+
+	return pieceExist(p, ChessPiece::PAWN, !p.turnTo);
+}

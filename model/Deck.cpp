@@ -43,11 +43,14 @@ Deck::Deck(std::vector<int> numCards){
 	m_execsfuncs.insert({ 45, Desintegration });
 	m_isplayfuncs.insert({ 45, DesintegrationIsPlayable });
 
-	m_execsfuncs.insert({ 54, Ecurie });
-	m_isplayfuncs.insert({ 54, EcurieIsPlayable });
-
-	m_execsfuncs.insert({ 57, EncephalopathieSongiformeEquine });
+	m_execsfuncs.insert({ 57, Ecurie });
 	m_isplayfuncs.insert({ 57, EcurieIsPlayable });
+
+	m_execsfuncs.insert({ 60, EncephalopathieSongiformeEquine });
+	m_isplayfuncs.insert({ 60, EcurieIsPlayable });
+	
+	m_execsfuncs.insert({ 66, GrosseDeprime });
+	m_isplayfuncs.insert({ 66, GrosseDeprimeIsPlayable });
 
 	m_execsfuncs.insert({ 83, Neutralite });
 	m_isplayfuncs.insert({ 83, NeutraliteIsPlayable });

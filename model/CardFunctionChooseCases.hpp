@@ -34,6 +34,7 @@ bool Ecurie (Plateau& p, std::vector<gf::Vector2i> tabVector);
 bool EncephalopathieSongiformeEquine (Plateau& p, std::vector<gf::Vector2i> tabVector); 
 bool CrazyHorse (Plateau& p, std::vector<gf::Vector2i> tabVector); 
 bool Frayeur (Plateau& p, std::vector<gf::Vector2i> tabVector);
+bool GrosseDeprime (Plateau& p, std::vector<gf::Vector2i> tabVector); 
 
 bool ChameauIsPlayable (Plateau& p, Phase f);
 bool QuatreCoinIsPlayable (Plateau& p, Phase f);
@@ -58,5 +59,6 @@ bool EcurieIsPlayable (Plateau& p, Phase f);
 bool EncephalopathieSongiformeEquineIsPlayable (Plateau& p, Phase f);
 bool CrazyHorseIsPlayable (Plateau& p, Phase f);
 bool FrayeurIsPlayable (Plateau& p, Phase f);
+bool GrosseDeprimeIsPlayable (Plateau& p, Phase f);
 
 #endif // CARD_FUNC_CHOOSE_CASES_H

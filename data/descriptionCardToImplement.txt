@@ -52,15 +52,15 @@
 51;DOUBLURE;Si la case de départ de votre roi est libre, vous pouvez y faire apparaitre un second Roi. Désormais, vous pouvez laisser l'un de vos Rois en échec, et même vous le faire prendre. Vous ne perdrez la partie que lorsque votre dernier Roi sera mat.;1;0;0
 52;DROIT D'AUTEUR;A partir du moment où cette carte est jouée, tout joueurs faisant une remarque désobligeante au sujet du jeu Tempête sur l'échiquier perd immédiatement un pion choisi par son adversaire;1;0;0
 53;DUEL;Jouez cette carte lorsque votre adversaire veut prendre l'une de vos pièces. Le combat entre les deux pièces pour déterminer celle qui reste sur la case et celle qui quitte l'échiquier est résolu au 421, à pile ou face, ou à Pierre, feuille, ciseaux, selon votre choix.;1;0;0
-54;ECURIE;Sur l'échiquier, permutez l'un de vos Cavaliers avec l'une de vos Tours;1;0;0
-55;ELECTROCHOC;Tous les Fous qui peuvent l'être doivent être déplacés horizontalement ou verticalement d'une case, sans prendre de pièce. Votre adversaire déplace ses Fous en premier.;1;0;0
-56;ELEMENT INCONTROLE;Déplacez une pièce adverse selon ses règles normales de déplacement. Vous ne pouvez pas prendre ainsi une pièce adverse.;1;0;0
-57;ENCEPHALOPATHIE SPONGIFORME EQUINE;L'un de vos Cavaliers, ou un Cavalier adverse, devient Fou. Il se déplacera désormais uniquement comme un Fou.;1;0;0
-58;ESTAFETTE;Déplacez l'une de vos pièces (selon son déplacement habituel) en lui faisant traverser toutes les cases de son chemin où se trouvent vos propres pièces. Vous ne pouvez pas prendre ainsi une pièce adverse.;1;0;0
-59;EXIL;Replacez sur la case, où sur l'une des cases, où elle pouvait se trouver en début de partie, une pièce adverse de votre choix. La case d'arrivé doit être libre.;1;1;0
-60;FANTOCHE;Jouez cette carte lorsque vous êtes mis en échec, même mat. Vous permutez alors sur l'échiquier votre Roi avec l'un de vos Pions.;0;0;0
-61;FAVORITE;Déplacez n'importe laquelle de vos pièces (sauf un Pion) à la manière d'une Dame. Vous ne pouvez pas prendre ainsi une pièce adverse.;0;0;1
-62;FOU REFLECHI;Déplacez l'un de vos Fous en le faisant "rebondir" sur les côtés de l'échiquier, poursuivant son chemin en décrivant un anle à 90, somme indiqué sur l'exemple ci-dessus. Il n'y pas de limite au nombre de rebonds au cours d'un déplacement.;0;0;1
+57;ECURIE;Sur l'échiquier, permutez l'un de vos Cavaliers avec l'une de vos Tours;1;0;0
+58;ELECTROCHOC;Tous les Fous qui peuvent l'être doivent être déplacés horizontalement ou verticalement d'une case, sans prendre de pièce. Votre adversaire déplace ses Fous en premier.;1;0;0
+59;ELEMENT INCONTROLE;Déplacez une pièce adverse selon ses règles normales de déplacement. Vous ne pouvez pas prendre ainsi une pièce adverse.;1;0;0
+60;ENCEPHALOPATHIE SPONGIFORME EQUINE;L'un de vos Cavaliers, ou un Cavalier adverse, devient Fou. Il se déplacera désormais uniquement comme un Fou.;1;0;0
+61;ESTAFETTE;Déplacez l'une de vos pièces (selon son déplacement habituel) en lui faisant traverser toutes les cases de son chemin où se trouvent vos propres pièces. Vous ne pouvez pas prendre ainsi une pièce adverse.;1;0;0
+62;EXIL;Replacez sur la case, où sur l'une des cases, où elle pouvait se trouver en début de partie, une pièce adverse de votre choix. La case d'arrivé doit être libre.;1;1;0
+54;FANTOCHE;Jouez cette carte lorsque vous êtes mis en échec, même mat. Vous permutez alors sur l'échiquier votre Roi avec l'un de vos Pions.;0;0;0
+55;FAVORITE;Déplacez n'importe laquelle de vos pièces (sauf un Pion) à la manière d'une Dame. Vous ne pouvez pas prendre ainsi une pièce adverse.;0;0;1
+56;FOU REFLECHI;Déplacez l'un de vos Fous en le faisant "rebondir" sur les côtés de l'échiquier, poursuivant son chemin en décrivant un anle à 90, somme indiqué sur l'exemple ci-dessus. Il n'y pas de limite au nombre de rebonds au cours d'un déplacement.;0;0;1
 63;FRAYEUR;Faites reculer un pion adverse d'une ou deux cases.;1;0;0
 64;FRINGALE;Les deux adversaires sont désormais obligés de prendre une pièce adverse à chaque coup. L'effet de cette carte dure jusqu'à ce que l'un des deux joueurs soit dans l'impossibilité de prendre.;1;0;0
 65;FUSION;Déplacez l'une de vos pièces vers une case occupée par une autre de vos pièces. Les deux pièces fusionneent en une nouvelle, qui se déplacera désormais comme l'une ou l'autre, des deux pièces d'origine. Le Roi ne peut pas fusionner.;0;0;1
