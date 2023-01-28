@@ -903,7 +903,7 @@ bool Frayeur (Plateau& p, std::vector<gf::Vector2i> tabVector) {
 	if (abs(pawn.y - empty.y) > 2) { return false; }
 
 	bool can = false;
-	int col = (p.turnTo == ChessColor::WHITE) ? 1 : -1;
+	int col = (!p.turnTo == ChessColor::WHITE) ? 1 : -1;
 	if (abs(pawn.y - empty.y) == 1) { can = true; }
 	if (abs(pawn.y - empty.y) == 2) {
 		if (p.state[((pawn.y + col) * 8) + pawn.x].piece.getType() != ChessPiece::NONE) { return false; }
