@@ -29,6 +29,7 @@ bool RebeloteEtDixDeDer ([[maybe_unused]] Plateau& p, [[maybe_unused]] std::vect
 bool OhDarling (Plateau& p, std::vector<gf::Vector2i> tabVector); 
 // nest pas encore inclut
 bool Neutralite (Plateau& p, std::vector<gf::Vector2i> tabVector); 
+bool Tir (Plateau& p, std::vector<gf::Vector2i> tabVector);
 bool Ecurie (Plateau& p, std::vector<gf::Vector2i> tabVector); 
 bool EncephalopathieSongiformeEquine (Plateau& p, std::vector<gf::Vector2i> tabVector); 
 bool CrazyHorse (Plateau& p, std::vector<gf::Vector2i> tabVector); 
@@ -52,6 +53,7 @@ bool CavalierSuicideIsPlayable (Plateau& p, Phase f);
 bool RebeloteEtDixDeDerIsPlayable ([[maybe_unused]] Plateau& p, Phase f);
 bool NeutraliteIsPlayable ([[maybe_unused]] Plateau& p, Phase f);
 bool OhDarlingIsPlayable (Plateau& p, Phase f);
+bool TirIsPlayable ([[maybe_unused]] Plateau& p, Phase f);
 bool EcurieIsPlayable (Plateau& p, Phase f);
 bool EncephalopathieSongiformeEquineIsPlayable (Plateau& p, Phase f);
 bool CrazyHorseIsPlayable (Plateau& p, Phase f);

@@ -735,6 +735,73 @@ bool EcurieIsPlayable (Plateau& p, Phase f) {
 	return pieceExist(p, ChessPiece::KNIGHT, p.turnTo) && pieceExist(p, ChessPiece::ROOK, p.turnTo);
 }
 
+bool Tir (Plateau& p, std::vector<gf::Vector2i> tabVector) {
+	gf::Log::info("Appel Tir execute\n");
+
+	if (tabVector.size() != 2) {
+		return false;
+	}
+
+	if (!inBoard(tabVector[0]) || !inBoard(tabVector[1])) {
+		return false;
+	}
+
+	size_t us = -1, enemy = -1;
+	gf::Vector2i vus(-1), venemy(-1);
+	if (p.state[tabVector[0].y * 8 + tabVector[0].x].piece.getColor() == p.turnTo) {
+		us = tabVector[0].y * 8 + tabVector[0].x;
+		vus = tabVector[0];
+		venemy = tabVector[1];
+		enemy = tabVector[1].y * 8 + tabVector[1].x;
+	} else {
+		us = tabVector[1].y * 8 + tabVector[1].x;
+		vus = tabVector[1];
+		venemy = tabVector[0];
+		enemy = tabVector[0].y * 8 + tabVector[0].x;
+	}
+
+
+	Piece &piece = p.state[us].piece;
+	Piece &target =  p.state[enemy].piece;
+	Piece copy = target;
+	Piece empty = Piece(ChessColor::NONE, ChessPiece::NONE);
+
+	if (piece.getColor() == target.getColor()) { return false; }
+	if (piece.getType() == ChessPiece::NONE) { return false; }
+	if (target.getType() == ChessPiece::NONE) { return false; }
+	auto moves = p.filterMoveAuthorized(vus, piece.getMoves(vus));
+
+	bool has_move = false;
+	for (auto m : moves) {
+		if (m == venemy) { has_move = true; break; }
+	}
+	if (!has_move) { return false; }
+
+	gf::Vector2i caseEchec(-1);
+	
+	if (p.playerInEchec) {
+		caseEchec = p.caseProvocateEchec;	
+	}
+
+	target = empty;
+	bool res = p.isInEchec(p.turnTo) || p.isInEchec(!p.turnTo, gf::Vector2i(-1), caseEchec);
+
+	if (res) {
+		target = copy;
+	} else {
+		p.bin.push_back(copy);
+	}
+	return !res;
+}
+
+bool TirIsPlayable ([[maybe_unused]] Plateau& p, Phase f) {
+	gf::Log::info("Appel Tir jouable\n");
+	if (f != Phase::AVANT_COUP) {
+		return false;
+	}
+	return true;
+}
+
 bool EncephalopathieSongiformeEquine (Plateau& p, std::vector<gf::Vector2i> tabVector){
 	gf::Log::info("Appel EncephalopathieSongiformeEquine execute\n");
 	
