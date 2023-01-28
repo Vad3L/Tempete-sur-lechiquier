@@ -56,7 +56,7 @@ void ZoomCardScene::doRender(gf::RenderTarget& target, const gf::RenderStates &s
 	target.setView(m_principalView);
 
 	if(m_cardZoom.m_num != -1) {
-		gf::Coordinates coords(target);
+		gf::Coordinates coords({1600,900});
 
 		int bubbleX = (10.f/16.f)*1600;
 
@@ -64,7 +64,7 @@ void ZoomCardScene::doRender(gf::RenderTarget& target, const gf::RenderStates &s
 
 		gf::Text bubbleTittle("Description de la Carte "+m_cardEntity.m_card.m_name, m_rulesFont, 35);	
 		bubbleTittle.setColor(gf::Color::Yellow);
-		bubbleTittle.setPosition(coords.getRelativePoint({ 0.66f, 0.25f}));
+		bubbleTittle.setPosition(coords.getRelativePoint({ 0.72f, 0.29f}));
 		bubbleTittle.setAnchor(gf::Anchor::TopCenter);
 		bubbleTittle.setOutlineColor(gf::Color::Black);
 		bubbleTittle.setOutlineThickness(titleCharacterSize/6.f);
@@ -74,13 +74,13 @@ void ZoomCardScene::doRender(gf::RenderTarget& target, const gf::RenderStates &s
 		infoBubble.setColor(gf::Color::White);
 		infoBubble.setRadius(22);
 		infoBubble.setOutlineColor(gf::Color::Black);
-		infoBubble.setPosition(coords.getRelativePoint({0.40f,0.21f}));
+		infoBubble.setPosition(coords.getRelativePoint({0.40f,0.25f}));
 		//infoBubble.setAnchor(gf::Anchor::Center);
 		
 		gf::Text cardDescription(m_cardEntity.m_card.m_description, m_rulesFont, 25);
 	
 		cardDescription.setColor(gf::Color::Black);
-		cardDescription.setPosition(coords.getRelativePoint({0.66f,0.5f}));
+		cardDescription.setPosition(coords.getRelativePoint({0.72f,0.54f}));
 		cardDescription.setParagraphWidth(bubbleX-40);
 		cardDescription.setAlignment(gf::Alignment::Center);
 		cardDescription.setAnchor(gf::Anchor::Center);
@@ -107,7 +107,7 @@ void ZoomCardScene::doRender(gf::RenderTarget& target, const gf::RenderStates &s
 		gf::Text cardTimeToPlay(timeToPlay, m_rulesFont, 25);
 	
 		cardTimeToPlay.setColor(gf::Color::Black);
-		cardTimeToPlay.setPosition(coords.getRelativePoint({0.66f,0.725f}));
+		cardTimeToPlay.setPosition(coords.getRelativePoint({0.72f,0.765f}));
 		cardTimeToPlay.setParagraphWidth(bubbleX-40);
 		cardTimeToPlay.setAlignment(gf::Alignment::Center);
 		cardTimeToPlay.setAnchor(gf::Anchor::Center);
