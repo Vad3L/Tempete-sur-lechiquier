@@ -21,5 +21,6 @@
 126;TOUR DE FADA;Sur l'échiquier, permuttez un Fou adverse avec une Tour adverse.;1;1;0;2
 131;URBANISME;Sur l'échiquier, permutez l'une de vos Tours avec une Tour adverse.;1;1;0;2
 132;VAMPIRISME;L'une de vos pièces, qui vient de prendre une pièce adverse, se transforme en une pièce de même type que celle qu'elle vient de prendre. Ainsi, par exemple, si l'un de vos Pions a pris un Cavalier, il devient un Cavalier.;1;0;0;0
+63;FRAYEUR;Faites reculer un pion adverse d'une ou deux cases.;1;1;0;2
 135;VISITES OFFICIELLES;Permutez votre Roi avec celui de votre adversaire, à condition que cela ne mette aucun de vous deux en échec.;1;0;0;0
 124;TIR;Vous pouvez prendre une pièce adver "au tir", sans que son agresseur vienne prendre sa place. le coup consiste simplement à désigner une la case que votre pièce pourrait atteindre, puis à retirer la pièce adverse qui s'y trouve, la pièce qui prend ne bougeant pas.;0;1;1;2

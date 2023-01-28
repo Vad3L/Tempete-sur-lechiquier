@@ -794,7 +794,7 @@ bool Tir (Plateau& p, std::vector<gf::Vector2i> tabVector) {
 	return !res;
 }
 
-bool TirIsPlayable (Plateau& p, Phase f) {
+bool TirIsPlayable ([[maybe_unused]] Plateau& p, Phase f) {
 	gf::Log::info("Appel Tir jouable\n");
 	if (f != Phase::AVANT_COUP) {
 		return false;
@@ -866,5 +866,64 @@ bool CrazyHorseIsPlayable (Plateau& p, Phase f) {
 	}
 
 	return pieceExist(p, ChessPiece::KNIGHT, !p.turnTo) && pieceExist(p, ChessPiece::BISHOP, !p.turnTo);
+}
+
+bool FrayeurIsPlayable (Plateau& p, Phase f) {
+	gf::Log::info("Appel Frayeur jouable\n");
+	if (f != Phase::APRES_COUP) {
+		return false;
+	}
+
+	return pieceExist(p, ChessPiece::PAWN, !p.turnTo);
+}
+
+bool Frayeur (Plateau& p, std::vector<gf::Vector2i> tabVector) {
+	gf::Log::info("Appel Frayeur execute\n");
+	if (tabVector.size() != 2) { return false; }
+	if (!inBoard(tabVector[0]) || !inBoard(tabVector[1])) { return false; }
+
+	Piece& pa = p.state[tabVector[0].y * 8 + tabVector[0].x].piece;
+	Piece& pb = p.state[tabVector[1].y * 8 + tabVector[1].x].piece;
+	gf::Vector2i pawn, empty;
+	bool correct = false;
+
+	if (pa.getType() == ChessPiece::PAWN && pb.getType() == ChessPiece::NONE) {
+		pawn = tabVector[0];
+		empty = tabVector[1];
+		correct = true;
+	} else if (pa.getType() == ChessPiece::NONE && pb.getType() == ChessPiece::PAWN) {
+		pawn = tabVector[1];
+		empty = tabVector[0];
+		correct = true;
+	}
+
+	if (!correct) { return false; }
+	if (p.state[pawn.y * 8 + pawn.x].piece.getColor() == p.turnTo) { return false; }
+
+	if (pawn.x != empty.x) { return false; }
+	if (abs(pawn.y - empty.y) > 2) { return false; }
+
+	bool can = false;
+	int col = (p.turnTo == ChessColor::WHITE) ? 1 : -1;
+	if (abs(pawn.y - empty.y) == 1) { can = true; }
+	if (abs(pawn.y - empty.y) == 2) {
+		if (p.state[((pawn.y + col) * 8) + pawn.x].piece.getType() != ChessPiece::NONE) { return false; }
+		can = true;
+	}
+
+	if (!can) { return false; }
+	gf::Vector2i caseProvocateEchec(-1);
+	if(p.playerInEchec) {
+		caseProvocateEchec = p.caseProvocateEchec; //obtenir la dernier case qui met met en cehc l'afversaire forcement par un coup normal
+	}
+
+	std::swap(pa, pb);
+
+	bool res = p.isInEchec(p.turnTo) || p.isInEchec(!p.turnTo, gf::Vector2i(-1), caseProvocateEchec);
+	if (res) {
+		std::swap(pa, pb);
+	}
+
+	return !res;
 }
 
