@@ -28,6 +28,8 @@ class MainEntity : public gf::Entity {
 		void render(gf::RenderTarget &target, const gf::RenderStates &states) override ;
 
 		int getCardSelected([[maybe_unused]] gf::Vector2i sizeWindows, gf::Vector2i mouseCoord);
+
+		int m_hoverCard = -1;
 	private:
 
 		GameData &m_gameData;

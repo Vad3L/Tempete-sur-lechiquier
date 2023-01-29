@@ -191,6 +191,7 @@ void GameScene::doProcessEvent(gf::Event& event) {
 	
 	bool clickLeft = false;
 	bool clickRight = false;
+	bool mouseMoved = false;
 
 	m_views.processEvent(event);
 	
@@ -199,6 +200,7 @@ void GameScene::doProcessEvent(gf::Event& event) {
 	switch (event.type) {
 		case gf::EventType::MouseMoved:
 			m_widgets.pointTo(m_game.computeWindowToGameCoordinates(event.mouseCursor.coords, m_principalView));
+			mouseMoved = true;
 			break;
 
 		case gf::EventType::MouseButtonPressed:
@@ -210,6 +212,20 @@ void GameScene::doProcessEvent(gf::Event& event) {
 			break;
 		default :
 			break;
+	}
+
+	if(mouseMoved) {
+		gf::Log::error("mousemoved : \n\n /%i/ /%i/", event.mouseButton.coords.x, event.mouseButton.coords.y);
+		int numCarte = m_mainEntity.getCardSelected(m_cardsView.getSize(), m_game.getRenderer().mapPixelToCoords(event.mouseCursor.coords, m_cardsView));
+		m_mainEntity.m_hoverCard = -1;
+
+		if(numCarte!=-1) {
+			gf::Log::error("mousemoved 2222: \n\n");
+			m_mainEntity.m_hoverCard = numCarte;
+		}
+		return;
+	}else {
+		m_mainEntity.m_hoverCard = -1;
 	}
 
 	if(clickRight) {
