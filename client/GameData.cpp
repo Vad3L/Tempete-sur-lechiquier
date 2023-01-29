@@ -17,7 +17,7 @@ GameData::GameData()
 	std::ifstream file(std::string(GAME_CONFIGDIR)+"Settings.txt");
 
 	if (!file) {
-		gf::Log::error("Impossible d'ouvrir le fichier.\n");
+		gf::Log::error("Impossible d'ouvrir le fichier settings.txt\n");
 	}else{
 		std::string line;
 	
