@@ -1,13 +1,15 @@
 #include "TableBoardEntity.hpp"
 
 TableBoardEntity::TableBoardEntity(gf::ResourceManager& resources, GameData &gameData)
-: m_font(resources.getFont("fonts/DejaVuSans.ttf"))
+: m_gameData(gameData)
+, m_font(resources.getFont("fonts/DejaVuSans.ttf"))
 , m_backgroundTexture(resources.getTexture("images/ChessSheet.png"))
 , m_backgroundTexture2(resources.getTexture("images/ChessSheet2.png"))
-, m_gameData(gameData)
+, m_backgroundTexture3(resources.getTexture("images/ChessSheet3.png"))
 {
 	m_backgroundTexture.setSmooth(true);
 	m_backgroundTexture2.setSmooth(true);
+	m_backgroundTexture3.setSmooth(true);
 }
 
 void TableBoardEntity::update([[maybe_unused]] gf::Time time) {
@@ -17,7 +19,7 @@ void TableBoardEntity::render(gf::RenderTarget &target, const gf::RenderStates &
 	gf::Coordinates coords(gf::Vector2i(500.f , 500.f));
 
 	constexpr int numberPiece = (int)ChessPiece::MAX - (int)ChessPiece::MIN + 1;
-	gf::Texture &texture = (m_gameData.m_style == 0) ? m_backgroundTexture : m_backgroundTexture2;
+	gf::Texture &texture = (m_gameData.m_style == 0) ? m_backgroundTexture : (m_gameData.m_style == 1) ? m_backgroundTexture2 : m_backgroundTexture3;
 
 	gf::RectangleShape tableCloth(gf::Vector2f(500.f, 400.f));
 	tableCloth.setAnchor(gf::Anchor::Center);

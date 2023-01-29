@@ -26,12 +26,14 @@ class TableBoardEntity: public gf::Entity {
 		void render(gf::RenderTarget &target, const gf::RenderStates &states) override;
 		
 	private:
+		GameData &m_gameData;
 
 		gf::Font &m_font;
+
 		gf::Texture &m_backgroundTexture;
 		gf::Texture &m_backgroundTexture2;
-
-		GameData &m_gameData;
+		gf::Texture &m_backgroundTexture3;
+		
 };
 
 

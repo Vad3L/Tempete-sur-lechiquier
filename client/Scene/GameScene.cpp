@@ -23,9 +23,12 @@ GameScene::GameScene(GameHub& game, Network &network, GameData &gameData)
 , m_playCard("Activer carte", game.resources.getFont("fonts/Trajan-Color-Concept.otf"))
 , m_loading(game.resources.getTexture("images/Loading.png"))
 , m_font(game.resources.getFont("fonts/Trajan-Color-Concept.otf"))
+, m_background(game.resources.getTexture("images/BackgroundGame.png"))
 {
 	setClearColor(gf::Color::Black);
-	
+	m_loading.setSmooth(true);
+	m_background.setSmooth(true);
+
 	m_animation.addTileset(m_loading, gf::vec(12, 1), gf::milliseconds(400), 12);
 	m_animatedSprite.setAnimation(m_animation);
   	m_animatedSprite.setOrigin({ 84.f / 2.0f, 84.f / 2.0f });
@@ -89,8 +92,6 @@ GameScene::GameScene(GameHub& game, Network &network, GameData &gameData)
 	m_views.addView(m_principalView);
 
 	m_views.setInitialFramebufferSize({game.getRenderer().getSize()});
-
-	m_loading.setSmooth(true);
 
 	gf::Coordinates coordsWidget(m_game.getRenderer().getSize());
 	auto setupButton = [&] (gf::TextButtonWidget& button, gf::Vector2f position,  auto callback) {
@@ -330,6 +331,18 @@ void GameScene::doProcessEvent(gf::Event& event) {
 }
 
 void GameScene::doRender(gf::RenderTarget& target, const gf::RenderStates &states) {
+	target.setView(getHudView());
+	gf::Coordinates coord(target);
+
+	float backgroundHeight = coord.getRelativeSize(gf::vec(0.0f, 1.0f)).height;
+	float backgroundScale = backgroundHeight / m_background.getSize().height;
+
+	gf::Sprite background(m_background);
+	background.setPosition(coord.getCenter());
+	background.setAnchor(gf::Anchor::Center);
+	background.setScale(backgroundScale);
+	target.draw(background, states);
+
 	target.setView(m_principalView);
 	gf::Coordinates coords({1600,900});
 	

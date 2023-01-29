@@ -44,26 +44,28 @@ void SettingsEntity::render(gf::RenderTarget &target, const gf::RenderStates &st
 	gf::Text textureStyle("None", m_font, subtitleCharacterSize);
 	textureStyle.setColor(gf::Color::Blue);
 	textureStyle.setPosition(coords.getRelativePoint({ 0.5f, 0.4f }));
-	textureStyle.setAnchor(gf::Anchor::Center);
 
 	gf::Text subtitleSound("Son du jeu", m_font, subtitleCharacterSize);
 	(m_ligne==1) ? subtitleSound.setColor(gf::Color::fromRgba32(144, 129, 60)) : subtitleSound.setColor(gf::Color::White);
 	subtitleSound.setPosition(coords.getRelativePoint({ 0.5f, 0.55f }));
 	subtitleSound.setAnchor(gf::Anchor::Center);
-	
-	gf::Text sound(std::to_string((int)BackgroundAmbiantVolume), m_font, subtitleCharacterSize);
-	sound.setColor(gf::Color::Blue);
-	sound.setPosition(coords.getRelativePoint({ 0.5f, 0.65f }));
-	sound.setAnchor(gf::Anchor::Center);
-
 	switch (m_gameData.m_style) {
 		case 0:
 			textureStyle.setString("Bois");
 			break;
 		case 1:
-			textureStyle.setString("Chic");
+			textureStyle.setString("Marbre");
+			break;
+		case 2:
+			textureStyle.setString("Papier");
 			break;
 	}
+	textureStyle.setAnchor(gf::Anchor::Center);
+
+	gf::Text sound(std::to_string((int)BackgroundAmbiantVolume), m_font, subtitleCharacterSize);
+	sound.setColor(gf::Color::Blue);
+	sound.setPosition(coords.getRelativePoint({ 0.5f, 0.65f }));
+	sound.setAnchor(gf::Anchor::Center);
 	
 	target.draw(background, states);
 	target.draw(title, states);

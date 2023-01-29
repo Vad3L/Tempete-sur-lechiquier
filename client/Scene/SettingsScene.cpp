@@ -207,7 +207,7 @@ void SettingsScene::doRender(gf::RenderTarget& target, const gf::RenderStates &s
 	m_leftStyleButton.setScale(1.f/2.f);
 	
 	m_rightStyleButton.setScale(1.f/2.f);
-	m_rightStyleButton.setPosition(coords.getRelativePoint({(m_gameData.m_style < 1 ? 0.775f : 2.775f), 0.4f }));
+	m_rightStyleButton.setPosition(coords.getRelativePoint({(m_gameData.m_style < 2 ? 0.775f : 2.775f), 0.4f }));
 
 	m_leftSoundButton.setPosition(coords.getRelativePoint({(BackgroundAmbiantVolume > 0 ? 0.225f : 2.775f), 0.65f }));
 	m_leftSoundButton.setScale(1.f/2.f);
@@ -221,7 +221,7 @@ void SettingsScene::doRender(gf::RenderTarget& target, const gf::RenderStates &s
 
 void SettingsScene::changeTexture(char c) {
 	if(c == '+') {
-		if(m_gameData.m_style < 1) {
+		if(m_gameData.m_style < 2) {
 			m_gameData.m_style++;
 		}
 	}else {

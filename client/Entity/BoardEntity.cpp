@@ -3,11 +3,14 @@
 BoardEntity::BoardEntity(gf::ResourceManager& resources, GameData &gameData)
 : m_backgroundTexture(resources.getTexture("images/ChessSheet.png"))
 , m_backgroundTexture2(resources.getTexture("images/ChessSheet2.png"))
+, m_backgroundTexture3(resources.getTexture("images/ChessSheet2.png"))
 , m_target(resources.getTexture("images/Target.png"))
 ,m_gameData(gameData)
 {
 	m_backgroundTexture.setSmooth(true);
 	m_backgroundTexture2.setSmooth(true);
+	m_backgroundTexture3.setSmooth(true);
+	
 	m_target.setSmooth(true);
 }
 
@@ -33,7 +36,9 @@ void BoardEntity::render(gf::RenderTarget &target, const gf::RenderStates &state
 	}
 	myTurn = (lastColor != m_gameData.m_myColor);
 
-	gf::Texture &texture = (m_gameData.m_style == 0) ? m_backgroundTexture : m_backgroundTexture2;
+	// j'arrive a faire mieux pas de constructeur = pour gf::texture
+	gf::Texture &texture = (m_gameData.m_style == 0) ? m_backgroundTexture : (m_gameData.m_style == 1) ? m_backgroundTexture2 : m_backgroundTexture3;
+	
 	gf::Vector2f pieceToPromuteCoords(-1);
 	ChessColor pieceToPromuteColor = ChessColor::NONE;
 	

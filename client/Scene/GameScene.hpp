@@ -78,6 +78,8 @@ class GameScene : public gf::Scene {
 		gf::Animation m_animation;
 		gf::AnimatedSprite m_animatedSprite;
 		
+		gf::Texture &m_background;
+
 		float startTime = 0.f;
 
 		sf::Sound clickEndturn;

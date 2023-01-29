@@ -26,7 +26,7 @@ void PoseEntity::render(gf::RenderTarget &target, const gf::RenderStates &states
 	gf::Vector2f position2 = coords.getRelativePoint({ 0.95f, 0.5f });
 	
 	gf::RoundedRectangleShape contour(sizeCard);
-	contour.setColor(gf::Color::Black);
+	contour.setColor(gf::Color::fromRgba32(0,0,0,0));
 	contour.setOutlineThickness(6.f);
 	contour.setRadius(22);
 	contour.setPosition(position1);
@@ -46,8 +46,8 @@ void PoseEntity::render(gf::RenderTarget &target, const gf::RenderStates &states
 			poseName.setColor(gf::Color::Green);
 			break;
 		case Phase::PAS_MON_TOUR:
-			contour.setOutlineColor(gf::Color::Cyan);
-			poseName.setColor(gf::Color::Cyan);
+			contour.setOutlineColor(gf::Color::fromRgba32(237,101,211));
+			poseName.setColor(gf::Color::fromRgba32(237,101,211));
 			break;
 		default :
 			contour.setOutlineColor(gf::Color::White);
