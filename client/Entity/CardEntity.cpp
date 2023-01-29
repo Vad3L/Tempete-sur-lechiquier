@@ -53,18 +53,31 @@ void CardEntity::draw(gf::RenderTarget &target, const gf::RenderStates &states, 
 	rect.setTexture(m_accessories,gf::RectF::fromPositionSize({ 0.f  , 0.f }, { 1.f , 1.f }));
 	rect.setPosition({position.x+sizeCard.x/2.f, position.y+sizeCard.y/1.6f});
 	rect.setAnchor(gf::Anchor::Center);
+	
+	gf::RoundedRectangleShape dalto({20.f*zoom,20.f*zoom});
+	dalto.setAnchor(gf::Anchor::Center);
+	dalto.setPosition({position.x+sizeCard.x-(20.f*zoom), position.y+sizeCard.y/12.f});
+
+	
 	switch (c.m_turn) {
 		case Turn::AVANT_COUP:
+			dalto.setColor(gf::Color::Yellow);
+			dalto.setRadius(50);
 			rect.setColor(gf::Color::Yellow);
 			break;
 		case Turn::APRES_COUP:
+			dalto.setColor(gf::Color::Green);
 			rect.setColor(gf::Color::Green);
 			break;
 		case Turn::BOTH:
-			rect.setColor(gf::Color::fromRgba32(212,234,45));
+			dalto.setColor(gf::Color::fromRgba32(0,165,225));
+			dalto.setRotation(95);
+			rect.setColor(gf::Color::fromRgba32(0,165,225));
 			break;
 		case Turn::DURING_TOUR_ADVERSE:
-			rect.setColor(gf::Color::Cyan);
+			dalto.setColor(gf::Color::fromRgba32(237,101,211));
+			dalto.setRadius(25);
+			rect.setColor(gf::Color::fromRgba32(237,101,211));
 			break;
 	}
 	/*if(m_gameData.m_phase.getCurrentPhase()==Phase::COUP) {
@@ -86,6 +99,7 @@ void CardEntity::draw(gf::RenderTarget &target, const gf::RenderStates &states, 
 	target.draw(card, states);
 	target.draw(illustration, states);
 	target.draw(rect, states);
+	target.draw(dalto,states);
 	target.draw(cardName, states);
 	target.draw(cardDescription, states);
 }
