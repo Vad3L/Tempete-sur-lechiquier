@@ -867,15 +867,6 @@ bool CrazyHorseIsPlayable (Plateau& p, Phase f) {
 	return pieceExist(p, ChessPiece::KNIGHT, !p.turnTo) && pieceExist(p, ChessPiece::BISHOP, !p.turnTo);
 }
 
-bool FrayeurIsPlayable (Plateau& p, Phase f) {
-	gf::Log::info("Appel Frayeur jouable\n");
-	if (f != Phase::APRES_COUP) {
-		return false;
-	}
-
-	return pieceExist(p, ChessPiece::PAWN, !p.turnTo);
-}
-
 bool Frayeur (Plateau& p, std::vector<gf::Vector2i> tabVector) {
 	gf::Log::info("Appel Frayeur execute\n");
 	if (tabVector.size() != 2) { return false; }
@@ -904,12 +895,13 @@ bool Frayeur (Plateau& p, std::vector<gf::Vector2i> tabVector) {
 
 	bool can = false;
 	int col = (!p.turnTo == ChessColor::WHITE) ? 1 : -1;
-	if (abs(pawn.y - empty.y) == 1) { can = true; }
-	if (abs(pawn.y - empty.y) == 2) {
+	
+	if ((pawn.y + col) == empty.y) { can = true; }
+	if ((pawn.y +  2 * col) == empty.y) {
 		if (p.state[((pawn.y + col) * 8) + pawn.x].piece.getType() != ChessPiece::NONE) { return false; }
 		can = true;
 	}
-
+	
 	if (!can) { return false; }
 	gf::Vector2i caseProvocateEchec(-1);
 	if (p.playerInEchec) {
@@ -923,6 +915,15 @@ bool Frayeur (Plateau& p, std::vector<gf::Vector2i> tabVector) {
 		std::swap(pa, pb);
 	}
 	return !res;
+}
+
+bool FrayeurIsPlayable (Plateau& p, Phase f) {
+	gf::Log::info("Appel Frayeur jouable\n");
+	if (f != Phase::APRES_COUP) {
+		return false;
+	}
+
+	return pieceExist(p, ChessPiece::PAWN, !p.turnTo);
 }
 
 bool GrosseDeprime (Plateau& p, std::vector<gf::Vector2i> tabVector) {

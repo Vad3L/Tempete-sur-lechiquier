@@ -9,7 +9,7 @@ project(${GAME}
 include(GNUInstallDirs)
 
 find_package(gf REQUIRED COMPONENTS graphics net)
-#find_package(SFML REQUIRED COMPONENTS audio)
+find_package(SFML REQUIRED COMPONENTS audio)
 
 if (UNIX)
 	message(STATUS ">>> Unix")

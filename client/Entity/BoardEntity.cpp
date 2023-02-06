@@ -99,7 +99,8 @@ void BoardEntity::render(gf::RenderTarget &target, const gf::RenderStates &state
 			float j = ((int)c.piece.getColor())/4.f;
 			
 
-			if(c.piece.getType() == ChessPiece::PAWN && (y == 0 || y == 7) && !myTurn) {
+			if(c.piece.getType() == ChessPiece::PAWN && !myTurn && ((y == 0 && c.piece.getColor() == ChessColor::WHITE) || (y == 7 && c.piece.getColor() == ChessColor::BLACK ))) {
+				
 				pieceToPromuteCoords.x = x;
 				pieceToPromuteCoords.y = y;
 				pieceToPromuteColor = c.piece.getColor();

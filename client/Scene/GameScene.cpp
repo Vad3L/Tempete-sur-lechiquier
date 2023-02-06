@@ -374,7 +374,7 @@ void GameScene::doRender(gf::RenderTarget& target, const gf::RenderStates &state
 	}
 	
 	if(m_gameData.m_gameStatus == ChessStatus::STOP_WATCH) {
-		std::string indaction = "La partie commence dans " + std::to_string((int)startTime) + " secondes ...\n Vous jouez les " + ((m_gameData.m_myColor==ChessColor::WHITE) ? "Blancs" : "Noires");
+		std::string indaction = "La partie commence dans " + std::to_string((int)startTime) + " secondes ...\n Vous jouez les " + ((m_gameData.m_myColor==ChessColor::WHITE) ? "Blancs" : "Noirs");
 		gf::Text text(indaction, m_font, 50);
 		text.setColor(gf::Color::White);
 		text.setPosition(coords.getRelativePoint({0.6f, 0.45f }));	

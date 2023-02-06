@@ -49,6 +49,9 @@ Deck::Deck(std::vector<int> numCards){
 	m_execsfuncs.insert({ 60, EncephalopathieSongiformeEquine });
 	m_isplayfuncs.insert({ 60, EcurieIsPlayable });
 	
+	m_execsfuncs.insert({ 63, Frayeur });
+	m_isplayfuncs.insert({ 63, FrayeurIsPlayable });
+	
 	m_execsfuncs.insert({ 66, GrosseDeprime });
 	m_isplayfuncs.insert({ 66, GrosseDeprimeIsPlayable });
 
@@ -85,8 +88,6 @@ Deck::Deck(std::vector<int> numCards){
 	m_execsfuncs.insert({ 124, Tir });
 	m_isplayfuncs.insert({ 124, TirIsPlayable });
 
-	m_execsfuncs.insert({ 63, Frayeur });
-	m_isplayfuncs.insert({ 63, FrayeurIsPlayable });
 	//format du fichier
 	//NUM;NAME;DESCRIPTION;TURN;ACTION;EFFECT;nbCase (4 dernières valeurs sont des entier correspondant à la la valeur dans leur énum)
 	int borne = 11;
@@ -94,7 +95,7 @@ Deck::Deck(std::vector<int> numCards){
 		borne = 1;
 	}
 	for(int k =0 ;k<borne;k++) {
-		std::ifstream file(std::string(CARDS_DESCRIPTIONDIR)+"descriptionCards.txt");
+		std::ifstream file(std::string(CARDS_DESCRIPTIONDIR)+"descriptionCards.csv");
 
 		std::string delimiter = ";";
 
