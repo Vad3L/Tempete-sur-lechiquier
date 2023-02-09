@@ -94,7 +94,7 @@ GameScene::GameScene(GameHub& game, Network &network, GameData &gameData)
 	m_views.setInitialFramebufferSize({game.getRenderer().getSize()});
 
 	gf::Coordinates coordsWidget(m_game.getRenderer().getSize());
-	auto setupButton = [&] (gf::TextButtonWidget& button, gf::Vector2f position,  auto callback) {
+	auto setupButton = [&] (gf::TextButtonWidget& button,  auto callback) {
 		button.setDefaultTextColor(gf::Color::fromRgba32(212,30,27,255));
 		button.setDefaultBackgroundColor(gf::Color::Gray(0.7f));
 		button.setDefaultBackgroundOutlineColor(gf::Color::Gray(0.7f)); 
@@ -107,15 +107,11 @@ GameScene::GameScene(GameHub& game, Network &network, GameData &gameData)
 		button.setDisabledBackgroundColor(gf::Color::Gray(0.7f));
 		button.setDisabledBackgroundOutlineColor(gf::Color::Red); 
 
-		button.setRadius(5.f);
-		button.setBackgroundOutlineThickness(4.f);
-		button.setPosition( coordsWidget.getRelativePoint(position));
-		button.setAlignment(gf::Alignment::Center);
 		button.setCallback(callback);
 		m_widgets.addWidget(button);
 	};
 
-	setupButton(m_endTurn, { 0.162f, 0.2f }, [&] () {
+	setupButton(m_endTurn, [&] () {
 		if(m_gameData.m_phase.getCurrentPhase()==Phase::APRES_COUP) {
 			gf::Log::debug("EndTurn pressed!\n");
 			clickEndturn.play();
@@ -130,7 +126,7 @@ GameScene::GameScene(GameHub& game, Network &network, GameData &gameData)
 		}
 	});
 
-	setupButton(m_playCard, { 0.242f, 0.2f }, [&] () {
+	setupButton(m_playCard, [&] () {
 		if(m_poseEntity.m_cardPose.m_num == -1) {
 			return;
 		}
@@ -347,8 +343,8 @@ void GameScene::doProcessEvent(gf::Event& event) {
 }
 
 void GameScene::doRender(gf::RenderTarget& target, const gf::RenderStates &states) {
-	target.setView(getHudView());
 	gf::Coordinates coord(target);
+	target.setView(getHudView());
 
 	float backgroundHeight = coord.getRelativeSize(gf::vec(0.0f, 1.0f)).height;
 	float backgroundScale = backgroundHeight / m_background.getSize().height;
@@ -359,15 +355,15 @@ void GameScene::doRender(gf::RenderTarget& target, const gf::RenderStates &state
 	background.setScale(backgroundScale);
 	target.draw(background, states);
 
-	target.setView(m_principalView);
-	gf::Coordinates coords({1600,900});
+	
+	
 	
 	if(m_gameData.m_gameStatus == ChessStatus::NO_STARTED) {
 		gf::Text text("En attente d un autre joueur", m_font, 50);
-		text.setPosition(coords.getRelativePoint({0.6f, 0.45f }));	
+		text.setPosition(coord.getRelativePoint({0.5f, 0.5f }));	
 		text.setAnchor(gf::Anchor::Center);
 		text.setColor(gf::Color::White);
-		m_animatedSprite.setPosition(coords.getRelativePoint({0.6f, 0.6f }));
+		m_animatedSprite.setPosition(coord.getRelativePoint({0.5f, 0.6f }));
 		target.draw(text, states);
 		target.draw(m_animatedSprite, states);
 		return;
@@ -377,7 +373,7 @@ void GameScene::doRender(gf::RenderTarget& target, const gf::RenderStates &state
 		std::string indaction = "La partie commence dans " + std::to_string((int)startTime) + " secondes ...\n Vous jouez les " + ((m_gameData.m_myColor==ChessColor::WHITE) ? "Blancs" : "Noirs");
 		gf::Text text(indaction, m_font, 50);
 		text.setColor(gf::Color::White);
-		text.setPosition(coords.getRelativePoint({0.6f, 0.45f }));	
+		text.setPosition(coord.getRelativePoint({0.5f, 0.5f }));	
 		text.setAlignment(gf::Alignment::Center);
 		text.setParagraphWidth(1600.f);
 		text.setLineSpacing(2.f);
@@ -386,6 +382,18 @@ void GameScene::doRender(gf::RenderTarget& target, const gf::RenderStates &state
 		target.draw(text, states);
 		return;
 	}
+	
+	m_endTurn.setPosition( coord.getRelativePoint({0.4f, 0.025f}) );
+	m_playCard.setPosition( coord.getRelativePoint({0.6f, 0.025f}) );
+
+
+	m_endTurn.setRadius(5.f);
+	m_endTurn.setBackgroundOutlineThickness(4.f);
+	m_endTurn.setAnchor(gf::Anchor::TopCenter);
+
+	m_playCard.setRadius(5.f);
+	m_playCard.setBackgroundOutlineThickness(4.f);
+	m_playCard.setAnchor(gf::Anchor::TopCenter);
 
 	target.setView(m_tableBoardView);
 	m_tableBoardEntity.render(target, states);
@@ -396,7 +404,7 @@ void GameScene::doRender(gf::RenderTarget& target, const gf::RenderStates &state
 	target.setView(m_cardsView);
 	m_mainEntity.render(target, states);
 
-	target.setView(m_principalView);
+	target.setView(getHudView());
 	m_poseEntity.render(target, states);
 
 	m_widgets.render(target, states);

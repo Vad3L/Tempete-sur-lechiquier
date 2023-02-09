@@ -18,12 +18,12 @@ void PoseEntity::update([[maybe_unused]] gf::Time time) {
 
 void PoseEntity::render(gf::RenderTarget &target, const gf::RenderStates &states){
 	
-	gf::Coordinates coords({1600,900});
+	gf::Coordinates coords(target);
 	
 	gf::Vector2i sizeCard = gf::Vector2i(200+20,300+20);
 
-	gf::Vector2f position1 = coords.getRelativePoint({ 0.25f, 0.5f });
-	gf::Vector2f position2 = coords.getRelativePoint({ 0.95f, 0.5f });
+	gf::Vector2f position1 = coords.getRelativePoint({ 0.20f, 0.4f });
+	gf::Vector2f position2 = coords.getRelativePoint({ 0.80f, 0.4f });
 	
 	gf::RoundedRectangleShape contour(sizeCard);
 	contour.setColor(gf::Color::fromRgba32(0,0,0,0));
@@ -70,7 +70,7 @@ void PoseEntity::render(gf::RenderTarget &target, const gf::RenderStates &states
 	target.draw(poseName,states);
 
 	if(m_cardPose.m_num!=-1) {
-		m_cardEntity.draw(target, states, m_cardPose, gf::Vector2f(0.25f, 1.f));
+		m_cardEntity.draw(target, states, m_cardPose, gf::Vector2f(0.2355f, 0.95f));
 	}
 
 	//défausse
@@ -93,7 +93,7 @@ void PoseEntity::render(gf::RenderTarget &target, const gf::RenderStates &states
 	target.draw(poseName,states);
 	
 	if(m_cardDiscard.m_num!=-1) {
-		m_cardEntity.draw(target, states, m_cardDiscard, gf::Vector2f(1.183f, 1.f));
+		m_cardEntity.draw(target, states, m_cardDiscard, gf::Vector2f(1.195f, 0.95f));
 	}
 }
 
