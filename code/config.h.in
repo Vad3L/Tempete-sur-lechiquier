@@ -1,0 +1,7 @@
+
+#ifndef TSL_CONFIG_H
+#define TSL_CONFIG_H
+
+#define TSL_DATA_DIR "@TSL_DATA_DIR@"
+
+#endif // TSL_CONFIG_H

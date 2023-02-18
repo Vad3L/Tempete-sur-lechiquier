@@ -1,16 +1,10 @@
-# compilation
+# tsl
 ```
+git clone 
+cd tsl/
 mkdir build
 cd build
 cmake ..
 make
+make install (May need elevated privileges)
 ```
-
-# rapport 
-https://www.overleaf.com/5389568273mprpjphwrtkj 
-
-# auteurs
-Anthony Gasca \
-Léo Vandrepol \
-Louis Negar \
-Quentin Emey 

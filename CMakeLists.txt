@@ -1,110 +1,113 @@
 cmake_minimum_required(VERSION 3.10)
 
-set(GAME tsl)
-
-project(${GAME}
-  VERSION 0.1
+project(tsl
+  VERSION 0.1.0
 )
 
 include(GNUInstallDirs)
 
 find_package(gf REQUIRED COMPONENTS graphics net)
-find_package(SFML REQUIRED COMPONENTS audio)
 
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/modules")
+  
 if (UNIX)
-	message(STATUS ">>> Unix")
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address -O3")
-	find_package(PkgConfig REQUIRED)
-	pkg_check_modules(SFML2 REQUIRED sfml-audio>=2.1)
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address -O3")
+  find_package(PkgConfig REQUIRED)
+  pkg_check_modules(SFML2 REQUIRED sfml-audio>=2.1)
 elseif (WIN32)
-	message(STATUS ">>> Win")
-	find_package(SFML 2.1 REQUIRED COMPONENTS audio)
-	set(SFML2_LIBRARIES "sfml-audio")
+  find_package(SFML 2.1 REQUIRED COMPONENTS audio)
+  set(SFML2_LIBRARIES "sfml-audio")
 endif ()
 
-# set(GAME_DATADIR "${CMAKE_INSTALL_PREFIX}/share/games/${GAME}" CACHE PATH "Game Data Dir")
-# configure_file(${CMAKE_CURRENT_SOURCE_DIR}/code/config.h.in ${CMAKE_CURRENT_BINARY_DIR}/config.h @ONLY)
+set(TSL_DATA_DIR "${CMAKE_INSTALL_PREFIX}/share/games/tsl" CACHE PATH "data path")
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/code/config.h.in ${CMAKE_CURRENT_BINARY_DIR}/config.h @ONLY)
+
+set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
 
 if(NOT MSVC)
-	message(STATUS ">>> MSCV")
-  	add_definitions(-Wall -Wextra -g -pedantic)
+  add_definitions(-Wall -Wextra -g -pedantic)
 else ()
-	message(STATUS ">>> NOT MSCV")
-  	add_definitions(/DNOMINMAX /W4 /utf-8 /permissive-)
+  add_definitions(/DNOMINMAX /W4 /utf-8 /permissive-)
 endif()
 
+#client
+
 add_executable(client_tsl
-	client/AudioManager.cpp
-	client/Singletons.cpp
+  code/client.cc
+  code/bits/client/GameHub.cc
+  code/bits/client/AudioManager.cc
+  code/bits/client/CommonScene.cc
+  code/bits/client/DownloadScene.cc
+  code/bits/client/DownloadEntity.cc
+  code/bits/client/StartScene.cc
+  code/bits/client/StartEntity.cc
+  code/bits/client/MenuScene.cc
+  code/bits/client/MenuEntity.cc
+  code/bits/client/ConnectionScene.cc
+  code/bits/client/RulesScene.cc
+  code/bits/client/RulesEntity.cc
+  code/bits/client/SettingsScene.cc
+  code/bits/client/SettingsEntity.cc
 
-	client/client.cpp
-	client/Network.cpp
-	
-	model/Piece.cpp
-	model/Plateau.cpp
-	model/Case.cpp
-	model/Card.cpp
-	model/Deck.cpp
-	model/CardFunction.cpp
-	model/CardFunctionChooseCases.cpp
-	model/GamePhase.cpp
-	
-	client/GameHub.cpp
-	client/GameData.cpp
-	client/Scene/StartScene.cpp		
-	client/Scene/MenuScene.cpp
-	client/Scene/PlaySelectScene.cpp
-	client/Scene/GameScene.cpp
-	client/Scene/RulesScene.cpp
-	client/Scene/QuitScene.cpp
-	client/Scene/DownloadScene.cpp
-	client/Scene/SettingsScene.cpp
-	client/Scene/ZoomCardScene.cpp
+  code/bits/common/Network.cc
 
-	client/Entity/BoardEntity.cpp
-	client/Entity/TableBoardEntity.cpp
-	client/Entity/PlayTitleEntity.cpp
-	client/Entity/TitleEntity.cpp
-	client/Entity/RulesEntity.cpp
-	client/Entity/MainEntity.cpp
-	client/Entity/PoseEntity.cpp
-	client/Entity/CardEntity.cpp
-	client/Entity/SettingsEntity.cpp
+  vendor/imgui/imgui.cpp
+  vendor/imgui/imgui_demo.cpp
+  vendor/imgui/imgui_draw.cpp
+  vendor/imgui/imgui_widgets.cpp
 
-	)
+  vendor/gf-imgui/imgui_impl_gf.cc
+)
 
-add_executable(server_tsl
-	server/server.cpp
-	model/Plateau.cpp
-	model/Case.cpp
-	model/Card.cpp
-	model/Deck.cpp
-	model/Piece.cpp
-	model/CardFunction.cpp
-	model/CardFunctionChooseCases.cpp
-	server/AnnexFctServer.cpp
-	model/GamePhase.cpp
-	
+target_include_directories(client_tsl
+  PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/vendor/imgui
+    ${CMAKE_CURRENT_SOURCE_DIR}/vendor/gf-imgui
+    ${CMAKE_CURRENT_SOURCE_DIR}/code
+    ${CMAKE_CURRENT_SOURCE_DIR}/code/bits
+    ${CMAKE_CURRENT_BINARY_DIR}
 )
 
 target_link_libraries(client_tsl
-	PRIVATE
-		gf::graphics
-		gf::net
-		${SFML2_LIBRARIES}
-)
-
-target_link_libraries(server_tsl
-	PRIVATE
-		gf::net
+  PRIVATE
+    ${GF_LIBRARIES}
+    ${SFML2_LIBRARIES}
 )
 
 install(
-  TARGETS server_tsl client_tsl
-  RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}"
+  TARGETS client_tsl
+  RUNTIME DESTINATION bin
 )
 
-# tools
+#server
 
-# add_executable(tiles code/tiles.cc)
-# target_link_libraries(tiles gf::core)
+add_executable(server_tsl
+  code/server.cc
+
+  code/bits/common/Network.cc
+)
+
+target_include_directories(server_tsl
+  PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/code
+    ${CMAKE_CURRENT_SOURCE_DIR}/code/bits
+    ${CMAKE_CURRENT_BINARY_DIR}
+)
+
+target_link_libraries(server_tsl
+  PRIVATE
+		${GF_LIBRARIES}
+)
+
+install(
+  TARGETS server_tsl
+  RUNTIME DESTINATION bin
+)
+
+# data
+
+install(
+  DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/data/tsl"
+  DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/games"
+)
