@@ -20,11 +20,11 @@ namespace tsl {
 
             GameHub& m_game;
 
-            SettingsEntity m_settings;
-
             int m_theme;
             int m_music;
             int m_sound;
+
+            SettingsEntity m_settings;
 
     };
     

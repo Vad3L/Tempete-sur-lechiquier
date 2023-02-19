@@ -37,7 +37,7 @@ namespace tsl {
 
     void DownloadEntity::update([[maybe_unused]] gf::Time time) {
         m_interval += time;
-        gf::Log::info("la %f\n\n", m_interval.asSeconds());
+        
         if(m_interval.asSeconds() > 0.6f) {
             m_interval = gf::Time::Zero;
             

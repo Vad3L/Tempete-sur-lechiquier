@@ -71,7 +71,7 @@ namespace tsl {
         paper.setPosition(coords.getRelativePoint({ 0.5f, 0.05f }));
         paper.setAnchor(gf::Anchor::TopCenter);
 
-        gf::Text gameRules("Regles du jeu", m_font , titleCharacterSize);	
+        gf::Text gameRules("Règles du jeu", m_font , titleCharacterSize);	
         gameRules.setColor(gf::Color::White);
         gameRules.setScale(scale);
         gameRules.setPosition(coords.getRelativePoint({ 0.5f, 0.12f }));

@@ -15,11 +15,14 @@ namespace tsl {
     , m_game(game)
     , m_network(network)
     , m_connectionAsked(false)
+    , m_connection(m_game.resources)
     {
         setClearColor(gf::Color::Black);
 
         std::strncpy(m_hostnameBuffer.data(), "", 255);
         std::strncpy(m_nameBuffer.data(), "", 255);
+
+        addHudEntity(m_connection);
     }
 
     void ConnectionScene::doProcessEvent(gf::Event& event) {
@@ -32,15 +35,34 @@ namespace tsl {
 
     void ConnectionScene::doRender(gf::RenderTarget& target, const gf::RenderStates &states) {
         gf::Coordinates coords(target);
-        const auto position = coords.getCenter();
+        const gf::Vector2f scale = coords.getWindowSize() / gf::vec(1920.0f, 1080.0f);
+        const auto position = coords.getRelativePoint({ 0.5f, 0.6f });
         
+        ImGuiStyle& style = ImGui::GetStyle();
+		style.Colors[ImGuiCol_Text]                  = ImVec4(0.4f, 0.4f, 0.4f, 1.0f);;
+        style.Colors[ImGuiCol_FrameBg]               = ImVec4(0.9f, 0.8f, 0.68f, 1.0f);
+        style.Colors[ImGuiCol_FrameBgHovered]        = ImVec4(0.9f, 0.8f, 0.68f, 1.0f);
+        style.Colors[ImGuiCol_FrameBgActive]         = ImVec4(0.9f, 0.8f, 0.68f, 1.0f);
+        style.Colors[ImGuiCol_Button]                = ImVec4(1.0f, 1.0f, 1.0f, 0.0f);
+		style.Colors[ImGuiCol_ButtonHovered]         = ImVec4(1.0f, 1.0f, 1.0f, 0.0f);
+		style.Colors[ImGuiCol_ButtonActive]          = ImVec4(1.0f, 1.0f, 1.0f, 0.0f);
+
         // UI
         ImGui::NewFrame();
         ImGui::SetNextWindowPos(ImVec2(position.x, position.y), 0, ImVec2(0.5f, 0.5f));
         
-        if (ImGui::Begin("Connexion", nullptr, DefaultWindowFlags)) {
+        const ImVec2 sizeWindow = ImVec2(ImGui::GetWindowSize().x * scale.x * 1.1f, ImGui::GetWindowSize().y * scale.y * 1.2f);
+        ImGui::SetNextWindowSize(sizeWindow);
+
+        if (ImGui::Begin("Connexion", nullptr, DefaultWindowFlags|ImGuiWindowFlags_NoTitleBar|ImGuiWindowFlags_NoBackground)) {
+            ImGui::SetWindowFontScale(coords.getRelativeCharacterSize(0.02f) * 0.06f);
+
             if (m_network.isConnecting()) {
-                ImGui::TextColored(ImVec4(0.f, 1.f, 0.f, 1.f), "Connexion...");
+                const char* text = "Erreur: impossible de se connecter au serveur.";
+                ImGui::SetCursorPosX((sizeWindow.x - ImGui::CalcTextSize(text).x) * 0.5f);
+                ImGui::SetCursorPosY(sizeWindow.y * 0.4f);
+
+                ImGui::TextColored(ImVec4(0.f, 1.f, 0.f, 1.f), text);
 
                 if (m_network.isConnected()) {
                     m_connectionAsked = false;
@@ -51,36 +73,34 @@ namespace tsl {
                     //m_network.send(data);
                 }
             } else {
-                ImGui::Text("Nom d' hôte :");
-                ImGui::SameLine();
-                float x = ImGui::GetCursorPosX();
+                ImGui::PushItemWidth(sizeWindow.x * 0.7f);
+                ImGui::SetCursorPosY(sizeWindow.y * 0.245f);
+
+                ImGui::InputText("###hostname", m_hostnameBuffer.data(), m_hostnameBuffer.size());
+
+                ImGui::SetCursorPosX(sizeWindow.x * 0.79f);
+                ImGui::SetCursorPosY(sizeWindow.y * 0.22f);
+                style.Colors[ImGuiCol_Text]                  = ImVec4(1.0f, 1.0f, 1.0f, 0.0f);
                 
-                ImGui::InputText("###nom d'hôte", m_hostnameBuffer.data(), m_hostnameBuffer.size());
-
-                ImGui::Text("Nom :");
-                ImGui::SameLine();
-                ImGui::SetCursorPosX(x);
-                ImGui::InputText("###nom", m_nameBuffer.data(), m_nameBuffer.size());
-                ImGui::SetItemDefaultFocus();
-
-                ImGui::Indent();
-                ImGui::SetCursorPosX(ImGui::GetWindowSize().x * 0.5f - DefaultButtonSize.x);
-
-                if (ImGui::Button("Retour", DefaultButtonSize)) {
-                    m_connectionAsked = false;
-                    m_game.replaceScene(*m_game.menu, m_game.blackoutEffect, gf::seconds(0.4f));
-                }
-
-                ImGui::SameLine();
-
-                if (ImGui::Button("Connexion", DefaultButtonSize)) {
+                if (ImGui::Button("Connexion", ImVec2(sizeWindow.x * 0.18f, sizeWindow.y * 0.16f))) {
                     m_network.connect(std::string(m_hostnameBuffer.data()));
                     m_connectionAsked = true;
                 }
 
+                ImGui::SetCursorPosX((sizeWindow.x - sizeWindow.x * 0.2f) * 0.5f);
+                ImGui::SetCursorPosY(sizeWindow.y * 0.74f);
+
+                if (ImGui::Button("Retour", ImVec2(sizeWindow.x * 0.2f, sizeWindow.y * 0.2f))) {
+                    m_connectionAsked = false;
+                    m_game.replaceScene(*m_game.menu, m_game.blackoutEffect, gf::seconds(0.4f));
+                }
+
                 if (m_connectionAsked) {
-                    const char* text = "Erreur: impossible de se connecter au serveur.";
-                    ImGui::SetCursorPosX((ImGui::GetWindowSize().x - ImGui::CalcTextSize(text).x) * 0.5f);
+                    const char* text = "   Erreur: impossible de \nse connecter au serveur.";
+    
+                    ImGui::SetCursorPosX((sizeWindow.x - ImGui::CalcTextSize(text).x) * 0.5f);
+                    ImGui::SetCursorPosY(sizeWindow.y * 0.4f);
+
                     ImGui::TextColored(ImVec4(1.f, 0.f, 0.f, 1.f), "%s", text);
                 }
             }
@@ -90,17 +110,6 @@ namespace tsl {
 
         // Display  
         renderHudEntities(target, states);
-
-        ImGuiStyle& style = ImGui::GetStyle();
-		style.WindowRounding = 20.f;
-		style.Colors[ImGuiCol_Text]                  = ImVec4(0.4f, 0.4f, 0.4f, 1.0f);
-		style.Colors[ImGuiCol_WindowBg]              = ImVec4(0.6f, 0.6f, 0.6f, 1.0f);
-		style.Colors[ImGuiCol_FrameBg]               = ImVec4(0.7f, 0.7f, 0.7f, 1.0f);
-		style.Colors[ImGuiCol_TitleBg]         		 = ImVec4(0.0f, 0.0f, 0.0f, 0.74f);
-		style.Colors[ImGuiCol_TitleBgActive]         = ImVec4(0.0f, 0.0f, 0.0f, 0.74f);
-		style.Colors[ImGuiCol_Button]                = ImVec4(0.5f, 0.5f, 0.5f, 0.49f);
-		style.Colors[ImGuiCol_ButtonHovered]         = ImVec4(0.5f, 0.5f, 0.5f, 0.84f);
-		style.Colors[ImGuiCol_ButtonActive]          = ImVec4(0.5f, 0.5f, 0.5f, 1.f);
         
         ImGui::Render();
         ImGui_ImplGF_RenderDrawData(ImGui::GetDrawData());

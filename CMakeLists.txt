@@ -45,6 +45,7 @@ add_executable(client_tsl
   code/bits/client/MenuScene.cc
   code/bits/client/MenuEntity.cc
   code/bits/client/ConnectionScene.cc
+  code/bits/client/ConnectionEntity.cc
   code/bits/client/RulesScene.cc
   code/bits/client/RulesEntity.cc
   code/bits/client/SettingsScene.cc

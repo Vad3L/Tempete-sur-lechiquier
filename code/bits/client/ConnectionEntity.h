@@ -1,14 +1,14 @@
-#ifndef TSL_SETTINGS_ENTITY_H
-#define TSL_SETTINGS_ENTITY_H
+#ifndef TSL_CONNECTION_ENTITY_H
+#define TSL_CONNECTION_ENTITY_H
 
 #include <gf/Entity.h>
 #include <gf/ResourceManager.h>
 
 namespace tsl {
 
-    class SettingsEntity : public gf::Entity {
+    class ConnectionEntity : public gf::Entity {
         public:
-            SettingsEntity(gf::ResourceManager& resources);
+            ConnectionEntity(gf::ResourceManager& resources);
             
             void render(gf::RenderTarget &target, const gf::RenderStates &states) override;
         
@@ -20,4 +20,4 @@ namespace tsl {
 
 }
 
-#endif // TSL_SETTINGS_ENTITY_H
+#endif // TSL_CONNECTION_ENTITY_H

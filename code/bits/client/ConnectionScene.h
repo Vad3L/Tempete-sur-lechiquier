@@ -3,6 +3,7 @@
 
 #include <gf/Scene.h>
 
+#include "ConnectionEntity.h"
 #include "../common/Network.h"
 
 namespace tsl {
@@ -24,6 +25,8 @@ namespace tsl {
             std::array<char, 256> m_hostnameBuffer;
             std::array<char, 256> m_nameBuffer;
             bool m_connectionAsked;      
+
+            ConnectionEntity m_connection;
     };
 }
 

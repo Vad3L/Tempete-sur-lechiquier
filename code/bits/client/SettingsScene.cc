@@ -18,10 +18,10 @@ namespace tsl {
     SettingsScene::SettingsScene(GameHub& game)
     : gf::Scene({game.getRenderer().getSize()})
     , m_game(game)
-    , m_settings(game.resources)
     , m_theme(1)
     , m_music(0)
     , m_sound(0)
+    , m_settings(m_game.resources)
     {
         setClearColor(gf::Color::Black);
 
@@ -41,15 +41,11 @@ namespace tsl {
         const gf::Vector2f scale = coords.getWindowSize() / gf::vec(1920.0f, 1080.0f);
         const auto position = coords.getRelativePoint({ 0.5f, 0.6f });
         
-
         ImGuiStyle& style = ImGui::GetStyle();
         style.Colors[ImGuiCol_Text]                  = ImVec4(0.8f, 0.8f, 0.8f, 1.f);
 		style.Colors[ImGuiCol_FrameBg]               = ImVec4(1.0f, 1.0f, 1.0f, 0.0f);
 		style.Colors[ImGuiCol_FrameBgHovered]        = ImVec4(1.0f, 1.0f, 1.0f, 0.0f);
 		style.Colors[ImGuiCol_FrameBgActive]         = ImVec4(1.0f, 1.0f, 1.0f, 0.0f);
-		//style.Colors[ImGuiCol_SliderGrab]            = ImVec4(0.0f, 0.0f, 0.0f, 1.0f);
-		//style.Colors[ImGuiCol_SliderGrabActive]      = ImVec4(0.0f, 0.0f, 0.0f, 1.0f);
-
         style.Colors[ImGuiCol_Button]                = ImVec4(1.0f, 1.0f, 1.0f, 0.0f);
 		style.Colors[ImGuiCol_ButtonHovered]         = ImVec4(1.0f, 1.0f, 1.0f, 0.0f);
 		style.Colors[ImGuiCol_ButtonActive]          = ImVec4(1.0f, 1.0f, 1.0f, 0.0f);
@@ -65,7 +61,7 @@ namespace tsl {
         ImGui::SetNextWindowSize(sizeWindow);
 
         if (ImGui::Begin("Settings", nullptr, DefaultWindowFlags|ImGuiWindowFlags_NoTitleBar|ImGuiWindowFlags_NoBackground)) {
-            ImGui::PushItemWidth(m_settings.m_paper.getSize().x * (scale.x / 1.56f));
+            ImGui::PushItemWidth(sizeWindow.x * 0.874f);
             ImGui::SetWindowFontScale(coords.getRelativeCharacterSize(0.02f) * 0.059f);
 
             style.Colors[ImGuiCol_Text]                  = ImVec4(1.0f, 1.0f, 1.0f, 0.0f);
@@ -86,7 +82,7 @@ namespace tsl {
             ImGui::SetCursorPosY(sizeWindow.y * 0.56f);
             ImGui::SliderInt("  ", &m_sound, 0, 100);
             
-            ImGui::SetCursorPosX((ImGui::GetWindowSize().x - sizeWindow.x * 0.2f) * 0.5f);
+            ImGui::SetCursorPosX((sizeWindow.x - sizeWindow.x * 0.2f) * 0.5f);
             ImGui::SetCursorPosY(sizeWindow.y * 0.74f);
             
             style.Colors[ImGuiCol_Text]                  = ImVec4(1.0f, 1.0f, 1.0f, 0.0f);
