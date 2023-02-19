@@ -26,7 +26,6 @@ namespace tsl {
         GameHub& operator=(const GameHub&) = delete;
         GameHub& operator=(GameHub&&) = delete;
         
-        void loadingDownloadAssets();
         void loadingOtherAssets(Network& network);
         bool loadingFinished();
 

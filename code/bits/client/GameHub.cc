@@ -31,10 +31,6 @@ namespace tsl {
     	ImGui::DestroyContext();
 	}
 
-	void GameHub::loadingDownloadAssets() {
-		download->loadAnimation();
-	}
-
 	void GameHub::loadingOtherAssets(Network& network) {
 		
 		common = std::make_unique<CommonScene>(*this);

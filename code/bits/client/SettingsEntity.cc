@@ -7,10 +7,6 @@
 
 namespace tsl {
 
-    namespace {
-        constexpr std::size_t nb_page = 4;
-    }
-
     SettingsEntity::SettingsEntity(gf::ResourceManager& resources)
     : m_paper(resources.getTexture("images/settings.png"))
     {

@@ -17,7 +17,6 @@ namespace tsl {
 		public:
 			DownloadScene(GameHub& game);
 
-			void loadAnimation();
 			void changeFrame();
 			
 		private:

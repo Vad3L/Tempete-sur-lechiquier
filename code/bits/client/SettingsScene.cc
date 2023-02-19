@@ -10,11 +10,16 @@
 
 namespace tsl {
     
+    namespace {
+        constexpr std::size_t nb_themes = 3;
+        std::array<std::string, nb_themes> themes = { "Bois", "Marbre", "Papier" };
+    }
+
     SettingsScene::SettingsScene(GameHub& game)
     : gf::Scene({game.getRenderer().getSize()})
     , m_game(game)
     , m_settings(game.resources)
-    , m_theme(0)
+    , m_theme(1)
     , m_music(0)
     , m_sound(0)
     {
@@ -62,11 +67,17 @@ namespace tsl {
         if (ImGui::Begin("Settings", nullptr, DefaultWindowFlags|ImGuiWindowFlags_NoTitleBar|ImGuiWindowFlags_NoBackground)) {
             ImGui::PushItemWidth(m_settings.m_paper.getSize().x * (scale.x / 1.56f));
             ImGui::SetWindowFontScale(coords.getRelativeCharacterSize(0.02f) * 0.059f);
-            
+
+            style.Colors[ImGuiCol_Text]                  = ImVec4(1.0f, 1.0f, 1.0f, 0.0f);
             ImGui::SetCursorPosX(sizeWindow.x * 0.065f);
             ImGui::SetCursorPosY(sizeWindow.y * 0.06f);
-            ImGui::SliderInt("", &m_theme, 1, 3);
-            
+            ImGui::SliderInt("", &m_theme, 1, nb_themes);
+
+            style.Colors[ImGuiCol_Text]                  = ImVec4(0.8f, 0.8f, 0.8f, 1.f);
+            ImGui::SetCursorPosX((sizeWindow.x - ImGui::CalcTextSize(themes[m_theme-1].c_str()).x) * 0.5f);
+            ImGui::SetCursorPosY(sizeWindow.y * 0.06f);
+            ImGui::Text("%s", themes[m_theme-1].c_str());
+
             ImGui::SetCursorPosX(sizeWindow.x * 0.065f);
             ImGui::SetCursorPosY(sizeWindow.y * 0.31f);
             ImGui::SliderInt(" ", &m_music, 0, 100);
@@ -78,7 +89,6 @@ namespace tsl {
             ImGui::SetCursorPosX((ImGui::GetWindowSize().x - sizeWindow.x * 0.2f) * 0.5f);
             ImGui::SetCursorPosY(sizeWindow.y * 0.74f);
             
-            ImGuiStyle& style = ImGui::GetStyle();
             style.Colors[ImGuiCol_Text]                  = ImVec4(1.0f, 1.0f, 1.0f, 0.0f);
             
             if (ImGui::Button("button", ImVec2(sizeWindow.x * 0.2f, sizeWindow.y * 0.2f))) {

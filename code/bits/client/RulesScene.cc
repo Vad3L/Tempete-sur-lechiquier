@@ -8,7 +8,7 @@ namespace tsl {
     : gf::Scene(game.getRenderer().getSize())
     , m_game(game)
     , m_choice(RulesChoice::None)
-    , m_rules(game.resources,  m_choice)
+    , m_rules(m_game.resources,  m_choice)
     {
         setClearColor(gf::Color::Black);
         

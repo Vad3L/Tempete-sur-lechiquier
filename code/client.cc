@@ -10,8 +10,7 @@ int main(int argc, char *argv[]) {
     
 	tsl::GameHub hub;
 	tsl::Network network;  
-	
-	hub.loadingDownloadAssets();
+
 	hub.getWindow().toggleFullscreen();
 	
 	std::thread loading([&hub, &network]() {

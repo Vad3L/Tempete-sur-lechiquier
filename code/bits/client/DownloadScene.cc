@@ -7,21 +7,11 @@ namespace tsl {
 	DownloadScene::DownloadScene(GameHub& game)
 	: gf::Scene(game.getRenderer().getSize())
 	, m_game(game)
-	, m_downloadEntity(
-		m_game.resources.getTexture("images/download_screen.png")
-	) {
+	, m_downloadEntity(m_game.resources) 
+	{
 		setClearColor(gf::Color::Black);
 
 		addHudEntity(m_downloadEntity);
-	}
-
-	void DownloadScene::loadAnimation() {
-		m_downloadEntity.loadAnimation(std::vector<gf::Ref<gf::Texture>>({
-			m_game.resources.getTexture("animations/download_screen_0.png"),
-			m_game.resources.getTexture("animations/download_screen_1.png"),
-			m_game.resources.getTexture("animations/download_screen_2.png"),
-			m_game.resources.getTexture("animations/download_screen_3.png"),
-		}));
 	}
 
 	void DownloadScene::changeFrame() {
