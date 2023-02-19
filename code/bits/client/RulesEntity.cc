@@ -63,7 +63,7 @@ namespace tsl {
         m_quitWidget.setAnchor(gf::Anchor::Center);
 
         const unsigned titleCharacterSize = coords.getRelativeCharacterSize(0.05f);
-        const unsigned paragraphCharacterSize = coords.getRelativeCharacterSize(0.022f);
+        //const unsigned paragraphCharacterSize = coords.getRelativeCharacterSize(0.022f);
         const unsigned characterSize = coords.getRelativeCharacterSize(0.025f);
 
         gf::Sprite paper(m_paper);
@@ -77,13 +77,13 @@ namespace tsl {
         gameRules.setPosition(coords.getRelativePoint({ 0.5f, 0.12f }));
         gameRules.setAnchor(gf::Anchor::Center);
 
-        const float width = paper.getLocalBounds().getWidth();
+        //const float width = paper.getLocalBounds().getWidth();
 
-        gf::Text paragraph(m_rules[m_numPage], m_font, paragraphCharacterSize);
+        gf::Text paragraph(m_rules[m_numPage], m_font);
         paragraph.setColor(gf::Color::Gray(0.3f));
         paragraph.setLineSpacing(1.5f);
-        paragraph.setParagraphWidth(width-150);
-        paragraph.setScale(scale);
+        //paragraph.setParagraphWidth(width - 150);
+        paragraph.setScale(scale * 0.74f);
         paragraph.setAlignment(gf::Alignment::Center);
         paragraph.setPosition(coords.getRelativePoint({ 0.5f, 0.46f }));
         paragraph.setAnchor(gf::Anchor::Center);

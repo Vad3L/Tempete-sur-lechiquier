@@ -34,7 +34,7 @@ namespace tsl {
         m_container.triggerAction();
     }
     
-    void MenuEntity::update(gf::Time time) {
+    void MenuEntity::update([[maybe_unused]] gf::Time time) {
         m_settingsWidget.setRotation(m_settingsWidget.getRotation()+0.01f);
     }
 

@@ -58,11 +58,11 @@ namespace tsl {
             ImGui::SetWindowFontScale(coords.getRelativeCharacterSize(0.02f) * 0.06f);
 
             if (m_network.isConnecting()) {
-                const char* text = "Erreur: impossible de se connecter au serveur.";
-                ImGui::SetCursorPosX((sizeWindow.x - ImGui::CalcTextSize(text).x) * 0.5f);
+                std::string text = "Erreur: impossible de se connecter au serveur.";
+                ImGui::SetCursorPosX((sizeWindow.x - ImGui::CalcTextSize(text.c_str()).x) * 0.5f);
                 ImGui::SetCursorPosY(sizeWindow.y * 0.4f);
 
-                ImGui::TextColored(ImVec4(0.f, 1.f, 0.f, 1.f), text);
+                ImGui::TextColored(ImVec4(0.f, 1.f, 0.f, 1.f), "%s", text.c_str());
 
                 if (m_network.isConnected()) {
                     m_connectionAsked = false;
@@ -96,12 +96,12 @@ namespace tsl {
                 }
 
                 if (m_connectionAsked) {
-                    const char* text = "   Erreur: impossible de \nse connecter au serveur.";
+                    std::string text = "   Erreur: impossible de \nse connecter au serveur.";
     
-                    ImGui::SetCursorPosX((sizeWindow.x - ImGui::CalcTextSize(text).x) * 0.5f);
+                    ImGui::SetCursorPosX((sizeWindow.x - ImGui::CalcTextSize(text.c_str()).x) * 0.5f);
                     ImGui::SetCursorPosY(sizeWindow.y * 0.4f);
 
-                    ImGui::TextColored(ImVec4(1.f, 0.f, 0.f, 1.f), "%s", text);
+                    ImGui::TextColored(ImVec4(1.f, 0.f, 0.f, 1.f), "%s", text.c_str());
                 }
             }
         }

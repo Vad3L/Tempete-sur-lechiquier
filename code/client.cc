@@ -6,7 +6,7 @@
 #include "bits/client/GameHub.h"
 #include "bits/common/Network.h"
 
-int main(int argc, char *argv[]) {
+int main([[maybe_unused]] int argc, [[maybe_unused]] char *argv[]) {
     
 	tsl::GameHub hub;
 	tsl::Network network;  

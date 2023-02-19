@@ -23,7 +23,7 @@ namespace tsl {
             void pointTo(gf::Vector2f coords);
             void triggerAction();
 
-            void update(gf::Time time) override;
+            void update([[maybe_unused]] gf::Time time) override;
             void render(gf::RenderTarget &target, const gf::RenderStates &states) override;
         
         private:
