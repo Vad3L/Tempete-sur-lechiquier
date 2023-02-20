@@ -33,6 +33,10 @@ namespace tsl {
 
 	void GameHub::loadingOtherAssets(Network& network) {
 		
+		settings = std::make_unique<SettingsScene>(*this);
+		gf::sleep(gf::seconds(0.2f));
+		download->changeFrame();
+		
 		common = std::make_unique<CommonScene>(*this);
 		gf::sleep(gf::seconds(0.2f));
 		download->changeFrame();
@@ -50,10 +54,6 @@ namespace tsl {
 		download->changeFrame();
 
 		rules = std::make_unique<RulesScene>(*this);
-		gf::sleep(gf::seconds(0.2f));
-		download->changeFrame();
-
-		settings = std::make_unique<SettingsScene>(*this);
 		gf::sleep(gf::seconds(0.2f));
 		download->changeFrame();
 

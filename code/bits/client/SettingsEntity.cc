@@ -8,7 +8,7 @@
 namespace tsl {
 
     SettingsEntity::SettingsEntity(gf::ResourceManager& resources)
-    : m_paper(resources.getTexture("images/settings.png"))
+    : m_paper(resources.getTexture("images/Settings.png"))
     , m_font(resources.getFont("fonts/Trajan-Color-Concept.otf"))
     {
         m_paper.setSmooth(true);

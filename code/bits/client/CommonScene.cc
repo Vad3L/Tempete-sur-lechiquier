@@ -1,6 +1,7 @@
 #include "CommonScene.h"
 
 #include "GameHub.h"
+#include "Singletons.h"
 
 #include <gf/Color.h>
 #include <gf/Coordinates.h>
@@ -13,7 +14,7 @@ namespace tsl {
 	, m_game(game)
 	, m_quitAction("Quit")
 	, m_fullscreenAction("Fullscreen")
-	, m_backgroundTexture(m_game.resources.getTexture("images/StartMenu.png"))
+	, m_backgroundTexture(m_game.resources.getTexture("images/StartMenu.jpg"))
 	{
 		setClearColor(gf::Color::Black);
 
@@ -24,6 +25,14 @@ namespace tsl {
 
 		m_fullscreenAction.addKeycodeKeyControl(gf::Keycode::F);
 		addAction(m_fullscreenAction);
+
+		m_clickButton.setBuffer(gAudioManager().getSound("sounds/ClickButton.ogg"));
+    	m_clickButton.setVolume(FxsVolume);
+	}
+
+	void CommonScene::playClickButton() {
+		m_clickButton.setVolume(FxsVolume);
+		m_clickButton.play();
 	}
 
 	void CommonScene::doHandleActions([[maybe_unused]] gf::Window& window) {    

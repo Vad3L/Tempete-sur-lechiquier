@@ -5,6 +5,9 @@
 
 #include "bits/client/GameHub.h"
 #include "bits/common/Network.h"
+#include "bits/client/Singletons.h"
+
+#include "bits/common/Constants.h"
 
 int main([[maybe_unused]] int argc, [[maybe_unused]] char *argv[]) {
     
@@ -13,14 +16,24 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char *argv[]) {
 
 	hub.getWindow().toggleFullscreen();
 	
+	gf::SingletonStorage<tsl::AudioManager> storageForResourceManager(tsl::gAudioManager);
+  	tsl::gAudioManager().addSearchDir({ tsl::GAME_DATADIR });
+
+	// Background music
+	
 	std::thread loading([&hub, &network]() {
 		gf::SharedGraphics glContext(hub.getWindow());	
 		hub.loadingOtherAssets(network);
 	});
 
 	loading.detach();
-	//gf::sleep(gf::seconds(0.5));
 	
+	tsl::gBackgroundMusic.setBuffer(tsl::gAudioManager().getSound("sounds/MainSounds.ogg"));
+	tsl::gBackgroundMusic.setLoop(true);
+	tsl::gBackgroundMusic.setVolume(tsl::BackgroundAmbiantVolume);
+	tsl::gBackgroundMusic.play();
+	
+
 	hub.pushScene(*hub.download);
 	hub.run();
 	

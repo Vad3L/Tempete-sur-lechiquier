@@ -1,0 +1,140 @@
+0;AMBITION;Remplacer l'un de vos pions par l'une des pièces, sauf la Dame, que vous a prises votre adversaire.;1;0;0
+1;AMOUR COURTOIS;Amenez l'un de vos Cavaliers sur une case libre adjacente à votre Dame.;0;0;1
+2;AMPHETAMINES;S'il ne vient pas de prendre une pièce adverse, le Fou que vous avez joué peut être déplacé de nouveau.;1;0;0
+3;ANGE GARDIEN;Jouez cette carte lorsque vous êtes en échec, même mat. Vous reprenez alors l'une des pièces que vous a prises votre adversaire pour l'intercaler sur une case libre entre votre Roi et la pièce qui le menace.;0;0;1
+4;ANNULATION;Le déplacement de votre adversaire est annulé. Il doit rejouer un autre coup, avec la même pièce ou une autre.;3;0;2
+5;ANTI-GANG;Jouez cette carte lorsque votre adversaire vous annonce un échec, même mat. Il doit alors remettre la pièce qu'il vient de jouer là où elle était avant, et ne peut rien jouer d'autre.;3;0;2
+6;APARTHEID;Retirez immédiatement de l'échiquier tous les pions noirs qui se trouvent sur des cases blanches, et tous les pions blancs qui se trouvent sur des cases noires;1;0;0
+7;ASILE;Sur l'échiquier, permutez l'un de vos Fous avec l'une de vos Tours.;1;1;0
+8;ATTENTAT;En jouant cette carte, notez sur un papier les coordonnées d'une case de l'échiquier, vide ou occupée par l'une de vos pièces. Dès qu'une pièce adverse s'arrête sur cette case, une bombe explose et la pièce est retirée du jeu. S'il s'agit du Roi, la bombe explose, mais le Roi reste en place.;1;1;0
+9;AUTODEFENSE;Votre adversaire veut prendre l'une de vos pièces, mais celle-ci se défend. La pièce attaquée reste en place, et c'est la pièce attaquante qui est éliminée.;3;0;0
+10;AVION PRIVE;Déplacez votre Roi pour l'amener sur n'importe quelle case libre de l'échiquier.;0;0;1
+11;BADABOUM;Si vous parvenez à faire tenir cette carte pendant au moins 5 secondes en équilibre sur votre Roi, vous pouvez soit récupérer une pièce que vous a précédemment prise votre adversaire et la placer sur la case de votre choix, soit rejouer.;1;0;0
+12;BANZAÏ;Avancez l'un de vos pions de trois cases. Aucune prise en passant ne sera possible.;0;0;1
+13;BARRICADE;Placez une barrière de deux cases de lang, rectiligne ou à angle droit, entre n'importe quelles cases de l'échiquier. Cette barrière ne peut être franchie par aucune pièce, excepté les cavaliers ou toute autre pièce ayant acquis la capacité de "sauter" d'une manière similaire.;1;1;0
+14;BOMBARDE;L'une de vos Tours peut, en se déplaçant normalement en ligne droite, sauter par dessus une pièce, qu'elle soit à vous ou à votre adversaire, pour prendre la pièce adverse qui se trouve immédiatement au-delà;1;0;0
+15;BOMBE ATOMIQUE;Si la pièce que vous venez de déplacer n'as pas pris une pièce adverse, vous pouvez l afaire "exploser". Elle est alors retirée du jeu, ainsi que toutes les autres pièces, quelles que soient leur couleur, qui se trouvent sur les huit cases adjacentes. Les Rois ne sont pas affectés par l'explosion.;1;0;0
+16;BONNES COPINES;Sur l'échiquier, permutez l'une de vos Dame avec une Dame adverse.;0;1;1
+17;BONNET D'ÂNE; Désignez une pièce adverse(sauf le Roi), que vous envoyez au piquet sur une case libre située dans l'un des quatre coins de l'échiquier. Votre adversaire ne pourra pas déplacer cette pièce à son prochain tour.;1;0;0
+18;BOUCHE D'EGOUT;Placez des bouches d'égout (pièces de monnaie) sur deux cases de l'échiquier. Une pièce se trouvant sur une bouche d'égout peut désormais, à la place de son déplacement normal, se rendre sur n'importe quelle autre bouche d'égout, occupée ou non.;1;1;0
+19;BOUCLIER;Votre adversaire ne peut pas vous prendre ce tour-ci la pièce que vous venez de déplacer.;1;0;0
+20;BOX;Sur l'échiquier, permutez un Cavalier adverse avec une Tour adverse.;1;0;0
+21;BRIGADE LEGERE;Avancez deux de vos pions, chacun de deux cases.;0;0;1
+22;BROUILLARD;Jouez cette carte lorsque votre adversaire vient de jouer un Fou, une Tour ou une Dame.Sa pièce ne peut effectuer le mouvement prévu, et s'immobilise après avoir avancé d'une case dans la direction voulue.;3;0;0
+23;CAMOUFLET;Jouez cette carte lorsque votre adversaire fait un geste ou une réflexion qui vous paraît désobligeant. Vous enlevez alors l'un de ses pions de l'échiquier pour lui apprendre la courtoisie.;2;0;0
+24;CANNIBALE;Prenez l'une de vos propres pièces avec une autre de celles-ci;0;0;1
+25;CASSATION;Le déplacement de votre adversaire est annulé. Il doit rejouer un autre coup avec la même pièce ou une autre.;3;0;2
+26;CAVALCADE;Déplacez n'importe laquelle de vos pièces à la manière d'un cavalier. Vous ne pouvez pas prendre ainsi une pièce adverse.;0;0;1
+27;CAVALIER SUICIDE;Jouez cette carte lorsque l'un de vos Cavaliers a la possibilité de prendre plusieurs pièces adverses. Vous le faites alors éclater en plusieurs élements qui vont prendre chacun l'une des pièces adverses se trouvant à portée. le Cavalier ainsi "éclatéé" est retiré du jeu.;0;0;1
+28;CESSEZ LE FEU;Ils est désormais interdit aux deux joueurs de prendre des pièces adverses. Tous les déplacements doivent aboutir à une case vide. L'effet de cette carte dure jusqu'à ce que l'un des Rois soit mis en échec.;1;0;0
+29;CHAMEAU;Transformez un Cavalier, en Chameau, et cela définitivement. Le chameau, comme le cavalier, peut se déplacer en sautant par dessus les cases occupées. Mais alors que le cavalier saute dans l'angle opposé d'un rectangle 3x2, le Chameau saute dans l'angle opposé d'un rectangle 4x3.;1;1;0
+30;CHANGEZ VOS CAVALIERS;Sur l'échiquier, permutez l'un de vos Cavalier adverse.;1;0;0
+31;CHARGE;Avancez tous ceux de vos pions que vous voulez, et qui le peuvent, d'une case.;0;0;1
+32;CHASSE NEIGE;Déplacez une Tour, une Dame ou un Fou sur l'une de ses lignes de déplacement en prenant toutes les pièces adverses qui se trouvent sur son chemin. Votre pièce ne s'arrête que lorsqu'elle rencontre une pièce amie, ou le bord de l'échiquier.;0;0;1
+33;CHEVAL FOU;Sur l'échiquier, permuttez l'un de vos Fous avec l'un de vos Cavaliers.;1;1;0
+34;CHRONO;Votre adversaire a 15 secondes, montre en main, pour jouer son prochain coup. passé ce temps. il perd son tour de jeu.;1;0;0
+35;COHABITATION; Déplacez l'une de vos pièces pour l'amener sur une case où se trouve déjà une autre de vos pièces. Vous pourrez par la suite déplacer normalement l'une ou l'autre, mais pas les deux à la fois. Si votre adversaire amène une pièce sur cette case, Il prend vos deux pièces.;0;0;1
+36;CONTRORDRE;Le déplacement de votre adversaire est annulé. il doit rejouer un autre coup, avec la même pièce ou une autre.;3;0;3
+37;COUP D'ETAT;Votre Roi devient un simple Prince.Il continue à se déplacer comme auparavant, mais n'est désormais qu'une pièce ordinaire, pouvant être prise. Une autre de vos pièces (Pion, Fou ou Cavalier), qui conserve également toutes ses capacités de développement, s'empare du trône. C'est cet usurpateur que votre adversaire devra mater.;1;0;0
+38;COUP DE BALAI;Rejetez cette carte avec les quatre autres de votre jeu, et faitres vous immédiatement une nouvelle main de cinq cartes.;2;0;0
+39;COUP DOUBLE;Déplacez simultanément deux pièces de même type (deux Fous, deux Cavaliers, deux Tours ou deux Pions).;0;0;1
+40;CRABE;Transformez l'un de vos Pions en Crabe, et ce définitivement. Le Crabe se déplace en diagonale, comme un Fou, mais d'une case seulement, en avançant ou en reculant. Parvenu sur la dernière rangée, il est promu comme un pion ordinaire.;1;0;0
+41;CRAZY HORSE;Sur l'échiquier, permutez un Cavalier adverse avec un Fou adverse.;1;0;0
+42;CYLINDRE;Déplacez l'une de vos pièces en la faisant passer d'un côté à l'autre de l'échiquier, comme si ce dernier était cylindrique, et si les bords gauche et droit étaient contigus. Le croquis ci-dessus montre le déplacement d'un Fou avec cette carte.;0;0;1
+43;DALAI LAMA;La pièce que votre adversaire vient de prendre se réincarne immédiatement en une autre pièce identique, qui apparait sur une case libre où elle pouvait se trouver en début de partie.;3;0;0
+44;DERBY;S'il ne vient pas de prendre une pièce adverse, le Cavalier que vous avez joué peut être déplacé de nouveau.;1;0;0
+45;DESINTEGRATION;Retirez de l'échiquier l'une de vos propres pièces.1;0;0
+46;DIKTAT;Désignez le tpe de pièce (sauf Roi ou Dame) que votre adversaire devra jouer ce tour-ci (par exemple : "Tu joueras un Cavalier", ou "Tu joueras un pion").;1;0;0
+47;DONNE-MOI TA MAIN...;Échanger votre jeu de cartes avec celui de votre adversaire(il pioche immédiatement une carte pour remplacee celle-ci);0;0;0
+48;DOUANE;Jouez cette carte lorsque votre adversaire vient de faire fracnhir à l'une de ses pièces la "frontière" séparant votre moitié de l'échiquier de la sienne. Il doit alors payer en perdant un de ses pions, de son choix, ou renoncer à son coup;3;0;0
+49;DOUBLE JEU;Pour trois tours, échangez votre place avec celle de votre adversaire, chacun gardant son jeu de cartes. Durant ces trois tours, il est tout à fait possible à chacun de gagner avec sa nouvelle couleur.;1;0;0
+50;DOUBLE TOUR;Si elle ne vient pas de prendre une pièce adverse, la Tour que vous avez joué peut être déplacée de nouveau.;1;0;0
+51;DOUBLURE;Si la case de départ de votre roi est libre, vous pouvez y faire apparaitre un second Roi. Désormais, vous pouvez laisser l'un de vos Rois en échec, et même vous le faire prendre. Vous ne perdrez la partie que lorsque votre dernier Roi sera mat.;1;0;0
+52;DROIT D'AUTEUR;A partir du moment où cette carte est jouée, tout joueurs faisant une remarque désobligeante au sujet du jeu Tempête sur l'échiquier perd immédiatement un pion choisi par son adversaire;1;0;0
+53;DUEL;Jouez cette carte lorsque votre adversaire veut prendre l'une de vos pièces. Le combat entre les deux pièces pour déterminer celle qui reste sur la case et celle qui quitte l'échiquier est résolu au 421, à pile ou face, ou à Pierre, feuille, ciseaux, selon votre choix.;1;0;0
+57;ECURIE;Sur l'échiquier, permutez l'un de vos Cavaliers avec l'une de vos Tours;1;0;0
+58;ELECTROCHOC;Tous les Fous qui peuvent l'être doivent être déplacés horizontalement ou verticalement d'une case, sans prendre de pièce. Votre adversaire déplace ses Fous en premier.;1;0;0
+59;ELEMENT INCONTROLE;Déplacez une pièce adverse selon ses règles normales de déplacement. Vous ne pouvez pas prendre ainsi une pièce adverse.;1;0;0
+60;ENCEPHALOPATHIE SPONGIFORME EQUINE;L'un de vos Cavaliers, ou un Cavalier adverse, devient Fou. Il se déplacera désormais uniquement comme un Fou.;1;0;0
+61;ESTAFETTE;Déplacez l'une de vos pièces (selon son déplacement habituel) en lui faisant traverser toutes les cases de son chemin où se trouvent vos propres pièces. Vous ne pouvez pas prendre ainsi une pièce adverse.;1;0;0
+62;EXIL;Replacez sur la case, où sur l'une des cases, où elle pouvait se trouver en début de partie, une pièce adverse de votre choix. La case d'arrivé doit être libre.;1;1;0
+54;FANTOCHE;Jouez cette carte lorsque vous êtes mis en échec, même mat. Vous permutez alors sur l'échiquier votre Roi avec l'un de vos Pions.;0;0;0
+55;FAVORITE;Déplacez n'importe laquelle de vos pièces (sauf un Pion) à la manière d'une Dame. Vous ne pouvez pas prendre ainsi une pièce adverse.;0;0;1
+56;FOU REFLECHI;Déplacez l'un de vos Fous en le faisant "rebondir" sur les côtés de l'échiquier, poursuivant son chemin en décrivant un anle à 90, somme indiqué sur l'exemple ci-dessus. Il n'y pas de limite au nombre de rebonds au cours d'un déplacement.;0;0;1
+63;FRAYEUR;Faites reculer un pion adverse d'une ou deux cases.;1;0;0
+64;FRINGALE;Les deux adversaires sont désormais obligés de prendre une pièce adverse à chaque coup. L'effet de cette carte dure jusqu'à ce que l'un des deux joueurs soit dans l'impossibilité de prendre.;1;0;0
+65;FUSION;Déplacez l'une de vos pièces vers une case occupée par une autre de vos pièces. Les deux pièces fusionneent en une nouvelle, qui se déplacera désormais comme l'une ou l'autre, des deux pièces d'origine. Le Roi ne peut pas fusionner.;0;0;1
+66;GROSSE DEPRIME;Retirez de l'échiquier un Pion adverse dont toutes les cases voisines sont vides.;1;0;0
+67;GUEULES CASSEES; Jouez cette carte lorsque votre adversaire vient de vous prendre une pièce (pas un Pion). Regardez alors les cartes de la pioche et choisissez en une, que vous mettez dans votre jeu à la place de celle-ci.;3;0;0
+68;HALLUCINATION PASSAGERE;Déplacez n'importe laquelle de vos pièces à la manière d'un Fou. Vous ne pouvez pas prendre ainsi une pièce adverse.;0;0;1
+69;HOMME DE PAILLE;Sacrifiez l'un de vos Pions pour sauver la pièce que votre adversaire vient de vous prendre. Remettez la pièce sur la case où se trouvait le pion sacrifié.;3;0;0
+70;IMITATEUR;Déplacez n'importe laquelle de vos pièces (sauf un Pion) à la manière de la pièce que vient de jouer votre adversaire. Vous ne pouvez pas prendre ainsi une pièce adverse.;0;0;1
+71;INFILTRATION;Sur l'échiquier, permutez un, deux, ou trois de vos pions avec le même nombre de pions adverses.;0;0;1
+72;INGERENCE;Demandez à la tierce personne la plus proche de l'échiquier de déplacer deux pièces de son choix, sauf les Rois, une de chaque joueur.;0;0;0
+73;INONDATION;L'échiquier est désormais réduit au plus petit rectangle possible contenant toutes les pièces encore en jeu au moment où cette carte est jouée;1;0;0
+74;JE PASSE;Lorsque vous jouez cette carte, vous passez votre tour, et gardez cette carte visible devant vous. Vous pourrez l'utiliser plus tard, une seule fois, pour rejouer après votre tour.;0;0;0
+75;KANGOUROU;Transformez l'un de vos Cavaliers, ou un Cavalier adverse, en Kangourou, et cela définitivement. Le Kangourou se déplace en faisant deux sauts de Cavalier consécutifs, le premier devant obligatoirement aboutir à une case libre. Le Kangourou ne peut pas s'arrêter après le premier saut.;1;0;0
+76;KIDNAPPING;Votre adversaire tourne la tête dix secondes, et vous subtilisez l'une de ses pièces de l'échiquier. Il a ensuite dix secondes pour, en regardant l'échiquier retourver quelle pièce a disparu et sur quelle case elle se trouvait. S'il trouve, la pièce est remise en place. S'il se trompe, elle est considérée comme prise.;1;0;0
+77;LA CASE QUI REND FOU;Désignez une case inoccupée de l'échiquier, que vous repérez par un marqueur quelconque. Jusqu'a la fin de la partie, toute pièce qui quitte cette case peut le faire en se déplacant comme un Fou.;1;1;0
+78;LASER;L'une de vos pièces (TOUR,FOU ou Dame) envoie un rayon laser dans l'une de ses directions possibles de déplacement. Toutes les pièces, amies ou ennemies, qui se trouvent dans cette direction, entre la pièce qui envoie le rayon et le bord de l'échiquier, sont désintégrées. Les Rois ne sont pas affectés par le rayon lase, mais ne l'arrêtent pas.;1;0;0
+79;MAGNETISME;L'une de vos pièces devient un aimant. Tant qu'elle restera sur la même case, toutes les pièces, amies ou adverse, se trouvant sur les huit cases voisines resteront immobilisées.;1;0;0
+80;MAISON;Ramenez l'une de vos pièces (pas un Pion) sur l'une des cases où elle pouvait se trouver en début de partie. Vous pouvez, même prendre ainsi une pièce adverse.;0;0;1
+81;MAJORETTES;Déplacez deux de vos pions latéralement d'une case, sans prendre de pièce adverse.;1;0;0
+82;MODESTIE;Déplacez n'importe laquelle de vos pièces à la manière d'un Pion. Si vous amenez ainsi une pièce sur la dernière rangée, vous pouvez la promouvoir en toute autre pièce de votre choix, comme un Pion.;0;0;1
+83;NEUTRALITE;Transformez une pièce adverse de votre choix (sauf Roi ou Dame) en pièce neutre. Une pièce neutre peut être utilisée par les deux joueurs et peut prendre des pièces appartenant aux deux joueurs.;1;0;0
+84;NIET;Cette carte annule toute autre carte au moment où elle est jouée.;3;0;3
+85;NON;Cette Carte annule toute autre carte au moment où elle est jouée.;3;0;3
+86;NON VIOLENT;L'une de vos pièces, excepté le ROi, devient non violente jusqu'à la fin de la partie. Cette pièce ne peut plus prendre e pièce adverse, ni être prise. Jusqu'à la fin de la partie, mais elle peut toujours donner échec.;1;0;0
+87;OH, DARLING;Amenez directement votre Roi sur une case libre adjacente à votre Dame, ou votre Dame sur une case adjacente à votre Roi.;0;0;1
+88;OLE;Jouez cette carte lorsque votre adversaire veut prendre l'une de vos pièces avec un Fou, une Tour, ou une Dame. La pièce attaquée reste en place. La pièce attaquante passe au traver et doit poursuivre son déplacement jusqu'à ce qu'elle capture une autre de vos pièces,s'immobilise devant une autre pièce adverse, ou tombe au delà du bord de l'échiquier. Dans ce dernier cas, elle est retirée du jeu.;3;0;0
+89;OMERTA;Le prochain joueur à prononcer le nom d'une pièce, excepté le Roi, doit perdre une pièce de ce type. S'il ne possède plus la pièce correspondante, cette carte continue à faire effet. Cette carte est retirée du jeu dès quelle prend effet.;1;0;0
+90;ON NE VIT QUE DEUX FOIS;Récupérez l'une des pièces (sauf la Dame) que vous a prises votre adversaire, et placez-la sur une case libre où elle pouvait se trouver en début de partie.;1;0;0
+91;ORIGINES;Aucun joueur ne peut plus jouer de carte de Tempête sur l'échiquier. L'effet de cette carte dure jusqu'a ce que l'un des Rois soit mis en échec.;1;0;0
+92;PARACHUTISTE;"Parachutez" l'un des Pions que vous a pris votre adversaire sur l'une des quatre cases centrales de l'échiquier. Cette case doit bien sûr être innocupée;0;0;1
+93;PARANOÏA;Au lieu de déplacer l'une de vos pièces, déplacez un Fou de votre adversaire de manière à prendre l'une de ses propres pièces.0;0;1
+94;PAS DE DEUX;Déplacez n'importe laquelle de vos pièces en lui faisant effetuer, à partir de la case où elle se trouve, excactement le même mouvement que la pièce que vous venez de jouer (même direction, même distance), à conditio qu'elle ne soit pas gêneée par une autre pièce pour se faire. Cette seconde pièce déplacée peut prendre.;1;0;0
+95;PAS QUESTION;Cette carte annule toute autre carte au moment où elle est jouée.;3;0;3
+96;PEGASE;Déplacez l'un de vos Cavaliers en l'amenant directement sur n'importe quelle case libre de couleur opposée à celle sur laquelle il se trouve.;0;0;1
+97;PERCEE;L'un de vos pions prend une pièce adverse en avançant droit devant lui.;0;0;1
+98;PERIPH;Déplacez l'une de vos pièces (sauf un Pion) depuis une case du bord de l'échiquier vers n'importe quelle autre case libre du bord de l'échiquier.;0;0;1
+99;PITIE;Lorsqu'une pièce adverse (Tour,Fou ou Dame) se rue sauvagement sur l'un de vos pions, se dermier l'implore à genoux. La pièce adverse, émue, s'immobilise alors sur la case précédente, juste avant votre pion.;3;0;0
+100;PLANQUE;Une pièce adverse de votre choix est "endormie". Elle ne peut plus bouger, et ne sera réveullée que lorsque le Roi de votre adversaire aura été mis en échec.;1;0;0
+101;POISON;Désignez l'une de vos pièces dont la chair est, définitivement empoisonée. Si une pièce adverse prend la pièce empoisonée, elles sont toutes deux retirées de l'échiquier.;1;0;0
+102;POUBELLE;Cette carte annule une carte à effet continu ou retardé (repérée par un sceptre) jouée plus tôt dans la partie;1;0;3
+103;POUSSEE;L'un de vos pions avance sur une case occupée, en poussant devant lui la pièce qui s'y trouve. Celle-ci peut éventuellement, si elle est pussée sur une case occupée, pousser une autre pièce, et ainsi de suite. Une pièce poussée hors de l'échiquier est retirée du jeu. Le Roi ne peut pas être poussé.;0;0;1
+104;PRINCESSE;Si vous n'avez plus de Dame et si la case de départ de celle-ci est libre, faites*y apparaitre une Pincesse. La princesse se déplace dans les huit directions, comme la Dame, mais d'une ou deux cases seulement.;1;0;0
+105;PROMOTION A L'ANCIENNETE;S'il ne vous reste plus qu'un ou deux pions sur l'échiquier, vous pouvez immédiatement les promouvoir en d'autres pièces de votre choix, Dame excepté.;1;0;0
+106;PROMOTION AU MERITE;L'un de vos pions est promu en une pièce de votre choix, alors qu'il ne se trouve que sur la sicième rangée.;1;0;0
+107;PROVOCATION;Votre adversaire doit, ce coup-ci, capturer une de vos pièces. S'il ne peut ou ne veut pas le faire, il passe son tour.;1;0;0
+108;PSYCHOPATHE;Jouez cette carte lorsque l'un de vos Fous a la possibilité de prendre plusieurs pièces adverses. Vous le faites alors éclater en plusieurs élements qui vont prendre chacun l'une des pièces adverses se trouvant à portée. Le Fou ainsi "éclaté" est retirée du jeu.;0;0;1
+109;QUADRILLE;Toute les pièces se trouvant dans l'un des quatres coins de l'échiquier se déplacent d'un quart de tour dans le sens de votre choix. les mouvements sont simulatnés, il n'y a donc pas de prise.;1;0;0
+110;QUATRE COINS;Si trois des quatre coins de l'échiquier sont occupés, placez l'une de vos pièces, de votre choix, dans le quatrième coins.;0;1;1
+111;QUE NENNI !;Cette carte annule toute autre carte au moment où elle est jouée.;3;0;3
+112;RATON LAVEUR;Sur l'échiquier, permutez l'un de vos Pions avec l'un de vos Fous, ou l'un de vos Cavaliers, ou l'une de vos Tours.0;0;1
+113;REBELOTE ET DIX DE DER;Cette carte vous permet de joueur deux autres cartes à ce coup.;0;0;3
+114;REGENCE;Vous faite disparaître votre Roi de l'échiquier pour un tour. Avant votre prochain, vous devrez le replacer sur une case livre de votre choix, au bord de l'échiquier.;0;1;0
+115;REMORQUE;Le pion que vous déplacez(sans prise) "tire" la pièce qui se trouve juste derrière lui, de manière à ce qu'elle reste immédiatement derrière lui.;0;0;1
+116;REPRESAILLES;Jouez cette carte lorsque votre adversaire vient de vous prendre une pièce (pas un Pion). Vous vous vengez alors en retirant l'un de ses pions de l'échiquier.;3;0;0
+117;RIGOLO;L'un de vos Pions prend une pièce adverse en reculant, mais toujours en diagonale;0;0;1
+118;ROQUE ACROBATIQUE;Quels que soient les antécédents et la situation actuelle, si vous avez votre Roi et l'une de vos Tours sur une même rangée ou colonne, et s'il n'y a aucune pièce entre eux, vous pouvez roquer en plaçant la Tour à côté du Roi, puis en faisant passer le Roi par dessus la Tour.;0;0;1
+119;ROQUE ET ROLLE;Si aucune pièce adverse ne se trouve sur votre première rangée, vous pouvez le souhaitez toutes vos pièces qui s'y trouvent.;0;0;1
+120;RUADE;Annulez le coup que vient de jouer votre adversaire avec l'un de ses Cavaliers. Déplacez vous-même à sa place, ce même Cavalier. Vous pouvez même prendre ainsi l'une pièce adverse...ou l'une de vos pièces;3;0;2
+121;SAUTE MOUTON;Déplacez l'un de vos pions comme au jeu de Dames, en sautant sur les diagones par dessus vos pièces ou velles de l'adversaire. Cependant, les pièces sautées au cours de ce déplacement ne sont pas "prises" et resent sur place.;0;0;1
+122;SCHIZOPHRÉNIE;Sur l'échiquier, permutez l'un de vos Fous avec un Fou adverse.;1;1;0
+123;SERIAL KILLER;L'un de vos Pions, qui vient d eprendre une pièce adverse, est pris d'une frénésie destructrice. Continuez à déplacer, en diagonale, le même pion en prenant à chaque déplacement une pièce adverse, tant que cela est possible.;1;0;0
+124;TIR;Vous pouvez prendre une pièce adver "au tir", sans que son agresseur vienne prendre sa place. le coup consiste simplement à désigner une la case que votre pièce pourrait atteindre, puis à retirer la pièce adverse qui s'y trouve, la pièce qui prend ne bougeant pas.;0;1;1
+125;TOI AUSSI MON FILS ! Jouez cette carte lorsque vous adversaire vous annonce un échec, même mat. La pièce qui vous met en échec change alors de couleur et passe dans votre camp.;3;0;0
+126;TOUR DE FADA;Sur l'échiquier, permuttez un Fou adverse avec une Tour adverse.;1;1;0
+127;TOURNEZ MANEGE;Faites pivoter l'échiquier d'un quart de tour dans le sens de votre choix. Les pions se déplacent toujours vers l'adversaire, et tous ceux qui se retrouvent sur la dernière rangée sont imédiatement promus. Ceux se retrouvant sur la rangée de départ peuvent se déplacer de deux cases.;1;0;0
+128;TRAHISON;Un Pion adverse qui se trouve déjà de votre côté de l'échiquier (plus près de votre bord que de celui de l'adversaire) change soudain de couleur et passe dans votre camp.;0;0;0
+129;TRAPPE;En jouant cette carte, notez sur un papier les coordonées d'une case de l'échiquier, vide ou occupée par l'une de vos pièces.? Dès qu'une pièce adverse s'arrête sur cette case, une bombe explose et la pièce est retirée du jeu. S'il s'agit du Roi, la bombe explose, mais le Roi reste en place.;1;1;0
+130;TROU NOIR;Désignez une case vide qui est "retirée" de l'échiquier jusqu'a la fin de la partie. Il sera impossible pendant la suite du jeu de s'y arrêter ou de la traverser. Le trou doit être repéré à l'aide d'un marqueur quelconque.;1;1;0
+131;URBANISME;Sur l'échiquier, permutez l'une de vos Tours avec une Tour adverse.;1;0;0
+132;VAMPIRISME;L'une de vos pièces, qui vient de prendre une pièce adverse, se transforme en une pièce de même type que celle qu'elle vient de prendre. Ainsi, par exemple, si l'un de vos Pions a pris un Cavalier, il devient un Cavalier.;1;0;0
+133;VAUTOUR;Récupérez la carte que votre adversaire vient de jouer, et mettez là dans votre main.;3;0;0
+134;VERGLAS;Jouez cette carte lorsque votre adversaire vient de jouer un Fou, Une Tour ou une Dmae sans effectuer de captrure. Cette pièce doit poursuivre son déplacement au delà, jusqu'à ce qu'elle capture l'une de vos pièces, s'immobilise devant une pièce de votre adversaire, ou tombe au delà du bord de l'échiquier.;3;0;0
+135;VISITES OFFICIELLES;Permutez votre Roi avec celui de votre adversaire, à condition que cela ne mette aucun de vous deux en échec.;1;0;0
+136;VOUS EN ÊTES UN AUTRE;Cette carte reproduit l'effet de la dernière carte jouée par votre adversaire;0;0;0
+137;VOYAGE ASTRAL;Enlevez de l'échiquier l'une de vos pièces ou une pièce adverse, que vous remettez à sa place après votre déplacement. Vous pouvez donc franchir librement cette case, mais ne pouvez pas y arrêter la pièce que vous déplacez.;0;0;0
+138;VOYANCE;Notez sur un morceau de papier la pièce que, selon vous, votre adversaire devrait jouer ce tour-ci. S'il déplace effectivement cette pièce, son déplacement est annulé et votre adversaire ne peut rien faired'autre à ce tour.;1;0;0
+139;ZOMBIES;Cette carte remet en jeu deux pions de chaque joueur. Chacun à son tour, en commençant par votre adversaire, replace l'un de ses pions perdus sur l'une des cases libres de la seconde rangée.;0;0;0

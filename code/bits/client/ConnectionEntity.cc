@@ -8,7 +8,7 @@
 namespace tsl {
 
     ConnectionEntity::ConnectionEntity(gf::ResourceManager& resources)
-    : m_paper(resources.getTexture("images/connection.png"))
+    : m_paper(resources.getTexture("images/Connection.png"))
     , m_font(resources.getFont("fonts/Trajan-Color-Concept.otf"))
     {
         m_paper.setSmooth(true);

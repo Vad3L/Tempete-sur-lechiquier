@@ -21,6 +21,7 @@ namespace tsl {
 
             MenuChoice m_choice;
             MenuEntity m_menu;
+
     };
     
 }

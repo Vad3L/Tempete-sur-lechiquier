@@ -23,7 +23,7 @@ namespace tsl {
 			resources.getTexture("animations/download_screen_2.png"),
 			resources.getTexture("animations/download_screen_3.png"),
 		}))
-    , m_backgroundTexture(resources.getTexture("images/downloadBackground.jpg"))
+    , m_backgroundTexture(resources.getTexture("images/DownloadBackground.jpg"))
     , m_font(resources.getFont("fonts/Trajan-Color-Concept.otf"))
     , m_indication("Chargement ")
     , m_interval(gf::seconds(0))

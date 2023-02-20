@@ -4,6 +4,8 @@
 #include <gf/Scene.h>
 #include <gf/Action.h>
 
+#include <SFML/Audio.hpp>
+
 namespace tsl {
 
   struct GameHub;
@@ -11,6 +13,8 @@ namespace tsl {
   class CommonScene : public gf::Scene {
     public:
       CommonScene(GameHub& game);
+      
+      void playClickButton();
 
     private:
       void doHandleActions(gf::Window& window) override;
@@ -22,6 +26,7 @@ namespace tsl {
       gf::Action m_fullscreenAction;
 
       gf::Texture& m_backgroundTexture;
+      sf::Sound m_clickButton;
   };
 
 }

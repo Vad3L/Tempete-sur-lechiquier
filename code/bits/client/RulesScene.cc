@@ -38,7 +38,7 @@ namespace tsl {
 
         switch (m_choice) {
             case RulesChoice::None:
-                break;
+                return;
             case RulesChoice::Before:
                 break;
             case RulesChoice::After:
@@ -48,6 +48,7 @@ namespace tsl {
                 break;
         }
 
+        m_game.common->playClickButton();
         m_choice = RulesChoice::None;
     }
 

@@ -83,6 +83,7 @@ namespace tsl {
                 style.Colors[ImGuiCol_Text]                  = ImVec4(1.0f, 1.0f, 1.0f, 0.0f);
                 
                 if (ImGui::Button("Connexion", ImVec2(sizeWindow.x * 0.18f, sizeWindow.y * 0.16f))) {
+                    m_game.common->playClickButton();
                     m_network.connect(std::string(m_hostnameBuffer.data()));
                     m_connectionAsked = true;
                 }
@@ -92,6 +93,7 @@ namespace tsl {
 
                 if (ImGui::Button("Retour", ImVec2(sizeWindow.x * 0.2f, sizeWindow.y * 0.2f))) {
                     m_connectionAsked = false;
+                    m_game.common->playClickButton();
                     m_game.replaceScene(*m_game.menu, m_game.blackoutEffect, gf::seconds(0.4f));
                 }
 

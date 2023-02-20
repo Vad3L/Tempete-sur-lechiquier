@@ -17,6 +17,7 @@ namespace tsl {
             void doProcessEvent(gf::Event& event) override;
             void doUpdate(gf::Time time) override;
             void doRender(gf::RenderTarget& target, const gf::RenderStates &states) override;
+            void onActivityChange(bool active) override;
 
             GameHub& m_game;
 

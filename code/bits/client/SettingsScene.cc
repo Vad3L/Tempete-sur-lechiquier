@@ -1,12 +1,14 @@
 #include "SettingsScene.h"
 
 #include "GameHub.h"
+#include "../common/Constants.h"
 #include "../common/ImGuiConstants.h"
+#include "Singletons.h"
 
 #include <gf/Coordinates.h>
-
 #include <imgui.h>
 #include <imgui_impl_gf.h>
+#include <fstream>
 
 namespace tsl {
     
@@ -26,6 +28,32 @@ namespace tsl {
         setClearColor(gf::Color::Black);
 
         addHudEntity(m_settings);
+
+        std::ifstream file("../config/Settings.csv");
+
+        if(!file) {
+            gf::Log::error("Impossible d'ouvrir le fichier.\n");
+        }
+        else {
+            std::string line;
+            
+            if(std::getline(file, line)) {
+                m_theme = atoi(line.substr(6).c_str());
+            }
+
+            if(std::getline(file, line)) {
+                m_sound = atoi(line.substr(6).c_str());
+                FxsVolume = m_sound;
+            }
+            
+            if(std::getline(file, line)) {
+                m_music = atoi(line.substr(6).c_str());
+                BackgroundAmbiantVolume = (FxsVolume == 0.f) ? 0.f : m_music;
+                gBackgroundMusic.setVolume(BackgroundAmbiantVolume);
+            }
+    
+            file.close();
+        }
     }
 
     void SettingsScene::doProcessEvent(gf::Event& event) {
@@ -34,6 +62,10 @@ namespace tsl {
 
     void SettingsScene::doUpdate(gf::Time time) {
         ImGui_ImplGF_Update(time);
+        
+        FxsVolume = m_sound;
+        BackgroundAmbiantVolume = (FxsVolume == 0.f) ? 0.f : m_music;
+        gBackgroundMusic.setVolume(BackgroundAmbiantVolume);
     }
 
     void SettingsScene::doRender(gf::RenderTarget& target, const gf::RenderStates &states) {
@@ -88,6 +120,7 @@ namespace tsl {
             style.Colors[ImGuiCol_Text]                  = ImVec4(1.0f, 1.0f, 1.0f, 0.0f);
             
             if (ImGui::Button("button", ImVec2(sizeWindow.x * 0.2f, sizeWindow.y * 0.2f))) {
+                m_game.common->playClickButton();
                 m_game.replaceScene(*m_game.menu, m_game.blackoutEffect, gf::seconds(0.4f));
             }
         
@@ -102,4 +135,23 @@ namespace tsl {
         ImGui_ImplGF_RenderDrawData(ImGui::GetDrawData());
         
     }
+
+    void SettingsScene::onActivityChange(bool active){
+        if(!active){	
+            
+            std::ofstream file("../config/Settings.csv");
+
+            if(!file) {
+                gf::Log::error("Impossible d'ouvrir le fichier.\n");
+            }
+            else {
+                
+                file << "theme;" << m_theme << "\n";
+                file << "sound;" << m_sound << "\n";;
+                file << "music;" << m_music;
+                file.close();
+            }
+        }
+    }
+
 }

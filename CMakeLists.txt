@@ -53,6 +53,8 @@ add_executable(client_tsl
 
   code/bits/common/Network.cc
 
+  code/bits/client/Singletons.cc
+
   vendor/imgui/imgui.cpp
   vendor/imgui/imgui_demo.cpp
   vendor/imgui/imgui_draw.cpp

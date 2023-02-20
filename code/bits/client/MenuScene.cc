@@ -43,7 +43,7 @@ namespace tsl {
 
         switch (m_choice) {
             case MenuChoice::None:
-                break;
+                return;
             case MenuChoice::Play:
                 m_game.replaceScene(*m_game.connection, m_game.blackoutEffect, gf::seconds(0.4f));
                 break;
@@ -58,6 +58,7 @@ namespace tsl {
                 break;
         }
 
+        m_game.common->playClickButton();
         m_choice = MenuChoice::None;
     }
 

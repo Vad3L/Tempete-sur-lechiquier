@@ -13,7 +13,7 @@ namespace tsl {
 
     RulesEntity::RulesEntity(gf::ResourceManager& resources, RulesChoice& choice)
     : m_font(resources.getFont("fonts/RifficFree-Bold.ttf"))
-    , m_paper(resources.getTexture("images/paper.png"))
+    , m_paper(resources.getTexture("images/Paper.png"))
     , m_leftWidget(resources.getTexture("images/buttons/leftArrow.png"),resources.getTexture("images/buttons/leftArrow.png"),resources.getTexture("images/buttons/leftArrowSelected.png"))
     , m_rightWidget(resources.getTexture("images/buttons/rightArrow.png"),resources.getTexture("images/buttons/rightArrow.png"),resources.getTexture("images/buttons/rightArrowSelected.png"))
     , m_quitWidget(resources.getTexture("images/buttons/menuButton.png"),resources.getTexture("images/buttons/menuButton.png"),resources.getTexture("images/buttons/menuButtonSelected.png"))
@@ -48,13 +48,12 @@ namespace tsl {
         gf::Coordinates coords(target);
 
         const gf::Vector2f scale = coords.getWindowSize() / gf::vec(1920.0f, 1080.0f);
-        const float min_scale = std::min(scale.x, scale.y);
 
         m_leftWidget.setPosition(coords.getRelativePoint({ 0.1f, 0.45f }));
-        m_leftWidget.setScale(min_scale);
+        m_leftWidget.setScale(scale/1.25f);
         m_leftWidget.setAnchor(gf::Anchor::Center);
         
-        m_rightWidget.setScale(min_scale);
+        m_rightWidget.setScale(scale/1.25f);
         m_rightWidget.setPosition(coords.getRelativePoint({ 0.9f, 0.45f }));
         m_rightWidget.setAnchor(gf::Anchor::Center);
 
@@ -64,7 +63,7 @@ namespace tsl {
 
         const unsigned titleCharacterSize = coords.getRelativeCharacterSize(0.05f);
         //const unsigned paragraphCharacterSize = coords.getRelativeCharacterSize(0.022f);
-        const unsigned characterSize = coords.getRelativeCharacterSize(0.025f);
+        //const unsigned characterSize = coords.getRelativeCharacterSize(0.025f);
 
         gf::Sprite paper(m_paper);
         paper.setScale(scale);
@@ -77,12 +76,12 @@ namespace tsl {
         gameRules.setPosition(coords.getRelativePoint({ 0.5f, 0.12f }));
         gameRules.setAnchor(gf::Anchor::Center);
 
-        //const float width = paper.getLocalBounds().getWidth();
+        const float width = paper.getLocalBounds().getWidth();
 
         gf::Text paragraph(m_rules[m_numPage], m_font);
         paragraph.setColor(gf::Color::Gray(0.3f));
         paragraph.setLineSpacing(1.5f);
-        //paragraph.setParagraphWidth(width - 150);
+        paragraph.setParagraphWidth(width);
         paragraph.setScale(scale * 0.74f);
         paragraph.setAlignment(gf::Alignment::Center);
         paragraph.setPosition(coords.getRelativePoint({ 0.5f, 0.46f }));
@@ -91,7 +90,7 @@ namespace tsl {
         char str[256];
         std::snprintf(str, sizeof(str), "%li/%li", m_numPage+1, nb_page);
 
-        gf::Text numPage(str, m_font, characterSize);
+        gf::Text numPage(str, m_font);
         numPage.setColor(gf::Color::Blue);
         numPage.setScale(scale);
         numPage.setPosition(coords.getRelativePoint({ 0.76f, 0.72f }));
