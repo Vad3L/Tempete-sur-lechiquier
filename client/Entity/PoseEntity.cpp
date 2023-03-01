@@ -69,10 +69,12 @@ void PoseEntity::render(gf::RenderTarget &target, const gf::RenderStates &states
 	target.draw(placementTexte,states);
 	target.draw(poseName,states);
 
-	if(m_cardPose.m_num!=-1) {
-		m_cardEntity.draw(target, states, m_cardPose, gf::Vector2f(0.2355f, 0.95f));
-	}
 
+	//coords.getRelativePoint({ 0.000125f, 0.0009f })
+	if(m_cardPose.m_num!=-1) {
+		m_cardEntity.draw(target, states, m_cardPose, {position1.x-100,position1.y-150},1,true);
+	} 
+	
 	//défausse
 
 	contour.setOutlineColor(gf::Color::White);
@@ -93,7 +95,7 @@ void PoseEntity::render(gf::RenderTarget &target, const gf::RenderStates &states
 	target.draw(poseName,states);
 	
 	if(m_cardDiscard.m_num!=-1) {
-		m_cardEntity.draw(target, states, m_cardDiscard, gf::Vector2f(1.195f, 0.95f));
+		m_cardEntity.draw(target, states, m_cardDiscard, {position2.x-100,position2.y-150},1,true);
 	}
 }
 

@@ -12,7 +12,7 @@ CardEntity::CardEntity(gf::ResourceManager& resources)
 void CardEntity::update([[maybe_unused]] gf::Time time) {
 }
 
-void CardEntity::draw(gf::RenderTarget &target, const gf::RenderStates &states, Card c, gf::Vector2f boxCoord, int zoom){
+void CardEntity::draw(gf::RenderTarget &target, const gf::RenderStates &states, Card c, gf::Vector2f boxCoord, int zoom,bool var){
 	m_card = c;
 	int numberImageW = 10;
 	int numberImageH = 14;
@@ -28,6 +28,9 @@ void CardEntity::draw(gf::RenderTarget &target, const gf::RenderStates &states, 
 	int i = c.m_num%numberImageW;
 	int j = c.m_num/numberImageW;	   
 	gf::Vector2f position= coordsCard.getRelativePoint({ boxCoord.x, boxCoord.y });
+	if (var) {
+		position= { boxCoord.x, boxCoord.y };
+	}
 	gf::RoundedRectangleShape card(sizeCard);
 	card.setColor(gf::Color::White);
 	card.setRadius(22);
