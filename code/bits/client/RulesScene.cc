@@ -1,6 +1,7 @@
 #include "RulesScene.h"
 
 #include "GameHub.h"
+#include "Tools.h"
 
 namespace tsl {
 
@@ -8,7 +9,7 @@ namespace tsl {
     : gf::Scene(game.getRenderer().getSize())
     , m_game(game)
     , m_choice(RulesChoice::None)
-    , m_rules(m_game.resources,  m_choice)
+    , m_rules(m_game.resources,  m_choice, m_game.m_model)
     {
         setClearColor(gf::Color::Black);
         
@@ -47,8 +48,8 @@ namespace tsl {
                 m_game.replaceScene(*m_game.menu, m_game.blackoutEffect, gf::seconds(0.4f));
                 break;
         }
-
-        m_game.common->playClickButton();
+        
+        playClickButton();
         m_choice = RulesChoice::None;
     }
 

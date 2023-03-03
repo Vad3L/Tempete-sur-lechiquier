@@ -20,7 +20,7 @@
 110;QUATRE COINS;Si trois des quatre coins de l'échiquier sont occupés, placez l'une de vos pièces, de votre choix, dans le quatrième coins.;0;1;1;1
 113;REBELOTE ET DIX DE DER;Cette carte vous permet de jouer deux autres cartes à ce coup.;2;0;3;0
 122;SCHIZOPHRÉNIE;Sur l'échiquier, permutez l'un de vos Fous avec un Fou adverse.;1;1;0;2
-124;TIR;Vous pouvez prendre une pièce adver "au tir", sans que son agresseur vienne prendre sa place. le coup consiste simplement à désigner une la case que votre pièce pourrait atteindre, puis à retirer la pièce adverse qui s'y trouve, la pièce qui prend ne bougeant pas.;0;1;1;2
+124;TIR;Vous pouvez prendre une pièce adverse "au tir", sans que son agresseur vienne prendre sa place. le coup consiste simplement à désigner une la case que votre pièce pourrait atteindre, puis à retirer la pièce adverse qui s'y trouve, la pièce qui prend ne bougeant pas.;0;1;1;2
 126;TOUR DE FADA;Sur l'échiquier, permuttez un Fou adverse avec une Tour adverse.;1;1;0;2
 131;URBANISME;Sur l'échiquier, permutez l'une de vos Tours avec une Tour adverse.;1;1;0;2
 132;VAMPIRISME;L'une de vos pièces, qui vient de prendre une pièce adverse, se transforme en une pièce de même type que celle qu'elle vient de prendre. Ainsi, par exemple, si l'un de vos Pions a pris un Cavalier, il devient un Cavalier.;1;0;0;0

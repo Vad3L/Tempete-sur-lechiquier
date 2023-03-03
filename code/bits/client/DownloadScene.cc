@@ -7,7 +7,7 @@ namespace tsl {
 	DownloadScene::DownloadScene(GameHub& game)
 	: gf::Scene(game.getRenderer().getSize())
 	, m_game(game)
-	, m_downloadEntity(m_game.resources) 
+	, m_downloadEntity(m_game.resources, m_game.m_model) 
 	{
 		setClearColor(gf::Color::Black);
 

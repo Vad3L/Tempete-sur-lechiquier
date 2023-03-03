@@ -7,8 +7,10 @@
 
 namespace tsl {
 
-    StartEntity::StartEntity(gf::ResourceManager& resources)
-    : m_font(resources.getFont("fonts/DejaVuSans.ttf"))
+    StartEntity::StartEntity(gf::ResourceManager& resources, GameModel& model)
+    : m_model(model)
+    ,m_font(resources.getFont("fonts/RifficFree-Bold.ttf"))
+    
     {
         
     }
@@ -17,7 +19,7 @@ namespace tsl {
         gf::Coordinates coords(target);
         const gf::Vector2f scale = coords.getWindowSize() / gf::vec(1920.0f, 1080.0f);
 
-        gf::Text instructions("Appuie sur espace pour démarrer", m_font);
+        gf::Text instructions(m_model.getWord("Press enter to start"), m_font);
         instructions.setScale(scale);
         instructions.setColor(gf::Color::White);
         instructions.setPosition(coords.getRelativePoint({ 0.5f, 0.91f }));

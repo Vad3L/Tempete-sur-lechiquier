@@ -7,11 +7,13 @@
 #include <gf/ResourceManager.h>
 #include <gf/Ref.h>
 
+#include "GameModel.h"
+
 namespace tsl {
 
 	class DownloadEntity: public gf::Entity {
 		public:
-			DownloadEntity(gf::ResourceManager& resources);
+			DownloadEntity(gf::ResourceManager& resources, GameModel& model);
 
 			void changeFrame();			
 			
@@ -20,12 +22,16 @@ namespace tsl {
 
 		private:
 			float m_percentage;
+			GameModel& m_model;
+			
 			std::vector<gf::Ref<gf::Texture>> m_textures;
 
 			gf::Texture& m_backgroundTexture;
-			gf::Font& m_font;
-			std::string m_indication;
+			gf::Texture& m_title;
 
+			gf::Font& m_font;
+			
+			std::string m_points;
 			gf::Time m_interval;
 	};
 

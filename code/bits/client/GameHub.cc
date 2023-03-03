@@ -1,6 +1,7 @@
 #include "GameHub.h"
 
 #include "../common/Constants.h"
+#include "Singletons.h"
 
 #include <imgui.h>
 #include <imgui_impl_gf.h>
@@ -10,6 +11,7 @@ namespace tsl {
 
 	GameHub::GameHub()
 	: gf::GameManager("Tempête sur l'échiquier", { GAME_DATADIR })
+	, m_model()
 	, download(std::make_unique<DownloadScene>(*this))
 	, m_loadingFinished(false)
 	{
@@ -23,7 +25,7 @@ namespace tsl {
 		ImGui_ImplGF_Init(getWindow(), getRenderer());
 
 		getWindow().setVerticalSyncEnabled(true);
-		getWindow().setFramerateLimit(120);
+		getWindow().setFramerateLimit(60);
 	}
 
 	GameHub::~GameHub() {
@@ -33,28 +35,38 @@ namespace tsl {
 
 	void GameHub::loadingOtherAssets(Network& network) {
 		
+		gAudioManager().getSound("sounds/ClickButton.ogg");
+		
 		settings = std::make_unique<SettingsScene>(*this);
-		gf::sleep(gf::seconds(0.2f));
+		//gf::sleep(gf::seconds(0.2f));
 		download->changeFrame();
 		
 		common = std::make_unique<CommonScene>(*this);
-		gf::sleep(gf::seconds(0.2f));
+		//gf::sleep(gf::seconds(0.2f));
 		download->changeFrame();
 
 		start = std::make_unique<StartScene>(*this);
-		gf::sleep(gf::seconds(0.2f));
+		//gf::sleep(gf::seconds(0.2f));
 		download->changeFrame();
 		
 		menu = std::make_unique<MenuScene>(*this);
-		gf::sleep(gf::seconds(0.2f));
+		//gf::sleep(gf::seconds(0.2f));
 		download->changeFrame();
 
 		connection = std::make_unique<ConnectionScene>(*this, network);
-		gf::sleep(gf::seconds(0.2f));
+		//gf::sleep(gf::seconds(0.2f));
 		download->changeFrame();
 
 		rules = std::make_unique<RulesScene>(*this);
-		gf::sleep(gf::seconds(0.2f));
+		//gf::sleep(gf::seconds(0.2f));
+		download->changeFrame();
+
+		waiting = std::make_unique<WaitingScene>(*this, network);
+		//gf::sleep(gf::seconds(0.2f));
+		download->changeFrame();
+
+		game = std::make_unique<GameScene>(*this, network);
+		//gf::sleep(gf::seconds(0.2f));
 		download->changeFrame();
 
 		gf::Log::info("Download finished !!!\n");

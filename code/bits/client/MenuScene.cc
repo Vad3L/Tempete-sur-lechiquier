@@ -1,6 +1,7 @@
 #include "MenuScene.h"
 
 #include "GameHub.h"
+#include "Tools.h"
 
 namespace tsl {
 
@@ -8,7 +9,7 @@ namespace tsl {
     : gf::Scene(game.getRenderer().getSize())
     , m_game(game)
     , m_choice(MenuChoice::None)
-    , m_menu(game.resources,  m_choice)
+    , m_menu(m_game.resources,  m_choice, m_game.m_model)
     {
         setClearColor(gf::Color::Black);
 
@@ -58,7 +59,7 @@ namespace tsl {
                 break;
         }
 
-        m_game.common->playClickButton();
+        playClickButton();
         m_choice = MenuChoice::None;
     }
 

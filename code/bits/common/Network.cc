@@ -4,7 +4,9 @@
 
 namespace tsl {
 
-	Network::Network() {
+	Network::Network()
+	: m_connecting(false)
+	{
 
 	}
 
@@ -25,7 +27,7 @@ namespace tsl {
 	}
 
 	void Network::disconnect() {
-		m_queue.clear();
+		queue.clear();
 		m_socket = gf::TcpSocket();
 		m_connecting = false;
 	}
@@ -48,7 +50,7 @@ namespace tsl {
 
 			switch (m_socket.recvPacket(packet)) {
 			case gf::SocketStatus::Data:
-				m_queue.push(std::move(packet));
+				queue.push(std::move(packet));
 				break;
 			case gf::SocketStatus::Error:
 				gf::Log::error("Lors de la réception du paquet venant du serveur\n");

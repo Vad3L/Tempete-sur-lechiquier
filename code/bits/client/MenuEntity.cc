@@ -3,14 +3,15 @@
 #include <gf/Coordinates.h>
 #include <gf/Text.h>
 #include <gf/RenderTarget.h>
-
+#include <gf/Log.h>
 namespace tsl {
 
-    MenuEntity::MenuEntity(gf::ResourceManager& resources, MenuChoice& choice)
-    : m_font(resources.getFont("fonts/Trajan-Color-Concept.otf"))
-    , m_playWidget(resources.getTexture("images/buttons/JouerButton.png"), resources.getTexture("images/buttons/JouerButton.png"), resources.getTexture("images/buttons/JouerButtonSelected.png"))
-    , m_rulesWidget(resources.getTexture("images/buttons/reglesButton.png"), resources.getTexture("images/buttons/reglesButton.png"), resources.getTexture("images/buttons/reglesButtonSelected.png"))
-    , m_quitWidget(resources.getTexture("images/buttons/quitterButton.png"), resources.getTexture("images/buttons/quitterButton.png"), resources.getTexture("images/buttons/quitterButtonSelected.png"))
+    MenuEntity::MenuEntity(gf::ResourceManager& resources, MenuChoice& choice, GameModel& model)
+    : m_model(model)
+    , m_font(resources.getFont("fonts/Trajan-Color-Concept.otf"))
+    , m_playWidget(resources.getTexture("images/buttons/Button.png"), resources.getTexture("images/buttons/Button.png"), resources.getTexture("images/buttons/ButtonSelected.png"))
+    , m_rulesWidget(resources.getTexture("images/buttons/Button.png"), resources.getTexture("images/buttons/Button.png"), resources.getTexture("images/buttons/ButtonSelected.png"))
+    , m_quitWidget(resources.getTexture("images/buttons/Button.png"), resources.getTexture("images/buttons/Button.png"), resources.getTexture("images/buttons/ButtonSelected.png"))
     , m_settingsWidget(resources.getTexture("images/Cog.png"), resources.getTexture("images/Cog.png"), resources.getTexture("images/Cog.png"))
     {
         m_playWidget.setCallback([&choice]() { choice = MenuChoice::Play; });
@@ -35,16 +36,16 @@ namespace tsl {
     }
     
     void MenuEntity::update([[maybe_unused]] gf::Time time) {
+        
         m_settingsWidget.setRotation(m_settingsWidget.getRotation()+0.01f);
     }
 
     void MenuEntity::render(gf::RenderTarget &target, const gf::RenderStates &states) {
         gf::Coordinates coords(target);
-
         const gf::Vector2f scale = coords.getWindowSize() / gf::vec(1920.0f, 1080.0f);
 
-        gf::Text title("Tempete sur l echiquier", m_font);
-        title.setScale(scale*3.f);
+        gf::Text title(m_model.getWord("Storm on chess"), m_font, 74);
+        title.setScale(scale);
         title.setColor(gf::Color::White);
         title.setPosition(coords.getRelativePoint({ 0.5f, 0.1f }));
         title.setAnchor(gf::Anchor::Center);
@@ -56,7 +57,7 @@ namespace tsl {
         m_rulesWidget.setScale(scale/2.5f);
         m_rulesWidget.setPosition(coords.getRelativePoint({0.5f, 0.6f}));
         m_rulesWidget.setAnchor(gf::Anchor::Center);
-
+    
         m_quitWidget.setScale(scale/2.5f);
         m_quitWidget.setPosition(coords.getRelativePoint({0.5f, 0.8f}));
         m_quitWidget.setAnchor(gf::Anchor::Center);
@@ -69,6 +70,21 @@ namespace tsl {
     
         target.draw(title, states);
         m_container.render(target, states);	
+        renderTitleButton(target, states, { 0.5f, 0.4f }, m_model.getWord("Play"));
+        renderTitleButton(target, states, { 0.5f, 0.6f }, m_model.getWord("Rules"));
+        renderTitleButton(target, states, { 0.5f, 0.8f }, m_model.getWord("Quit"));
     }
 
+    void MenuEntity::renderTitleButton(gf::RenderTarget& target, const gf::RenderStates& states, gf::Vector2f pos, std::string title) {
+		gf::Coordinates coords(target);
+        const gf::Vector2f scale = coords.getWindowSize() / gf::vec(1920.0f, 1080.0f);
+
+		gf::Text text(title, m_font, 35);
+        text.setScale(scale);
+        text.setColor(gf::Color::fromRgba32(252, 223, 0));;
+        text.setPosition(coords.getRelativePoint(pos));
+        text.setAnchor(gf::Anchor::Center);
+    
+        target.draw(text, states);
+	}
 }

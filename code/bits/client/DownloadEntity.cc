@@ -12,23 +12,26 @@ namespace tsl {
 
     namespace {
         static constexpr gf::Vector2i DownloadScreenSize = {405, 76};
-        static constexpr float barIncrement = 100 / 6.f;
+        static constexpr float barIncrement = 100 / 8.f;
     }
 
-    DownloadEntity::DownloadEntity(gf::ResourceManager& resources)
+    DownloadEntity::DownloadEntity(gf::ResourceManager& resources, GameModel& model)
     : m_percentage(0)
+    , m_model(model)
     , m_textures(std::vector<gf::Ref<gf::Texture>>({
-			resources.getTexture("animations/download_screen_0.png"),
-			resources.getTexture("animations/download_screen_1.png"),
-			resources.getTexture("animations/download_screen_2.png"),
-			resources.getTexture("animations/download_screen_3.png"),
+			resources.getTexture("animations/Download_screen_0.png"),
+			resources.getTexture("animations/Download_screen_1.png"),
+			resources.getTexture("animations/Download_screen_2.png"),
+			resources.getTexture("animations/Download_screen_3.png"),
 		}))
     , m_backgroundTexture(resources.getTexture("images/DownloadBackground.jpg"))
-    , m_font(resources.getFont("fonts/Trajan-Color-Concept.otf"))
-    , m_indication("Chargement ")
+    , m_title(resources.getTexture("images/" + model.language + "Title.png"))
+    , m_font(resources.getFont("fonts/RifficFree-Bold.ttf"))
+    , m_points("")
     , m_interval(gf::seconds(0))
     {
-        
+        m_backgroundTexture.setSmooth(true);
+        m_title.setSmooth(true);
     }
 
     void DownloadEntity::changeFrame() {
@@ -41,42 +44,48 @@ namespace tsl {
         if(m_interval.asSeconds() > 0.6f) {
             m_interval = gf::Time::Zero;
             
-            if(m_indication.size()==14) {
-                m_indication = m_indication.substr(0, 11);
+            if(m_points.size()==3) {
+                m_points = "";
             }
-            m_indication += ".";
+            m_points += ".";
         }
     }
     
     void DownloadEntity::render(gf::RenderTarget& target, const gf::RenderStates& states) {
-        gf::Coordinates coordinates(target);
+        gf::Coordinates coords(target);
+        const gf::Vector2f scale = coords.getWindowSize() / gf::vec(1920.0f, 1080.0f);
 
-        const gf::Vector2f scale = coordinates.getWindowSize() / gf::vec(1920.0f, 1080.0f);
         gf::Sprite background(m_backgroundTexture);
         background.setScale(scale);
         
+        gf::Sprite title(m_title);
+        title.setScale(scale * 2.5f);
+        title.setPosition(coords.getRelativePoint({ 0.5f, 0.14f }));
+        title.setAnchor(gf::Anchor::Center);
+
         std::size_t numSpreadSheat = ((m_percentage==100) ? 99.f : m_percentage) / 30;
         float col = (static_cast<int>(ceilf(m_percentage)) % 10 == 0) ? 0.0f : 0.5f;
         int mod = (numSpreadSheat != m_textures.size()-1) ? 30 : 15;
         float lig = 1/3.f * (static_cast<int>(ceilf(m_percentage)) % mod / 10);
         
         gf::Sprite sprite(m_textures[numSpreadSheat], gf::RectF::fromPositionSize({ col, lig }, { 0.5f, 1/3.f }));
-        
-        float scaleFactor = coordinates.getWindowSize().y / static_cast<float>(DownloadScreenSize.height) * 0.1f;
+        float scaleFactor = coords.getWindowSize().y / static_cast<float>(DownloadScreenSize.height) * 0.1f;
         sprite.scale(scaleFactor);
-
-        sprite.setPosition(coordinates.getRelativePoint({ 0.5f, 0.8f}));
+        sprite.setPosition(coords.getRelativePoint({ 0.5f, 0.86f }));
         sprite.setAnchor(gf::Anchor::Center);
 
-
-        gf::Text download(m_indication, m_font);
+        gf::Text download(m_model.getWord("Download"), m_font);
         download.setScale(scale);
         download.setColor(gf::Color::White);
-        download.setPosition(coordinates.getRelativePoint({ 0.435f, 0.87f }));
+        const gf::Vector2f pos = { (coords.getWindowSize().x - download.getLocalBounds().getWidth() * scale.x) * 0.5f, coords.getRelativePoint({0 , 0.92f }).y };
+        download.setPosition(pos);
+        download.setString( download.getString() + " " + m_points);
         download.setAnchor(gf::Anchor::CenterLeft);
 
         target.draw(background, states);
+        target.draw(title, states);
         target.draw(sprite, states);
         target.draw(download, states);
     }
+    
 }

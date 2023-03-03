@@ -17,7 +17,7 @@ namespace tsl {
 
     class Network {
         public:
-            gf::Queue<gf::Packet> m_queue;
+            gf::Queue<gf::Packet> queue;
 
             Network();
 
@@ -34,11 +34,12 @@ namespace tsl {
             }
 
         private:
+            void run(std::string hostname);
+
             gf::TcpSocket m_socket;
             std::mutex m_mutex;
             std::atomic_bool m_connecting;
 
-            void run(std::string hostname);
     };
 
 }

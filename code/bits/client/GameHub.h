@@ -12,7 +12,9 @@
 #include "ConnectionScene.h"
 #include "RulesScene.h"
 #include "SettingsScene.h"
-
+#include "WaitingScene.h"
+#include "GameScene.h"
+#include "GameModel.h"
 
 namespace tsl {
 
@@ -29,6 +31,8 @@ namespace tsl {
         void loadingOtherAssets(Network& network);
         bool loadingFinished();
 
+        GameModel m_model;
+        
         std::unique_ptr<CommonScene> common;
         std::unique_ptr<DownloadScene> download;
         std::unique_ptr<StartScene> start;
@@ -36,6 +40,8 @@ namespace tsl {
         std::unique_ptr<ConnectionScene> connection;
         std::unique_ptr<RulesScene> rules;
         std::unique_ptr<SettingsScene> settings;
+        std::unique_ptr<WaitingScene> waiting;
+        std::unique_ptr<GameScene> game;
 
         gf::BlackoutSegueEffect blackoutEffect;
 

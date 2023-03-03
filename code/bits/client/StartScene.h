@@ -13,8 +13,10 @@ namespace tsl {
 	class StartScene : public gf::Scene {
 		public:
 			StartScene(GameHub& game);
+			
+		private: 
 			void doHandleActions(gf::Window& window) override;
-
+			
 			GameHub& m_game;
 			
 			gf::Action m_startAction;

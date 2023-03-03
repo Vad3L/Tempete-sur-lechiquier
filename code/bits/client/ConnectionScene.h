@@ -5,6 +5,7 @@
 
 #include "ConnectionEntity.h"
 #include "../common/Network.h"
+#include "GameModel.h"
 
 namespace tsl {
 
@@ -21,11 +22,12 @@ namespace tsl {
 
             GameHub& m_game;
             Network& m_network;
+            GameModel& m_model;
             
             std::array<char, 256> m_hostnameBuffer;
-            std::array<char, 256> m_nameBuffer;
             bool m_connectionAsked;      
 
+            ConnectionChoice m_choice;
             ConnectionEntity m_connection;
     };
 }

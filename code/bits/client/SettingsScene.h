@@ -4,6 +4,7 @@
 #include <gf/Scene.h>
 
 #include "SettingsEntity.h"
+#include "GameModel.h"
 
 namespace tsl {
 
@@ -17,16 +18,12 @@ namespace tsl {
             void doProcessEvent(gf::Event& event) override;
             void doUpdate(gf::Time time) override;
             void doRender(gf::RenderTarget& target, const gf::RenderStates &states) override;
-            void onActivityChange(bool active) override;
 
             GameHub& m_game;
+            GameModel& m_model;
 
-            int m_theme;
-            int m_music;
-            int m_sound;
-
+            SettingsChoice m_choice;
             SettingsEntity m_settings;
-
     };
     
 }

@@ -4,22 +4,21 @@
 #include <gf/Sleep.h>
 
 #include "bits/client/GameHub.h"
-#include "bits/common/Network.h"
 #include "bits/client/Singletons.h"
+#include "bits/client/GameModel.h"
 
+#include "bits/common/Network.h"
 #include "bits/common/Constants.h"
 
 int main([[maybe_unused]] int argc, [[maybe_unused]] char *argv[]) {
     
 	tsl::GameHub hub;
 	tsl::Network network;  
-
+	
 	hub.getWindow().toggleFullscreen();
 	
 	gf::SingletonStorage<tsl::AudioManager> storageForResourceManager(tsl::gAudioManager);
   	tsl::gAudioManager().addSearchDir({ tsl::GAME_DATADIR });
-
-	// Background music
 	
 	std::thread loading([&hub, &network]() {
 		gf::SharedGraphics glContext(hub.getWindow());	
@@ -28,6 +27,7 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char *argv[]) {
 
 	loading.detach();
 	
+	// Background music
 	tsl::gBackgroundMusic.setBuffer(tsl::gAudioManager().getSound("sounds/MainSounds.ogg"));
 	tsl::gBackgroundMusic.setLoop(true);
 	tsl::gBackgroundMusic.setVolume(tsl::BackgroundAmbiantVolume);

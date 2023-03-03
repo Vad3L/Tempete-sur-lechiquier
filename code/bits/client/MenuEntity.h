@@ -6,6 +6,8 @@
 #include <gf/WidgetContainer.h>
 #include <gf/Widgets.h>
 
+#include "GameModel.h"
+
 namespace tsl {
 
     enum class MenuChoice {
@@ -18,7 +20,7 @@ namespace tsl {
 
     class MenuEntity : public gf::Entity {
         public:
-            MenuEntity(gf::ResourceManager& resources, MenuChoice& choice);
+            MenuEntity(gf::ResourceManager& resources, MenuChoice& choice, GameModel& model);
             
             void pointTo(gf::Vector2f coords);
             void triggerAction();
@@ -27,6 +29,10 @@ namespace tsl {
             void render(gf::RenderTarget &target, const gf::RenderStates &states) override;
         
         private:
+            void renderTitleButton(gf::RenderTarget& target, const gf::RenderStates& states, gf::Vector2f pos, std::string title);
+
+            GameModel& m_model;
+
             gf::Font& m_font;
 
             gf::WidgetContainer m_container;
@@ -34,7 +40,6 @@ namespace tsl {
             gf::SpriteWidget m_rulesWidget;
             gf::SpriteWidget m_quitWidget;
             gf::SpriteWidget m_settingsWidget;
-
     };
 
 }

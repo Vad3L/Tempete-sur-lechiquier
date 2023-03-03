@@ -50,10 +50,16 @@ add_executable(client_tsl
   code/bits/client/RulesEntity.cc
   code/bits/client/SettingsScene.cc
   code/bits/client/SettingsEntity.cc
-
-  code/bits/common/Network.cc
-
   code/bits/client/Singletons.cc
+  code/bits/client/WaitingScene.cc
+  code/bits/client/WaitingEntity.cc
+  code/bits/client/GameScene.cc
+  code/bits/client/PlayerInfo.cc
+  
+  code/bits/common/Network.cc
+  code/bits/common/GamePhase.cc
+  code/bits/common/Deck.cc
+  code/bits/common/Card.cc
 
   vendor/imgui/imgui.cpp
   vendor/imgui/imgui_demo.cpp
@@ -88,7 +94,12 @@ install(
 add_executable(server_tsl
   code/server.cc
 
+  code/bits/server/AnnexFonctionServer.cc
+  
   code/bits/common/Network.cc
+  code/bits/common/GamePhase.cc
+  code/bits/common/Deck.cc
+  code/bits/common/Card.cc
 )
 
 target_include_directories(server_tsl

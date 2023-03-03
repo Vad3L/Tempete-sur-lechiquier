@@ -8,12 +8,12 @@ namespace tsl {
     : gf::Scene(game.getRenderer().getSize())
     , m_game(game)
     , m_startAction("Start")
-    , m_startEntity(game.resources)
+    , m_startEntity(m_game.resources, m_game.m_model)
     {
         setClearColor(gf::Color::Black);
 
-        m_startAction.addMouseButtonControl(gf::MouseButton::Left);
-        m_startAction.addKeycodeKeyControl(gf::Keycode::Space);
+        //m_startAction.addMouseButtonControl(gf::MouseButton::Left);
+        m_startAction.addKeycodeKeyControl(gf::Keycode::Return);
         addAction(m_startAction);
         
         addHudEntity(m_startEntity);

@@ -2,9 +2,9 @@
 
 #include "GameHub.h"
 #include "../common/ImGuiConstants.h"
+#include "Tools.h"
 
 #include <gf/Coordinates.h>
-
 #include <imgui.h>
 #include <imgui_impl_gf.h>
 
@@ -14,23 +14,57 @@ namespace tsl {
     : gf::Scene({game.getRenderer().getSize()})
     , m_game(game)
     , m_network(network)
+    , m_model(m_game.m_model)
     , m_connectionAsked(false)
-    , m_connection(m_game.resources)
+    , m_choice(ConnectionChoice::None)
+    , m_connection(m_game.resources, m_choice, m_game.m_model)
     {
         setClearColor(gf::Color::Black);
 
-        std::strncpy(m_hostnameBuffer.data(), "", 255);
-        std::strncpy(m_nameBuffer.data(), "", 255);
+        std::strncpy(m_hostnameBuffer.data(), "localhost", 255);
 
         addHudEntity(m_connection);
     }
 
     void ConnectionScene::doProcessEvent(gf::Event& event) {
         ImGui_ImplGF_ProcessEvent(event);
+
+        switch (event.type) {
+            case gf::EventType::MouseMoved:
+                m_connection.pointTo(m_game.getRenderer().mapPixelToCoords(event.mouseCursor.coords));
+                break;
+
+            case gf::EventType::MouseButtonPressed:
+                m_connection.pointTo(m_game.getRenderer().mapPixelToCoords(event.mouseButton.coords));
+                m_connection.triggerAction();
+                break;
+
+            default:
+                break;
+        }
     }
 
     void ConnectionScene::doUpdate(gf::Time time) {
+        if (!isActive()) {
+			return;
+		}
+
         ImGui_ImplGF_Update(time);
+
+        switch (m_choice) {
+            case ConnectionChoice::None:
+                return;
+            case ConnectionChoice::Connection:
+                m_network.connect(std::string(m_hostnameBuffer.data()));
+                m_connectionAsked = true;
+                break;
+            case ConnectionChoice::Quit:
+                m_game.replaceScene(*m_game.menu, m_game.blackoutEffect, gf::seconds(0.4f));
+                break;
+        }
+
+        playClickButton();
+        m_choice = ConnectionChoice::None;
     }
 
     void ConnectionScene::doRender(gf::RenderTarget& target, const gf::RenderStates &states) {
@@ -43,9 +77,6 @@ namespace tsl {
         style.Colors[ImGuiCol_FrameBg]               = ImVec4(0.9f, 0.8f, 0.68f, 1.0f);
         style.Colors[ImGuiCol_FrameBgHovered]        = ImVec4(0.9f, 0.8f, 0.68f, 1.0f);
         style.Colors[ImGuiCol_FrameBgActive]         = ImVec4(0.9f, 0.8f, 0.68f, 1.0f);
-        style.Colors[ImGuiCol_Button]                = ImVec4(1.0f, 1.0f, 1.0f, 0.0f);
-		style.Colors[ImGuiCol_ButtonHovered]         = ImVec4(1.0f, 1.0f, 1.0f, 0.0f);
-		style.Colors[ImGuiCol_ButtonActive]          = ImVec4(1.0f, 1.0f, 1.0f, 0.0f);
 
         // UI
         ImGui::NewFrame();
@@ -56,9 +87,9 @@ namespace tsl {
 
         if (ImGui::Begin("Connexion", nullptr, DefaultWindowFlags|ImGuiWindowFlags_NoTitleBar|ImGuiWindowFlags_NoBackground)) {
             ImGui::SetWindowFontScale(coords.getRelativeCharacterSize(0.02f) * 0.06f);
-
+            
             if (m_network.isConnecting()) {
-                std::string text = "Erreur: impossible de se connecter au serveur.";
+                std::string text = m_model.getWord("Connecting") + "...";
                 ImGui::SetCursorPosX((sizeWindow.x - ImGui::CalcTextSize(text.c_str()).x) * 0.5f);
                 ImGui::SetCursorPosY(sizeWindow.y * 0.4f);
 
@@ -66,11 +97,7 @@ namespace tsl {
 
                 if (m_network.isConnected()) {
                     m_connectionAsked = false;
-                    //m_scenes.replaceScene(*m_scenes.lobby, m_scenes.fadeEffect, gf::seconds(0.4f));
-
-                    //ClientHello data;
-                    //data.name = std::string(m_nameBuffer.data());
-                    //m_network.send(data);
+                    m_game.replaceScene(*m_game.waiting, m_game.blackoutEffect, gf::seconds(0.4f));
                 }
             } else {
                 ImGui::PushItemWidth(sizeWindow.x * 0.7f);
@@ -78,28 +105,11 @@ namespace tsl {
 
                 ImGui::InputText("###hostname", m_hostnameBuffer.data(), m_hostnameBuffer.size());
 
-                ImGui::SetCursorPosX(sizeWindow.x * 0.79f);
-                ImGui::SetCursorPosY(sizeWindow.y * 0.22f);
-                style.Colors[ImGuiCol_Text]                  = ImVec4(1.0f, 1.0f, 1.0f, 0.0f);
-                
-                if (ImGui::Button("Connexion", ImVec2(sizeWindow.x * 0.18f, sizeWindow.y * 0.16f))) {
-                    m_game.common->playClickButton();
-                    m_network.connect(std::string(m_hostnameBuffer.data()));
-                    m_connectionAsked = true;
-                }
-
-                ImGui::SetCursorPosX((sizeWindow.x - sizeWindow.x * 0.2f) * 0.5f);
-                ImGui::SetCursorPosY(sizeWindow.y * 0.74f);
-
-                if (ImGui::Button("Retour", ImVec2(sizeWindow.x * 0.2f, sizeWindow.y * 0.2f))) {
-                    m_connectionAsked = false;
-                    m_game.common->playClickButton();
-                    m_game.replaceScene(*m_game.menu, m_game.blackoutEffect, gf::seconds(0.4f));
-                }
-
                 if (m_connectionAsked) {
-                    std::string text = "   Erreur: impossible de \nse connecter au serveur.";
-    
+                    std::string text = m_model.getWord("Error: unable to connect to the server.");
+                    int scatter = 0.46f * text.size();
+                    text = "\t" + text.substr(0,scatter)+ '\n' + text.substr(scatter);
+
                     ImGui::SetCursorPosX((sizeWindow.x - ImGui::CalcTextSize(text.c_str()).x) * 0.5f);
                     ImGui::SetCursorPosY(sizeWindow.y * 0.4f);
 
