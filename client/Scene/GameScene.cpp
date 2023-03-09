@@ -211,12 +211,12 @@ void GameScene::doProcessEvent(gf::Event& event) {
 	}
 
 	if(mouseMoved) {
-		gf::Log::error("mousemoved : \n\n /%i/ /%i/", event.mouseButton.coords.x, event.mouseButton.coords.y);
+		//gf::Log::error("mousemoved : \n\n /%i/ /%i/", event.mouseButton.coords.x, event.mouseButton.coords.y);
 		int numCarte = m_mainEntity.getCardSelected(m_cardsView.getSize(), m_game.getRenderer().mapPixelToCoords(event.mouseCursor.coords, m_cardsView));
 		m_mainEntity.m_hoverCard = -1;
 
 		if(numCarte!=-1) {
-			gf::Log::error("mousemoved 2222: \n\n");
+			//gf::Log::error("mousemoved 2222: \n\n");
 			m_mainEntity.m_hoverCard = numCarte;
 		}
 		return;

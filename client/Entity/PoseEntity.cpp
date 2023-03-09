@@ -113,12 +113,11 @@ void PoseEntity::returnCardHand() {
 }
 
 bool PoseEntity::clickIsInCardPose([[maybe_unused]] gf::Vector2i sizeWindows, gf::Vector2i mouseCoord) {
+	gf::Log::debug("oui");
 	gf::Log::info("coord case clicker carte pose %i et %i\n", mouseCoord.x,mouseCoord.y);
 	int x = mouseCoord.x;
 	int y = mouseCoord.y;
-	// 285 < x < 515
-	// 285 < y < 615
-	if(x>285 && x<500 && y>285 && y<615) {
+	if(x>285 && x<515 && y>285 && y<615) {
 		gf::Log::info("on a pas clicker sur la carte posée\n");
 		return true;
 	}
@@ -128,10 +127,9 @@ bool PoseEntity::clickIsInCardPose([[maybe_unused]] gf::Vector2i sizeWindows, gf
 
 bool PoseEntity::clickIsInCardDiscard([[maybe_unused]] gf::Vector2i sizeWindows, gf::Vector2i mouseCoord) {
 	gf::Log::info("coord case clicker carte deffause %i et %i\n", mouseCoord.x,mouseCoord.y);
+	std::cout << mouseCoord.x << "\n" << mouseCoord.y << std::endl;
 	int x = mouseCoord.x;
 	int y = mouseCoord.y;
-	// 1405 < x < 1635
-	// 285 < y < 615
 	if(x>1405 && x<1635 && y>285 && y<615) {
 		gf::Log::info("on a pas clicker sur la carte defaussé\n");
 		return true;

@@ -18,9 +18,10 @@ ZoomCardScene::ZoomCardScene(GameHub& game)
 	m_quitAction.addKeycodeKeyControl(gf::Keycode::Escape);
 	m_quitAction.addMouseButtonControl(gf::MouseButton::Left);
 	addAction(m_quitAction);
-	
-	m_principalView = gf::ExtendView({ 0, 0 }, { 1600, 900 });
-	m_principalView.setViewport(gf::RectF::fromPositionSize({ 0., 0.f}, { 1.f, 1.f }));
+
+
+	m_principalView = gf::ExtendView({ 0.f, 0.f }, {(float)game.getRenderer().getSize().x, (float)game.getRenderer().getSize().y });
+	m_principalView.setViewport(gf::RectF::fromPositionSize({ 0.f, 0.f}, { 1.f, 1.f }));
 	m_principalView.setCenter(game.getRenderer().getSize()/2);
 
 	m_views.addView(m_principalView);
@@ -51,15 +52,13 @@ void ZoomCardScene::doRender(gf::RenderTarget& target, const gf::RenderStates &s
 	target.setView(getHudView());
 	gf::RoundedRectangleShape background(target.getSize());
 	background.setColor(gf::Color::fromRgba32(0,0,0,200));
-
 	target.draw(background, states);
 
 	target.setView(m_principalView);
 
 	if(m_cardZoom.m_num != -1) {
-		gf::Coordinates coords({1600,900});
+		gf::Coordinates coords({1920,1080});
 
-		int bubbleX = (10.f/16.f)*1600;
 
 		unsigned titleCharacterSize = coords.getRelativeCharacterSize(0.04f);
 
@@ -71,7 +70,7 @@ void ZoomCardScene::doRender(gf::RenderTarget& target, const gf::RenderStates &s
 		bubbleTittle.setOutlineThickness(titleCharacterSize/6.f);
 
 
-		gf::RoundedRectangleShape infoBubble(gf::Vector2i(bubbleX,600));
+		gf::RoundedRectangleShape infoBubble(gf::Vector2i({1100,600}));
 		infoBubble.setColor(gf::Color::White);
 		infoBubble.setRadius(22);
 		infoBubble.setOutlineColor(gf::Color::Black);
@@ -82,7 +81,7 @@ void ZoomCardScene::doRender(gf::RenderTarget& target, const gf::RenderStates &s
 	
 		cardDescription.setColor(gf::Color::Black);
 		cardDescription.setPosition(coords.getRelativePoint({0.72f,0.5f}));
-		cardDescription.setParagraphWidth(bubbleX-40);
+		cardDescription.setParagraphWidth(m_game.getRenderer().getSize().x/2-40);
 		cardDescription.setAlignment(gf::Alignment::Center);
 		cardDescription.setAnchor(gf::Anchor::Center);
 
@@ -108,8 +107,8 @@ void ZoomCardScene::doRender(gf::RenderTarget& target, const gf::RenderStates &s
 		gf::Text cardTimeToPlay(timeToPlay, m_rulesFont, 25);
 	
 		cardTimeToPlay.setColor(gf::Color::Black);
-		cardTimeToPlay.setPosition(coords.getRelativePoint({0.72f,0.88f}));
-		cardTimeToPlay.setParagraphWidth(bubbleX-40);
+		cardTimeToPlay.setPosition(coords.getRelativePoint({0.72f,0.78f}));
+		cardTimeToPlay.setParagraphWidth(1100-40);
 		cardTimeToPlay.setAlignment(gf::Alignment::Center);
 		cardTimeToPlay.setAnchor(gf::Anchor::Center);
 
