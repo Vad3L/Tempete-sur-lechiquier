@@ -15,6 +15,9 @@ GameScene::GameScene(GameHub& game, Network &network, GameData &gameData)
 , m_endTurnAction("EndTurnAction")
 , m_playCardAction("playCardAction")
 , m_triggerAction("TriggerAction")
+, m_poseActionRight("PoseActionRight")
+, m_poseActionLeft("PoseActionLeft")
+, m_discardActionRight("DiscardActionRight")
 , m_boardEntity(game.resources, m_gameData)
 , m_mainEntity(game.resources, m_gameData)
 , m_tableBoardEntity(game.resources, m_gameData)
@@ -25,6 +28,8 @@ GameScene::GameScene(GameHub& game, Network &network, GameData &gameData)
 , m_font(game.resources.getFont("fonts/Trajan-Color-Concept.otf"))
 , m_background(game.resources.getTexture("images/BackgroundGame.png"))
 {
+
+	
 	setClearColor(gf::Color::Black);
 	m_loading.setSmooth(true);
 	m_background.setSmooth(true);
@@ -33,6 +38,10 @@ GameScene::GameScene(GameHub& game, Network &network, GameData &gameData)
 	m_animatedSprite.setAnimation(m_animation);
   	m_animatedSprite.setOrigin({ 84.f / 2.0f, 84.f / 2.0f });
 	m_animatedSprite.setAnchor(gf::Anchor::Center);
+
+	m_poseRight =false;
+	m_poseLeft = false;
+	m_discardRight =false;
 	
 	m_quitAction.addKeycodeKeyControl(gf::Keycode::Escape);
 	addAction(m_quitAction);
@@ -48,7 +57,16 @@ GameScene::GameScene(GameHub& game, Network &network, GameData &gameData)
 
 	m_triggerAction.addMouseButtonControl(gf::MouseButton::Left);
 	addAction(m_triggerAction);
+
+	m_poseActionRight.addKeycodeKeyControl(gf::Keycode::A);
+	addAction(m_poseActionRight);
 	
+	m_poseActionLeft.addKeycodeKeyControl(gf::Keycode::Z);
+	addAction(m_poseActionLeft);
+
+	m_discardActionRight.addKeycodeKeyControl(gf::Keycode::E);
+	addAction(m_discardActionRight);
+
 	clickEndturn.setBuffer(gAudioManager().getSound("sounds/ClickButton.ogg"));
 	clickEndturn.setVolume(FxsVolume);
 
@@ -178,6 +196,20 @@ void GameScene::doHandleActions([[maybe_unused]] gf::Window& window) {
 		m_playCard.triggerCallback();
 	}
 
+	if(m_poseEntity.m_cardPose.m_num != -1 && m_poseActionRight.isActive()){
+		gf::Log::debug("pushed poseRight\n");
+		m_poseRight = !m_poseRight;
+	}
+	
+	if(m_poseEntity.m_cardPose.m_num != -1 && m_poseActionLeft.isActive()){
+		gf::Log::debug("pushed poseLeft\n");
+		m_poseLeft = !m_poseLeft;
+	}
+	
+	if(m_poseEntity.m_cardDiscard.m_num != -1 && m_discardActionRight.isActive()){
+		gf::Log::debug("pushed discardRight\n");
+		m_discardRight = !m_discardRight;
+	}
 }
 
 void GameScene::doProcessEvent(gf::Event& event) {
@@ -190,7 +222,32 @@ void GameScene::doProcessEvent(gf::Event& event) {
 	bool mouseMoved = false;
 
 	m_views.processEvent(event);
+	Card c = Card();
+	if(m_poseEntity.m_cardPose.m_num != -1 && m_poseLeft) {
+		c = m_poseEntity.m_cardPose;
+		m_poseLeft = !m_poseLeft;
+	}
+
+	if(m_poseEntity.m_cardDiscard.m_num != -1  && m_discardRight) {
+		c = m_poseEntity.m_cardDiscard;
+		m_discardRight = !m_discardRight;
+	}
 	
+	if(c.m_num !=-1) {
+		m_game.zoomCard->m_cardZoom = c;
+		m_game.pushScene(*m_game.zoomCard);
+		pause();	
+	}
+
+
+	if(m_poseEntity.m_cardPose.m_num != -1 && m_poseRight) {
+		m_poseEntity.returnCardHand();
+		m_gameData.m_phase.setCurrentSubPhase(SubPhase::NONE);
+		m_gameData.m_plateau.m_casesClicked.clear();
+		m_poseRight = !m_poseRight;
+		return;
+	}
+
 	if (m_gameData.m_gameStatus != ChessStatus::ON_GOING) { return; }
 	
 	switch (event.type) {
@@ -226,20 +283,10 @@ void GameScene::doProcessEvent(gf::Event& event) {
 
 	if(clickRight) {
 		int numCarte = m_mainEntity.getCardSelected(m_cardsView.getSize(), m_game.getRenderer().mapPixelToCoords(event.mouseButton.coords, m_cardsView));
-		Card c = Card();
 
 		if(numCarte!=-1) {
 			c = m_gameData.m_main[numCarte];
 		}
-
-		if(m_poseEntity.m_cardPose.m_num !=-1 && m_poseEntity.clickIsInCardPose(m_principalView.getSize(), m_game.getRenderer().mapPixelToCoords(event.mouseButton.coords, m_principalView))) {
-			c = m_poseEntity.m_cardPose;
-		}
-
-		if(m_poseEntity.m_cardDiscard.m_num !=-1 && m_poseEntity.clickIsInCardDiscard(m_principalView.getSize(), m_game.getRenderer().mapPixelToCoords(event.mouseButton.coords, m_principalView))) {
-			c = m_poseEntity.m_cardDiscard;
-		}
-		
 		if(c.m_num !=-1) {
 			m_game.zoomCard->m_cardZoom = c;
 			m_game.pushScene(*m_game.zoomCard);
@@ -251,12 +298,6 @@ void GameScene::doProcessEvent(gf::Event& event) {
 		return;
 	}
 
-	if(m_poseEntity.m_cardPose.m_num!=-1 && m_poseEntity.clickIsInCardPose(m_principalView.getSize(), m_game.getRenderer().mapPixelToCoords(event.mouseButton.coords, m_principalView))) {
-		m_poseEntity.returnCardHand();
-		m_gameData.m_phase.setCurrentSubPhase(SubPhase::NONE);
-		m_gameData.m_plateau.m_casesClicked.clear();
-		return;
-	}
 
 	Phase currentPhase = m_gameData.m_phase.getCurrentPhase();
 	

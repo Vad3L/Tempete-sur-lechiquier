@@ -54,6 +54,13 @@ class GameScene : public gf::Scene {
 		gf::Action m_endTurnAction;
 		gf::Action m_playCardAction;
 		gf::Action m_triggerAction;
+		gf::Action m_poseActionRight;
+		gf::Action m_poseActionLeft;
+		gf::Action m_discardActionRight;
+
+		bool m_poseRight;
+		bool m_poseLeft;
+		bool m_discardRight;
 
 		gf::Packet m_packet;
 

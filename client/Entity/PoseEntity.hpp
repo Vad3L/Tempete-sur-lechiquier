@@ -27,9 +27,7 @@ class PoseEntity : public gf::Entity {
 		void render(gf::RenderTarget &target, const gf::RenderStates &states) override ;
 
 		void returnCardHand();
-		bool clickIsInCardPose([[maybe_unused]] gf::Vector2i sizeWindows, gf::Vector2i mouseCoord);
-		bool clickIsInCardDiscard([[maybe_unused]] gf::Vector2i sizeWindows, gf::Vector2i mouseCoord);
-		
+				
 		Card m_cardPose;
 		Card m_cardDiscard;
 		

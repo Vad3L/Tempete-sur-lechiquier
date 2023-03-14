@@ -33,30 +33,39 @@ void PoseEntity::render(gf::RenderTarget &target, const gf::RenderStates &states
 	contour.setAnchor(gf::Anchor::Center);
 
 	gf::Text poseName("Carte à jouée", m_poseNameFont, 16.f);
-	poseName.setPosition({position1.x,position1.y-sizeCard.y/2.f-2.5f});
+	poseName.setPosition({position1.x,position1.y-sizeCard.y/2.f});
 	poseName.setAnchor(gf::Anchor::Center);
+
+	gf::Text poseHelp("A (retirer) | Z zoomer", m_poseNameFont, 25.f);
+	poseHelp.setPosition({position1.x,position1.y+sizeCard.y/1.5f});
+	poseHelp.setAnchor(gf::Anchor::Center);
 
 	switch (m_gameData.m_phase.getCurrentPhase()) {
 		case Phase::AVANT_COUP :
 			contour.setOutlineColor(gf::Color::Yellow);
 			poseName.setColor(gf::Color::Yellow);
+			poseHelp.setColor(gf::Color::Yellow);
 			break;
 		case Phase::APRES_COUP :
 			contour.setOutlineColor(gf::Color::Green);
 			poseName.setColor(gf::Color::Green);
+			poseHelp.setColor(gf::Color::Green);
 			break;
 		case Phase::PAS_MON_TOUR:
 			contour.setOutlineColor(gf::Color::fromRgba32(237,101,211));
 			poseName.setColor(gf::Color::fromRgba32(237,101,211));
+			poseHelp.setColor(gf::Color::fromRgba32(237,101,211));
 			break;
 		default :
 			contour.setOutlineColor(gf::Color::White);
 			poseName.setColor(gf::Color::White);
+			poseHelp.setColor(gf::Color::White);
 			break;
 	}
 	if(m_gameData.m_gameStatus != ChessStatus::ON_GOING) {
 		contour.setOutlineColor(gf::Color::White);
 		poseName.setColor(gf::Color::White);
+		poseHelp.setColor(gf::Color::White);
 	}
 
 	gf::RectangleShape placementTexte;
@@ -68,6 +77,7 @@ void PoseEntity::render(gf::RenderTarget &target, const gf::RenderStates &states
 	target.draw(contour, states);
 	target.draw(placementTexte,states);
 	target.draw(poseName,states);
+	target.draw(poseHelp,states);
 
 
 	//coords.getRelativePoint({ 0.000125f, 0.0009f })
@@ -90,9 +100,17 @@ void PoseEntity::render(gf::RenderTarget &target, const gf::RenderStates &states
 	poseName.setPosition({position2.x,position2.y-sizeCard.y/2.f-5.f});
 	poseName.setAnchor(gf::Anchor::Center);
 
+
+	poseHelp.setString("E zoomer");
+	poseHelp.setColor(gf::Color::White);
+	poseHelp.setPosition({position2.x,position2.y+sizeCard.y/1.5f});
+	poseHelp.setAnchor(gf::Anchor::Center);
+
+
 	target.draw(contour, states);
 	target.draw(placementTexte,states);
 	target.draw(poseName,states);
+	target.draw(poseHelp,states);
 	
 	if(m_cardDiscard.m_num!=-1) {
 		m_cardEntity.draw(target, states, m_cardDiscard, {position2.x-100,position2.y-150},1,true);
@@ -110,30 +128,4 @@ void PoseEntity::returnCardHand() {
 			break;
 		}
 	}
-}
-
-bool PoseEntity::clickIsInCardPose([[maybe_unused]] gf::Vector2i sizeWindows, gf::Vector2i mouseCoord) {
-	gf::Log::debug("oui");
-	gf::Log::info("coord case clicker carte pose %i et %i\n", mouseCoord.x,mouseCoord.y);
-	int x = mouseCoord.x;
-	int y = mouseCoord.y;
-	if(x>285 && x<515 && y>285 && y<615) {
-		gf::Log::info("on a pas clicker sur la carte posée\n");
-		return true;
-	}
-	gf::Log::info("on a pas clicker sur la carte posée\n");
-	return false;
-}
-
-bool PoseEntity::clickIsInCardDiscard([[maybe_unused]] gf::Vector2i sizeWindows, gf::Vector2i mouseCoord) {
-	gf::Log::info("coord case clicker carte deffause %i et %i\n", mouseCoord.x,mouseCoord.y);
-	std::cout << mouseCoord.x << "\n" << mouseCoord.y << std::endl;
-	int x = mouseCoord.x;
-	int y = mouseCoord.y;
-	if(x>1405 && x<1635 && y>285 && y<615) {
-		gf::Log::info("on a pas clicker sur la carte defaussé\n");
-		return true;
-	}
-	gf::Log::info("on a pas clicker sur la carte defaussé\n");
-	return false;
 }
