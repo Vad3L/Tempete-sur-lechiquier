@@ -796,7 +796,7 @@ bool Tir (Plateau& p, std::vector<gf::Vector2i> tabVector) {
 
 bool TirIsPlayable ([[maybe_unused]] Plateau& p, Phase f) {
 	gf::Log::info("Appel Tir jouable\n");
-	if (f != Phase::AVANT_COUP) {
+	if (f != Phase::AVANT_COUP  || p.playerInEchec) {
 		return false;
 	}
 	return true;
