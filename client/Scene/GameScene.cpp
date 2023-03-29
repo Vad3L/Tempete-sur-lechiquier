@@ -394,7 +394,7 @@ void GameScene::doRender(gf::RenderTarget& target, const gf::RenderStates &state
 	background.setPosition(coord.getCenter());
 	background.setAnchor(gf::Anchor::Center);
 	background.setScale(backgroundScale);
-	target.draw(background, states);
+	//target.draw(background, states);
 
 	
 	
