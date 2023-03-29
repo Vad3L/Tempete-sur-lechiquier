@@ -17,7 +17,7 @@ Plateau::Plateau()
 				switch (coordPass) {
 					case 0:
 					case 7:
-						if(!(i ==0 && coordPass==0))
+						//if(!(i ==0 && coordPass==0))
 						state[i * 8 + coordPass].piece = Piece(c, ChessPiece::ROOK);
 						break;
 					case 1:
@@ -39,7 +39,7 @@ Plateau::Plateau()
 		}
 	}
 
-	state[5 * 8 + 3].piece = Piece(ChessColor::WHITE, ChessPiece::PRINCESS);
+	/*state[5 * 8 + 3].piece = Piece(ChessColor::WHITE, ChessPiece::PRINCESS);
 	state[2 * 8 + 3].piece = Piece(ChessColor::BLACK, ChessPiece::PRINCESS);
 	state[5 * 8 + 4].piece = Piece(ChessColor::WHITE, ChessPiece::PRINCE);
 	state[2 * 8 + 4].piece = Piece(ChessColor::BLACK, ChessPiece::PRINCE);
@@ -49,7 +49,7 @@ Plateau::Plateau()
 	state[1 * 8 + 0].piece = Piece(ChessColor::WHITE, ChessPiece::PAWN);
 	state[6 * 8 + 0].piece = Piece(ChessColor::BLACK, ChessPiece::PAWN);
 
-	state[2 * 8 + 0].piece = Piece(ChessColor::GREY, ChessPiece::PAWN);
+	state[2 * 8 + 0].piece = Piece(ChessColor::GREY, ChessPiece::PAWN);*/
 	allPositions.push_back(getFen());
 	turnTo = ChessColor::WHITE;
 	prettyPrint();
