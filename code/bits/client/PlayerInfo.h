@@ -5,6 +5,7 @@
 #include <gf/ResourceManager.h>
 
 #include "GameModel.h"
+#include "CardEntity.h"
 
 namespace tsl {
 
@@ -12,12 +13,11 @@ namespace tsl {
 		public:
 			PlayerInfo(gf::ResourceManager& resources, GameModel &model);
 
-			void updateSelectedCard(const gf::Vector2f &mouseCoords, const gf::Vector2f& screenSize);
+			int getSelectedCard([[maybe_unused]] const gf::Vector2f &screenSize, const gf::Vector2f& mouseCoords);
 
 			void render(gf::RenderTarget& target, const gf::RenderStates& states) override;
 
 		private:
-			gf::RectF getCardBounds(gf::Vector2f screenSize, std::size_t i) const;
 
 			GameModel& m_model;
 
@@ -26,6 +26,7 @@ namespace tsl {
 
 			gf::Texture& m_cardsIllustration;
 			gf::Texture& m_accessories;
+			CardEntity m_card;
 	};
 
 }

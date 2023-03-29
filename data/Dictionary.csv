@@ -3,7 +3,7 @@ Language;Langage;Idioma
 English;Anglais;Inglés
 French;Français;Francés
 Spanish;Espagnol;Español
-Press enter to start;Appuie sur entrez pour démarrer;Presiona enter para comenzar
+Press enter to start;Appuie sur entrer pour démarrer;Presiona enter para comenzar
 Storm on chess;Tempete sur l echiquier;Tormenta en el ajedrez
 Play;Jouer;Jugar
 Rules;Regles;Normas
@@ -24,3 +24,26 @@ seconds ... You play;secondes ... Vous jouez les;segundos... Tocas el
 White;Blanc;Blanco
 Black;Noir;Negro
 Waiting player;En attente d un autre joueur;Esperando jugador
+No indication;Pas d'indication;No hay indicación
+Play a normal card or move;Jouer une carte ou un coup normal;Juega una carta normal o muévete
+Play card;Jouer une carte;Jugar una carta
+Play a normal move;Jouer un coup normal;Juega un movimiento normal
+Opponent's turn;Au tour de l'adversaire de jouer;Turno de juego del oponente
+Choose boxes on the board;Choisissez des cases sur le plateau;Elige cabañas en el tablero.
+You win;Vous avez GAGNEZ;Tú ganas
+You loose;Vous avez PERDU;Tu suelto
+Equality;Égalité;Igualdad
+Game not started;La partie n'a pas commencée;Juego no iniciado
+You win by surrender;Vous gagnez par abandon;Ganas por rendición
+End turn;Fin tour;Ronda final
+Activate card;Activer carte;Activar tarjeta
+Playing card;Carte à jouée;Jugando tarjeta
+A (remove) | Z (zoom);A (retirer) | Z (zoomer);A (eliminar) | Z (zoom)
+Discard;Défausse;Desechar
+E (zoom);E (zoomer);E (zoom)
+Card Description ;Description de la Carte ;Descripción de la tarjeta 
+Play this card before your move;Jouez cette carte avant votre coup;Juega esta tarjeta antes de tu jugada
+Play this card after your move;Jouez cette carte après votre coup;Juega esta tarjeta después de tu jugada
+Play this card before or after your move;Jouez cette carte avant ou après votre coup;Juega esta tarjeta antes o después de tu jugada
+Play this card during the opponent's move;Jouez cette carte pendant le coup adverse;Juega esta tarjeta durante el movimiento del oponente.
+This card is not implem;Cette carte n'est pas implem;Este tarjeta no es implem

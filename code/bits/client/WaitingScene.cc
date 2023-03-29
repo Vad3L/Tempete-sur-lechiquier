@@ -20,7 +20,7 @@ namespace tsl {
         addHudEntity(m_waiting);
     }
 
-    void WaitingScene::doUpdate(gf::Time time) {
+    void WaitingScene::doUpdate([[maybe_unused]] gf::Time time) {
         if (!isActive()) {
             return;
         }
@@ -30,7 +30,7 @@ namespace tsl {
         while (m_network.queue.poll(packet)) {
             switch (packet.getType()) {
                 case ColorDeck::type: {
-                    gf::Log::debug("(GAME) receive Color\n");
+                    gf::Log::debug("(GAME) receive Color Deck\n");
                     auto data = packet.as<ColorDeck>();
     
                     m_model.chessStatus = ChessStatus::NO_STARTED;

@@ -12,7 +12,8 @@ namespace tsl {
 
     namespace {
         static constexpr gf::Vector2i DownloadScreenSize = {405, 76};
-        static constexpr float barIncrement = 100 / 8.f;
+        static constexpr float nbScene = 10.0f;
+        static constexpr float barIncrement = 100 / nbScene;
     }
 
     DownloadEntity::DownloadEntity(gf::ResourceManager& resources, GameModel& model)

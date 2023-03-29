@@ -38,7 +38,7 @@ namespace tsl {
     void GamePhase::setCurrentSubPhase(SubPhase subPhase) {
         m_currentSubPhase = subPhase;
     }
-    /*
+    
     void GamePhase::nextPhaseCard(Card cardPlay){
         assert(m_currentPhase!=Phase::COUP);
         assert(m_currentPhase !=Phase::PAS_MON_TOUR);
@@ -51,7 +51,7 @@ namespace tsl {
                 }		
             }else if(cardPlay.m_effect == Effect::REPLACE_COUP) {
                 m_currentPhase = Phase::PAS_MON_TOUR;
-            }else if(cardPlay.m_effect == Effect::REGAME_OTHER_CARTE) {
+            }else if(cardPlay.m_effect == Effect::REGAME_OTHER_CARD) {
                 m_limNbCard=3;
             }
         }
@@ -65,6 +65,6 @@ namespace tsl {
                 m_currentPhase = Phase::PAS_MON_TOUR;
             }
         }
-    }*/
+    }
 
 }

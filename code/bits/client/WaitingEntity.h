@@ -14,7 +14,7 @@ namespace tsl {
         public:
             WaitingEntity(gf::ResourceManager& resources, GameModel& model);
 
-            void update([[maybe_unused]] gf::Time time) override;
+            void update(gf::Time time) override;
             void render(gf::RenderTarget &target, const gf::RenderStates &states) override;
 
             void startCount();

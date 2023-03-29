@@ -6,11 +6,11 @@
 namespace tsl {
 
     enum class Phase {
-        NONE,
         AVANT_COUP,
         COUP,
         APRES_COUP,
         PAS_MON_TOUR,
+        NONE
     }; 
 
     enum class SubPhase {

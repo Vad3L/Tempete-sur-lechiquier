@@ -20,7 +20,7 @@ namespace tsl {
             std::size_t getNbCardInDeck();
             void emptyDiscard ();
             void drop (Card c);
-            std::pair<std::array<int, 5>,std::array<int, 5>> distribute();
+            std::pair<std::array<Card, 5>,std::array<Card, 5>> distribute();
             std::vector<Card> getDeck() const;
 
         private:

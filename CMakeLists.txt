@@ -55,11 +55,23 @@ add_executable(client_tsl
   code/bits/client/WaitingEntity.cc
   code/bits/client/GameScene.cc
   code/bits/client/PlayerInfo.cc
+  code/bits/client/ButtonsGame.cc
+  code/bits/client/CardEntity.cc
+  code/bits/client/PoseEntity.cc
+  code/bits/client/BoardEntity.cc
+  code/bits/client/TableBoardEntity.cc
+  code/bits/client/ZoomCardScene.cc
+  code/bits/client/QuitScene.cc
   
   code/bits/common/Network.cc
   code/bits/common/GamePhase.cc
   code/bits/common/Deck.cc
   code/bits/common/Card.cc
+  code/bits/common/Board.cc
+  code/bits/common/Piece.cc
+  code/bits/common/Case.cc
+  code/bits/common/CardFunction.cc
+  code/bits/common/CardFunctionChooseCases.cc
 
   vendor/imgui/imgui.cpp
   vendor/imgui/imgui_demo.cpp
@@ -100,6 +112,12 @@ add_executable(server_tsl
   code/bits/common/GamePhase.cc
   code/bits/common/Deck.cc
   code/bits/common/Card.cc
+  code/bits/common/Board.cc
+  code/bits/common/Piece.cc
+  code/bits/common/Case.cc
+  code/bits/common/CardFunction.cc
+  code/bits/common/CardFunctionChooseCases.cc
+
 )
 
 target_include_directories(server_tsl

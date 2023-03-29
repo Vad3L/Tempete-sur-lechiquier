@@ -2,10 +2,12 @@
 #define TSL_CARD_H
 
 #include <string>
-#include <iostream>
-#include <set>
+#include <map>
 #include <algorithm>
 #include <functional>
+
+#include "CardFunction.h"
+#include "CardFunctionChooseCases.h"
 
 namespace tsl {
 
@@ -13,7 +15,7 @@ namespace tsl {
         AVANT_COUP,
         APRES_COUP,
         BOTH,
-        DURING_TOUR_ADVERSE,
+        PDT_TOUR_ADVERSE,
         NONE
     };
 
@@ -26,22 +28,24 @@ namespace tsl {
         NONE, // phase suivante(soit fin ou coup normal)
         REPLACE_COUP, // remplace ton coup normal 
         REGAME_COUP, // par exmeple en cas d'annultion 
-        REGAME_OTHER_CARTE // par exemple en cas d'annulation ou la carte qui permet de jouer une carte supplémentaire(rebelote dix de der)
+        REGAME_OTHER_CARD // par exemple en cas d'annulation ou la carte qui permet de jouer une carte supplémentaire(rebelote dix de der)
     };
 
     class Card{
         public:
+            int m_num;
             std::string m_name;
-            std::string m_description;
+            std::map<std::string, std::string> m_description;
             
             Turn m_turn;
             Action m_action;
             Effect m_effect;
             std::size_t m_nbClickPossible;
             
-            int m_num;
+            std::function<bool(Board&, std::vector<gf::Vector2i>)> m_execute;
+		    std::function<bool(Board&, Phase)> m_isPlayable;
 
-            Card(int num, std::string name, std::string m_description, Turn turn, Action action, Effect effect, std::size_t nbClickPossible);
+            Card(int num, std::string name, std::map<std::string, std::string> m_description, Turn turn, Action action, Effect effect, std::size_t nbClickPossible);
             Card();
 
     };

@@ -13,7 +13,7 @@ namespace tsl {
     
     namespace {
         constexpr std::size_t nb_themes = 3;
-        std::array<std::string, nb_themes> themes = { "Paper", "Marble", "Wood" };
+        std::array<std::string, nb_themes> themes = { "Wood", "Marble", "Paper" };
     }
 
     SettingsScene::SettingsScene(GameHub& game)

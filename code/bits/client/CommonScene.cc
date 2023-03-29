@@ -37,8 +37,8 @@ namespace tsl {
 				window.toggleFullscreen();
 			}
 		}
-
-		if (m_quitAction.isActive()) {
+		
+		if (m_quitAction.isActive() && !m_game.game->isActive() && !m_game.zoom->isActive()) {
 			window.close();
 		}
 	}

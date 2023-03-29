@@ -69,6 +69,14 @@ namespace tsl {
 		//gf::sleep(gf::seconds(0.2f));
 		download->changeFrame();
 
+		zoom = std::make_unique<ZoomCardScene>(*this);;
+		//gf::sleep(gf::seconds(0.2f));
+		download->changeFrame();
+
+		quit = std::make_unique<QuitScene>(*this);;
+		//gf::sleep(gf::seconds(0.2f));
+		download->changeFrame();
+
 		gf::Log::info("Download finished !!!\n");
 		
 		m_loadingFinished = true;

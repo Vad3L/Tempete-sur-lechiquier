@@ -8,6 +8,7 @@
 #include "Singletons.h"
 #include "../common/GamePhase.h"
 #include "../common/Deck.h"
+#include "../common/Board.h"
 
 namespace tsl {
 
@@ -24,7 +25,8 @@ namespace tsl {
         , sound(0)
         , chessStatus(ChessStatus::NO_STARTED)
         , chessColor(ChessColor::NONE)
-        , selectedCard(-1)
+        , hoverCard(-1)
+        , board()
         {
             readSettings();
             readDictionnary();
@@ -111,13 +113,6 @@ namespace tsl {
                     // Spanish
                     dictionary[languages[2]].insert(std::make_pair(tab[0], tab[2]));
                     
-                    for(auto a : dictionary) {
-                        //gf::Log::info("%s\n     ", a.first.c_str());
-                        for(auto aa : a.second) {
-                            //gf::Log::info("aa%s , \n", aa.second.c_str());
-                        }
-                        //gf::Log::info("\n");
-                    }
                 }
                 file.close();
             }
@@ -125,6 +120,15 @@ namespace tsl {
 
         std::string getWord(std::string word) {
             return dictionary[language][word];
+        }
+
+        void reset() {
+            chessColor = ChessColor::NONE;
+            gamePhase.setCurrentPhase(Phase::NONE);
+            gamePhase.setCurrentSubPhase(SubPhase::NONE);
+            board = Board();
+            chessStatus = ChessStatus::NO_STARTED;
+            cards.fill(-1); 
         }
 
         std::string language;
@@ -137,9 +141,11 @@ namespace tsl {
         ChessStatus chessStatus;
         ChessColor chessColor;
             
-        int selectedCard;
+        int hoverCard;
         std::array<int, nbCards> cards;
         std::map<int, Card> deck;
+
+        Board board;
     };
 }
 

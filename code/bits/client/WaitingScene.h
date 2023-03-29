@@ -18,7 +18,7 @@ namespace tsl {
 			WaitingScene(GameHub& game, Network& network);
 		
 		private:
-			void doUpdate(gf::Time time) override;
+			void doUpdate([[maybe_unused]] gf::Time time) override;
 	
 			GameHub& m_game;
 			Network& m_network;

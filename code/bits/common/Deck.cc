@@ -1,12 +1,15 @@
 #include "Deck.h"
+
 #include "gf/Log.h"
+#include <vector>
+#include <string>
 
 namespace tsl {
 
     Deck::Deck(std::vector<int> numCards){
-        //std::map<int, std::function<bool(Plateau&, std::vector<gf::Vector2i>)>> m_execsfuncs;
-        //std::map<int, std::function<bool(Plateau&, Phase)>> m_isplayfuncs;
-        /*
+        std::map<int, std::function<bool(Board&, std::vector<gf::Vector2i>)>> m_execsfuncs;
+        std::map<int, std::function<bool(Board&, Phase)>> m_isplayfuncs;
+        
         m_execsfuncs.insert({ 1, AmourCourtois });
         m_isplayfuncs.insert({ 1, AmourCourtoisIsPlayable });
 
@@ -90,7 +93,7 @@ namespace tsl {
 
         m_execsfuncs.insert({ 124, Tir });
         m_isplayfuncs.insert({ 124, TirIsPlayable });
-        */
+        
 
         //format du fichier
         //NUM;NAME;DESCRIPTION;TURN;ACTION;EFFECT;nbCase (4 dernières valeurs sont des entier correspondant à la la valeur dans leur énum)
@@ -102,6 +105,7 @@ namespace tsl {
             std::ifstream file(std::string(CARDS_DESCRIPTIONDIR)+"DescriptionCards.csv");
 
             std::string delimiter = ";";
+            std::map<std::string, std::string> descriptions;
 
             if (!file) {
                 gf::Log::error("Impossible d'ouvrir le fichier.\n");
@@ -109,7 +113,17 @@ namespace tsl {
                 std::string line;
             
                 while (std::getline(file, line)) {
-                    std::array<std::string,7> tab;
+                    
+                    std::size_t nbComma = 0;
+                    for(const char c : line) {
+                        if (c == ';') {
+                            nbComma++;
+                        }
+                    }
+                    assert(nbComma==8);
+
+                    std::array<std::string,9> tab;
+                    descriptions.clear();
                     for(std::size_t i=0 ; i<tab.size() ; i++) {
                         
                         std::size_t index = line.find(delimiter);
@@ -118,27 +132,37 @@ namespace tsl {
                         line = line.substr(index+1);
                     }
 
-                    gf::Log::info("card /%s/,/%s/,/%s/,/%s/,/%s/,/%s/,/%s/\n", tab[0].c_str(), tab[1].c_str(), tab[2].substr(0,10).c_str(), tab[3].c_str(), tab[4].c_str(), tab[5].c_str(), tab[6].c_str());
+                    //gf::Log::info("card /%s/,/%s/,/%s/,/%s/,/%s/,/%s/,/%s/\n", tab[0].c_str(), tab[1].c_str(), tab[2].substr(0,10).c_str(), tab[3].c_str(), tab[4].c_str(), tab[5].c_str(), tab[6].c_str());
+                    //gf::Log::info("card /%s/\n", tab[0].c_str());
                     //tab[0] num
                     //tab[1] name
-                    //tab[2] description
-                    //tab[3] num turn
-                    //tab[4] num action
-                    //tab[5] num effect
-                    //tab[6] nub click max possible
+                    //tab[2] description EN
+                    //tab[3] description FR
+                    //tab[4] description SP
+                    //tab[5] num turn
+                    //tab[6] num action
+                    //tab[7] num effect
+                    //tab[8] nub click max possible
                     int num = atoi(tab[0].c_str());
-                    int numTurn = atoi(tab[3].c_str());
-                    int numAction = atoi(tab[4].c_str());
-                    int numEffect = atoi(tab[5].c_str());
-                    int nbClickPossible = atoi(tab[6].c_str());
+                    int numTurn = atoi(tab[5].c_str());
+                    int numAction = atoi(tab[6].c_str());
+                    int numEffect = atoi(tab[7].c_str());
+                    int nbClickPossible = atoi(tab[8].c_str());
                     Turn turn = static_cast<Turn>(numTurn);
                     Action action = static_cast<Action>(numAction);
                     Effect effect = static_cast<Effect>(numEffect);
 
-                    Card c(num, tab[1], tab[2], turn, action, effect, nbClickPossible);
+                    // English
+                    descriptions.insert(std::make_pair("English", tab[2]));
+                    // French
+                    descriptions.insert(std::make_pair("French", tab[3]));
+                    // Spanish
+                    descriptions.insert(std::make_pair("Spanish", tab[4]));
 
-                    //c.m_isPlayable = m_isplayfuncs[num];
-                    //c.m_execute = m_execsfuncs[num];
+                    Card c(num, tab[1], descriptions, turn, action, effect, nbClickPossible);
+
+                    c.m_isPlayable = m_isplayfuncs[num];
+                    c.m_execute = m_execsfuncs[num];
                     
                     if(!numCards.empty()) {
                         if(std::find(numCards.begin(), numCards.end(), num) != numCards.end()) {
@@ -185,18 +209,18 @@ namespace tsl {
 
     void Deck::displayDeck() {
         for(Card &card : m_deck){
-            std::cout << card.m_name << std::endl;
+            gf::Log::info("%s\n",card.m_name.c_str());
         }
     }
 
-    std::pair<std::array<int, 5>,std::array<int, 5>> Deck::distribute() {
-        std::array<int, 5> playerOne;
-        std::array<int, 5> playerTwo;
+    std::pair<std::array<Card, 5>,std::array<Card, 5>> Deck::distribute() {
+        std::array<Card, 5> playerOne;
+        std::array<Card, 5> playerTwo;
         for(std::size_t i = 0 ; i < 10 ; ++i){
             if(i < 5){
-                playerOne[i] = getFirst().m_num;
+                playerOne[i] = getFirst();
             }else{
-                playerTwo[i-5] = getFirst().m_num;
+                playerTwo[i-5] = getFirst();
             }
         }
         return std::make_pair(playerOne,playerTwo);

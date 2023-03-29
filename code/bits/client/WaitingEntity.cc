@@ -24,7 +24,7 @@ namespace tsl {
 	    m_Animatedload.setAnchor(gf::Anchor::Center);
     }
     
-    void WaitingEntity::update([[maybe_unused]] gf::Time time) {
+    void WaitingEntity::update(gf::Time time) {
         if(m_startTime <= 3.f) {
             m_startTime -= time.asSeconds();
         }
@@ -32,7 +32,7 @@ namespace tsl {
         if(m_startTime < 0.f) {
             m_model.chessStatus = ChessStatus::ON_GOING;
             m_clock.stop();
-            m_startTime = 10.f;
+            m_startTime = 0.f;
         }
 
         m_Animatedload.update(time);

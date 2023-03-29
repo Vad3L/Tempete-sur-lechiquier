@@ -2,6 +2,7 @@
 #define TSL_GAMEPHASE_H
 
 #include "Chess.h"
+#include "Card.h"
 
 namespace tsl {
 
@@ -13,7 +14,7 @@ namespace tsl {
             SubPhase getCurrentSubPhase();
             void setCurrentPhase(Phase phase);
             void setCurrentSubPhase(SubPhase subPhase);
-            //void nextPhaseCard(Card cardPlay);
+            void nextPhaseCard(Card cardPlay);
             std::size_t getNbCardPlay();
             std::size_t getLimNbCard();
 

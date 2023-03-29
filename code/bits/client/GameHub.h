@@ -14,6 +14,8 @@
 #include "SettingsScene.h"
 #include "WaitingScene.h"
 #include "GameScene.h"
+#include "ZoomCardScene.h"
+#include "QuitScene.h"
 #include "GameModel.h"
 
 namespace tsl {
@@ -42,6 +44,8 @@ namespace tsl {
         std::unique_ptr<SettingsScene> settings;
         std::unique_ptr<WaitingScene> waiting;
         std::unique_ptr<GameScene> game;
+        std::unique_ptr<ZoomCardScene> zoom;
+        std::unique_ptr<QuitScene> quit;
 
         gf::BlackoutSegueEffect blackoutEffect;
 
